@@ -1,0 +1,63 @@
+# Labeler Configuration - Auto-label PRs based on changed files
+# https://github.com/actions/labeler
+
+# Bug fixes
+'bug':
+  - head_branch: ['fix/*', 'hotfix/*', 'bugfix/*']
+  - changed_files:
+      - '**/fix*.ts'
+      - '**/fix*.tsx'
+      - '**/bug*.ts'
+      - '**/*test*.ts'
+
+# Features
+'feature':
+  - head_branch: ['feature/*', 'feat/*']
+  - changed_files:
+      - 'src/components/**'
+      - 'src/pages/**'
+      - 'server/src/routes/**'
+
+# Documentation
+'documentation':
+  - changed_files:
+      - '*.md'
+      - 'docs/**'
+      - '.github/**'
+
+# CI/CD
+'ci':
+  - changed_files:
+      - '.github/workflows/**'
+      - 'docker-compose*.yml'
+      - 'Dockerfile'
+      - 'nginx.conf'
+
+# Dependencies
+'dependencies':
+  - changed_files:
+      - 'package.json'
+      - 'package-lock.json'
+      - 'server/package.json'
+      - 'server/package-lock.json'
+
+# Backend
+'backend':
+  - changed_files:
+      - 'server/**'
+
+# Frontend
+'frontend':
+  - changed_files:
+      - 'src/**'
+      - 'index.html'
+      - 'vite.config.ts'
+
+# Testing
+'testing':
+  - changed_files:
+      - '**/*.test.ts'
+      - '**/*.test.tsx'
+      - '**/*.spec.ts'
+      - '**/e2e/**'
+      - 'TESTING.md'

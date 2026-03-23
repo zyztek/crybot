@@ -1,0 +1,57 @@
+# Files to ignore in npm package
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+.next/
+.nuxt/
+
+# Test coverage
+coverage/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Git
+.git/
+.gitignore
+
+# Documentation (not needed in npm)
+*.md
+!README.md
+
+# Tests (not needed in production)
+src/test/
+__tests__/
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+e2e/
+
+# TypeScript
+tsconfig.tsbuildinfo
+
+# Misc
+*.lock
+yarn.lock
+pnpm-lock.yaml

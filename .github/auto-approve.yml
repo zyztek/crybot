@@ -1,0 +1,19 @@
+# Auto-approve workflow for Dependabot PRs
+name: Auto Approve Dependabot
+
+on: pull_request_target
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  auto-approve:
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    steps:
+      - name: Approve Dependabot PR
+        run: |
+          gh pr approve ${{ github.event.pull_request.number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,32 @@
+# StackHawk Configuration
+# https://docs.stackhawk.com/configuration/
+
+app:
+  id: crybot
+  name: CryptoFaucet Hub
+  platform: nodejs
+  framework: react
+  language: typescript
+
+  # Build command
+  buildCommand: npm run build
+
+  # Start command
+  startCommand: npm run dev
+
+  # Files to scan
+  pathFilters:
+    - src/**
+    - server/src/**
+
+  # Exclude files
+  pathExcludeFilters:
+    - "**/node_modules/**"
+    - "**/*.test.ts"
+    - "**/*.test.tsx"
+    - "**/dist/**"
+
+  # Environment variables (do not include secrets)
+  env:
+    - NODE_ENV=development
+    - VITE_API_URL=http://localhost:3000/api

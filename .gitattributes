@@ -1,0 +1,43 @@
+# Git Attributes
+# https://git-scm.com/docs/gitattributes
+
+# Auto detect text files and normalize line endings
+* text=auto
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.svg text
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+
+# Database migrations
+*.sql text
+
+# Configuration files
+*.json text
+*.yml text
+*.yaml text
+*.toml text
+
+# Documentation
+*.md text
+
+# Code
+*.ts text
+*.tsx text
+*.js text
+*.jsx text
+
+# Docker
+Dockerfile text
+
+# Git
+.gitattributes text
+.gitignore text
