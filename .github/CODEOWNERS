@@ -1,0 +1,22 @@
+# Code Owners - Automatic review assignment
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for everything
+* @zyztek
+
+# Backend code
+/server/ @zyztek
+
+# Frontend code
+/src/ @zyztek
+
+# CI/CD workflows
+.github/workflows/ @zyztek
+
+# Docker configurations
+docker-compose*.yml
+Dockerfile
+.dockerignore @zyztek
+
+# Documentation
+*.md @zyztek
