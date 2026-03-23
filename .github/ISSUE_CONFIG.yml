@@ -1,0 +1,11 @@
+# GitHub Issue Configuration
+# https://docs.github.com/en/github/building-a-strong-community/configuring-issue-templates-for-your-repository
+
+blank_issues_enabled: true
+contact_links:
+  - name: Questions & Discussions
+    url: https://github.com/zyztek/crybot/discussions
+    about: Ask questions and discuss with the community
+  - name: Security Issues
+    url: https://github.com/zyztek/crybot/security
+    about: Report security vulnerabilities securely
