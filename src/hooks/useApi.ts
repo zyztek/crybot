@@ -1,0 +1,380 @@
+/**
+ * useApi Hook - Connects API to Zustand Store
+ * 
+ * Provides real data from backend while maintaining store compatibility
+ */
+
+import { useCallback, useEffect, useState } from 'react';
+import { useCryptoStore } from '@/store/cryptoStore';
+import api, { authApi, walletApi, achievementApi, leaderboardApi, analyticsApi } from '@/services/api';
+import { getFriendlyError, useToast } from './useToast';
+
+// Convert backend wallet format to frontend format
+const convertWallets = (wallets: Array<{ coin: string; balance: string }>) => {
+  const balance: Record<string, string> = {
+    btc: '0',
+    eth: '0',
+    doge: '0',
+    sol: '0',
+    ltc: '0',
+    bnb: '0',
+  };
+  
+  wallets.forEach(w => {
+    const key = w.coin.toLowerCase() as keyof typeof balance;
+    if (key in balance) {
+      balance[key] = w.balance;
+    }
+  });
+  
+  return balance;
+};
+
+export const useApi = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const toast = useToast();
+  
+  const store = useCryptoStore();
+  
+  // Sync auth state from backend
+  const syncAuth = useCallback(async () => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) return false;
+    
+    try {
+      setIsLoading(true);
+      const userData = await authApi.getMe();
+      
+      // Update store with real data
+      store.login();
+      store.user = {
+        ...store.user,
+        username: userData.username || 'User',
+        email: userData.email,
+        referralCode: userData.referralCode,
+        level: userData.level,
+        totalReferrals: 0, // Will be updated from profile
+      };
+      store.walletBalance = convertWallets(userData.wallets);
+      
+      return true;
+    } catch (err) {
+      console.error('Failed to sync auth:', err);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [store]);
+  
+  // Login with real API
+  const login = useCallback(async (email: string, password: string) => {
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      const response = await authApi.login({ email, password });
+      
+      // Update store with API response
+      store.login();
+      store.user = {
+        ...store.user,
+        username: response.user.username || 'User',
+        email: response.user.email,
+        referralCode: response.user.referralCode,
+        level: response.user.level,
+      };
+      store.walletBalance = convertWallets(response.wallets);
+      
+      // Show success toast
+      toast.success(`Welcome back, ${response.user.username}!`);
+      
+      return true;
+    } catch (err) {
+      const message = getFriendlyError(err);
+      setError(message);
+      toast.error(message);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [store, toast]);
+  
+  // Register with real API
+  const register = useCallback(async (email: string, password: string, username?: string, referralCode?: string) => {
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      const response = await authApi.register({ email, password, username, referralCode });
+      
+      // Update store with API response
+      store.login();
+      store.user = {
+        ...store.user,
+        username: response.user.username || 'User',
+        email: response.user.email,
+        referralCode: response.user.referralCode,
+        level: response.user.level,
+      };
+      store.walletBalance = convertWallets(response.wallets);
+      
+      // Show success toast
+      toast.success('Account created successfully! Welcome to CryptoFaucet Hub.');
+      
+      return true;
+    } catch (err) {
+      const message = getFriendlyError(err);
+      setError(message);
+      toast.error(message);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [store, toast]);
+  
+  // Logout with real API
+  const logout = useCallback(async () => {
+    setIsLoading(true);
+    
+    try {
+      await authApi.logout();
+    } catch {
+      // Ignore API errors during logout
+    } finally {
+      store.logout();
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      setIsLoading(false);
+      
+      // Show success toast
+      toast.success('You have been logged out successfully. See you next time!');
+    }
+  }, [store, toast]);
+  
+  // Fetch faucets from API and update store
+  const fetchFaucets = useCallback(async () => {
+    try {
+      const faucets = await api.faucet.getAll();
+      
+      // Convert to frontend format and update store
+      const convertedFaucets = faucets.map((f, i) => ({
+        id: i + 1,
+        name: f.name,
+        coin: f.coin,
+        icon: getCoinIcon(f.coin),
+        reward: f.amountMax,
+        timer: 0,
+        status: 'available' as const,
+        category: 'hot' as const,
+        difficulty: 'easy' as const,
+        translations: { es: f.name, en: f.name },
+      }));
+      store.faucets = convertedFaucets;
+      return convertedFaucets;
+    } catch {
+      return null;
+    }
+  }, [store]);
+  
+  // Claim faucet via API
+  const claimFaucet = useCallback(async (coin: string) => {
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      const claim = await api.faucet.claim(coin);
+      
+      // Add to history
+      const historyEntry = {
+        id: Date.now(),
+        faucet: `Faucet ${coin}`,
+        faucetId: 0,
+        coin: claim.coin,
+        amount: claim.amount,
+        time: new Date().toLocaleTimeString(),
+        date: new Date().toLocaleDateString(),
+      };
+      
+      // Update wallet balance
+      const key = coin.toLowerCase() as keyof typeof store.walletBalance;
+      if (key in store.walletBalance) {
+        store.walletBalance = {
+          ...store.walletBalance,
+          [key]: (BigInt(store.walletBalance[key]) + BigInt(claim.amount)).toString(),
+        };
+      }
+      
+      // Show success toast
+      toast.success(`Claimed ${claim.amount} ${claim.coin} successfully!`);
+      
+      return { success: true, claim, historyEntry };
+    } catch (err) {
+      const message = getFriendlyError(err);
+      setError(message);
+      toast.error(message);
+      return { success: false, error: message };
+    } finally {
+      setIsLoading(false);
+    }
+  }, [store, toast]);
+  
+  // Fetch user profile
+  const fetchProfile = useCallback(async () => {
+    try {
+      const profile = await api.user.getProfile();
+      
+      store.user = {
+        ...store.user,
+        username: profile.username || 'User',
+        email: profile.email,
+        referralCode: profile.referralCode,
+        level: profile.level,
+        totalReferrals: profile.referralCount,
+        referralEarnings: profile.referrerEarnings,
+      };
+      
+      store.walletBalance = convertWallets(profile.wallets.map(w => ({ coin: w.coin, balance: w.balance })));
+      
+      return profile;
+    } catch {
+      return null;
+    }
+  }, [store]);
+
+  // Fetch wallets from API
+  const fetchWallets = useCallback(async () => {
+    try {
+      const wallets = await walletApi.getAll();
+      const balance = convertWallets(wallets.map(w => ({ coin: w.coin, balance: w.balance })));
+      store.walletBalance = balance;
+      return wallets;
+    } catch (err) {
+      console.error('Failed to fetch wallets:', err);
+      return null;
+    }
+  }, [store]);
+
+  // Fetch achievements from API and update store
+  const fetchAchievements = useCallback(async () => {
+    try {
+      const data = await achievementApi.getUserAchievements();
+      // Convert API format to frontend format and update store
+      const convertedAchievements = data.achievements.map(a => ({
+        id: parseInt(a.id) || 0,
+        name: a.name,
+        description: a.description,
+        icon: a.icon,
+        coin: a.coin,
+        target: a.target,
+        reward: a.reward,
+        type: a.type,
+        progress: a.progress,
+        completed: a.completed,
+        completedAt: a.completedAt,
+        claimedAt: a.claimedAt,
+      }));
+      store.achievements = convertedAchievements;
+      return convertedAchievements;
+    } catch (err) {
+      console.error('Failed to fetch achievements:', err);
+      return null;
+    }
+  }, [store]);
+
+  // Claim achievement reward
+  const claimAchievement = useCallback(async (id: string) => {
+    try {
+      const result = await achievementApi.claimReward(id);
+      
+      // Update wallet balance with reward
+      const key = result.coin.toLowerCase() as keyof typeof store.walletBalance;
+      if (key in store.walletBalance) {
+        store.walletBalance = {
+          ...store.walletBalance,
+          [key]: (BigInt(store.walletBalance[key]) + BigInt(result.amount)).toString(),
+        };
+      }
+      
+      // Show success toast
+      toast.success(`Achievement claimed! +${result.amount} ${result.coin}`);
+      
+      return { success: true, amount: result.amount };
+    } catch (err) {
+      const message = getFriendlyError(err);
+      toast.error(message);
+      return { success: false, error: message };
+    }
+  }, [toast]);
+
+  // Fetch leaderboard from API and update store
+  const fetchLeaderboard = useCallback(async (period = 'all_time') => {
+    try {
+      const data = await leaderboardApi.getLeaderboard(period);
+      // Convert API format to frontend format and update store
+      const convertedLeaderboard = data.entries.map((entry, index) => ({
+        id: parseInt(entry.id) || index + 1,
+        rank: entry.rank,
+        username: entry.username,
+        score: entry.score,
+        faucetClaims: parseInt(entry.score) || 0,
+      }));
+      store.leaderboard = convertedLeaderboard;
+      return convertedLeaderboard;
+    } catch (err) {
+      console.error('Failed to fetch leaderboard:', err);
+      return null;
+    }
+  }, [store]);
+
+  // Fetch user stats from API and update store
+  const fetchUserStats = useCallback(async () => {
+    try {
+      const stats = await analyticsApi.getUserStats();
+      // Update user stats in store
+      store.user = {
+        ...store.user,
+        totalEarned: stats.totalEarned,
+        totalClaims: stats.totalClaims,
+      };
+      return stats;
+    } catch (err) {
+      console.error('Failed to fetch user stats:', err);
+      return null;
+    }
+  }, [store]);
+
+
+
+  return {
+    isLoading,
+    error,
+    login,
+    register,
+    logout,
+    syncAuth,
+    fetchFaucets,
+    claimFaucet,
+    fetchProfile,
+    fetchWallets,
+    fetchAchievements,
+    claimAchievement,
+    fetchLeaderboard,
+    fetchUserStats,
+  };
+};
+
+// Helper to get coin icon
+const getCoinIcon = (coin: string): string => {
+  const icons: Record<string, string> = {
+    BTC: '₿',
+    ETH: 'Ξ',
+    DOGE: 'Ð',
+    SOL: '◎',
+    LTC: 'Ł',
+    BNB: '⬡',
+  };
+  return icons[coin] || '●';
+};
+
+export default useApi;

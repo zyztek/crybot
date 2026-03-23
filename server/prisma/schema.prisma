@@ -1,0 +1,189 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============== USER & AUTH ==============
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  passwordHash  String    @map("password_hash")
+  username      String?   @unique
+  walletAddress String?   @map("wallet_address")
+  referralCode  String    @unique @map("referral_code")
+  referredById  String?   @map("referred_by_id")
+  referredBy    User?     @relation("Referral", fields: [referredById], references: [id])
+  referrals     User[]    @relation("Referral")
+  referrerEarnings String @default("0") @map("referrer_earnings")
+  level         Int       @default(1)
+  totalEarned   String    @default("0") @map("total_earned")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  
+  // Relations
+  sessions      Session[]
+  transactions  Transaction[]
+  faucetClaims  FaucetClaim[]
+  achievements  UserAchievement[]
+  wallets       Wallet[]
+  
+  @@map("users")
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  userId       String   @map("user_id")
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token        String   @unique
+  refreshToken String   @unique @map("refresh_token")
+  expiresAt    DateTime @map("expires_at")
+  ipAddress    String?  @map("ip_address")
+  userAgent    String?  @map("user_agent")
+  createdAt    DateTime @default(now()) @map("created_at")
+  
+  @@map("sessions")
+}
+
+// ============== WALLETS & BALANCES ==============
+
+model Wallet {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  coin      String   // BTC, ETH, DOGE, SOL, etc.
+  address   String?
+  balance   String   @default("0")
+  isCustodial Boolean @default(false) @map("is_custodial")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  
+  @@unique([userId, coin])
+  @@map("wallets")
+}
+
+model Transaction {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type        String   // claim, deposit, withdrawal, referral_bonus, transfer
+  coin        String
+  amount      String
+  fee         String   @default("0")
+  txHash      String?  @map("tx_hash")
+  fromAddress String?  @map("from_address")
+  toAddress   String?  @map("to_address")
+  status      String   @default("pending") // pending, confirmed, failed
+  confirmations Int    @default(0)
+  metadata    Json?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  
+  @@map("transactions")
+}
+
+// ============== FAUCET SYSTEM ==============
+
+model Faucet {
+  id          String   @id @default(uuid())
+  name        String
+  coin        String   // BTC, ETH, DOGE, SOL
+  network     String   // mainnet, testnet, sepolia, devnet
+  faucetUrl   String?  @map("faucet_url")
+  apiEndpoint String?  @map("api_endpoint")
+  amountMin   String   @map("amount_min")
+  amountMax   String   @map("amount_max")
+  intervalHours Int    @default(24) @map("interval_hours")
+  isActive    Boolean  @default(true) @map("is_active")
+  requiresApiKey Boolean @default(false) @map("requires_api_key")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  
+  claims      FaucetClaim[]
+  
+  @@unique([coin, network])
+  @@map("faucets")
+}
+
+model FaucetClaim {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  faucetId    String?  @map("faucet_id")
+  faucet      Faucet?  @relation(fields: [faucetId], references: [id])
+  coin        String
+  amount      String
+  ipAddress   String   @map("ip_address")
+  txHash      String?  @map("tx_hash")
+  status      String   @default("pending") // pending, confirmed, failed
+  claimedAt   DateTime @default(now()) @map("claimed_at")
+  
+  @@map("faucet_claims")
+}
+
+// ============== ACHIEVEMENTS ==============
+
+model Achievement {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  icon        String
+  coin        String?  // null = all coins
+  target      Int      // target amount/count
+  reward      String   @default("0")
+  type        String   // claims, volume, referrals, etc.
+  createdAt   DateTime @default(now()) @map("created_at")
+  
+  userProgress UserAchievement[]
+  
+  @@map("achievements")
+}
+
+model UserAchievement {
+  id            String   @id @default(uuid())
+  userId        String   @map("user_id")
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievementId String   @map("achievement_id")
+  achievement   Achievement @relation(fields: [achievementId], references: [id])
+  progress      Int      @default(0)
+  completed     Boolean  @default(false)
+  completedAt   DateTime? @map("completed_at")
+  claimedAt     DateTime? @map("claimed_at")
+  
+  @@unique([userId, achievementId])
+  @@map("user_achievements")
+}
+
+// ============== ANALYTICS ==============
+
+model DailyStats {
+  id          String   @id @default(uuid())
+  date        DateTime @unique
+  totalClaims Int      @default(0) @map("total_claims")
+  totalVolume String   @default("0") @map("total_volume")
+  newUsers    Int      @default(0) @map("new_users")
+  activeUsers Int      @default(0) @map("active_users")
+  feesEarned  String   @default("0") @map("fees_earned")
+  createdAt   DateTime @default(now()) @map("created_at")
+  
+  @@map("daily_stats")
+}
+
+model Leaderboard {
+  id        String   @id @default(uuid())
+  userId    String   @unique @map("user_id")
+  username  String
+  score     String   @default("0")
+  rank      Int
+  period    String   // daily, weekly, monthly, all_time
+  updatedAt DateTime @updatedAt @map("updated_at")
+  
+  @@map("leaderboard")
+}

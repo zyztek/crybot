@@ -1,0 +1,433 @@
+import { createContext, useContext, useState, ReactNode } from 'react';
+
+type Language = 'en' | 'es';
+
+interface Translations {
+  [key: string]: any;
+}
+
+const translations: Record<Language, Translations> = {
+  en: {
+    header: {
+      logo: 'CryptoFaucet Hub',
+      faucets: 'Faucets',
+      dashboard: 'Dashboard',
+      wallet: 'Wallet',
+      achievements: 'Achievements',
+      referrals: 'Referrals',
+      leaderboard: 'Leaderboard',
+      settings: 'Settings',
+      staking: 'Staking',
+      store: 'Store',
+      missions: 'Missions',
+      news: 'News',
+      vip: 'VIP'
+    },
+    faucet: {
+      title: 'Crypto Faucets',
+      subtitle: 'Collect free cryptocurrencies every day',
+      claim: 'Claim Now',
+      claiming: 'Claiming...',
+      cooldown: 'Cooldown',
+      reward: 'Reward',
+      difficulty: 'Difficulty',
+      easy: 'Easy',
+      medium: 'Medium',
+      hard: 'Hard'
+    },
+    dashboard: {
+      title: 'Dashboard',
+      totalClaimed: 'Total Claimed',
+      claimsToday: 'Claims Today',
+      activeFaucets: 'Active Faucets',
+      supportedCoins: 'Supported Coins',
+      claimHistory: 'Claim History',
+      weeklyStats: 'Weekly Statistics',
+      mon: 'Mon',
+      tue: 'Tue',
+      wed: 'Wed',
+      thu: 'Thu',
+      fri: 'Fri',
+      sat: 'Sat',
+      sun: 'Sun',
+      security: 'Security Tips',
+      tips: 'Pro Tips'
+    },
+    wallet: {
+      title: 'My Wallet',
+      withdraw: 'Withdraw',
+      scanQR: 'Scan QR',
+      address: 'Wallet Address',
+      balance: 'Balance',
+      withdrawHistory: 'Withdrawal History'
+    },
+    achievements: {
+      title: 'Achievements',
+      unlocked: 'Unlocked',
+      locked: 'Locked',
+      progress: 'Progress',
+      reward: 'Reward'
+    },
+    referrals: {
+      title: 'Referral Program',
+      code: 'Referral Code',
+      earnings: 'Referral Earnings',
+      commission: '10% Commission',
+      users: 'User Wallets',
+      total: 'Total Claimed',
+      copy: 'Copy',
+      copied: 'Copied!',
+      latest: 'Latest Referrals'
+    },
+    leaderboard: {
+      title: 'Leaderboard',
+      top: 'Top User Wallets',
+      totalClaimed: 'Total Claimed',
+      totalClaims: 'Total Claims',
+      position: 'Your Position',
+      demoUser: 'Demo User',
+      view: 'View Full Leaderboard'
+    },
+    settings: {
+      title: 'Settings',
+      profile: 'Profile',
+      security: 'Security',
+      notifications: 'Notifications',
+      theme: 'Theme',
+      language: 'Language',
+      currency: 'Currency',
+      logout: 'Logout',
+      twoFactor: 'Two-Factor Authentication',
+      twoFactorEnabled: 'Enabled',
+      email: 'Email',
+      username: 'Username'
+    },
+    auth: {
+      welcome: 'Welcome Back!',
+      login: 'Login',
+      register: 'Register',
+      email: 'Email',
+      password: 'Password',
+      orContinue: 'or continue with',
+      google: 'Google',
+      twitter: 'Twitter',
+      metamask: 'MetaMask',
+      noAccount: "Don't have an account?",
+      haveAccount: 'Already have an account?',
+      signUp: 'Sign Up'
+    },
+    staking: {
+      title: 'Staking',
+      totalStaked: 'Total Staked',
+      thisMonth: 'this month',
+      totalRewards: 'Total Rewards',
+      activeStakes: 'Active Stakes',
+      avgAPY: 'Average APY',
+      abvAvg: 'above avg',
+      stakingPools: 'Staking Pools',
+      tvl: 'TVL',
+      period: 'Lock Period',
+      days: 'days',
+      minStake: 'Min Stake',
+      risk: 'Risk',
+      stake: 'Stake',
+      myStakes: 'My Stakes',
+      rewards: 'Earned Rewards',
+      startDate: 'Start Date',
+      endDate: 'End Date',
+      status: 'Status',
+      stakeAmount: 'Amount to Stake',
+      cancel: 'Cancel',
+      confirm: 'Confirm'
+    },
+    store: {
+      title: 'Rewards Store',
+      balance: 'Balance',
+      points: 'Points',
+      description: 'Redeem your points for amazing rewards',
+      categories: 'Categories',
+      all: 'All',
+      electronics: 'Electronics',
+      giftCards: 'Gift Cards',
+      crypto: 'Crypto',
+      premium: 'Premium Memberships',
+      featured: 'Featured Items',
+      buy: 'Buy Now',
+      outOfStock: 'Out of Stock',
+      owned: 'Owned',
+      success: 'Purchase successful!'
+    },
+    missions: {
+      title: 'Daily Missions',
+      description: 'Complete missions to earn rewards',
+      dailyReset: 'Resets in',
+      progress: 'Progress',
+      claim: 'Claim Reward',
+      claimed: 'Claimed',
+      reward: 'Reward',
+      easy: 'Easy',
+      medium: 'Medium',
+      hard: 'Hard'
+    },
+    news: {
+      title: 'Crypto News',
+      latest: 'Latest News',
+      trending: 'Trending',
+      readMore: 'Read More',
+      crypto: 'Crypto',
+      defi: 'DeFi',
+      nft: 'NFT',
+      metaverse: 'Metaverse'
+    },
+    vip: {
+      title: 'VIP Club',
+      description: 'Unlock exclusive benefits and higher rewards',
+      benefits: 'Benefits',
+      tiers: 'Membership Tiers',
+      standard: 'Standard',
+      silver: 'Silver',
+      gold: 'Gold',
+      platinum: 'Platinum',
+      diamond: 'Diamond',
+      upgrade: 'Upgrade Now',
+      currentTier: 'Your Current Tier',
+      pointsToNext: 'Points to next tier',
+      leaderboardBoost: 'Leaderboard Boost',
+      bonusClaims: 'Bonus Claims',
+      exclusiveFaucets: 'Exclusive Faucets',
+      prioritySupport: 'Priority Support',
+      badge: 'VIP Badge'
+    }
+  },
+  es: {
+    header: {
+      logo: 'CryptoFaucet Hub',
+      faucets: 'Grifos',
+      dashboard: 'Panel',
+      wallet: 'Billetera',
+      achievements: 'Logros',
+      referrals: 'Referidos',
+      leaderboard: 'Tabla',
+      settings: 'Ajustes',
+      staking: 'Staking',
+      store: 'Tienda',
+      missions: 'Misiones',
+      news: 'Noticias',
+      vip: 'VIP'
+    },
+    faucet: {
+      title: 'Grifos de Cripto',
+      subtitle: 'Recolecta criptomonedas gratis cada día',
+      claim: 'Reclamar',
+      claiming: 'Reclamando...',
+      cooldown: 'Tiempo espera',
+      reward: 'Recompensa',
+      difficulty: 'Dificultad',
+      easy: 'Facil',
+      medium: 'Medio',
+      hard: 'Dificil'
+    },
+    dashboard: {
+      title: 'Panel',
+      totalClaimed: 'Total Reclamado',
+      claimsToday: 'Reclamos Hoy',
+      activeFaucets: 'Grifos Activos',
+      supportedCoins: 'Monedas Soportadas',
+      claimHistory: 'Historial de Reclamos',
+      weeklyStats: 'Estadisticas Semanales',
+      mon: 'Lun',
+      tue: 'Mar',
+      wed: 'Mie',
+      thu: 'Jue',
+      fri: 'Vie',
+      sat: 'Sab',
+      sun: 'Dom',
+      security: 'Consejos de Seguridad',
+      tips: 'Consejos Pro'
+    },
+    wallet: {
+      title: 'Mi Billetera',
+      withdraw: 'Retirar',
+      scanQR: 'Escanear QR',
+      address: 'Direccion Wallet',
+      balance: 'Balance',
+      withdrawHistory: 'Historial de Retiros'
+    },
+    achievements: {
+      title: 'Logros',
+      unlocked: 'Desbloqueados',
+      locked: 'Bloqueados',
+      progress: 'Progreso',
+      reward: 'Recompensa'
+    },
+    referrals: {
+      title: 'Programa de Referidos',
+      code: 'Codigo de Referido',
+      earnings: 'Ganancias Referidos',
+      commission: '10% Comision',
+      users: 'Usuarios',
+      total: 'Total Reclamado',
+      copy: 'Copiar',
+      copied: '¡Copiado!',
+      latest: 'Ultimos Referidos'
+    },
+    leaderboard: {
+      title: 'Tabla de Lideres',
+      top: 'Top Usuarios',
+      totalClaimed: 'Total Reclamado',
+      totalClaims: 'Total Reclamos',
+      position: 'Tu Posicion',
+      demoUser: 'Usuario Demo',
+      view: 'Ver Tabla Completa'
+    },
+    settings: {
+      title: 'Ajustes',
+      profile: 'Perfil',
+      security: 'Seguridad',
+      notifications: 'Notificaciones',
+      theme: 'Tema',
+      language: 'Idioma',
+      currency: 'Moneda',
+      logout: 'Cerrar Sesion',
+      twoFactor: 'Autenticacion 2FA',
+      twoFactorEnabled: 'Activado',
+      email: 'Correo',
+      username: 'Usuario'
+    },
+    auth: {
+      welcome: '¡Bienvenido de nuevo!',
+      login: 'Iniciar Sesion',
+      register: 'Registrarse',
+      email: 'Correo electronico',
+      password: 'Contrasena',
+      orContinue: 'o continuar con',
+      google: 'Google',
+      twitter: 'Twitter',
+      metamask: 'MetaMask',
+      noAccount: '¿No tienes cuenta?',
+      haveAccount: '¿Ya tienes cuenta?',
+      signUp: 'Registrarse'
+    },
+    staking: {
+      title: 'Staking',
+      totalStaked: 'Total Staked',
+      thisMonth: 'este mes',
+      totalRewards: 'Recompensas Totales',
+      activeStakes: 'Stakes Activos',
+      avgAPY: 'APY Promedio',
+      abvAvg: 'sobre promedio',
+      stakingPools: 'Pools de Staking',
+      tvl: 'TVL',
+      period: 'Periodo Bloqueo',
+      days: 'dias',
+      minStake: 'Stake Min',
+      risk: 'Riesgo',
+      stake: 'Stake',
+      myStakes: 'Mis Stakes',
+      rewards: 'Recompensas Ganadas',
+      startDate: 'Fecha Inicio',
+      endDate: 'Fecha Fin',
+      status: 'Estado',
+      stakeAmount: 'Cantidad a Staking',
+      cancel: 'Cancelar',
+      confirm: 'Confirmar'
+    },
+    store: {
+      title: 'Tienda de Recompensas',
+      balance: 'Balance',
+      points: 'Puntos',
+      description: 'Canjea tus puntos por increibles recompensas',
+      categories: 'Categorias',
+      all: 'Todos',
+      electronics: 'Electronica',
+      giftCards: 'Tarjetas regalo',
+      crypto: 'Cripto',
+      premium: 'Membresias Premium',
+      featured: 'Articulos Destacados',
+      buy: 'Comprar',
+      outOfStock: 'Agotado',
+      owned: 'Adquirido',
+      success: '¡Compra exitosa!'
+    },
+    missions: {
+      title: 'Misiones Diarias',
+      description: 'Completa misiones para ganar recompensas',
+      dailyReset: 'Reinicia en',
+      progress: 'Progreso',
+      claim: 'Reclamar Recompensa',
+      claimed: 'Reclamado',
+      reward: 'Recompensa',
+      easy: 'Facil',
+      medium: 'Medio',
+      hard: 'Dificil'
+    },
+    news: {
+      title: 'Noticias Crypto',
+      latest: 'Ultimas Noticias',
+      trending: 'Tendencias',
+      readMore: 'Leer Mas',
+      crypto: 'Cripto',
+      defi: 'DeFi',
+      nft: 'NFT',
+      metaverse: 'Metaverso'
+    },
+    vip: {
+      title: 'Club VIP',
+      description: 'Desbloquea beneficios exclusivos y recompensas mayores',
+      benefits: 'Beneficios',
+      tiers: 'Niveles de Membresia',
+      standard: 'Estandar',
+      silver: 'Plata',
+      gold: 'Oro',
+      platinum: 'Platino',
+      diamond: 'Diamante',
+      upgrade: 'Actualizar Ahora',
+      currentTier: 'Tu Nivel Actual',
+      pointsToNext: 'Puntos para el siguiente nivel',
+      leaderboardBoost: 'Boost Tabla',
+      bonusClaims: 'Bonus Reclamos',
+      exclusiveFaucets: 'Grifos Exclusivos',
+      prioritySupport: 'Soporte Prioritario',
+      badge: 'Badge VIP'
+    }
+  }
+};
+
+const TranslationContext = createContext<{
+  language: Language;
+  setLanguage: (lang: Language) => void;
+  t: (key: string) => string;
+}>({
+  language: 'en',
+  setLanguage: () => {},
+  t: () => ''
+});
+
+export function TranslationProvider({ children }: { children: ReactNode }) {
+  const [language, setLanguage] = useState<Language>('en');
+
+  const t = (key: string): string => {
+    const keys = key.split('.');
+    let value: any = translations[language];
+    
+    for (const k of keys) {
+      if (value && typeof value === 'object') {
+        value = value[k];
+      } else {
+        return key;
+      }
+    }
+    
+    return typeof value === 'string' ? value : key;
+  };
+
+  return (
+    <TranslationContext.Provider value={{ language, setLanguage, t }}>
+      {children}
+    </TranslationContext.Provider>
+  );
+}
+
+export function useTranslation() {
+  return useContext(TranslationContext);
+}

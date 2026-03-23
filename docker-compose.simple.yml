@@ -1,0 +1,13 @@
+version: '2'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: crybot-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: crybot
+      POSTGRES_USER: crybot
+      POSTGRES_PASSWORD: crybot_dev_password
+    ports:
+      - "5432:5432"

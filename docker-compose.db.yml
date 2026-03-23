@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: crybot-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: crybot
+      POSTGRES_USER: crybot
+      POSTGRES_PASSWORD: crybot_dev_password
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U crybot -d crybot"]
+      interval: 5s
+      timeout: 5s
+      retries: 5

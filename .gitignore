@@ -1,0 +1,48 @@
+# Environment files (keep .env.example for templates)
+.env
+.env.local
+.env.development
+.env.staging
+.env.production
+server/.env
+server/.env.local
+server/.env.development
+server/.env.staging
+server/.env.production
+
+# Dependencies
+node_modules/
+server/node_modules/
+
+# Build outputs
+dist/
+server/dist/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage/
+
+# Cache
+.cache/
+.vite/
+
+# Temporary files
+tmp/
+temp/
