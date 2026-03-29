@@ -25,6 +25,7 @@ import transactionRoutes from './routes/transaction.js';
 import achievementRoutes from './routes/achievement.js';
 import analyticsRoutes from './routes/analytics.js';
 import leaderboardRoutes from './routes/leaderboard.js';
+import testnetOpsRoutes from './routes/testnetOps.js';
 
 // WebSocket handler
 import { setupWebSocket } from './websocket/index.js';
@@ -159,6 +160,7 @@ app.use('/api/transaction', transactionRoutes);
 app.use('/api/achievement', achievementRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
+app.use('/api/testnet', testnetOpsRoutes);
 
 // ============== ERROR HANDLING ==============
 
