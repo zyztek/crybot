@@ -8,6 +8,7 @@ import NavigationTabs from './components/layout/NavigationTabs'
 import ContentArea from './components/layout/ContentArea'
 import Footer from './components/layout/Footer'
 import ToastContainer from './components/ui/ToastContainer'
+import SkipLink from './components/ui/SkipLink'
 import { useApi } from './hooks/useApi'
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
     isLoggedIn,
     activeTab,
     language,
+    theme,
     notifications,
     showWalletAddress,
     user,
@@ -27,6 +29,7 @@ function App() {
     logout: storeLogout,
     setActiveTab,
     toggleLanguage,
+    toggleTheme,
     toggleWalletAddress,
     claimFaucet,
     copyReferralCode,
@@ -41,11 +44,14 @@ function App() {
     fetchAchievements,
     fetchLeaderboard,
     fetchUserStats,
+    fetchReferrals,
     syncAuth, 
   } = useApi()
   
   // Local state for API-based operations
   const [isInitialized, setIsInitialized] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [referrals, setReferrals] = useState<Array<{ id: string; username: string; createdAt: string; earnings?: string }>>([])
   
   // Initialize on mount - check for existing session
   useEffect(() => {
@@ -63,6 +69,16 @@ function App() {
             fetchLeaderboard('all_time'),
             fetchUserStats(),
           ]).catch(err => console.error('Failed to fetch initial data:', err))
+          
+          // Fetch referrals for the referral view
+          const referralsData = await fetchReferrals()
+          if (referralsData) {
+            setReferrals(referralsData.referrals.map(r => ({
+              id: r.id,
+              username: r.username,
+              createdAt: r.createdAt,
+            })))
+          }
         }
       }
       setIsInitialized(true)
@@ -70,6 +86,11 @@ function App() {
     init()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // Apply theme to DOM
+  useEffect(() => {
+    document.documentElement.classList.toggle('light', theme === 'light')
+  }, [theme])
   
   // Handle login from LoginScreen
   const handleLogin = () => {
@@ -106,6 +127,9 @@ function App() {
   return (
     <>
       <ToastContainer />
+      <SkipLink targetId="main-content">
+        {language === 'es' ? 'Saltar al contenido principal' : 'Skip to main content'}
+      </SkipLink>
       {(!isLoggedIn || !isInitialized) ? (
         <LoginScreen t={t} onLogin={handleLogin} />
       ) : (
@@ -113,11 +137,15 @@ function App() {
       <Header
         user={user}
         language={language}
+        theme={theme}
         notifications={notifications}
         onToggleLanguage={toggleLanguage}
+        onToggleTheme={toggleTheme}
+        searchTerm={searchTerm}
+        onSearch={setSearchTerm}
       />
 
-      <main className="container mx-auto px-4 py-6">
+      <main id="main-content" className="container mx-auto px-4 py-6" tabIndex={-1}>
         <StatsBar
           walletBalance={walletBalance}
           history={history}
@@ -145,11 +173,16 @@ function App() {
           user={user}
           showWalletAddress={showWalletAddress}
           language={language}
+          theme={theme}
+          searchTerm={searchTerm}
           t={t}
           onClaimFaucet={handleClaimFaucet}
           onToggleWalletAddress={toggleWalletAddress}
+          onToggleTheme={toggleTheme}
           onCopyReferralCode={copyReferralCode}
           onLogout={handleLogout}
+          onClearSearch={() => setSearchTerm('')}
+          referrals={referrals}
         />
       </main>
 

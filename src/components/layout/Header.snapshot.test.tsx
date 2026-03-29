@@ -23,8 +23,10 @@ describe('Header Snapshot Tests', () => {
       <Header
         user={mockUser}
         language="es"
+        theme="dark"
         notifications={3}
         onToggleLanguage={() => {}}
+        onToggleTheme={() => {}}
       />
     )
     expect(container.firstChild).toMatchSnapshot()
@@ -35,8 +37,10 @@ describe('Header Snapshot Tests', () => {
       <Header
         user={mockUser}
         language="en"
+        theme="dark"
         notifications={0}
         onToggleLanguage={() => {}}
+        onToggleTheme={() => {}}
       />
     )
     expect(container.firstChild).toMatchSnapshot()
@@ -47,8 +51,10 @@ describe('Header Snapshot Tests', () => {
       <Header
         user={mockUser}
         language="es"
+        theme="dark"
         notifications={0}
         onToggleLanguage={() => {}}
+        onToggleTheme={() => {}}
       />
     )
     expect(container.firstChild).toMatchSnapshot()

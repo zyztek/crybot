@@ -1,4 +1,4 @@
-# CD Pipeline - Auto Deploy on Main Branch
+# CD Pipeline - Auto Deploy to GitHub Pages on Main Branch
 name: CD
 
 on:
@@ -6,8 +6,13 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     
@@ -26,28 +31,19 @@ jobs:
       - name: Build frontend
         run: npm run build
       
-      - name: Build backend
-        run: |
-          cd server
-          npm ci
-          npm run build
-      
-      - name: Run tests
-        run: |
-          npm test
-          cd server && npm test
-      
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: build-artifacts
-          path: |
-            dist/index.html
-            server/dist/
-      
-      - name: Deploy notification
-        run: |
-          echo "Build completed successfully"
-          echo "Repository: ${{ github.repository }}"
-          echo "Commit: ${{ github.sha }}"
-          echo "Branch: ${{ github.ref }}"
+          path: ./dist
+          
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

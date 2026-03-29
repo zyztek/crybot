@@ -293,3 +293,60 @@
   box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
   animation: pulse 2s infinite;
 }
+
+/* Light Theme Styles */
+html.light {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #e2e8f0;
+  --bg-card: #ffffff;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+}
+
+html.light body {
+  background: linear-gradient(to bottom right, #f1f5f9, #e2e8f0, #f8fafc);
+}
+
+html.light .bg-slate-900\/50 {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+html.light .bg-slate-800\/50 {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(139, 92, 246, 0.2);
+}
+
+html.light .bg-slate-800 {
+  background: #ffffff;
+}
+
+html.light .bg-slate-900 {
+  background: #f8fafc;
+}
+
+html.light .text-white {
+  color: #1e293b;
+}
+
+html.light .text-purple-300 {
+  color: #6366f1;
+}
+
+html.light .text-purple-400 {
+  color: #4f46e5;
+}
+
+html.light .border-purple-500\/20 {
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+html.light input {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(139, 92, 246, 0.3);
+  color: #1e293b;
+}
+
+html.light input::placeholder {
+  color: #94a3b8;
+}

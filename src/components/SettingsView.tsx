@@ -10,10 +10,12 @@ interface SettingsViewProps {
   }
   t: TranslationTexts
   lang: 'es' | 'en'
+  theme: 'dark' | 'light'
+  onToggleTheme: () => void
   onLogout: () => void
 }
 
-export default function SettingsView({ user, t, lang, onLogout }: SettingsViewProps) {
+export default function SettingsView({ user, t, lang, theme, onToggleTheme, onLogout }: SettingsViewProps) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <div className="bg-slate-800/50 border border-purple-500/20 rounded-xl p-5 backdrop-blur-sm">
@@ -105,9 +107,14 @@ export default function SettingsView({ user, t, lang, onLogout }: SettingsViewPr
             <span className="text-purple-300 text-sm">{t.currency}</span>
             <span className="text-white font-medium">BTC</span>
           </div>
-          <div className="flex justify-between">
+          <div className="flex items-center justify-between">
             <span className="text-purple-300 text-sm">{t.theme}</span>
-            <span className="text-white font-medium">Dark</span>
+            <button
+              onClick={onToggleTheme}
+              className={`w-14 h-7 rounded-full p-1 transition-colors ${theme === 'dark' ? 'bg-purple-600' : 'bg-yellow-500'}`}
+            >
+              <div className={`w-5 h-5 rounded-full bg-white shadow-md transition-transform ${theme === 'dark' ? 'translate-x-0' : 'translate-x-7'}`} />
+            </button>
           </div>
         </div>
       </div>

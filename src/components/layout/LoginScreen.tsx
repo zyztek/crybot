@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Coins, LogOut, Chrome, Loader2 } from 'lucide-react'
+import { Coins, LogOut, Chrome, Loader2, Mail, Lock, ArrowLeft, KeyRound, CheckCircle, Globe } from 'lucide-react'
 import type { TranslationTexts } from '@/i18n/translations'
 import { useApi } from '@/hooks/useApi'
 
@@ -8,27 +8,94 @@ interface LoginScreenProps {
   onLogin: () => void
 }
 
+type AuthMode = 'login' | 'register' | 'forgot-password' | 'reset-password'
+
 export default function LoginScreen({ t, onLogin }: LoginScreenProps) {
-  const [isRegister, setIsRegister] = useState(false)
+  const [mode, setMode] = useState<AuthMode>('login')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [username, setUsername] = useState('')
   const [referralCode, setReferralCode] = useState('')
   const [localError, setLocalError] = useState('')
+  const [emailError, setEmailError] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+  const [resetToken, setResetToken] = useState('')
+  const [resetSent, setResetSent] = useState(false)
+  const [passwordReset, setPasswordReset] = useState(false)
   
-  const { login, register, isLoading } = useApi()
+  const { login, register, forgotPassword, resetPassword, isLoading } = useApi()
+
+  const isRegister = mode === 'register'
+  const isForgotPassword = mode === 'forgot-password'
+  const isResetPassword = mode === 'reset-password'
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLocalError('')
+    setEmailError('')
+    setPasswordError('')
     
-    if (!email || !password) {
-      setLocalError('Please fill in all required fields')
+    if (isForgotPassword) {
+      // Handle forgot password request
+      if (!email) {
+        setEmailError('Email is required')
+        return
+      }
+      const success = await forgotPassword(email)
+      if (success) {
+        setResetSent(true)
+      } else {
+        setLocalError(t.lang === 'es' ? 'Error al enviar el email de recuperación' : 'Failed to send reset email')
+      }
       return
     }
     
+    if (isResetPassword) {
+      // Handle password reset
+      if (!resetToken) {
+        setLocalError('Reset token is required')
+        return
+      }
+      if (!password) {
+        setPasswordError('New password is required')
+        return
+      }
+      if (password.length < 6) {
+        setPasswordError('Password must be at least 6 characters')
+        return
+      }
+      if (password !== confirmPassword) {
+        setPasswordError('Passwords do not match')
+        return
+      }
+      const success = await resetPassword(resetToken, password)
+      if (success) {
+        setPasswordReset(true)
+        setTimeout(() => setMode('login'), 3000)
+      } else {
+        setLocalError(t.lang === 'es' ? 'Token inválido o expirado' : 'Invalid or expired token')
+      }
+      return
+    }
+    
+    // Normal login/register
+    let hasError = false
+    
+    if (!email) {
+      setEmailError('Email is required')
+      hasError = true
+    }
+    
+    if (!password) {
+      setPasswordError('Password is required')
+      hasError = true
+    }
+    
+    if (hasError) return
+    
     if (isRegister && password.length < 6) {
-      setLocalError('Password must be at least 6 characters')
+      setPasswordError('Password must be at least 6 characters')
       return
     }
     
@@ -57,42 +124,165 @@ export default function LoginScreen({ t, onLogin }: LoginScreenProps) {
 
         <div className="bg-slate-800/50 border border-purple-500/20 rounded-2xl p-8 backdrop-blur-sm">
           <h2 className="text-2xl font-bold text-white mb-6 text-center">
-            {isRegister ? t.register : t.login}
+            {isRegister ? t.register : isForgotPassword ? (t.lang === 'es' ? 'Recuperar Contraseña' : 'Reset Password') : isResetPassword ? (t.lang === 'es' ? 'Nueva Contraseña' : 'New Password') : t.login}
           </h2>
           
+          {passwordReset && (
+            <div className="mb-6 p-4 bg-green-500/20 border border-green-500/30 rounded-lg flex items-center gap-3">
+              <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0" />
+              <p className="text-green-300 text-sm">
+                {t.lang === 'es' ? '¡Contraseña restablecida! Redirigiendo...' : 'Password reset! Redirecting...'}
+              </p>
+            </div>
+          )}
+
+          {resetSent && !isResetPassword && (
+            <div className="mb-6 p-4 bg-green-500/20 border border-green-500/30 rounded-lg">
+              <div className="flex items-center gap-3 mb-2">
+                <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0" />
+                <p className="text-green-300 font-medium">
+                  {t.lang === 'es' ? 'Email enviado!' : 'Email sent!'}
+                </p>
+              </div>
+              <p className="text-green-300/70 text-sm">
+                {t.lang === 'es' 
+                  ? 'Hemos enviado un enlace de recuperación a tu email.' 
+                  : 'We sent a password reset link to your email.'}
+              </p>
+              <button
+                type="button"
+                onClick={() => { setResetSent(false); setMode('login') }}
+                className="mt-3 text-purple-300 hover:text-white text-sm underline"
+              >
+                {t.lang === 'es' ? 'Volver al inicio de sesión' : 'Back to login'}
+              </button>
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-4">
             {isRegister && (
               <div>
-                <label className="text-purple-300 text-sm mb-2 block">Username</label>
+                <label htmlFor="username" className="text-purple-300 text-sm mb-2 block">Username</label>
                 <input 
+                  id="username"
                   type="text" 
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-900/50 border border-purple-500/20 rounded-lg text-white placeholder-purple-400 focus:border-purple-500 focus:outline-none" 
+                  className="w-full px-4 py-3 bg-slate-900/50 border border-purple-500/20 rounded-lg text-white placeholder-purple-400 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-400" 
                   placeholder="tu_usuario" 
+                  aria-describedby={username ? undefined : 'username-hint'}
                 />
+                <span id="username-hint" className="sr-only">Enter your desired username</span>
               </div>
             )}
             <div>
-              <label className="text-purple-300 text-sm mb-2 block">Email</label>
-              <input 
-                type="email" 
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-900/50 border border-purple-500/20 rounded-lg text-white placeholder-purple-400 focus:border-purple-500 focus:outline-none" 
-                placeholder="tu@email.com" 
-              />
+              <label htmlFor="email" className="text-purple-300 text-sm mb-2 block">
+                {isForgotPassword ? (t.lang === 'es' ? 'Tu email' : 'Your email') : 'Email'}
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400" />
+                <input 
+                  id="email"
+                  type="email" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className={`w-full pl-10 pr-4 py-3 bg-slate-900/50 border rounded-lg text-white placeholder-purple-400 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-400 ${emailError ? 'border-red-500' : 'border-purple-500/20'}`}
+                  placeholder="tu@email.com" 
+                  aria-invalid={!!emailError}
+                  aria-describedby={emailError ? 'email-error' : undefined}
+                  required
+                />
+              </div>
+              {emailError && (
+                <span id="email-error" className="text-red-400 text-xs mt-1 block" role="alert">
+                  {emailError}
+                </span>
+              )}
             </div>
-            <div>
-              <label className="text-purple-300 text-sm mb-2 block">Password</label>
-              <input 
-                type="password" 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-900/50 border border-purple-500/20 rounded-lg text-white placeholder-purple-400 focus:border-purple-500 focus:outline-none" 
-                placeholder="••••••••" 
-              />
-            </div>
+            {isResetPassword && (
+              <div>
+                <label htmlFor="reset-token" className="text-purple-300 text-sm mb-2 block">
+                  {t.lang === 'es' ? 'Token de recuperación' : 'Reset Token'}
+                </label>
+                <div className="relative">
+                  <KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400" />
+                  <input 
+                    id="reset-token"
+                    type="text" 
+                    value={resetToken}
+                    onChange={(e) => setResetToken(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 bg-slate-900/50 border border-purple-500/20 rounded-lg text-white placeholder-purple-400 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                    placeholder={t.lang === 'es' ? 'Ingresa el token de tu email' : 'Enter token from your email'}
+                  />
+                </div>
+              </div>
+            )}
+
+            {!isForgotPassword && (
+              <div>
+                <label htmlFor="password" className="text-purple-300 text-sm mb-2 block">
+                  {isResetPassword ? (t.lang === 'es' ? 'Nueva contraseña' : 'New password') : 'Password'}
+                </label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400" />
+                  <input 
+                    id="password"
+                    type="password" 
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className={`w-full pl-10 pr-4 py-3 bg-slate-900/50 border rounded-lg text-white placeholder-purple-400 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-400 ${passwordError ? 'border-red-500' : 'border-purple-500/20'}`}
+                    placeholder="••••••••" 
+                    aria-invalid={!!passwordError}
+                    aria-describedby={passwordError ? 'password-error' : undefined}
+                    required={!isForgotPassword}
+                    minLength={6}
+                  />
+                </div>
+                {passwordError && (
+                  <span id="password-error" className="text-red-400 text-xs mt-1 block" role="alert">
+                    {passwordError}
+                  </span>
+                )}
+              </div>
+            )}
+
+            {isRegister && (
+              <div>
+                <label htmlFor="confirm-password" className="text-purple-300 text-sm mb-2 block">
+                  {t.lang === 'es' ? 'Confirmar contraseña' : 'Confirm password'}
+                </label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400" />
+                  <input 
+                    id="confirm-password"
+                    type="password" 
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 bg-slate-900/50 border border-purple-500/20 rounded-lg text-white placeholder-purple-400 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                    placeholder="••••••••" 
+                  />
+                </div>
+              </div>
+            )}
+
+            {isResetPassword && (
+              <div>
+                <label htmlFor="confirm-password" className="text-purple-300 text-sm mb-2 block">
+                  {t.lang === 'es' ? 'Confirmar nueva contraseña' : 'Confirm new password'}
+                </label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400" />
+                  <input 
+                    id="confirm-password"
+                    type="password" 
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 bg-slate-900/50 border border-purple-500/20 rounded-lg text-white placeholder-purple-400 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                    placeholder="••••••••" 
+                  />
+                </div>
+              </div>
+            )}
             {isRegister && (
               <div>
                 <label className="text-purple-300 text-sm mb-2 block">Referral Code (optional)</label>
@@ -107,7 +297,7 @@ export default function LoginScreen({ t, onLogin }: LoginScreenProps) {
             )}
             
             {localError && (
-              <div className="p-3 bg-red-500/20 border border-red-500/30 rounded-lg text-red-300 text-sm">
+              <div className="p-3 bg-red-500/20 border border-red-500/30 rounded-lg text-red-300 text-sm" role="alert">
                 {localError}
               </div>
             )}
@@ -121,19 +311,57 @@ export default function LoginScreen({ t, onLogin }: LoginScreenProps) {
                 <Loader2 className="w-5 h-5 animate-spin" />
               ) : (
                 <>
-                  <LogOut className="w-5 h-5 rotate-180" />
-                  {isRegister ? t.register : t.login}
+                  {isForgotPassword ? <Mail className="w-5 h-5" /> : <LogOut className="w-5 h-5 rotate-180" />}
+                  {isForgotPassword ? (t.lang === 'es' ? 'Enviar enlace de recuperación' : 'Send Reset Link') : isResetPassword ? (t.lang === 'es' ? 'Restablecer contraseña' : 'Reset Password') : isRegister ? t.register : t.login}
                 </>
               )}
             </button>
-            <button 
-              type="button"
-              onClick={() => setIsRegister(!isRegister)}
-              className="w-full py-3 bg-slate-700 text-purple-300 rounded-lg font-medium hover:bg-slate-600 transition-all"
-            >
-              {isRegister ? t.login : t.register}
-            </button>
+            
+            {!isForgotPassword && !isResetPassword && (
+              <button 
+                type="button"
+                onClick={() => setMode(isRegister ? 'login' : 'register')}
+                className="w-full py-3 bg-slate-700 text-purple-300 rounded-lg font-medium hover:bg-slate-600 transition-all"
+              >
+                {isRegister ? t.login : t.register}
+              </button>
+            )}
+            
+            {isForgotPassword && (
+              <button 
+                type="button"
+                onClick={() => { setResetSent(false); setMode('login') }}
+                className="w-full py-3 bg-slate-700 text-purple-300 rounded-lg font-medium hover:bg-slate-600 transition-all flex items-center justify-center gap-2"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                {t.lang === 'es' ? 'Volver al inicio de sesión' : 'Back to login'}
+              </button>
+            )}
+
+            {isResetPassword && (
+              <button 
+                type="button"
+                onClick={() => { setPasswordReset(false); setMode('forgot-password') }}
+                className="w-full py-3 bg-slate-700 text-purple-300 rounded-lg font-medium hover:bg-slate-600 transition-all flex items-center justify-center gap-2"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                {t.lang === 'es' ? 'Solicitar nuevo token' : 'Request new token'}
+              </button>
+            )}
           </form>
+
+          {/* Forgot Password Link */}
+          {!isRegister && !isForgotPassword && !isResetPassword && !passwordReset && (
+            <div className="mt-4 text-center">
+              <button
+                type="button"
+                onClick={() => setMode('forgot-password')}
+                className="text-purple-300 hover:text-white text-sm transition-colors"
+              >
+                {t.lang === 'es' ? '¿Olvidaste tu contraseña?' : 'Forgot your password?'}
+              </button>
+            </div>
+          )}
 
           <div className="mt-6 flex items-center gap-2">
             <div className="flex-1 h-px bg-purple-500/20"></div>
@@ -144,7 +372,7 @@ export default function LoginScreen({ t, onLogin }: LoginScreenProps) {
           <div className="mt-6 grid grid-cols-3 gap-3">
             <button className="flex flex-col items-center gap-2 p-3 bg-slate-900/50 rounded-lg hover:bg-slate-800 transition-all">
               <div className="w-10 h-10 bg-orange-500/20 rounded-lg flex items-center justify-center">
-                <Chrome className="w-5 h-5 text-orange-400" />
+                <Globe className="w-5 h-5 text-orange-400" />
               </div>
               <span className="text-purple-300 text-xs">Google</span>
             </button>

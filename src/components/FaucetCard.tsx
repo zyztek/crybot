@@ -32,11 +32,14 @@ const difficultyColors: Record<string, string> = {
 
 export default function FaucetCard({ faucet, onClaim, featured, language }: FaucetCardProps) {
   return (
-    <div className={`
-      ${featured ? 'bg-gradient-to-br from-slate-800/80 to-purple-900/40' : 'bg-slate-800/50'} 
-      border ${featured ? 'border-purple-500/30' : 'border-purple-500/20'} 
-      rounded-xl p-4 backdrop-blur-sm hover:border-purple-500/40 transition-all
-    `}>
+    <article 
+      className={`
+        ${featured ? 'bg-gradient-to-br from-slate-800/80 to-purple-900/40' : 'bg-slate-800/50'} 
+        border ${featured ? 'border-purple-500/30' : 'border-purple-500/20'} 
+        rounded-xl p-4 backdrop-blur-sm hover:border-purple-500/40 transition-all
+      `}
+      aria-label={`${faucet.name} - ${faucet.reward} ${faucet.coin} - ${faucet.category}`}
+    >
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2">
           <div className={`
@@ -74,18 +77,22 @@ export default function FaucetCard({ faucet, onClaim, featured, language }: Fauc
         {faucet.status === 'available' ? (
           <button
             onClick={() => onClaim(faucet)}
-            className="w-full py-2.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-bold text-sm hover:from-purple-600 hover:to-pink-600 transition-all flex items-center justify-center gap-2"
+            className="w-full py-2.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-bold text-sm hover:from-purple-600 hover:to-pink-600 transition-all flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-slate-900"
+            aria-label={`${language === 'es' ? 'Reclamar' : 'Claim'} ${faucet.reward} ${faucet.coin} from ${faucet.name}`}
           >
-            <Zap className="w-4 h-4" />
+            <Zap className="w-4 h-4" aria-hidden="true" />
             {language === 'es' ? 'Reclamar' : 'Claim'}
           </button>
         ) : (
-          <div className="w-full py-2.5 bg-slate-700 text-purple-300 rounded-lg font-medium text-sm flex items-center justify-center gap-2">
-            <Timer className="w-4 h-4" />
+          <div 
+            className="w-full py-2.5 bg-slate-700 text-purple-300 rounded-lg font-medium text-sm flex items-center justify-center gap-2"
+            aria-live="polite"
+          >
+            <Timer className="w-4 h-4" aria-hidden="true" />
             {faucet.timer}s {language === 'es' ? 'restantes' : 'remaining'}
           </div>
         )}
       </div>
-    </div>
+    </article>
   )
 }

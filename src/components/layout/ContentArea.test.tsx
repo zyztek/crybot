@@ -21,9 +21,11 @@ const renderComponent = (props: Partial<Parameters<typeof ContentArea>[0]> = {})
       user={props.user || mockUser}
       showWalletAddress={props.showWalletAddress || false}
       language={props.language || 'es'}
+      theme={props.theme || 'dark'}
       t={props.t || mockTranslations}
       onClaimFaucet={props.onClaimFaucet || vi.fn()}
       onToggleWalletAddress={props.onToggleWalletAddress || vi.fn()}
+      onToggleTheme={props.onToggleTheme || vi.fn()}
       onCopyReferralCode={props.onCopyReferralCode || vi.fn()}
       onLogout={props.onLogout || vi.fn()}
     />

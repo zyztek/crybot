@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ArrowUpRight, ArrowDownRight, TrendingUp, Wallet, Activity, Percent, ChevronDown, Plus } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { ArrowUpRight, ArrowDownRight, TrendingUp, Wallet, Activity, Percent, ChevronDown, Plus, Globe, Layers, Link2, Bitcoin, Coins, Flame, Box } from 'lucide-react';
 import { useCryptoStore } from '../store/cryptoStore';
 import CryptoChart from './CryptoChart';
 
@@ -11,6 +11,9 @@ interface Asset {
   change24h: number;
   change7d: number;
   allocation: number;
+  chain: string;
+  chainIcon: React.ReactNode;
+  chainColor: string;
 }
 
 const Portfolio: React.FC = () => {
@@ -18,14 +21,63 @@ const Portfolio: React.FC = () => {
   const [timeframe, setTimeframe] = useState('1D');
   const [showDetails, setShowDetails] = useState<string | null>(null);
   
+  const [activeChain, setActiveChain] = useState<string | null>(null);
+  const [showChainBreakdown, setShowChainBreakdown] = useState(true);
+
+  // Chain icons as components
+  const ChainIcons = {
+    Bitcoin: <Bitcoin className="w-5 h-5 text-orange-400" />,
+    Ethereum: <Box className="w-5 h-5 text-indigo-400" />,
+    Solana: <Flame className="w-5 h-5 text-purple-400" />,
+    BNB: <Coins className="w-5 h-5 text-yellow-400" />,
+    Litecoin: <Coins className="w-5 h-5 text-slate-400" />,
+  };
+
   const assets: Asset[] = [
-    { symbol: 'BTC', name: 'Bitcoin', amount: 0.125, value: 5423.50, change24h: 2.5, change7d: 8.3, allocation: 42 },
-    { symbol: 'ETH', name: 'Ethereum', amount: 2.5, value: 3987.75, change24h: 3.2, change7d: 12.1, allocation: 31 },
-    { symbol: 'DOGE', name: 'Dogecoin', amount: 15420, value: 865.32, change24h: -1.8, change7d: 5.4, allocation: 6 },
-    { symbol: 'SOL', name: 'Solana', amount: 18.75, value: 1875.00, change24h: 4.8, change7d: 15.2, allocation: 14 },
-    { symbol: 'LTC', name: 'Litecoin', amount: 4.2, value: 319.80, change24h: 1.2, change7d: 3.8, allocation: 2 },
-    { symbol: 'BNB', name: 'BNB', amount: 1.8, value: 540.00, change24h: 0.9, change7d: 2.1, allocation: 5 },
+    { symbol: 'BTC', name: 'Bitcoin', amount: 0.125, value: 5423.50, change24h: 2.5, change7d: 8.3, allocation: 42, chain: 'Bitcoin', chainIcon: ChainIcons.Bitcoin, chainColor: 'from-orange-500 to-yellow-500' },
+    { symbol: 'ETH', name: 'Ethereum', amount: 2.5, value: 3987.75, change24h: 3.2, change7d: 12.1, allocation: 31, chain: 'Ethereum', chainIcon: ChainIcons.Ethereum, chainColor: 'from-indigo-500 to-purple-500' },
+    { symbol: 'DOGE', name: 'Dogecoin', amount: 15420, value: 865.32, change24h: -1.8, change7d: 5.4, allocation: 6, chain: 'Bitcoin', chainIcon: ChainIcons.Bitcoin, chainColor: 'from-orange-500 to-yellow-500' },
+    { symbol: 'SOL', name: 'Solana', amount: 18.75, value: 1875.00, change24h: 4.8, change7d: 15.2, allocation: 14, chain: 'Solana', chainIcon: ChainIcons.Solana, chainColor: 'from-purple-500 to-pink-500' },
+    { symbol: 'LTC', name: 'Litecoin', amount: 4.2, value: 319.80, change24h: 1.2, change7d: 3.8, allocation: 2, chain: 'Litecoin', chainIcon: ChainIcons.Litecoin, chainColor: 'from-slate-500 to-slate-600' },
+    { symbol: 'BNB', name: 'BNB', amount: 1.8, value: 540.00, change24h: 0.9, change7d: 2.1, allocation: 5, chain: 'BNB', chainIcon: ChainIcons.BNB, chainColor: 'from-yellow-500 to-amber-600' },
   ];
+
+  // Group assets by chain
+  const assetsByChain = useMemo(() => {
+    const grouped: Record<string, Asset[]> = {};
+    assets.forEach(asset => {
+      if (!grouped[asset.chain]) {
+        grouped[asset.chain] = [];
+      }
+      grouped[asset.chain].push(asset);
+    });
+    return grouped;
+  }, [assets]);
+
+  // Calculate chain totals
+  const chainTotals = useMemo(() => {
+    return Object.entries(assetsByChain).map(([chain, chainAssets]) => {
+      const totalValue = chainAssets.reduce((sum, a) => sum + a.value, 0);
+      const totalChange24h = chainAssets.reduce((sum, a) => sum + (a.value * a.change24h / 100), 0);
+      const avgChange24h = totalValue > 0 ? (totalChange24h / totalValue) * 100 : 0;
+      return {
+        chain,
+        totalValue,
+        totalChange24h,
+        avgChange24h,
+        assetCount: chainAssets.length,
+        assets: chainAssets,
+        icon: chainAssets[0].chainIcon,
+        color: chainAssets[0].chainColor,
+      };
+    }).sort((a, b) => b.totalValue - a.totalValue);
+  }, [assetsByChain]);
+
+  // Filter assets by active chain
+  const filteredAssets = useMemo(() => {
+    if (!activeChain) return assets;
+    return assets.filter(a => a.chain === activeChain);
+  }, [activeChain, assets]);
 
   const totalValue = assets.reduce((sum, asset) => sum + asset.value, 0);
   const totalChange24h = assets.reduce((sum, asset) => sum + (asset.value * asset.change24h / 100), 0);
@@ -33,7 +85,7 @@ const Portfolio: React.FC = () => {
 
   const text = {
     es: {
-      title: 'Mi Portafolio',
+      title: 'Portafolio Cross-Chain',
       totalValue: 'Valor Total',
       change24h: 'Cambio 24h',
       change7d: 'Cambio 7d',
@@ -48,9 +100,16 @@ const Portfolio: React.FC = () => {
       profit: 'Beneficio',
       performance: 'Rendimiento',
       chart: 'Gráfico',
+      chains: 'Cadenas',
+      allChains: 'Todas las Cadenas',
+      chainBreakdown: 'Desglose por Cadena',
+      totalByChain: 'Total por Cadena',
+      bridge: 'Bridge',
+      crossChain: 'Cross-Chain',
+      viewChain: 'Ver Cadena',
     },
     en: {
-      title: 'My Portfolio',
+      title: 'Cross-Chain Portfolio',
       totalValue: 'Total Value',
       change24h: '24h Change',
       change7d: '7d Change',
@@ -65,6 +124,13 @@ const Portfolio: React.FC = () => {
       profit: 'Profit',
       performance: 'Performance',
       chart: 'Chart',
+      chains: 'Chains',
+      allChains: 'All Chains',
+      chainBreakdown: 'Chain Breakdown',
+      totalByChain: 'Total per Chain',
+      bridge: 'Bridge',
+      crossChain: 'Cross-Chain',
+      viewChain: 'View Chain',
     }
   };
 
@@ -112,8 +178,67 @@ const Portfolio: React.FC = () => {
             >
               1Y
             </button>
+            <button 
+              onClick={() => setShowChainBreakdown(!showChainBreakdown)}
+              className={`px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 ${
+                showChainBreakdown ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+              }`}
+            >
+              <Layers className="w-4 h-4" />
+              {t.chains}
+            </button>
           </div>
         </div>
+
+        {/* Chain Breakdown Cards */}
+        {showChainBreakdown && (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
+            {/* All Chains Card */}
+            <button
+              onClick={() => setActiveChain(null)}
+              className={`bg-gradient-to-br from-purple-900/50 to-slate-900 border rounded-xl p-4 text-left transition-all hover:border-purple-500/50 ${!activeChain ? 'border-purple-500 ring-2 ring-purple-500/30' : 'border-slate-700'}`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2 text-purple-400">
+                  <Globe className="w-5 h-5" />
+                  <span className="font-semibold">{t.allChains}</span>
+                </div>
+                {!activeChain && <span className="text-purple-400 text-xs">✓</span>}
+              </div>
+              <p className="text-2xl font-bold text-white">${totalValue.toLocaleString()}</p>
+              <p className="text-sm text-slate-400 mt-1">{assets.length} assets</p>
+            </button>
+
+            {/* Chain-specific cards */}
+            {chainTotals.map((chainData) => (
+              <button
+                key={chainData.chain}
+                onClick={() => setActiveChain(activeChain === chainData.chain ? null : chainData.chain)}
+                className={`bg-gradient-to-br ${chainData.color} border rounded-xl p-4 text-left transition-all hover:opacity-90 ${activeChain === chainData.chain ? 'border-white ring-2 ring-white/30' : 'border-transparent'}`}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2 text-white">
+                    {chainData.icon}
+                    <span className="font-semibold">{chainData.chain}</span>
+                  </div>
+                  {activeChain === chainData.chain && <span className="text-white text-xs">✓</span>}
+                </div>
+                <p className="text-2xl font-bold text-white">${chainData.totalValue.toLocaleString()}</p>
+                <div className="flex items-center gap-1 mt-1">
+                  {chainData.avgChange24h >= 0 ? (
+                    <ArrowUpRight className="w-3 h-3 text-green-300" />
+                  ) : (
+                    <ArrowDownRight className="w-3 h-3 text-red-300" />
+                  )}
+                  <span className={chainData.avgChange24h >= 0 ? 'text-green-300 text-sm' : 'text-red-300 text-sm'}>
+                    {chainData.avgChange24h >= 0 ? '+' : ''}{chainData.avgChange24h.toFixed(2)}%
+                  </span>
+                </div>
+                <p className="text-xs text-white/70 mt-1">{chainData.assetCount} {t.holdings}</p>
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
@@ -210,12 +335,12 @@ const Portfolio: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {assets.map((asset) => (
-                      <>
-                        <tr key={asset.symbol} className="border-t border-slate-700/50 hover:bg-slate-700/30">
+                    {filteredAssets.map((asset) => (
+                      <React.Fragment key={asset.symbol}>
+                        <tr className="border-t border-slate-700/50 hover:bg-slate-700/30">
                           <td className="py-4">
                             <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-white font-bold">
+                              <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${asset.chainColor} flex items-center justify-center text-white font-bold`}>
                                 {asset.symbol[0]}
                               </div>
                               <div>
@@ -298,36 +423,38 @@ const Portfolio: React.FC = () => {
                             </td>
                           </tr>
                         )}
-                      </>
+                      </React.Fragment>
                     ))}
                   </tbody>
                 </table>
               </div>
             </div>
-          </div>
-
-          {/* Allocation Chart */}
+          </div>              {/* Chain Allocation Chart */}
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
-            <h2 className="text-xl font-semibold text-white mb-6">{t.allocation}</h2>
-            
-            {/* Donut Chart Simulation */}
+            <h2 className="text-xl font-semibold text-white mb-6">{t.chainBreakdown}</h2>              {/* Chain Donut Chart */}
             <div className="relative w-64 h-64 mx-auto mb-6">
               <svg viewBox="0 0 100 100" className="w-full h-full transform -rotate-90">
                 {(() => {
                   let offset = 0;
-                  const colors = ['#F59E0B', '#8B5CF6', '#3B82F6', '#10B981', '#6366F1', '#EC4899'];
+                  const chainColors: Record<string, string> = {
+                    Bitcoin: '#F59E0B',
+                    Ethereum: '#8B5CF6',
+                    Solana: '#6366F1',
+                    BNB: '#F59E0B',
+                    Litecoin: '#6B7280',
+                  };
                   
-                  return assets.map((asset, i) => {
-                    const percentage = asset.allocation / 100;
+                  return chainTotals.map((chainData, i) => {
+                    const percentage = (chainData.totalValue / totalValue);
                     const dashArray = `${percentage * 314} 314`;
                     const circle = (
                       <circle
-                        key={asset.symbol}
+                        key={chainData.chain}
                         cx="50"
                         cy="50"
                         r="50"
                         fill="none"
-                        stroke={colors[i % colors.length]}
+                        stroke={chainColors[chainData.chain] || '#6B7280'}
                         strokeWidth="20"
                         strokeDasharray={dashArray}
                         strokeDashoffset={-offset}
@@ -347,20 +474,35 @@ const Portfolio: React.FC = () => {
               </div>
             </div>
 
-            {/* Legend */}
+            {/* Chain Legend */}
             <div className="space-y-3">
-              {assets.map((asset, i) => {
-                const colors = ['bg-yellow-500', 'bg-purple-500', 'bg-blue-500', 'bg-green-500', 'bg-indigo-500', 'bg-pink-500'];
+              {chainTotals.map((chainData, i) => {
+                const chainColors: Record<string, string> = {
+                  Bitcoin: 'bg-yellow-500',
+                  Ethereum: 'bg-purple-500',
+                  Solana: 'bg-indigo-500',
+                  BNB: 'bg-amber-500',
+                  Litecoin: 'bg-slate-500',
+                };
+                const percentage = Math.round((chainData.totalValue / totalValue) * 100);
                 return (
-                  <div key={asset.symbol} className="flex items-center justify-between">
+                  <div key={chainData.chain} className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className={`w-3 h-3 rounded-full ${colors[i % colors.length]}`}></div>
-                      <span className="text-white">{asset.symbol}</span>
+                      <div className={`w-3 h-3 rounded-full ${chainColors[chainData.chain] || 'bg-slate-500'}`}></div>
+                      <span className="text-white">{chainData.chain}</span>
                     </div>
-                    <span className="text-slate-400">{asset.allocation}%</span>
+                    <span className="text-slate-400">${chainData.totalValue.toLocaleString()} ({percentage}%)</span>
                   </div>
                 );
               })}
+            </div>
+
+            {/* Cross-Chain Actions */}
+            <div className="mt-6 pt-4 border-t border-slate-700">
+              <button className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-lg transition-all">
+                <Link2 className="w-4 h-4" />
+                {t.bridge} Assets
+              </button>
             </div>
           </div>
         </div>

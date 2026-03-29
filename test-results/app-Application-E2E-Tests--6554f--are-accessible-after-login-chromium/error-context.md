@@ -1,0 +1,50 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - generic [ref=e4]:
+    - img [ref=e6]
+    - paragraph [ref=e8]: Cannot connect to server. Please check if the backend is running and try again.
+    - button [ref=e9]:
+      - img [ref=e10]
+  - link "Saltar al contenido principal" [ref=e13] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=e15]:
+    - generic [ref=e16]:
+      - img [ref=e18]
+      - heading "CryptoFaucet Hub" [level=1] [ref=e23]
+      - paragraph [ref=e24]: Full Stack Faucet Automation Platform
+    - generic [ref=e25]:
+      - heading "Iniciar Sesión" [level=2] [ref=e26]
+      - generic [ref=e27]:
+        - generic [ref=e28]:
+          - generic [ref=e29]: Email
+          - generic [ref=e30]:
+            - img [ref=e31]
+            - textbox "Email" [ref=e34]:
+              - /placeholder: tu@email.com
+              - text: test@example.com
+        - generic [ref=e35]:
+          - generic [ref=e36]: Password
+          - generic [ref=e37]:
+            - img [ref=e38]
+            - textbox "Password" [ref=e41]:
+              - /placeholder: ••••••••
+              - text: testpassword
+        - button "Iniciar Sesión" [ref=e42]:
+          - img [ref=e43]
+          - text: Iniciar Sesión
+        - button "Registrarse" [ref=e46]
+      - button "Forgot your password?" [ref=e48]
+      - generic [ref=e51]: o
+      - generic [ref=e53]:
+        - button "Google" [ref=e54]:
+          - img [ref=e56]
+          - generic [ref=e59]: Google
+        - button "🐦 Twitter" [ref=e60]:
+          - generic [ref=e61]: 🐦
+          - generic [ref=e62]: Twitter
+        - button "📱 MetaMask" [ref=e63]:
+          - generic [ref=e64]: 📱
+          - generic [ref=e65]: MetaMask
+```

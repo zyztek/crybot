@@ -152,6 +152,44 @@ export const useApi = () => {
       toast.success('You have been logged out successfully. See you next time!');
     }
   }, [store, toast]);
+
+  // Forgot password - request reset email
+  const forgotPassword = useCallback(async (email: string) => {
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      const response = await authApi.forgotPassword(email);
+      toast.success('Password reset email sent. Check your inbox.');
+      return response.success;
+    } catch (err) {
+      const message = getFriendlyError(err);
+      setError(message);
+      toast.error(message);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [toast]);
+
+  // Reset password with token
+  const resetPassword = useCallback(async (token: string, newPassword: string) => {
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      const response = await authApi.resetPassword(token, newPassword);
+      toast.success('Password reset successfully!');
+      return response.success;
+    } catch (err) {
+      const message = getFriendlyError(err);
+      setError(message);
+      toast.error(message);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [toast]);
   
   // Fetch faucets from API and update store
   const fetchFaucets = useCallback(async () => {
@@ -244,6 +282,17 @@ export const useApi = () => {
       return null;
     }
   }, [store]);
+
+  // Fetch referrals list
+  const fetchReferrals = useCallback(async () => {
+    try {
+      const data = await api.user.getReferrals();
+      return data;
+    } catch (err) {
+      console.error('Failed to fetch referrals:', err);
+      return null;
+    }
+  }, []);
 
   // Fetch wallets from API
   const fetchWallets = useCallback(async () => {
@@ -366,11 +415,14 @@ export const useApi = () => {
     fetchFaucets,
     claimFaucet,
     fetchProfile,
+    fetchReferrals,
     fetchWallets,
     fetchAchievements,
     claimAchievement,
     fetchLeaderboard,
     fetchUserStats,
+    forgotPassword,
+    resetPassword,
   };
 };
 

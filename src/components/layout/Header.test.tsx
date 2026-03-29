@@ -10,12 +10,15 @@ const renderComponent = (component: React.ReactElement) => {
 describe('Header', () => {
   it('renders logo and title', () => {
     const onToggleLanguage = vi.fn()
+    const onToggleTheme = vi.fn()
     renderComponent(
       <Header 
         user={mockUser} 
         language="es" 
+        theme="dark"
         notifications={3} 
-        onToggleLanguage={onToggleLanguage} 
+        onToggleLanguage={onToggleLanguage}
+        onToggleTheme={onToggleTheme}
       />
     )
     
@@ -24,12 +27,15 @@ describe('Header', () => {
 
   it('renders user info with username and level', () => {
     const onToggleLanguage = vi.fn()
+    const onToggleTheme = vi.fn()
     renderComponent(
       <Header 
         user={mockUser} 
         language="es" 
+        theme="dark"
         notifications={3} 
-        onToggleLanguage={onToggleLanguage} 
+        onToggleLanguage={onToggleLanguage}
+        onToggleTheme={onToggleTheme}
       />
     )
     
@@ -39,12 +45,15 @@ describe('Header', () => {
 
   it('renders user avatar', () => {
     const onToggleLanguage = vi.fn()
+    const onToggleTheme = vi.fn()
     renderComponent(
       <Header 
         user={mockUser} 
         language="es" 
+        theme="dark"
         notifications={3} 
-        onToggleLanguage={onToggleLanguage} 
+        onToggleLanguage={onToggleLanguage}
+        onToggleTheme={onToggleTheme}
       />
     )
     
@@ -53,12 +62,15 @@ describe('Header', () => {
 
   it('renders notification badge when notifications > 0', () => {
     const onToggleLanguage = vi.fn()
+    const onToggleTheme = vi.fn()
     renderComponent(
       <Header 
         user={mockUser} 
         language="es" 
+        theme="dark"
         notifications={3} 
-        onToggleLanguage={onToggleLanguage} 
+        onToggleLanguage={onToggleLanguage}
+        onToggleTheme={onToggleTheme}
       />
     )
     
@@ -67,12 +79,15 @@ describe('Header', () => {
 
   it('does not render notification badge when notifications = 0', () => {
     const onToggleLanguage = vi.fn()
+    const onToggleTheme = vi.fn()
     renderComponent(
       <Header 
         user={mockUser} 
         language="es" 
+        theme="dark"
         notifications={0} 
-        onToggleLanguage={onToggleLanguage} 
+        onToggleLanguage={onToggleLanguage}
+        onToggleTheme={onToggleTheme}
       />
     )
     
@@ -81,12 +96,15 @@ describe('Header', () => {
 
   it('renders language toggle button with correct language', () => {
     const onToggleLanguage = vi.fn()
+    const onToggleTheme = vi.fn()
     renderComponent(
       <Header 
         user={mockUser} 
         language="es" 
+        theme="dark"
         notifications={0} 
-        onToggleLanguage={onToggleLanguage} 
+        onToggleLanguage={onToggleLanguage}
+        onToggleTheme={onToggleTheme}
       />
     )
     
@@ -95,12 +113,15 @@ describe('Header', () => {
 
   it('calls onToggleLanguage when language button is clicked', () => {
     const onToggleLanguage = vi.fn()
+    const onToggleTheme = vi.fn()
     renderComponent(
       <Header 
         user={mockUser} 
         language="es" 
+        theme="dark"
         notifications={0} 
-        onToggleLanguage={onToggleLanguage} 
+        onToggleLanguage={onToggleLanguage}
+        onToggleTheme={onToggleTheme}
       />
     )
     
@@ -112,12 +133,15 @@ describe('Header', () => {
 
   it('renders XP progress bar', () => {
     const onToggleLanguage = vi.fn()
+    const onToggleTheme = vi.fn()
     renderComponent(
       <Header 
         user={mockUser} 
         language="es" 
+        theme="dark"
         notifications={0} 
-        onToggleLanguage={onToggleLanguage} 
+        onToggleLanguage={onToggleLanguage}
+        onToggleTheme={onToggleTheme}
       />
     )
     
@@ -126,12 +150,15 @@ describe('Header', () => {
 
   it('renders referrals count', () => {
     const onToggleLanguage = vi.fn()
+    const onToggleTheme = vi.fn()
     renderComponent(
       <Header 
         user={mockUser} 
         language="es" 
+        theme="dark"
         notifications={0} 
-        onToggleLanguage={onToggleLanguage} 
+        onToggleLanguage={onToggleLanguage}
+        onToggleTheme={onToggleTheme}
       />
     )
     
@@ -140,12 +167,15 @@ describe('Header', () => {
 
   it('renders search input placeholder in Spanish', () => {
     const onToggleLanguage = vi.fn()
+    const onToggleTheme = vi.fn()
     renderComponent(
       <Header 
         user={mockUser} 
         language="es" 
+        theme="dark"
         notifications={0} 
-        onToggleLanguage={onToggleLanguage} 
+        onToggleLanguage={onToggleLanguage}
+        onToggleTheme={onToggleTheme}
       />
     )
     
@@ -154,12 +184,15 @@ describe('Header', () => {
 
   it('renders search input placeholder in English', () => {
     const onToggleLanguage = vi.fn()
+    const onToggleTheme = vi.fn()
     renderComponent(
       <Header 
         user={mockUser} 
         language="en" 
+        theme="dark"
         notifications={0} 
-        onToggleLanguage={onToggleLanguage} 
+        onToggleLanguage={onToggleLanguage}
+        onToggleTheme={onToggleTheme}
       />
     )
     

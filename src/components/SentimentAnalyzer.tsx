@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TrendingUp, TrendingDown, Brain, Zap, Activity, Heart, MessageSquare, Twitter, BarChart3 } from 'lucide-react';
+import { TrendingUp, TrendingDown, Brain, Zap, Activity, Heart, MessageSquare, BarChart3 } from 'lucide-react';
 
 interface SentimentData {
   asset: string;
@@ -55,7 +55,7 @@ export const SentimentAnalyzer: React.FC = () => {
 
   const getPlatformIcon = (platform: string) => {
     switch (platform) {
-      case 'twitter': return <Twitter className="w-4 h-4" />;
+      case 'twitter': return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>;
       case 'reddit': return <MessageSquare className="w-4 h-4" />;
       case 'news': return <Zap className="w-4 h-4" />;
     }
@@ -126,7 +126,7 @@ export const SentimentAnalyzer: React.FC = () => {
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8">
               {[
-                { label: 'Twitter', value: selectedAsset.twitter, icon: <Twitter className="w-5 h-5 text-blue-400" /> },
+                { label: 'Twitter', value: selectedAsset.twitter, icon: <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> },
                 { label: 'Reddit', value: selectedAsset.reddit, icon: <MessageSquare className="w-5 h-5 text-orange-400" /> },
                 { label: 'News', value: selectedAsset.news, icon: <Zap className="w-5 h-5 text-purple-400" /> },
                 { label: 'Technical', value: selectedAsset.technical, icon: <BarChart3 className="w-5 h-5 text-green-400" /> },

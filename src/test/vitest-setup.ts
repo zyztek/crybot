@@ -7,19 +7,19 @@
 import { vi } from 'vitest';
 import '@testing-library/jest-dom';
 
-// Mock ResizeObserver for recharts components
-const mockResizeObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}));
+// Mock ResizeObserver for recharts components - must be a class/constructor
+class MockResizeObserver {
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
+}
 
-global.ResizeObserver = mockResizeObserver;
+global.ResizeObserver = MockResizeObserver;
 
 // Ensure it's also available on window for jsdom environment
 Object.defineProperty(window, 'ResizeObserver', {
   writable: true,
-  value: mockResizeObserver,
+  value: MockResizeObserver,
 });
 
 // Mock matchMedia for components that use it

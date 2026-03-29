@@ -30,10 +30,12 @@ interface CryptoStore {
   // UI state
   activeTab: TabType
   language: 'es' | 'en'
+  theme: 'dark' | 'light'
   notifications: number
   showWalletAddress: boolean
   setActiveTab: (tab: TabType) => void
   toggleLanguage: () => void
+  toggleTheme: () => void
   toggleWalletAddress: () => void
   
   // User state
@@ -116,6 +118,7 @@ export const useCryptoStore = create<CryptoStore>()(
       partialize: (state) => ({
         isLoggedIn: state.isLoggedIn,
         language: state.language,
+        theme: state.theme,
         notifications: state.notifications,
         showWalletAddress: state.showWalletAddress,
         user: state.user,

@@ -17,6 +17,7 @@ exports[`StatsBar Snapshot Tests > matches snapshot with all data (Spanish) 1`] 
           class="text-yellow-400"
         >
           <svg
+            aria-hidden="true"
             class="lucide lucide-wallet w-5 h-5"
             fill="none"
             height="24"
@@ -64,6 +65,7 @@ exports[`StatsBar Snapshot Tests > matches snapshot with all data (Spanish) 1`] 
           class="text-green-400"
         >
           <svg
+            aria-hidden="true"
             class="lucide lucide-activity w-5 h-5"
             fill="none"
             height="24"
@@ -108,6 +110,7 @@ exports[`StatsBar Snapshot Tests > matches snapshot with all data (Spanish) 1`] 
           class="text-purple-400"
         >
           <svg
+            aria-hidden="true"
             class="lucide lucide-zap w-5 h-5"
             fill="none"
             height="24"
@@ -152,6 +155,7 @@ exports[`StatsBar Snapshot Tests > matches snapshot with all data (Spanish) 1`] 
           class="text-blue-400"
         >
           <svg
+            aria-hidden="true"
             class="lucide lucide-trending-up w-5 h-5"
             fill="none"
             height="24"
@@ -163,11 +167,11 @@ exports[`StatsBar Snapshot Tests > matches snapshot with all data (Spanish) 1`] 
             width="24"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <polyline
-              points="22 7 13.5 15.5 8.5 10.5 2 17"
+            <path
+              d="M16 7h6v6"
             />
-            <polyline
-              points="16 7 22 7 22 13"
+            <path
+              d="m22 7-8.5 8.5-5-5L2 17"
             />
           </svg>
         </span>
@@ -206,6 +210,7 @@ exports[`StatsBar Snapshot Tests > matches snapshot with all faucets available 1
           class="text-yellow-400"
         >
           <svg
+            aria-hidden="true"
             class="lucide lucide-wallet w-5 h-5"
             fill="none"
             height="24"
@@ -253,6 +258,7 @@ exports[`StatsBar Snapshot Tests > matches snapshot with all faucets available 1
           class="text-green-400"
         >
           <svg
+            aria-hidden="true"
             class="lucide lucide-activity w-5 h-5"
             fill="none"
             height="24"
@@ -297,6 +303,7 @@ exports[`StatsBar Snapshot Tests > matches snapshot with all faucets available 1
           class="text-purple-400"
         >
           <svg
+            aria-hidden="true"
             class="lucide lucide-zap w-5 h-5"
             fill="none"
             height="24"
@@ -341,6 +348,7 @@ exports[`StatsBar Snapshot Tests > matches snapshot with all faucets available 1
           class="text-blue-400"
         >
           <svg
+            aria-hidden="true"
             class="lucide lucide-trending-up w-5 h-5"
             fill="none"
             height="24"
@@ -352,11 +360,11 @@ exports[`StatsBar Snapshot Tests > matches snapshot with all faucets available 1
             width="24"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <polyline
-              points="22 7 13.5 15.5 8.5 10.5 2 17"
+            <path
+              d="M16 7h6v6"
             />
-            <polyline
-              points="16 7 22 7 22 13"
+            <path
+              d="m22 7-8.5 8.5-5-5L2 17"
             />
           </svg>
         </span>
@@ -395,6 +403,7 @@ exports[`StatsBar Snapshot Tests > matches snapshot with empty history 1`] = `
           class="text-yellow-400"
         >
           <svg
+            aria-hidden="true"
             class="lucide lucide-wallet w-5 h-5"
             fill="none"
             height="24"
@@ -442,6 +451,7 @@ exports[`StatsBar Snapshot Tests > matches snapshot with empty history 1`] = `
           class="text-green-400"
         >
           <svg
+            aria-hidden="true"
             class="lucide lucide-activity w-5 h-5"
             fill="none"
             height="24"
@@ -486,6 +496,7 @@ exports[`StatsBar Snapshot Tests > matches snapshot with empty history 1`] = `
           class="text-purple-400"
         >
           <svg
+            aria-hidden="true"
             class="lucide lucide-zap w-5 h-5"
             fill="none"
             height="24"
@@ -530,6 +541,7 @@ exports[`StatsBar Snapshot Tests > matches snapshot with empty history 1`] = `
           class="text-blue-400"
         >
           <svg
+            aria-hidden="true"
             class="lucide lucide-trending-up w-5 h-5"
             fill="none"
             height="24"
@@ -541,11 +553,11 @@ exports[`StatsBar Snapshot Tests > matches snapshot with empty history 1`] = `
             width="24"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <polyline
-              points="22 7 13.5 15.5 8.5 10.5 2 17"
+            <path
+              d="M16 7h6v6"
             />
-            <polyline
-              points="16 7 22 7 22 13"
+            <path
+              d="m22 7-8.5 8.5-5-5L2 17"
             />
           </svg>
         </span>

@@ -1,0 +1,44 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - link "Saltar al contenido principal" [ref=e3] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=e5]:
+    - generic [ref=e6]:
+      - img [ref=e8]
+      - heading "CryptoFaucet Hub" [level=1] [ref=e13]
+      - paragraph [ref=e14]: Full Stack Faucet Automation Platform
+    - generic [ref=e15]:
+      - heading "Iniciar Sesión" [level=2] [ref=e16]
+      - generic [ref=e17]:
+        - generic [ref=e18]:
+          - generic [ref=e19]: Email
+          - generic [ref=e20]:
+            - img [ref=e21]
+            - textbox "Email" [ref=e24]:
+              - /placeholder: tu@email.com
+              - text: test@example.com
+        - generic [ref=e25]:
+          - generic [ref=e26]: Password
+          - generic [ref=e27]:
+            - img [ref=e28]
+            - textbox "Password" [ref=e31]:
+              - /placeholder: ••••••••
+              - text: testpassword
+        - button [disabled] [ref=e32]:
+          - img [ref=e33]
+        - button "Registrarse" [ref=e35]
+      - button "Forgot your password?" [ref=e37]
+      - generic [ref=e40]: o
+      - generic [ref=e42]:
+        - button "Google" [ref=e43]:
+          - img [ref=e45]
+          - generic [ref=e48]: Google
+        - button "🐦 Twitter" [ref=e49]:
+          - generic [ref=e50]: 🐦
+          - generic [ref=e51]: Twitter
+        - button "📱 MetaMask" [ref=e52]:
+          - generic [ref=e53]: 📱
+          - generic [ref=e54]: MetaMask
+```

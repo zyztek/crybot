@@ -61,9 +61,9 @@ describe('StatsBar', () => {
       />
     )
 
-    expect(screen.getByText('Monedas')).toBeInTheDocument()
+    expect(screen.getByText('Monedas Disponibles')).toBeInTheDocument()
     // All 6 coins have values > 0
-    expect(screen.getByText('6')).toBeInTheDocument()
+    expect(screen.getAllByText('6')[0]).toBeInTheDocument()
   })
 
   it('renders all four stat cards', () => {
@@ -80,7 +80,7 @@ describe('StatsBar', () => {
     expect(screen.getByText('Total Reclamado')).toBeInTheDocument()
     expect(screen.getByText('Claims Hoy')).toBeInTheDocument()
     expect(screen.getByText('Faucets Activos')).toBeInTheDocument()
-    expect(screen.getByText('Monedas')).toBeInTheDocument()
+    expect(screen.getByText('Monedas Disponibles')).toBeInTheDocument()
   })
 
   it('filters out zero-value coins from available coins count', () => {
@@ -103,6 +103,6 @@ describe('StatsBar', () => {
     )
 
     // Should only count 3 coins with value > 0
-    expect(screen.getByText('3')).toBeInTheDocument()
+    expect(screen.getAllByText('3')[0]).toBeInTheDocument()
   })
 })

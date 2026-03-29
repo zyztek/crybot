@@ -167,6 +167,20 @@ export const authApi = {
   refreshToken: async (): Promise<boolean> => {
     return tryRefreshToken();
   },
+
+  forgotPassword: async (email: string): Promise<{ success: boolean; message: string }> => {
+    return fetchApi('/auth/forgot-password', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    });
+  },
+
+  resetPassword: async (token: string, newPassword: string): Promise<{ success: boolean; message: string }> => {
+    return fetchApi('/auth/reset-password', {
+      method: 'POST',
+      body: JSON.stringify({ token, password: newPassword }),
+    });
+  },
 };
 
 // ============== USER API ==============

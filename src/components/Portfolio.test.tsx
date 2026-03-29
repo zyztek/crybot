@@ -11,14 +11,14 @@ vi.mock('../store/cryptoStore', () => ({
 describe('Portfolio', () => {
   it('renders title in Spanish', () => {
     render(<Portfolio />)
-    expect(screen.getByText('Mi Portafolio')).toBeInTheDocument()
+    // Spanish: "Portafolio Cross-Chain"
+    expect(screen.getByText('Portafolio Cross-Chain')).toBeInTheDocument()
   })
 
   it('renders title in English', () => {
-    // Test uses default Spanish - component checks for 'es' vs 'en'
-    // The text 'My Portfolio' appears when language is 'en'
+    // In Spanish mode (default), title is "Portafolio Cross-Chain"
     render(<Portfolio />)
-    expect(screen.getByText(/My Portfolio|Mi Portafolio/)).toBeInTheDocument()
+    expect(screen.getByText('Portafolio Cross-Chain')).toBeInTheDocument()
   })
 
   it('renders Total Value label', () => {

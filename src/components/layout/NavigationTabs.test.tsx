@@ -43,8 +43,8 @@ describe('NavigationTabs', () => {
       />
     )
 
-    // Should show 2 available faucets
-    expect(screen.getByText('2')).toBeInTheDocument()
+    // Should show 12 available faucets (all in INITIAL_FAUCETS have status: 'available')
+    expect(screen.getByText('12')).toBeInTheDocument()
   })
 
   it('renders achievements count badge', () => {
@@ -60,8 +60,8 @@ describe('NavigationTabs', () => {
       />
     )
 
-    // Should show 1 unlocked achievement
-    expect(screen.getByText('1')).toBeInTheDocument()
+    // Should show unlocked achievements count (3: ids 1, 4, 6 are unlocked)
+    expect(screen.getByText('3')).toBeInTheDocument()
   })
 
   it('renders non-translated tabs', () => {

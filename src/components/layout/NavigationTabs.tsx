@@ -1,6 +1,6 @@
 import { 
   Coins, TrendingUp, Wallet, Users, Trophy, Award, Settings, BarChart3, 
-  Activity, Gamepad2, Shield, Gift, Crown, Rocket, Zap, Building2, Send, Star
+  Activity, Gamepad2, Shield, Gift, Crown, Rocket, Zap, Building2, Send, Star, Network, Gem
 } from 'lucide-react'
 import NavTab from '../ui/NavTab'
 import type { TabType, Faucet, Achievement } from '@/types'
@@ -17,7 +17,11 @@ interface NavigationTabsProps {
 
 export default function NavigationTabs({ activeTab, onTabChange, faucets, achievements, language, t }: NavigationTabsProps) {
   return (
-    <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
+    <div 
+      className="flex gap-2 mb-6 overflow-x-auto pb-2" 
+      role="tablist" 
+      aria-label={language === 'es' ? 'Navegación principal' : 'Main navigation'}
+    >
       <NavTab active={activeTab === 'faucets'} onClick={() => onTabChange('faucets')} icon={<Coins className="w-4 h-4" />}>
         {t.faucets} <span className="ml-1 px-2 py-0.5 bg-purple-500/20 rounded-full text-xs">{faucets.filter(f => f.status === 'available').length}</span>
       </NavTab>
@@ -119,6 +123,12 @@ export default function NavigationTabs({ activeTab, onTabChange, faucets, achiev
       </NavTab>
       <NavTab active={activeTab === 'xcm'} onClick={() => onTabChange('xcm')} icon={<Send className="w-4 h-4" />}>
         XCM
+      </NavTab>
+      <NavTab active={activeTab === 'testnet'} onClick={() => onTabChange('testnet')} icon={<Network className="w-4 h-4" />}>
+        Testnets
+      </NavTab>
+      <NavTab active={activeTab === 'nft-faucet'} onClick={() => onTabChange('nft-faucet')} icon={<Gem className="w-4 h-4" />}>
+        NFT Faucets
       </NavTab>
     </div>
   )

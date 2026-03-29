@@ -1,10 +1,20 @@
 import { vi } from 'vitest'
 
-// Import store initial data directly from cryptoStore
-import { INITIAL_WALLET_BALANCE, INITIAL_USER, INITIAL_ACHIEVEMENTS, LEADERBOARD, INITIAL_FAUCETS, INITIAL_HISTORY } from '../store/cryptoStore'
+// Import store initial data from correct stores
+import { INITIAL_USER } from '../store/slices/userStore'
+import { INITIAL_WALLET_BALANCE } from '../store/slices/walletStore'
+
+import { INITIAL_FAUCETS, INITIAL_HISTORY } from '../store/slices/faucetStore'
+import { INITIAL_ACHIEVEMENTS, LEADERBOARD } from '../store/slices/achievementsStore'
 
 // Re-export store fixtures
-export { INITIAL_WALLET_BALANCE, INITIAL_USER, INITIAL_ACHIEVEMENTS, LEADERBOARD, INITIAL_FAUCETS, INITIAL_HISTORY }
+export { INITIAL_USER }
+export { INITIAL_WALLET_BALANCE } from '../store/slices/walletStore'
+export { INITIAL_ACHIEVEMENTS, LEADERBOARD } from '../store/slices/achievementsStore'
+export { INITIAL_FAUCETS, INITIAL_HISTORY } from '../store/slices/faucetStore'
+
+// Add mockAchievements (re-export from achievements)
+export const mockAchievements = INITIAL_ACHIEVEMENTS
 
 // Component-specific fixtures - use store initial data
 export const mockUser = INITIAL_USER

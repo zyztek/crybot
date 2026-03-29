@@ -3,6 +3,17 @@ import { render, screen, fireEvent } from '@testing-library/react'
 import LoginScreen from './LoginScreen'
 import { mockTranslations } from '@/test/fixtures'
 
+// Mock the useApi hook
+vi.mock('@/hooks/useApi', () => ({
+  useApi: () => ({
+    login: vi.fn().mockResolvedValue(true),
+    register: vi.fn().mockResolvedValue(true),
+    forgotPassword: vi.fn().mockResolvedValue(true),
+    resetPassword: vi.fn().mockResolvedValue(true),
+    isLoading: false,
+  }),
+}))
+
 const renderComponent = (component: React.ReactElement) => {
   return render(component)
 }
@@ -24,12 +35,21 @@ describe('LoginScreen', () => {
     expect(screen.getByPlaceholderText('••••••••')).toBeInTheDocument()
   })
 
-  it('calls onLogin when login button is clicked', () => {
+  it('calls onLogin when login button is clicked', async () => {
     const onLogin = vi.fn()
     renderComponent(<LoginScreen t={mockTranslations} onLogin={onLogin} />)
     
+    // Fill in the form fields
+    const emailInput = screen.getByPlaceholderText('tu@email.com')
+    const passwordInput = screen.getByPlaceholderText('••••••••')
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } })
+    fireEvent.change(passwordInput, { target: { value: 'password123' } })
+    
     const loginButton = screen.getByRole('button', { name: /Iniciar Sesión/i })
     fireEvent.click(loginButton)
+    
+    // Wait for the async login to complete
+    await new Promise(resolve => setTimeout(resolve, 100))
     
     expect(onLogin).toHaveBeenCalledTimes(1)
   })

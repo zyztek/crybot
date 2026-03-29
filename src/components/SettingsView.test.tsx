@@ -18,6 +18,8 @@ describe('SettingsView', () => {
       logout: 'Logout',
     },
     lang: 'es' as const,
+    theme: 'dark' as const,
+    onToggleTheme: vi.fn(),
     onLogout: vi.fn(),
   }
 
@@ -118,7 +120,9 @@ describe('SettingsView', () => {
 
   it('renders theme preference', () => {
     render(<SettingsView {...mockProps} />)
-    expect(screen.getByText('Dark')).toBeInTheDocument()
+    // Theme is rendered as a toggle button, check that it's present
+    const themeToggle = document.querySelector('.rounded-full.w-14')
+    expect(themeToggle).toBeInTheDocument()
   })
 
   it('renders logout button', () => {

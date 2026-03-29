@@ -11,6 +11,8 @@ import ReferralView from '../ReferralView'
 import LeaderboardView from '../LeaderboardView'
 import AchievementsView from '../AchievementsView'
 import SettingsView from '../SettingsView'
+import TestnetView from '../TestnetView'
+import NFTFaucetView from '../NFTFaucetView'
 
 // Lazy-loaded components (loaded on-demand)
 const MiniGames = lazy(() => import('../MiniGames'))
@@ -77,11 +79,16 @@ interface ContentAreaProps {
   user: User
   showWalletAddress: boolean
   language: 'es' | 'en'
+  theme: 'dark' | 'light'
+  searchTerm?: string
   t: TranslationTexts
   onClaimFaucet: (faucet: Faucet) => void
   onToggleWalletAddress: () => void
+  onToggleTheme: () => void
   onCopyReferralCode: () => void
   onLogout: () => void
+  onClearSearch?: () => void
+  referrals?: Array<{ id: string; username: string; createdAt: string; earnings?: string }>
 }
 
 // Render lazy component inline - uses any type to bypass strict TypeScript checking for lazy imports
@@ -102,28 +109,35 @@ export default function ContentArea({
   user,
   showWalletAddress,
   language,
+  theme,
+  searchTerm = '',
   t,
   onClaimFaucet,
   onToggleWalletAddress,
+  onToggleTheme,
   onCopyReferralCode,
   onLogout,
+  onClearSearch,
+  referrals,
 }: ContentAreaProps) {
 
   switch (activeTab) {
     case 'faucets':
-      return <FaucetsView faucets={faucets} onClaim={onClaimFaucet} language={language} t={t} />
+      return <FaucetsView faucets={faucets} onClaim={onClaimFaucet} language={language} t={t} searchTerm={searchTerm} onClearSearch={onClearSearch} />
     case 'dashboard':
       return <DashboardView history={history} achievements={achievements} t={t} language={language} />
     case 'wallet':
       return <WalletView walletBalance={walletBalance} withdrawalHistory={withdrawalHistory} showAddress={showWalletAddress} onToggleAddress={onToggleWalletAddress} t={t} />
     case 'referral':
-      return <ReferralView user={user} onCopy={onCopyReferralCode} t={t} />
+      return <ReferralView user={user} referrals={referrals} onCopy={onCopyReferralCode} t={t} />
     case 'leaderboard':
       return <LeaderboardView leaderboard={leaderboard} t={t} />
     case 'achievements':
       return <AchievementsView achievements={achievements} t={t} />
     case 'settings':
-      return <SettingsView user={user} t={t} lang={language} onLogout={onLogout} />
+      return <SettingsView user={user} t={t} lang={language} theme={theme} onToggleTheme={onToggleTheme} onLogout={onLogout} />
+    case 'testnet':
+      return <TestnetView t={t} language={language} />
     case 'analytics':
       return renderLazy(AdvancedAnalytics)
     case 'signals':
@@ -220,6 +234,8 @@ export default function ContentArea({
       return renderLazy(FailureAnalyzer)
     case 'gas-prof':
       return renderLazy(GasProfiler)
+    case 'nft-faucet':
+      return <NFTFaucetView language={language} t={t} />
     default:
       return <FaucetsView faucets={faucets} onClaim={onClaimFaucet} language={language} t={t} />
   }
