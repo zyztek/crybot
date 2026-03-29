@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Radar, Search, Filter, RefreshCw, DollarSign, Clock, TrendingUp, Star, ExternalLink, AlertCircle } from 'lucide-react';
+import { Radar, Search, RefreshCw, DollarSign, Clock, TrendingUp, Star, AlertCircle } from 'lucide-react';
 
 interface Faucet {
   id: number;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GraduationCap, Clock, BookOpen, Star, Users, Play, Lock, CheckCircle, Award, TrendingUp, Filter, Search } from 'lucide-react';
+import { GraduationCap, Clock, BookOpen, Star, Play, Lock, CheckCircle, Award, TrendingUp, Search } from 'lucide-react';
 
 interface Course {
   id: number;

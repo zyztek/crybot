@@ -48,7 +48,7 @@ export function getEnvNumber(key: string, defaultValue: number): number {
 export function getEnvArray(key: string, defaultValue: string[] = []): string[] {
   const value = import.meta.env[key];
   if (value === undefined || value === null) return defaultValue;
-  return value.split(',').map(v => v.trim()).filter(Boolean);
+  return value.split(',').map((v: string) => v.trim()).filter(Boolean);
 }
 
 /**

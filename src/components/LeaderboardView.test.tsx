@@ -2,8 +2,9 @@ import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import LeaderboardView from './LeaderboardView'
 import { LEADERBOARD } from '../test/fixtures'
+import type { TranslationTexts } from '@/i18n/translations'
 
-const mockTranslations: TranslationTexts = {
+const mockTranslations: Partial<TranslationTexts> = {
   login: 'Iniciar Sesión',
   register: 'Registrarse',
   dashboard: 'Panel',
@@ -11,52 +12,12 @@ const mockTranslations: TranslationTexts = {
   wallet: 'Billetera',
   referral: 'Referidos',
   leaderboard: 'Ranking',
-  achievements: 'Logros',
-  settings: 'Configuración',
-  premium: 'Premium',
-  hot: '🔥 Hot',
-  stable: 'Estable',
-  new: 'Nuevo',
-  claimNow: 'Claim Ahora',
-  remaining: 'restantes',
-  claim: 'Reclamar',
-  welcome: '¡Bienvenido!',
-  totalClaimed: 'Total Reclamado',
-  todayClaims: 'Claims Hoy',
-  activeFaucets: 'Faucets Activos',
-  availableCoins: 'Monedas Disponibles',
-  referralTitle: 'Programa de Referidos',
-  referralDesc: 'Gana el 10% de lo que ganen tus referidos',
-  copyCode: 'Copiar Código',
-  shareLink: 'Compartir Enlace',
-  totalEarnings: 'Ganancias Totales',
-  yourCode: 'Tu Código',
   leaderboardTitle: 'Ranking Global',
   rank: 'Posición',
   user: 'Usuario',
   claimed: 'Reclamado',
   claims: 'Claims',
-  withdraw: 'Retirar',
-  deposit: 'Depositar',
   balance: 'Balance',
-  address: 'Dirección',
-  history: 'Historial',
-  recentWithdrawals: 'Retiros Recientes',
-  achievementsTitle: 'Tus Logros',
-  unlocked: 'Desbloqueado',
-  locked: 'Bloqueado',
-  progress: 'Progreso',
-  complete: '¡Completado!',
-  settingsTitle: 'Configuración',
-  account: 'Cuenta',
-  security: 'Seguridad',
-  notifications: 'Notificaciones',
-  preferences: 'Preferencias',
-  language: 'Idioma',
-  theme: 'Tema',
-  logout: 'Cerrar Sesión',
-  viewMore: 'Ver Más',
-  connect: 'Conectar'
 }
 
 const renderComponent = (props: Partial<Parameters<typeof LeaderboardView>[0]> = {}) => {

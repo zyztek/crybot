@@ -1,12 +1,12 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { create } from 'zustand'
+import { create, type StoreApi } from 'zustand'
 import { createFaucetStore, INITIAL_FAUCETS, INITIAL_HISTORY, type FaucetState } from './faucetStore'
 
 describe('Faucet Store - Action Tests', () => {
-  let store: ReturnType<typeof create<FaucetState>>
+  let store: StoreApi<FaucetState>
 
   beforeEach(() => {
-    store = create<FaucetState>()(createFaucetStore)
+    store = create<FaucetState>(createFaucetStore)
   })
 
   describe('claimFaucet Action', () => {

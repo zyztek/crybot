@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { DollarSign, TrendingUp, TrendingDown, RefreshCw, Search, Star, ArrowUpRight, ArrowDownRight, BarChart3, Bitcoin, Globe, AlertCircle } from 'lucide-react'
+import { TrendingUp, TrendingDown, RefreshCw, Search, Star, ArrowUpRight, BarChart3, Globe, AlertCircle } from 'lucide-react'
 
 interface ExchangeRate {
   id: string

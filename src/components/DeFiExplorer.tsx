@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TrendingUp, TrendingDown, DollarSign, Wallet, PieChart, Activity, Zap, ExternalLink, Filter } from 'lucide-react';
+import { TrendingUp, TrendingDown, DollarSign, Wallet, PieChart, Activity, Zap, ExternalLink } from 'lucide-react';
 
 interface DeFiProtocol {
   name: string;

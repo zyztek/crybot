@@ -5,7 +5,7 @@ import { INITIAL_FAUCETS } from '../test/fixtures'
 
 // Mock FaucetCard component
 vi.mock('./FaucetCard', () => ({
-  default: ({ faucet, language }: { faucet: { id: number; name: string; coin: string }; language: string }) => (
+  default: ({ faucet }: { faucet: { id: number; name: string; coin: string }; language: string }) => (
     <div data-testid="faucet-card" data-coin={faucet.coin}>
       {faucet.name} - {faucet.coin}
     </div>

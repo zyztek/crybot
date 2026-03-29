@@ -46,6 +46,15 @@ interface CryptoStore {
   // Faucet state
   faucets: Faucet[]
   history: ClaimHistory[]
+  withdrawalHistory: ClaimHistory[]
+  claimFaucet: (
+    faucet: Faucet,
+    onCountdownEnd?: () => void,
+    actions?: {
+      updateBalance?: (coin: 'btc' | 'eth' | 'doge' | 'sol' | 'ltc' | 'bnb', amount: number) => void
+      updateAchievementProgress?: (id: number, progress: number) => void
+    }
+  ) => void
   
   // Achievements state
   achievements: Achievement[]
@@ -84,14 +93,23 @@ const createStorage = () => {
 // Create combined store using slice pattern
 export const useCryptoStore = create<CryptoStore>()(
   persist(
-    (...args) => ({
-      ...createAuthStore(...args),
-      ...createUIStore(...args),
-      ...createUserStore(...args),
-      ...createWalletStore(...args),
-      ...createFaucetStore(...args),
-      ...createAchievementsStore(...args),
-    }),
+    () => {
+      const auth = createAuthStore()
+      const ui = createUIStore()
+      const user = createUserStore()
+      const wallet = createWalletStore()
+      const faucet = createFaucetStore()
+      const achievements = createAchievementsStore()
+      return {
+        ...auth,
+        ...ui,
+        ...user,
+        ...wallet,
+        ...faucet,
+        ...achievements,
+        withdrawalHistory: [],
+      } as CryptoStore
+    },
     {
       name: 'crypto-faucet-storage',
       storage: createJSONStorage(createStorage),

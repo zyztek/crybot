@@ -10,8 +10,8 @@ const CryptoChart: React.FC<CryptoChartProps> = ({ symbol, height = 300 }) => {
   const [hoveredPoint, setHoveredPoint] = useState<number | null>(null);
 
   // Generate mock chart data
-  const generateData = () => {
-    const data = [];
+  const generateData = (): number[] => {
+    const data: number[] = [];
     let value = 100;
     for (let i = 0; i < 30; i++) {
       value += (Math.random() - 0.48) * 10;

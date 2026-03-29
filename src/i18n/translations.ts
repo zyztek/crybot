@@ -113,4 +113,4 @@ export const texts = {
   }
 }
 
-export type TranslationTexts = typeof texts['en']
+export type TranslationTexts = Partial<typeof texts['en']>

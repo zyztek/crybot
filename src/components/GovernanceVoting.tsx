@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Vote, CheckCircle, XCircle, Clock, Users, TrendingUp, PieChart } from 'lucide-react'
+import { Vote, CheckCircle, XCircle, Clock, Users, PieChart } from 'lucide-react'
 
 interface Proposal {
   id: number
@@ -18,8 +18,8 @@ export default function GovernanceVoting() {
   const [selectedProposal, setSelectedProposal] = useState<number | null>(null)
   const [voteModalOpen, setVoteModalOpen] = useState(false)
   const [voteAmount, setVoteAmount] = useState('')
-  const [userVotes, setUserVotes] = useState(12500)
-  const [voteWeight, setVoteWeight] = useState(1)
+  const [userVotes] = useState(12500)
+  const [voteWeight] = useState(1)
 
   const proposals: Proposal[] = [
     {

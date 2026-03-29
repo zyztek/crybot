@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { AlertTriangle, XCircle, CheckCircle, Search, Activity } from 'lucide-react'
+import { AlertTriangle, XCircle, Search } from 'lucide-react'
 
 export default function FailureAnalyzer() {
   const [isSpanish, setIsSpanish] = useState(true)

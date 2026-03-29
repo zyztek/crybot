@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowLeftRight, Coins, TrendingUp, Shield, Zap, DollarSign, Clock } from 'lucide-react'
+import { ArrowLeftRight, Coins, TrendingUp, Shield, Zap, Clock } from 'lucide-react'
 
 interface SwapQuote {
   dex: string
@@ -15,7 +15,7 @@ export default function DexAggregator() {
   const [fromAmount, setFromAmount] = useState('1')
   const [fromToken, setFromToken] = useState('ETH')
   const [toToken, setToToken] = useState('USDC')
-  const [quotes, setQuotes] = useState<SwapQuote[]>([
+  const [quotes] = useState<SwapQuote[]>([
     { dex: 'Uniswap V3', price: 1850.23, output: 1850.23, priceImpact: 0.05, gasUsd: 2.5, route: ['ETH', 'USDC'], time: '~2s' },
     { dex: '1inch', price: 1851.45, output: 1851.45, priceImpact: 0.03, gasUsd: 1.8, route: ['ETH', 'USDC'], time: '~3s' },
     { dex: 'Curve', price: 1849.87, output: 1849.87, priceImpact: 0.02, gasUsd: 1.2, route: ['ETH', 'USDT', 'USDC'], time: '~4s' },

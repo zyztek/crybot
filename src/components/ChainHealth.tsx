@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { HeartPulse, Activity, Signal, Zap, CheckCircle, AlertTriangle } from 'lucide-react'
+import { HeartPulse, CheckCircle, AlertTriangle } from 'lucide-react'
 
 export default function ChainHealth() {
   const [isSpanish, setIsSpanish] = useState(true)

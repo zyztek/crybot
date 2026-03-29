@@ -56,6 +56,8 @@ export interface User {
   referralCode: string
   totalReferrals: number
   referralEarnings: string
+  totalEarned?: string
+  totalClaims?: number
 }
 
 export interface LeaderboardEntry {

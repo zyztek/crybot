@@ -4,14 +4,15 @@
  * Provides real data from backend while maintaining store compatibility
  */
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useCryptoStore } from '@/store/cryptoStore';
 import api, { authApi, walletApi, achievementApi, leaderboardApi, analyticsApi } from '@/services/api';
 import { getFriendlyError, useToast } from './useToast';
+import type { WalletBalance } from '@/types';
 
 // Convert backend wallet format to frontend format
-const convertWallets = (wallets: Array<{ coin: string; balance: string }>) => {
-  const balance: Record<string, string> = {
+const convertWallets = (wallets: Array<{ coin: string; balance: string }>): WalletBalance => {
+  const balance: WalletBalance = {
     btc: '0',
     eth: '0',
     doge: '0',
@@ -176,38 +177,40 @@ export const useApi = () => {
       return null;
     }
   }, [store]);
-  
+
   // Claim faucet via API
   const claimFaucet = useCallback(async (coin: string) => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
-      const claim = await api.faucet.claim(coin);
-      
+      const claim = await api.faucet.claim(coin) as { coin?: string; amount?: string };
+
       // Add to history
+      const claimCoin = claim.coin || coin;
+      const claimAmount = claim.amount || '0';
       const historyEntry = {
         id: Date.now(),
         faucet: `Faucet ${coin}`,
         faucetId: 0,
-        coin: claim.coin,
-        amount: claim.amount,
+        coin: claimCoin,
+        amount: claimAmount,
         time: new Date().toLocaleTimeString(),
         date: new Date().toLocaleDateString(),
       };
-      
+
       // Update wallet balance
       const key = coin.toLowerCase() as keyof typeof store.walletBalance;
       if (key in store.walletBalance) {
         store.walletBalance = {
           ...store.walletBalance,
-          [key]: (BigInt(store.walletBalance[key]) + BigInt(claim.amount)).toString(),
+          [key]: (BigInt(store.walletBalance[key]) + BigInt(claimAmount)).toString(),
         };
       }
-      
+
       // Show success toast
-      toast.success(`Claimed ${claim.amount} ${claim.coin} successfully!`);
-      
+      toast.success(`Claimed ${claimAmount} ${claimCoin} successfully!`);
+
       return { success: true, claim, historyEntry };
     } catch (err) {
       const message = getFriendlyError(err);
@@ -260,7 +263,11 @@ export const useApi = () => {
     try {
       const data = await achievementApi.getUserAchievements();
       // Convert API format to frontend format and update store
-      const convertedAchievements = data.achievements.map(a => ({
+      const convertedAchievements = (data.achievements as Array<{
+        id: string; name: string; description: string; icon: string; coin: string;
+        target: number; reward: string; type: string; progress: number;
+        completed: boolean; completedAt?: string; claimedAt?: string;
+      }>).map(a => ({
         id: parseInt(a.id) || 0,
         name: a.name,
         description: a.description,
@@ -285,10 +292,11 @@ export const useApi = () => {
   // Claim achievement reward
   const claimAchievement = useCallback(async (id: string) => {
     try {
-      const result = await achievementApi.claimReward(id);
+      const result = await achievementApi.claimReward(id) as { amount: string; coin?: string };
       
-      // Update wallet balance with reward
-      const key = result.coin.toLowerCase() as keyof typeof store.walletBalance;
+      // Update wallet balance with reward (fallback to BTC if coin not provided)
+      const coin = result.coin || 'BTC';
+      const key = coin.toLowerCase() as keyof typeof store.walletBalance;
       if (key in store.walletBalance) {
         store.walletBalance = {
           ...store.walletBalance,
@@ -312,7 +320,9 @@ export const useApi = () => {
     try {
       const data = await leaderboardApi.getLeaderboard(period);
       // Convert API format to frontend format and update store
-      const convertedLeaderboard = data.entries.map((entry, index) => ({
+      const convertedLeaderboard = (data.entries as Array<{
+        id: string; rank: number; username: string; score: string;
+      }>).map((entry, index) => ({
         id: parseInt(entry.id) || index + 1,
         rank: entry.rank,
         username: entry.username,

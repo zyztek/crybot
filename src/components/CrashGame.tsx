@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { TrendingUp, Flame, Minus, AlertTriangle } from 'lucide-react';
+import { TrendingUp, Flame, AlertTriangle } from 'lucide-react';
 
 interface CrashProps {
   userCoins: number;
@@ -97,7 +97,8 @@ const CrashGame: React.FC<CrashProps> = ({ userCoins, onWin, onLoss }) => {
     }
   }, [multiplier, autoCashout, gameState, hasBetted, cashOutMultiplier]);
 
-  const potentialWin = Math.floor(betAmount * multiplier);
+  // potentialWin would be used for display purposes
+  // const potentialWin = Math.floor(betAmount * multiplier);
   const canCashOut = gameState === 'running' && hasBetted && !cashOutMultiplier;
 
   return (

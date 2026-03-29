@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layers, Zap, Globe, Activity, Network, TrendingUp, ArrowRight, CheckCircle } from 'lucide-react';
+import { Layers, Zap, Activity, Network, TrendingUp, ArrowRight, CheckCircle } from 'lucide-react';
 
 interface L2Solution {
   id: string;
@@ -61,7 +61,8 @@ const templates = {
 
 export default function Layer2Explorers() {
   const [isSpanish, setIsSpanish] = React.useState(true);
-  const [view3D, setView3D] = React.useState(false);
+  // view3D kept for potential future 3D visualization feature
+  // const [view3D, setView3D] = React.useState(false);
   const [selectedSolution, setSelectedSolution] = React.useState<L2Solution | null>(null);
   const text = templates[isSpanish ? 'es' : 'en'];
 

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { useToastStore, getFriendlyError, useToast } from './useToast'
+import { useToastStore, getFriendlyError } from './useToast'
 
 describe('useToastStore', () => {
   beforeEach(() => {

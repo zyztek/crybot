@@ -11,7 +11,8 @@ interface FlashLoanOpportunity {
 export default function FlashLoanCalculator() {
   const [loanAmount, setLoanAmount] = useState('')
   const [borrowToken, setBorrowToken] = useState('ETH')
-  const [repayToken, setRepayToken] = useState('USDC')
+  // repayToken kept for future use when multi-token support is added
+  // const [repayToken, setRepayToken] = useState('USDC')
   const [arbitrageProfit, setArbitrageProfit] = useState('')
   const [simulateStep, setSimulateStep] = useState(0)
 

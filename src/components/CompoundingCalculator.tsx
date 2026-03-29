@@ -28,8 +28,8 @@ const CompoundingCalculator: React.FC = () => {
     return finalAmount;
   };
 
-  const calculateYearlyBreakdown = () => {
-    const breakdown = [];
+  const calculateYearlyBreakdown = (): Array<{year: number; amount: number; earnings: number}> => {
+    const breakdown: Array<{year: number; amount: number; earnings: number}> = [];
     const n = compounding === 'daily' ? 365 : compounding === 'weekly' ? 52 : 12;
     const r = apy / 100;
     

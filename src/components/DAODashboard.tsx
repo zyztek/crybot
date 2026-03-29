@@ -1,8 +1,8 @@
-import { useState } from 'react'
-import { Building2, DollarSign, Users, TrendingUp, Lock, PieChart, Activity, Timer, Vote as VoteIcon } from 'lucide-react'
+import { Building2, DollarSign, Users, Lock, PieChart, Activity, Timer, Vote as VoteIcon } from 'lucide-react'
 
 export default function DAODashboard() {
-  const [activeTab, setActiveTab] = useState('overview')
+  // UI state kept for potential future use
+  // const [activeTab, setActiveTab] = useState('overview')
 
   const stats = {
     treasury: 45600000,

@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import StatsBar from './StatsBar'
 import { mockTranslations, mockWalletBalance, mockHistory, mockFaucets } from '@/test/fixtures'
+import type { WalletBalance } from '@/types'
 
 const renderComponent = (component: React.ReactElement) => {
   return render(component)

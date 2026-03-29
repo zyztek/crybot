@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useCryptoStore, texts } from './store/cryptoStore'
+import type { Faucet } from './types'
 import LoginScreen from './components/layout/LoginScreen'
 import Header from './components/layout/Header'
 import StatsBar from './components/layout/StatsBar'
@@ -22,7 +23,6 @@ function App() {
     history,
     achievements,
     leaderboard,
-    withdrawalHistory,
     login: storeLogin,
     logout: storeLogout,
     setActiveTab,
@@ -37,13 +37,11 @@ function App() {
     logout: apiLogout, 
     fetchFaucets, 
     claimFaucet: apiClaimFaucet, 
-    fetchProfile, 
     fetchWallets,
     fetchAchievements,
     fetchLeaderboard,
     fetchUserStats,
     syncAuth, 
-    isLoading 
   } = useApi()
   
   // Local state for API-based operations
@@ -87,15 +85,20 @@ function App() {
     }
   }
   
-  // Handle faucet claim with API
-  const handleClaimFaucet = async (faucetId: number, coin: string) => {
-    const result = await apiClaimFaucet(coin)
-    if (result.success) {
-      // Update local state
-      claimFaucet(faucetId)
-    }
-    return result
+  // Handle faucet claim - convert to match ContentArea's expected signature
+  const handleClaimFaucet = (faucet: Faucet) => {
+    apiClaimFaucet(faucet.coin).then((result) => {
+      if (result.success) {
+        // Update local state
+        claimFaucet(faucet)
+      }
+    })
   }
+
+  // Mock withdrawal history for wallet view
+  const withdrawalHistory = [
+    { id: 1, coin: 'BTC', amount: '0.0001', address: 'bc1q...', status: 'completed', date: '2024-01-10' },
+  ]
 
   // Get translations for current language
   const t = texts[language]

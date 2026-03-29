@@ -22,13 +22,20 @@ import type { TabType, Faucet, ClaimHistory } from '@/types'
 
 // Helper to create combined store for integration testing
 const createTestStore = () => {
-  return create<any>()((...args) => ({
-    ...createAuthStore(...args),
-    ...createUIStore(...args),
-    ...createUserStore(...args),
-    ...createWalletStore(...args),
-    ...createFaucetStore(...args),
-    ...createAchievementsStore(...args),
+  const auth = createAuthStore()
+  const ui = createUIStore()
+  const user = createUserStore()
+  const wallet = createWalletStore()
+  const faucet = createFaucetStore()
+  const achievements = createAchievementsStore()
+  
+  return create()(() => ({
+    ...auth,
+    ...ui,
+    ...user,
+    ...wallet,
+    ...faucet,
+    ...achievements,
   }))
 }
 
@@ -262,14 +269,14 @@ describe('Store Slices - Integration Tests', () => {
 
   describe('Slice Type Definitions', () => {
     it('auth slice has correct types', () => {
-      const authSlice = createAuthStore(set => set({ isLoggedIn: false, login: () => {}, logout: () => {} }))
+      const authSlice = createAuthStore((set: any) => set({ isLoggedIn: false, login: () => {}, logout: () => {} }))
       expect(typeof authSlice.login).toBe('function')
       expect(typeof authSlice.logout).toBe('function')
       expect(typeof authSlice.isLoggedIn).toBe('boolean')
     })
 
     it('ui slice has correct types', () => {
-      const uiSlice = createUIStore(set => ({
+      const uiSlice = createUIStore((set: any) => ({
         activeTab: 'faucets' as TabType,
         language: 'es' as const,
         showWalletAddress: false,
@@ -282,7 +289,7 @@ describe('Store Slices - Integration Tests', () => {
     })
 
     it('wallet slice has correct types', () => {
-      const walletSlice = createWalletStore(set => ({
+      const walletSlice = createWalletStore((set: any) => ({
         walletBalance: INITIAL_WALLET_BALANCE,
         updateBalance: (coin: keyof typeof INITIAL_WALLET_BALANCE, amount: number) => {},
       }))
@@ -290,7 +297,7 @@ describe('Store Slices - Integration Tests', () => {
     })
 
     it('achievements slice has correct types', () => {
-      const achievementsSlice = createAchievementsStore(set => ({
+      const achievementsSlice = createAchievementsStore((set: any) => ({
         achievements: INITIAL_ACHIEVEMENTS,
         leaderboard: LEADERBOARD,
         updateAchievementProgress: (id: number, progress: number) => {},

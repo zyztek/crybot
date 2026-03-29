@@ -11,12 +11,16 @@ interface StatsBarProps {
 }
 
 export default function StatsBar({ walletBalance, history, faucets, t }: StatsBarProps) {
+  const btcValue: string = walletBalance.btc ?? '0'
+  const activeFaucetsCount: number = faucets ? faucets.filter(f => f.status === 'available').length : 0
+  const availableCoinsCount: number = Object.values(walletBalance).filter((b) => parseFloat(String(b)) > 0).length
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
       <StatCard 
         icon={<Wallet className="w-5 h-5" />}
         title={t.totalClaimed}
-        value={walletBalance.btc + ' BTC'}
+        value={btcValue + ' BTC'}
         color="from-yellow-500/20 to-orange-500/20"
         borderColor="border-yellow-500/30"
         iconColor="text-yellow-400"
@@ -25,7 +29,7 @@ export default function StatsBar({ walletBalance, history, faucets, t }: StatsBa
       <StatCard 
         icon={<Activity className="w-5 h-5" />}
         title={t.todayClaims}
-        value={history.length.toString()}
+        value={String(history.length)}
         color="from-green-500/20 to-emerald-500/20"
         borderColor="border-green-500/30"
         iconColor="text-green-400"
@@ -34,7 +38,7 @@ export default function StatsBar({ walletBalance, history, faucets, t }: StatsBa
       <StatCard 
         icon={<Zap className="w-5 h-5" />}
         title={t.activeFaucets}
-        value={faucets.filter(f => f.status === 'available').length.toString()}
+        value={String(activeFaucetsCount)}
         color="from-purple-500/20 to-pink-500/20"
         borderColor="border-purple-500/30"
         iconColor="text-purple-400"
@@ -43,7 +47,7 @@ export default function StatsBar({ walletBalance, history, faucets, t }: StatsBa
       <StatCard 
         icon={<TrendingUp className="w-5 h-5" />}
         title={t.availableCoins}
-        value={Object.values(walletBalance).filter((b: string) => parseFloat(b) > 0).length.toString()}
+        value={String(availableCoinsCount)}
         color="from-blue-500/20 to-cyan-500/20"
         borderColor="border-blue-500/30"
         iconColor="text-blue-400"
