@@ -69,6 +69,7 @@ router.post('/personas', authenticate, asyncHandler(async (req: AuthRequest, res
     walletAddress: data.walletAddress,
     minBalance: data.minBalance,
     maxClaimsPerDay: data.maxClaimsPerDay,
+    ownerUserId: req.user?.id,
   });
 
   res.status(201).json({

@@ -357,9 +357,26 @@ class TestnetOrchestrator {
    */
   async getPersonas(project?: string): Promise<Persona[]> {
     const where = project ? { project } : {};
-    // This would query a new Persona table - for now return empty array
-    // In production, you'd have a personas table
-    return [];
+    const dbPersonas = await prisma.persona.findMany({
+      where: {
+        ...where,
+        isActive: true,
+      },
+    });
+
+    return dbPersonas.map(p => ({
+      id: p.id,
+      name: p.name,
+      project: p.project,
+      environment: p.environment as 'qa' | 'demo' | 'development' | 'education',
+      chains: p.chains as TestnetChain[],
+      walletAddress: p.walletAddress || undefined,
+      minBalance: p.minBalance,
+      maxClaimsPerDay: p.maxClaimsPerDay,
+      isActive: p.isActive,
+      createdAt: p.createdAt,
+      updatedAt: p.updatedAt,
+    }));
   }
 
   /**
@@ -373,25 +390,37 @@ class TestnetOrchestrator {
     walletAddress: string;
     minBalance: string;
     maxClaimsPerDay: number;
+    ownerUserId?: string;
   }): Promise<Persona> {
-    // In production, this would create a Persona record in the database
-    // For now, return a mock persona
-    const persona: Persona = {
-      id: `persona_${Date.now()}`,
-      name: data.name,
-      project: data.project,
-      environment: data.environment,
-      chains: data.chains,
-      walletAddress: data.walletAddress,
-      minBalance: data.minBalance,
-      maxClaimsPerDay: data.maxClaimsPerDay,
-      isActive: true,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+    const dbPersona = await prisma.persona.create({
+      data: {
+        name: data.name,
+        project: data.project,
+        environment: data.environment,
+        chains: data.chains,
+        walletAddress: data.walletAddress,
+        minBalance: data.minBalance,
+        maxClaimsPerDay: data.maxClaimsPerDay,
+        isActive: true,
+        ownerUserId: data.ownerUserId,
+      },
+    });
 
-    console.log(`[TestnetOps] Created persona: ${persona.name} for project ${persona.project}`);
-    return persona;
+    console.log(`[TestnetOps] Created persona: ${dbPersona.name} for project ${dbPersona.project}`);
+
+    return {
+      id: dbPersona.id,
+      name: dbPersona.name,
+      project: dbPersona.project,
+      environment: dbPersona.environment as 'qa' | 'demo' | 'development' | 'education',
+      chains: dbPersona.chains as TestnetChain[],
+      walletAddress: dbPersona.walletAddress || undefined,
+      minBalance: dbPersona.minBalance,
+      maxClaimsPerDay: dbPersona.maxClaimsPerDay,
+      isActive: dbPersona.isActive,
+      createdAt: dbPersona.createdAt,
+      updatedAt: dbPersona.updatedAt,
+    };
   }
 
   /**
@@ -447,7 +476,17 @@ class TestnetOrchestrator {
   }
 
   private async logClaim(personaId: string, chain: TestnetChain, result: ClaimResult): Promise<void> {
-    // In production, this would create an audit log entry
+    // Create audit log entry in database
+    await prisma.personaFundingLog.create({
+      data: {
+        personaId,
+        chain,
+        amount: result.amount,
+        txHash: result.txHash || null,
+        status: result.success ? 'confirmed' : 'failed',
+        error: result.error || null,
+      },
+    });
     console.log(`[TestnetOps] Audit: Persona ${personaId} on ${chain}: ${result.success ? 'SUCCESS' : 'FAILED'}`);
   }
 }

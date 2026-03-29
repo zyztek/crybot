@@ -187,3 +187,38 @@ model Leaderboard {
   
   @@map("leaderboard")
 }
+
+// ============== TESTNET OPERATIONS ORCHESTRATOR ==============
+
+model Persona {
+  id              String   @id @default(uuid())
+  name            String
+  project         String
+  environment     String   // qa, demo, development, education
+  chains          String[] // Array of chain names: sepolia, holesky, solana, etc.
+  walletAddress   String?  @map("wallet_address")
+  minBalance      String   @default("0.01") @map("min_balance")
+  maxClaimsPerDay Int      @default(10) @map("max_claims_per_day")
+  isActive        Boolean  @default(true) @map("is_active")
+  ownerUserId     String?  @map("owner_user_id")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+  
+  fundingLogs     PersonaFundingLog[]
+  
+  @@map("personas")
+}
+
+model PersonaFundingLog {
+  id          String   @id @default(uuid())
+  personaId   String   @map("persona_id")
+  persona     Persona  @relation(fields: [personaId], references: [id], onDelete: Cascade)
+  chain       String
+  amount      String
+  txHash      String?  @map("tx_hash")
+  status      String   @default("pending") // pending, confirmed, failed
+  error       String?
+  fundedAt    DateTime @default(now()) @map("funded_at")
+  
+  @@map("persona_funding_logs")
+}
