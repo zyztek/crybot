@@ -12,6 +12,7 @@ jobs:
   # to avoid duplicate runs
   sonarcloud:
     runs-on: ubuntu-latest
+    if: secrets.SONAR_TOKEN != ''
     steps:
       - uses: actions/checkout@v4
         with:
