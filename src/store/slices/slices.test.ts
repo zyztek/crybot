@@ -46,14 +46,16 @@ type TestStore = {
 }
 
 // Helper to create combined store for integration testing
+ 
 const createTestStore = () => {
-  return create<TestStore>((set) => ({
-    ...createAuthStore(set as any),
-    ...createUIStore(set as any),
-    ...createUserStore(set as any),
-    ...createWalletStore(set as any),
-    ...createFaucetStore(set as any),
-    ...createAchievementsStore(set as any),
+  // Using 'any' to bypass zustand type checking between different store creator types
+  return create<any>((set: any, get: any, api: any) => ({
+    ...createAuthStore(set, get, api),
+    ...createUIStore(set, get, api),
+    ...createUserStore(set, get, api),
+    ...createWalletStore(set, get, api),
+    ...createFaucetStore(set, get, api),
+    ...createAchievementsStore(set, get, api),
   }))
 }
 
@@ -235,7 +237,9 @@ describe('Store Slices - Integration Tests', () => {
   describe('Slice Type Definitions', () => {
     it('auth slice has correct types', () => {
       const mockSet = vi.fn() as any
-      const authSlice = createAuthStore(mockSet)
+      const mockGet = vi.fn() as any
+      const mockApi = vi.fn() as any
+      const authSlice = createAuthStore(mockSet, mockGet, mockApi)
       expect(typeof authSlice.login).toBe('function')
       expect(typeof authSlice.logout).toBe('function')
       expect(typeof authSlice.isLoggedIn).toBe('boolean')
@@ -243,20 +247,26 @@ describe('Store Slices - Integration Tests', () => {
 
     it('ui slice has correct types', () => {
       const mockSet = vi.fn() as any
-      const uiSlice = createUIStore(mockSet)
+      const mockGet = vi.fn() as any
+      const mockApi = vi.fn() as any
+      const uiSlice = createUIStore(mockSet, mockGet, mockApi)
       expect(typeof uiSlice.setActiveTab).toBe('function')
       expect(uiSlice.language).toBe('es')
     })
 
     it('wallet slice has correct types', () => {
       const mockSet = vi.fn() as any
-      const walletSlice = createWalletStore(mockSet)
+      const mockGet = vi.fn() as any
+      const mockApi = vi.fn() as any
+      const walletSlice = createWalletStore(mockSet, mockGet, mockApi)
       expect(typeof walletSlice.updateBalance).toBe('function')
     })
 
     it('achievements slice has correct types', () => {
       const mockSet = vi.fn() as any
-      const achievementsSlice = createAchievementsStore(mockSet)
+      const mockGet = vi.fn() as any
+      const mockApi = vi.fn() as any
+      const achievementsSlice = createAchievementsStore(mockSet, mockGet, mockApi)
       expect(typeof achievementsSlice.updateAchievementProgress).toBe('function')
       expect(typeof achievementsSlice.unlockAchievement).toBe('function')
     })

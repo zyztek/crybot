@@ -435,7 +435,6 @@ const Portfolio: React.FC = () => {
             <div className="relative w-64 h-64 mx-auto mb-6">
               <svg viewBox="0 0 100 100" className="w-full h-full transform -rotate-90">
                 {(() => {
-                  let offset = 0;
                   const chainColors: Record<string, string> = {
                     Bitcoin: '#F59E0B',
                     Ethereum: '#8B5CF6',
@@ -444,26 +443,40 @@ const Portfolio: React.FC = () => {
                     Litecoin: '#6B7280',
                   };
                   
-                  return chainTotals.map((chainData, i) => {
-                    const percentage = (chainData.totalValue / totalValue);
-                    const dashArray = `${percentage * 314} 314`;
-                    const circle = (
-                      <circle
-                        key={chainData.chain}
-                        cx="50"
-                        cy="50"
-                        r="50"
-                        fill="none"
-                        stroke={chainColors[chainData.chain] || '#6B7280'}
-                        strokeWidth="20"
-                        strokeDasharray={dashArray}
-                        strokeDashoffset={-offset}
-                        className="transition-all duration-500"
-                      />
-                    );
-                    offset += percentage * 314;
-                    return circle;
-                  });
+                  // Precompute segments immutably to avoid ESLint error
+                  const chartSegments = chainTotals.reduce<Array<{ chain: string; dash: number; offset: number; color: string }>>(
+                    (acc, chainData) => {
+                      const previousOffset = acc.length > 0
+                        ? acc[acc.length - 1].offset + acc[acc.length - 1].dash
+                        : 0;
+                      const percentage = chainData.totalValue / totalValue;
+                      const dash = percentage * 314;
+                      
+                      acc.push({
+                        chain: chainData.chain,
+                        dash,
+                        offset: previousOffset,
+                        color: chainColors[chainData.chain] || '#6B7280',
+                      });
+                      return acc;
+                    },
+                    []
+                  );
+                  
+                  return chartSegments.map((segment) => (
+                    <circle
+                      key={segment.chain}
+                      cx="50"
+                      cy="50"
+                      r="50"
+                      fill="none"
+                      stroke={segment.color}
+                      strokeWidth="20"
+                      strokeDasharray={`${segment.dash} 314`}
+                      strokeDashoffset={-segment.offset}
+                      className="transition-all duration-500"
+                    />
+                  ));
                 })()}
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">

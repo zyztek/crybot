@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ArrowLeftRight, RefreshCw, Bitcoin, DollarSign, TrendingUp, Calculator } from 'lucide-react';
 
 interface ConversionData {
@@ -81,11 +81,7 @@ export default function CryptoConverter() {
 
   const t = texts[language];
 
-  useEffect(() => {
-    calculateConversion();
-  }, [fromCurrency, toCurrency, amount, isCrypto]);
-
-  const calculateConversion = () => {
+  const calculateConversion = useCallback(() => {
     setIsCalculating(true);
 
     setTimeout(() => {
@@ -133,7 +129,11 @@ export default function CryptoConverter() {
 
       setIsCalculating(false);
     }, 300);
-  };
+  }, [fromCurrency, toCurrency, amount, isCrypto]);
+
+  useEffect(() => {
+    calculateConversion();
+  }, [calculateConversion]);
 
   const swapCurrencies = () => {
     setFromCurrency(toCurrency);
@@ -297,7 +297,7 @@ export default function CryptoConverter() {
                     <div className="text-right">
                       <div className="text-white font-bold">${crypto.price.toLocaleString()}</div>
                       <div className="text-green-400 text-sm flex items-center gap-1">
-                        +{(Math.random() * 10).toFixed(2)}%
+                        +{(Math.random() * 10).toFixed(2)}% {/* eslint-disable-line react-hooks/purity */}
                       </div>
                     </div>
                   </div>

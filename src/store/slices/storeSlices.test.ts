@@ -226,9 +226,10 @@ describe('Store Slices Integration Tests', () => {
       const authStore = createAuthStore
       const uiStore = createUIStore
       
-      const combined = create((set, get) => ({
-        ...authStore(set),
-        ...uiStore(set),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const combined = create((set: any, get: any, api: any) => ({
+        ...authStore(set, get, api),
+        ...uiStore(set, get, api),
       }))
       
       // Auth should work
@@ -247,9 +248,10 @@ describe('Store Slices Integration Tests', () => {
       const walletStore = createWalletStore
       const uiStore = createUIStore
       
-      const combined = create((set, get) => ({
-        ...walletStore(set),
-        ...uiStore(set),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const combined = create((set: any, get: any, api: any) => ({
+        ...walletStore(set, get, api),
+        ...uiStore(set, get, api),
       }))
       
       // Wallet should work
@@ -267,10 +269,11 @@ describe('Store Slices Integration Tests', () => {
       const uiStore = createUIStore
       const walletStore = createWalletStore
       
-      const combined = create((set, get) => ({
-        ...authStore(set),
-        ...uiStore(set),
-        ...walletStore(set),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const combined = create((set: any, get: any, api: any) => ({
+        ...authStore(set, get, api),
+        ...uiStore(set, get, api),
+        ...walletStore(set, get, api),
       }))
       
       // Test all three slices
@@ -293,10 +296,11 @@ describe('Store Slices Integration Tests', () => {
       const uiStore = createUIStore
       const walletStore = createWalletStore
       
-      const combined = create((set, get) => ({
-        ...authStore(set),
-        ...uiStore(set),
-        ...walletStore(set),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const combined = create((set: any, get: any, api: any) => ({
+        ...authStore(set, get, api),
+        ...uiStore(set, get, api),
+        ...walletStore(set, get, api),
       }))
       
       // Change UI state - should not affect auth
@@ -316,9 +320,10 @@ describe('Store Slices Integration Tests', () => {
       const authStore = createAuthStore
       const uiStore = createUIStore
       
-      const combined = create((set, get) => ({
-        ...authStore(set),
-        ...uiStore(set),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const combined = create((set: any, get: any, api: any) => ({
+        ...authStore(set, get, api),
+        ...uiStore(set, get, api),
       }))
       
       // Make changes

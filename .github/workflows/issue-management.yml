@@ -1,0 +1,37 @@
+name: Issue Management
+
+on:
+  issues:
+    types: [opened, closed]
+  pull_request:
+    types: [opened, closed, ready_for_review]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add to project
+        uses: actions/add-to-project@v1
+        with:
+          project-url: https://github.com/users/zyztek/projects/1
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Add triage label
+        if: github.event_name == 'issues'
+        uses: actions/labeler@v5
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          configuration-path: .github/labeler.yml
+
+  close-stale:
+    if: github.event_name == 'issues'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v9
+        with:
+          days-before-stale: 60
+          days-before-close: 7
+          stale-label: stale
+          close-issue-message: |
+            This issue has been automatically closed due to inactivity.
+            Please feel free to reopen if you still need assistance.

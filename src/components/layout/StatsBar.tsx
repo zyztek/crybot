@@ -11,16 +11,23 @@ interface StatsBarProps {
 }
 
 export default function StatsBar({ walletBalance, history, faucets, t }: StatsBarProps) {
-  const btcValue: string = walletBalance.btc ?? '0'
-  const activeFaucetsCount: number = faucets ? faucets.filter(f => f.status === 'available').length : 0
-  const availableCoinsCount: number = Object.values(walletBalance).filter((b) => parseFloat(String(b)) > 0).length
+  const btcValue = walletBalance.btc || '0'
+  const historyLength = (history?.length ?? 0)
+  const faucetsCount = (faucets?.filter(f => f.status === 'available').length ?? 0)
+  const coinsCount = Object.values(walletBalance).filter((b) => parseFloat(String(b)) > 0).length
+
+  // Ensure all values are strings - use fallback for undefined
+  const safeBtcValue = (btcValue ?? '0') + ' BTC'
+  const safeHistoryLength = historyLength > 0 ? String(historyLength) : '0'
+  const safeFaucetsCount = faucetsCount > 0 ? String(faucetsCount) : '0'
+  const safeCoinsCount = coinsCount > 0 ? String(coinsCount) : '0'
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
       <StatCard 
         icon={<Wallet className="w-5 h-5" />}
         title={t.totalClaimed}
-        value={btcValue + ' BTC'}
+        value={safeBtcValue + ' BTC'}
         color="from-yellow-500/20 to-orange-500/20"
         borderColor="border-yellow-500/30"
         iconColor="text-yellow-400"
@@ -29,7 +36,7 @@ export default function StatsBar({ walletBalance, history, faucets, t }: StatsBa
       <StatCard 
         icon={<Activity className="w-5 h-5" />}
         title={t.todayClaims}
-        value={String(history.length)}
+        value={safeHistoryLength}
         color="from-green-500/20 to-emerald-500/20"
         borderColor="border-green-500/30"
         iconColor="text-green-400"
@@ -38,7 +45,7 @@ export default function StatsBar({ walletBalance, history, faucets, t }: StatsBa
       <StatCard 
         icon={<Zap className="w-5 h-5" />}
         title={t.activeFaucets}
-        value={String(activeFaucetsCount)}
+        value={safeFaucetsCount}
         color="from-purple-500/20 to-pink-500/20"
         borderColor="border-purple-500/30"
         iconColor="text-purple-400"
@@ -47,7 +54,7 @@ export default function StatsBar({ walletBalance, history, faucets, t }: StatsBa
       <StatCard 
         icon={<TrendingUp className="w-5 h-5" />}
         title={t.availableCoins}
-        value={String(availableCoinsCount)}
+        value={safeCoinsCount}
         color="from-blue-500/20 to-cyan-500/20"
         borderColor="border-blue-500/30"
         iconColor="text-blue-400"

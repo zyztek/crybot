@@ -1,38 +1,64 @@
 # Security Policy
 
-## 🔒 Security Considerations
-
-This project deals with cryptocurrency testnet faucets. While it operates on testnet (not real funds), we take security seriously.
-
-## Reporting Security Issues
-
-If you discover a security vulnerability, please send an email to the maintainers. We will respond within 24 hours.
-
-## Security Best Practices
-
-### For Users
-- Never share your private keys or seed phrases
-- Use testnet faucets only for testing purposes
-- Verify all transactions on block explorers before confirming
-
-### For Developers
-- Keep dependencies updated
-- Review code for vulnerabilities before deploying
-- Use environment variables for sensitive data
-- Never commit secrets to version control
-
 ## Supported Versions
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.0.x   | ✅ Active          |
-| < 1.0   | ❌ End of Life     |
+| 1.0.x   | :white_check_mark: |
+| 0.9.x   | :x:                |
 
-## Environment Security
+## Reporting a Vulnerability
 
-Ensure these are configured in `.env`:
-- JWT_SECRET (minimum 32 characters)
-- DATABASE_URL
-- CORS_ORIGIN
+We take security vulnerabilities seriously. Please report any vulnerabilities responsibly.
 
-Never expose these in client-side code.
+### How to Report
+
+1. **Do NOT** create a public GitHub issue
+2. Email: security@crybot.com
+3. Or use GitHub Security Advisories
+
+### What to Include
+
+- Description of the vulnerability
+- Steps to reproduce
+- Potential impact
+- Suggested fix (optional)
+
+### Response Timeline
+
+- **Acknowledgment**: Within 48 hours
+- **Initial Assessment**: Within 7 days
+- **Fix Timeline**: Based on severity
+
+## Security Updates
+
+We release security updates as needed. Critical vulnerabilities may trigger emergency releases.
+
+## Scope
+
+This policy covers:
+- Frontend application (src/)
+- Backend API (server/)
+- GitHub workflows (.github/)
+
+Out of scope:
+- Third-party services
+- User-deployed instances
+
+## Best Practices
+
+### For Users
+- Use strong, unique passwords
+- Enable 2FA when available
+- Keep wallet seeds secure
+- Verify URLs before connecting
+
+### For Developers
+- Never commit secrets
+- Use environment variables
+- Follow OWASP guidelines
+- Keep dependencies updated
+
+## Acknowledgments
+
+Thank you to all security researchers who help keep CryptoFaucet Hub secure.

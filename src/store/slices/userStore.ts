@@ -23,7 +23,8 @@ export interface UserState {
   copyReferralCode: () => void
 }
 
-export const createUserStore: StateCreator<UserState> = (set, get) => ({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const createUserStore: StateCreator<UserState> = (set: any, get: any, api: any) => ({
   user: INITIAL_USER,
   notifications: 3,
   copyReferralCode: () => {

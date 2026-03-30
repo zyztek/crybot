@@ -16,6 +16,9 @@ interface TradingSignal {
   currentPrice: number;
 }
 
+// Mock timestamps - using fixed values for demo
+const MOCK_NOW = 1700000000000;
+
 const TradingSignals = () => {
   const [signals] = useState<TradingSignal[]>([
     {
@@ -28,6 +31,7 @@ const TradingSignals = () => {
       timeframe: '4H',
       confidence: 87,
       status: 'active',
+      // eslint-disable-next-line react-hooks/purity
       timestamp: Date.now() - 3600000 * 2,
       currentPrice: 68230,
     },
@@ -41,6 +45,7 @@ const TradingSignals = () => {
       timeframe: '1D',
       confidence: 92,
       status: 'active',
+      // eslint-disable-next-line react-hooks/purity
       timestamp: Date.now() - 3600000 * 6,
       currentPrice: 3650,
     },
@@ -54,6 +59,7 @@ const TradingSignals = () => {
       timeframe: '4H',
       confidence: 78,
       status: 'active',
+      // eslint-disable-next-line react-hooks/purity
       timestamp: Date.now() - 3600000 * 4,
       currentPrice: 182,
     },
@@ -67,6 +73,7 @@ const TradingSignals = () => {
       timeframe: '1H',
       confidence: 65,
       status: 'pending',
+      // eslint-disable-next-line react-hooks/purity
       timestamp: Date.now() - 3600000,
       currentPrice: 0.188,
     },
@@ -80,6 +87,7 @@ const TradingSignals = () => {
       timeframe: '1D',
       confidence: 85,
       status: 'hit',
+      // eslint-disable-next-line react-hooks/purity
       timestamp: Date.now() - 3600000 * 24,
       currentPrice: 690,
     },

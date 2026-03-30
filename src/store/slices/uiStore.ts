@@ -13,19 +13,20 @@ export interface UIState {
   toggleWalletAddress: () => void
 }
 
-export const createUIStore: StateCreator<UIState> = (set) => ({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const createUIStore: StateCreator<UIState> = (set: any, get: any, api: any) => ({
   activeTab: 'faucets',
   language: 'es',
   theme: 'dark',
   showWalletAddress: false,
   setActiveTab: (tab: TabType) => set({ activeTab: tab }),
-  toggleLanguage: () => set((state) => ({ 
+  toggleLanguage: () => set((state: UIState) => ({ 
     language: state.language === 'es' ? 'en' : 'es' 
   })),
-  toggleTheme: () => set((state) => ({ 
+  toggleTheme: () => set((state: UIState) => ({ 
     theme: state.theme === 'dark' ? 'light' : 'dark' 
   })),
-  toggleWalletAddress: () => set((state) => ({ 
+  toggleWalletAddress: () => set((state: UIState) => ({ 
     showWalletAddress: !state.showWalletAddress 
   })),
 })

@@ -1,48 +1,52 @@
-# Environment files (keep .env.example for templates)
-.env
-.env.local
-.env.development
-.env.staging
-.env.production
-server/.env
-server/.env.local
-server/.env.development
-server/.env.staging
-server/.env.production
-
 # Dependencies
 node_modules/
-server/node_modules/
+.pnp
+.pnp.js
 
-# Build outputs
+# Testing
+coverage/
+.nyc_output/
+
+# Production
 dist/
-server/dist/
+build/
 
-# Logs
-logs/
+# Misc
+.DS_Store
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Editor directories and files
+# Local env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+
+# IDE
 .idea/
 .vscode/
 *.swp
 *.swo
-*~
 
-# OS files
-.DS_Store
+# OS
 Thumbs.db
 
-# Test coverage
-coverage/
+# Database
+*.sqlite
+*.db
 
-# Cache
+# Prisma
+server/prisma/*.db
+
+# Docker
+.dockerignore
+
+# Build
 .cache/
-.vite/
-
-# Temporary files
-tmp/
-temp/

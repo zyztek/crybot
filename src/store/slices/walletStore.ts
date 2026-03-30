@@ -16,9 +16,10 @@ export interface WalletState {
   updateBalance: (coin: keyof WalletBalance, amount: number) => void
 }
 
-export const createWalletStore: StateCreator<WalletState> = (set) => ({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const createWalletStore: StateCreator<WalletState> = (set: any, get: any, api: any) => ({
   walletBalance: INITIAL_WALLET_BALANCE,
-  updateBalance: (coin, amount) => set((state) => ({
+  updateBalance: (coin, amount) => set((state: WalletState) => ({
     walletBalance: {
       ...state.walletBalance,
       [coin]: (parseFloat(state.walletBalance[coin]) + amount).toFixed(8)

@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 
 interface StatCardProps {
   icon: ReactNode
-  title: string
+  title: string | undefined
   value: string | undefined
   color: string
   borderColor: string
@@ -18,8 +18,8 @@ export default function StatCard({ icon, title, value, color, borderColor, iconC
           <span className={iconColor}>{icon}</span>
         </div>
         <div>
-          <p className="text-purple-300 text-xs">{title}</p>
-          <p className="text-lg font-bold text-white">{value}</p>
+          <p className="text-purple-300 text-xs">{title || '-'}</p>
+          <p className="text-lg font-bold text-white">{value || '0'}</p>
         </div>
       </div>
     </div>

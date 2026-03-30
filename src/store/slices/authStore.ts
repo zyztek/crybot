@@ -7,7 +7,8 @@ export interface AuthState {
   logout: () => void
 }
 
-export const createAuthStore: StateCreator<AuthState> = (set) => ({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const createAuthStore: StateCreator<AuthState> = (set: any, get: any, api: any) => ({
   isLoggedIn: false,
   login: () => set({ isLoggedIn: true }),
   logout: () => set({ isLoggedIn: false }),

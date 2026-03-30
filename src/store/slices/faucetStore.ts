@@ -36,14 +36,15 @@ export interface FaucetState {
   ) => void
 }
 
-export const createFaucetStore: StateCreator<FaucetState> = (set, get) => ({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const createFaucetStore: StateCreator<FaucetState> = (set: any, get: any, api: any) => ({
   faucets: INITIAL_FAUCETS,
   history: INITIAL_HISTORY,
   claimFaucet: (faucet, onCountdownEnd, actions) => {
     const state = get()
     
     // Update faucet status
-    const updatedFaucets = state.faucets.map((f) => 
+    const updatedFaucets = state.faucets.map((f: Faucet) => 
       f.id === faucet.id ? { ...f, status: 'wait' as const } : f
     )
     
@@ -82,7 +83,6 @@ export const createFaucetStore: StateCreator<FaucetState> = (set, get) => ({
     // Update achievements via provided action (Claim Master id=2 and Week Streak id=5)
     // Falls back to direct store access if actions not provided (backwards compatibility)
     if (actions?.updateAchievementProgress) {
-      // Get current progress from combined store (via get()) and increment
       const fullState = get() as unknown as { achievements?: { id: number; progress: number }[] }
       const currentClaimMaster = fullState.achievements?.find(a => a.id === 2)
       const currentWeekStreak = fullState.achievements?.find(a => a.id === 5)
@@ -105,7 +105,7 @@ export const createFaucetStore: StateCreator<FaucetState> = (set, get) => ({
       countdown--
       const currentFaucets = get().faucets
       set({
-        faucets: currentFaucets.map((f) => 
+        faucets: currentFaucets.map((f: Faucet) => 
           f.id === faucet.id ? { ...f, timer: countdown } : f
         )
       })
@@ -114,7 +114,7 @@ export const createFaucetStore: StateCreator<FaucetState> = (set, get) => ({
         clearInterval(interval)
         const finalFaucets = get().faucets
         set({
-          faucets: finalFaucets.map((f) => 
+          faucets: finalFaucets.map((f: Faucet) => 
             f.id === faucet.id ? { ...f, status: 'available' as const, timer: faucet.timer } : f
           )
         })

@@ -6,7 +6,8 @@ describe("cn", () => {
   });
 
   it("handles conditional classes", () => {
-    expect(cn("px-2", false && "py-1")).toBe("px-2");
+    const conditionalClass = false;
+    expect(cn("px-2", conditionalClass ? "py-1" : "")).toBe("px-2");
   });
 
   it("resolves tailwind conflicts", () => {

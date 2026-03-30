@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Crown, Star, Infinity, Check, Zap, ArrowUp, ArrowRight, TrendingUp, Gift, Award, Shield, Bell, Sparkles } from 'lucide-react';
+import { Crown, Star, Check, Zap, ArrowUp, ArrowRight, TrendingUp, Gift, Award, Shield, Bell, Sparkles } from 'lucide-react';
 
 const vipTiers = [
   {

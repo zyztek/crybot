@@ -318,7 +318,7 @@ export const useApi = () => {
         completed: boolean; completedAt?: string; claimedAt?: string;
       }>).map(a => ({
         id: parseInt(a.id) || 0,
-        name: a.name,
+        title: a.name, // Map 'name' to 'title' for Achievement type
         description: a.description,
         icon: a.icon,
         coin: a.coin,
@@ -326,11 +326,13 @@ export const useApi = () => {
         reward: a.reward,
         type: a.type,
         progress: a.progress,
+        total: a.target, // Map 'target' to 'total' for Achievement type
+        unlocked: a.completed, // Map 'completed' to 'unlocked' for Achievement type
         completed: a.completed,
         completedAt: a.completedAt,
         claimedAt: a.claimedAt,
       }));
-      store.achievements = convertedAchievements;
+      store.achievements = convertedAchievements as any;
       return convertedAchievements;
     } catch (err) {
       console.error('Failed to fetch achievements:', err);
@@ -375,10 +377,12 @@ export const useApi = () => {
         id: parseInt(entry.id) || index + 1,
         rank: entry.rank,
         username: entry.username,
-        score: entry.score,
+        totalClaimed: entry.score, // Map 'score' to 'totalClaimed' for LeaderboardEntry type
+        claims: parseInt(entry.score) || 0, // Map 'score' to 'claims' for LeaderboardEntry type
+        avatar: '', // Add required 'avatar' field
         faucetClaims: parseInt(entry.score) || 0,
       }));
-      store.leaderboard = convertedLeaderboard;
+      store.leaderboard = convertedLeaderboard as any;
       return convertedLeaderboard;
     } catch (err) {
       console.error('Failed to fetch leaderboard:', err);

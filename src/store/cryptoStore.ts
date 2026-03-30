@@ -44,6 +44,7 @@ interface CryptoStore {
   
   // Wallet state
   walletBalance: WalletBalance
+  updateBalance: (coin: keyof WalletBalance, amount: number) => void
   
   // Faucet state
   faucets: Faucet[]
@@ -61,6 +62,8 @@ interface CryptoStore {
   // Achievements state
   achievements: Achievement[]
   leaderboard: LeaderboardEntry[]
+  updateAchievementProgress: (id: number, progress: number) => void
+  unlockAchievement: (id: number) => void
 }
 
 // Create storage interface that handles missing localStorage gracefully
@@ -72,16 +75,34 @@ const createStorage = () => {
       removeItem: (_name: string) => {},
     }
   }
-  
+
   try {
     const testKey = '__storage_test__'
     localStorage.setItem(testKey, testKey)
     localStorage.removeItem(testKey)
-    
+
     return {
-      getItem: (name: string) => localStorage.getItem(name),
-      setItem: (name: string, value: string) => localStorage.setItem(name, value),
-      removeItem: (name: string) => localStorage.removeItem(name),
+      getItem: (name: string) => {
+        try {
+          return localStorage.getItem(name)
+        } catch {
+          return null
+        }
+      },
+      setItem: (name: string, value: string) => {
+        try {
+          localStorage.setItem(name, value)
+        } catch {
+          // Silently fail on write errors - state still works in memory
+        }
+      },
+      removeItem: (name: string) => {
+        try {
+          localStorage.removeItem(name)
+        } catch {
+          // Silently fail on remove errors
+        }
+      },
     }
   } catch {
     return {
@@ -92,16 +113,16 @@ const createStorage = () => {
   }
 }
 
-// Create combined store using slice pattern
+// Create combined store using slice pattern - pass set/get/api to slice creators
 export const useCryptoStore = create<CryptoStore>()(
   persist(
-    () => {
-      const auth = createAuthStore()
-      const ui = createUIStore()
-      const user = createUserStore()
-      const wallet = createWalletStore()
-      const faucet = createFaucetStore()
-      const achievements = createAchievementsStore()
+    (set, get, api) => {
+      const auth = createAuthStore(set, get, api)
+      const ui = createUIStore(set, get, api)
+      const user = createUserStore(set, get, api)
+      const wallet = createWalletStore(set, get, api)
+      const faucet = createFaucetStore(set, get, api)
+      const achievements = createAchievementsStore(set, get, api)
       return {
         ...auth,
         ...ui,

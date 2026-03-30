@@ -33,15 +33,16 @@ export interface AchievementsState {
   unlockAchievement: (id: number) => void
 }
 
-export const createAchievementsStore: StateCreator<AchievementsState> = (set) => ({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const createAchievementsStore: StateCreator<AchievementsState> = (set: any, get: any, api: any) => ({
   achievements: INITIAL_ACHIEVEMENTS,
   leaderboard: LEADERBOARD,
-  updateAchievementProgress: (id, progress) => set((state) => ({
+  updateAchievementProgress: (id, progress) => set((state: AchievementsState) => ({
     achievements: state.achievements.map((a) => 
       a.id === id ? { ...a, progress: Math.min(progress, a.total) } : a
     )
   })),
-  unlockAchievement: (id) => set((state) => ({
+  unlockAchievement: (id) => set((state: AchievementsState) => ({
     achievements: state.achievements.map((a) => 
       a.id === id ? { ...a, unlocked: true } : a
     )

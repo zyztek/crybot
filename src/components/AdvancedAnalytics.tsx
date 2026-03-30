@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, PieChart, Pie, Cell, BarChart, Bar, ResponsiveContainer, Legend, ComposedChart } from 'recharts';
-import { TrendingUp, TrendingDown, DollarSign, Activity, PieChart as PieChartIcon, Target, Award, Download, Calendar, BarChart3, Layers, Zap, TrendingUpTrendingDown, Calculator, Filter, X } from 'lucide-react';
+import { TrendingUp, TrendingDown, DollarSign, Activity, PieChart as PieChartIcon, Target, Award, Download, Calendar, BarChart3, Layers, Zap, Calculator, Filter, X } from 'lucide-react';
 
 interface EarningsData {
   date: string;
@@ -17,6 +17,24 @@ interface CoinDistribution {
   value: number;
   color: string;
 }
+
+// CustomTooltip component moved outside to avoid react-hooks/static-components error
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-slate-800 border border-slate-700 rounded-lg p-3">
+        <div className="text-white font-bold mb-2">{label}</div>
+        {payload.map((entry: any, index: number) => (
+          <div key={index} className="text-sm" style={{ color: entry.color }}>
+            {entry.name}: {entry.value}
+          </div>
+        ))}
+      </div>
+    );
+  }
+  return null;
+};
 
 const AdvancedAnalytics = () => {
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d' | 'custom'>('30d');
@@ -135,22 +153,6 @@ const AdvancedAnalytics = () => {
   const roiTotalReturn = roiInvestment * Math.pow(1 + roiDailyRate / 100, roiDays);
   const roiProfit = roiTotalReturn - roiInvestment;
   const roiPercentage = ((roiProfit / roiInvestment) * 100).toFixed(1);
-
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-slate-800 border border-slate-700 rounded-lg p-3">
-          <div className="text-white font-bold mb-2">{label}</div>
-          {payload.map((entry: any, index: number) => (
-            <div key={index} className="text-sm" style={{ color: entry.color }}>
-              {entry.name}: {entry.value}
-            </div>
-          ))}
-        </div>
-      );
-    }
-    return null;
-  };
 
   return (
     <div className="space-y-6">

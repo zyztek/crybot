@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Coins, LogOut, Chrome, Loader2, Mail, Lock, ArrowLeft, KeyRound, CheckCircle, Globe } from 'lucide-react'
+import { Coins, LogOut, Loader2, Mail, Lock, ArrowLeft, KeyRound, CheckCircle, Globe } from 'lucide-react'
 import type { TranslationTexts } from '@/i18n/translations'
 import { useApi } from '@/hooks/useApi'
 

@@ -197,8 +197,7 @@ export const SentimentAnalyzer: React.FC = () => {
                 </defs>
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-4xl font-bold text-white">{selectedAsset.overall}</span>
-                <span className="text-sm text-slate-400">/ 100</span>
+                <span className="text-4xl font-bold text-white">{selectedAsset.overall}</span>                      <span className="text-sm text-slate-400">/ 100</span>
               </div>
             </div>
             <div className="text-center">
@@ -240,7 +239,7 @@ export const SentimentAnalyzer: React.FC = () => {
                   <TrendingUp className="w-4 h-4 text-purple-400" />
                   <span className="text-sm text-slate-400">Price Trend</span>
                 </div>
-                <span className={selectedAsset.change24h >= 0 ? 'text-green-400' : 'text-red-400'} font-semibold>
+                <span className={`${selectedAsset.change24h >= 0 ? 'text-green-400' : 'text-red-400'} font-semibold`}>
                   {selectedAsset.change24h >= 0 ? '+' : ''}{selectedAsset.change24h}%
                 </span>
               </div>
@@ -310,7 +309,7 @@ export const SentimentAnalyzer: React.FC = () => {
                       </span>
                       <span className="text-xs text-slate-500">{post.time}</span>
                     </div>
-                    <p className="text-slate-300 text-sm">"{post.content}"</p>
+                    <p className="text-slate-300 text-sm">&ldquo;{post.content}&rdquo;</p>
                     <div className="flex items-center gap-4 mt-2">
                       {post.likes > 0 && (
                         <span className="text-xs text-slate-400 flex items-center gap-1">

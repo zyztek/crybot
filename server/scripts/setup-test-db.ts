@@ -9,6 +9,7 @@
  *   DATABASE_URL - Fallback connection string (used if TEST_DATABASE_URL not set)
  */
 
+/* eslint-disable no-console */
 import { PrismaClient } from '@prisma/client';
 import { execSync } from 'child_process';
 

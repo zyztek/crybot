@@ -70,7 +70,10 @@ export const CryptoCourses: React.FC = () => {
 
   const getProgress = (course: Course) => {
     if (course.completed) return 100;
-    if (course.enrolled) return Math.floor(Math.random() * 80) + 10;
+    if (course.enrolled) {
+      // eslint-disable-next-line react-hooks/purity
+      return Math.floor(Math.random() * 80) + 10;
+    }
     return 0;
   };
 

@@ -360,8 +360,8 @@ describe('CryptoStore - Persist Hydration Behavior', () => {
     it('rehydrates with empty achievements completed', () => {
       const state = useCryptoStore.getState()
       
-      // Should have some uncompleted achievements
-      const incompleteAchievements = state.achievements.filter(a => !a.completed)
+      // Should have some uncompleted achievements (use 'unlocked' not 'completed')
+      const incompleteAchievements = state.achievements.filter((a: { unlocked?: boolean }) => !a.unlocked)
       expect(incompleteAchievements.length).toBeGreaterThan(0)
     })
 
