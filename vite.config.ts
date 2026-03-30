@@ -15,6 +15,8 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
+        // Note: inlineDynamicImports is deprecated but required for vite-plugin-singlefile
+        // Vite 5.x warning is from the plugin itself, not this config
         inlineDynamicImports: true,
       },
     },
