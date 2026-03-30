@@ -13,15 +13,16 @@ const __dirname = path.dirname(__filename);
 export default defineConfig({
   base: './',
   build: {
-    rollupOptions: {
-      output: {
-        // Note: inlineDynamicImports is deprecated but required for vite-plugin-singlefile
-        // Vite 5.x warning is from the plugin itself, not this config
-        inlineDynamicImports: true,
-      },
-    },
+    // Disable code splitting for single file output
   },
-  plugins: [react(), tailwindcss(), viteSingleFile()],
+  plugins: [
+    react(),
+    tailwindcss(),
+    // Note: The inlineDynamicImports warning comes from vite-plugin-singlefile itself,
+    // not from our rollupOptions config. The plugin uses this option internally.
+    // No viable fix available without modifying the plugin source.
+    viteSingleFile(),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
