@@ -64,17 +64,9 @@ jobs:
         with:
           category: "/language:${{ matrix.language }}"
           
-          # Upload results even on failure for debugging
-          upload: always
+          # CodeQL analyze automatically uploads results to GitHub Security tab
       
-      # Upload SARIF results for security tab
-      - name: Upload Security Results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: codeql-results-${{ matrix.language }}
-          path: results.sarif
-          retention-days: 30
+      # Note: CodeQL analyze action automatically uploads results to GitHub Security tab
 
   # Separate job for dependency scanning
   codeql-deps:
