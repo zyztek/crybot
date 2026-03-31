@@ -7,9 +7,10 @@ import { serverConfig } from '../config/index.js';
 
 export const requestLogger = (req: Request, res: Response, next: NextFunction) => {
   const start = Date.now();
+  const safePath = req.path.replace(/[\r\n]/g, '');
 
   // Log request details
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+  console.log(`[${new Date().toISOString()}] ${req.method} ${safePath}`);
 
   // Capture response finish event
   res.on('finish', () => {
@@ -19,7 +20,7 @@ export const requestLogger = (req: Request, res: Response, next: NextFunction) =
 
     if (serverConfig.isDevelopment) {
       console.log(
-        `${statusColor}[${res.statusCode}]${reset} ${req.method} ${req.path} - ${duration}ms`
+        `${statusColor}[${res.statusCode}]${reset} ${req.method} ${safePath} - ${duration}ms`
       );
     }
   });
