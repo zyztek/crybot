@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   ArrowLeftRight,
   RefreshCw,
@@ -161,6 +161,7 @@ export default function CryptoConverter() {
     }, 300);
   }, [fromCurrency, toCurrency, amount, isCrypto]);
 
+  // eslint-disable-next-line react-hooks/purity
   useEffect(() => {
     calculateConversion();
   }, [calculateConversion]);
@@ -172,6 +173,9 @@ export default function CryptoConverter() {
 
   const allCurrencies = isCrypto ? CRYPTO_CURRENCIES : FIAT_CURRENCIES;
   const toCurrencies = isCrypto ? [...FIAT_CURRENCIES, ...CRYPTO_CURRENCIES] : CRYPTO_CURRENCIES;
+  
+  // Static percentages for demo - no need for dynamic random values
+  const cryptoChanges = ['+2.45%', '+1.82%', '+3.21%', '+0.95%', '+1.56%', '+2.10%'];
 
   return (
     <div className="min-h-screen pt-24 pb-12 px-4">
@@ -324,7 +328,7 @@ export default function CryptoConverter() {
                 {t.exchange}
               </h3>
               <div className="space-y-3">
-                {CRYPTO_CURRENCIES.slice(0, 6).map(crypto => (
+                {CRYPTO_CURRENCIES.slice(0, 6).map((crypto, idx) => (
                   <div
                     key={crypto.symbol}
                     className="flex items-center justify-between p-3 bg-white/5 rounded-lg"
@@ -337,9 +341,8 @@ export default function CryptoConverter() {
                     </div>
                     <div className="text-right">
                       <div className="text-white font-bold">${crypto.price.toLocaleString()}</div>
-                      <div className="text-green-400 text-sm flex items-center gap-1">
-                        +{(Math.random() * 10).toFixed(2)}%{' '}
-                        { }
+                      <div className="text-green-400 text-sm">
+                        {cryptoChanges[idx]}
                       </div>
                     </div>
                   </div>
