@@ -20,7 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm ci --prefer-offline || npm ci || npm install
+          npm ci --prefer-offline --legacy-peer-deps || npm ci --legacy-peer-deps || npm install --legacy-peer-deps
         timeout-minutes: 10
 
       - name: Run linter
@@ -62,7 +62,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd server
-          npm ci --prefer-offline || npm ci || npm install
+          npm ci --prefer-offline --legacy-peer-deps || npm ci --legacy-peer-deps || npm install --legacy-peer-deps
         timeout-minutes: 10
 
       - name: Generate Prisma
