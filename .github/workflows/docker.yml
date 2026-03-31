@@ -11,7 +11,7 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    if: github.event_name != 'pull_request' && false # Disabled - requires DOCKERHUB credentials
+    if: false # Disabled - requires DOCKERHUB credentials
     permissions:
       contents: read
       packages: write

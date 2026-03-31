@@ -221,7 +221,6 @@ describe('Store Slices Integration Tests', () => {
       const authStore = createAuthStore;
       const uiStore = createUIStore;
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const combined = create((set: any, get: any, api: any) => ({
         ...authStore(set, get, api),
         ...uiStore(set, get, api),
@@ -243,7 +242,6 @@ describe('Store Slices Integration Tests', () => {
       const walletStore = createWalletStore;
       const uiStore = createUIStore;
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const combined = create((set: any, get: any, api: any) => ({
         ...walletStore(set, get, api),
         ...uiStore(set, get, api),
@@ -264,7 +262,6 @@ describe('Store Slices Integration Tests', () => {
       const uiStore = createUIStore;
       const walletStore = createWalletStore;
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const combined = create((set: any, get: any, api: any) => ({
         ...authStore(set, get, api),
         ...uiStore(set, get, api),
@@ -291,7 +288,6 @@ describe('Store Slices Integration Tests', () => {
       const uiStore = createUIStore;
       const walletStore = createWalletStore;
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const combined = create((set: any, get: any, api: any) => ({
         ...authStore(set, get, api),
         ...uiStore(set, get, api),
@@ -315,7 +311,6 @@ describe('Store Slices Integration Tests', () => {
       const authStore = createAuthStore;
       const uiStore = createUIStore;
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const combined = create((set: any, get: any, api: any) => ({
         ...authStore(set, get, api),
         ...uiStore(set, get, api),

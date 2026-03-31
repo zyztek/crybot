@@ -161,7 +161,6 @@ export default function CryptoConverter() {
     }, 300);
   }, [fromCurrency, toCurrency, amount, isCrypto]);
 
-  // eslint-disable-next-line react-hooks/purity
   useEffect(() => {
     calculateConversion();
   }, [calculateConversion]);

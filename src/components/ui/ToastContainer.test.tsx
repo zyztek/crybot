@@ -8,7 +8,6 @@ vi.mock('@/hooks/useToast', () => ({
   useToastStore: vi.fn(),
 }));
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mockUseToastStore = useToastStore as any as ReturnType<typeof vi.fn>;
 
 describe('ToastContainer', () => {

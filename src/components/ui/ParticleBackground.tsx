@@ -23,7 +23,6 @@ export default function ParticleBackground() {
 
   useEffect(() => {
     if (prefersReducedMotion) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setParticles([]);
       return;
     }

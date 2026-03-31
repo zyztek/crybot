@@ -13,7 +13,6 @@ export interface UIState {
   toggleWalletAddress: () => void;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const createUIStore: StateCreator<UIState> = (set: any, get: any, api: any) => ({
   activeTab: 'faucets',
   language: 'es',

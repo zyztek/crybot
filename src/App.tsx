@@ -88,7 +88,6 @@ function App() {
       setIsInitialized(true);
     };
     init();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Apply theme to DOM

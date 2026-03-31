@@ -32,14 +32,15 @@ jobs:
 
       - name: Build frontend
         run: npm run build || true
-      
+
       - name: Check formatting (optional)
         run: npx prettier --check . || true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist  # Disabled - GitHub Pages not enabled for repository
+          path: ./dist
+        continue-on-error: true
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -47,7 +48,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    
+
     steps:
       - name: Deploy to GitHub Pages
         id: deployment

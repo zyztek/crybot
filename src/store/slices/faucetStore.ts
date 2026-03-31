@@ -195,7 +195,6 @@ export interface FaucetState {
   ) => void;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const createFaucetStore: StateCreator<FaucetState> = (set: any, get: any, api: any) => ({
   faucets: INITIAL_FAUCETS,
   history: INITIAL_HISTORY,

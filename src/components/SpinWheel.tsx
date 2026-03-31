@@ -69,7 +69,6 @@ const SpinWheel: React.FC<SpinProps> = ({ userCoins, onWin }) => {
   };
 
   const getTimeUntilFree = () => {
-    // eslint-disable-next-line react-hooks/purity
     const now = Date.now();
     const diff = nextFreeSpin - now;
     if (diff <= 0) return '00:00:00';
