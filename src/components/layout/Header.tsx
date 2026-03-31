@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Coins, Bell, Flame, Star, Users, Sun, Moon, Search, X, ChevronDown, Globe } from 'lucide-react';
+import { Coins, Flame, Star, Users, Sun, Moon, Search, X, ChevronDown, Globe } from 'lucide-react';
 import type { User } from '@/types';
+import NotificationBell from '@/components/ui/NotificationBell';
 
 interface HeaderProps {
   user: User;
   language: 'es' | 'en';
   theme: 'dark' | 'light';
-  notifications: number;
   onToggleLanguage: () => void;
   onToggleTheme: () => void;
   searchTerm?: string;
@@ -17,7 +17,6 @@ export default function Header({
   user,
   language,
   theme,
-  notifications,
   onToggleLanguage,
   onToggleTheme,
   searchTerm = '',
@@ -82,17 +81,7 @@ export default function Header({
           </div>
 
           <div className="flex items-center gap-3">
-            <button
-              className="relative p-2 text-purple-300 hover:text-white transition-colors"
-              aria-label={language === 'es' ? 'Notificaciones' : 'Notifications'}
-            >
-              <Bell className="w-5 h-5" aria-hidden="true" />
-              {notifications > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">
-                  {notifications}
-                </span>
-              )}
-            </button>
+            <NotificationBell />
 
             <button
               onClick={onToggleTheme}

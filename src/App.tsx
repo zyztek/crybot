@@ -148,7 +148,6 @@ function App() {
             user={user}
             language={language}
             theme={theme}
-            notifications={notifications}
             onToggleLanguage={toggleLanguage}
             onToggleTheme={toggleTheme}
             searchTerm={searchTerm}

@@ -55,6 +55,10 @@ const Portfolio: React.FC = () => {
     Chainlink: <Coins className="w-5 h-5 text-blue-500" />,
     Cosmos: <Box className="w-5 h-5 text-teal-400" />,
     Uniswap: <Coins className="w-5 h-5 text-pink-300" />,
+    Pepe: <Coins className="w-5 h-5 text-green-400" />,
+    ShibaInu: <Coins className="w-5 h-5 text-amber-400" />,
+    Toncoin: <Coins className="w-5 h-5 text-blue-400" />,
+    Arbitrum: <Box className="w-5 h-5 text-blue-300" />,
   };
 
   const assets: Asset[] = [
@@ -225,6 +229,54 @@ const Portfolio: React.FC = () => {
       chain: 'Uniswap',
       chainIcon: ChainIcons.Uniswap,
       chainColor: 'from-pink-400 to-rose-500',
+    },
+    {
+      symbol: 'PEPE',
+      name: 'Pepe',
+      amount: 5000000,
+      value: 5.0,
+      change24h: 5.2,
+      change7d: 12.5,
+      allocation: 1,
+      chain: 'Pepe',
+      chainIcon: ChainIcons.Pepe,
+      chainColor: 'from-green-400 to-emerald-600',
+    },
+    {
+      symbol: 'SHIB',
+      name: 'Shiba Inu',
+      amount: 10000000,
+      value: 8.5,
+      change24h: 2.8,
+      change7d: 8.3,
+      allocation: 1,
+      chain: 'ShibaInu',
+      chainIcon: ChainIcons.ShibaInu,
+      chainColor: 'from-amber-400 to-orange-500',
+    },
+    {
+      symbol: 'TON',
+      name: 'Toncoin',
+      amount: 12.5,
+      value: 62.5,
+      change24h: 1.5,
+      change7d: 6.2,
+      allocation: 1,
+      chain: 'Toncoin',
+      chainIcon: ChainIcons.Toncoin,
+      chainColor: 'from-blue-400 to-cyan-600',
+    },
+    {
+      symbol: 'ARB',
+      name: 'Arbitrum',
+      amount: 25.0,
+      value: 50.0,
+      change24h: 3.1,
+      change7d: 9.5,
+      allocation: 1,
+      chain: 'Arbitrum',
+      chainIcon: ChainIcons.Arbitrum,
+      chainColor: 'from-blue-300 to-indigo-500',
     },
   ];
 
@@ -697,6 +749,10 @@ const Portfolio: React.FC = () => {
                     Chainlink: '#0EA5E9',
                     Cosmos: '#14B8A6',
                     Uniswap: '#F472B6',
+                    Pepe: '#10B981',
+                    ShibaInu: '#F59E0B',
+                    Toncoin: '#0EA5E9',
+                    Arbitrum: '#6366F1',
                   };
 
                   // Precompute segments immutably to avoid ESLint error
@@ -757,6 +813,10 @@ const Portfolio: React.FC = () => {
                   Chainlink: 'bg-cyan-500',
                   Cosmos: 'bg-teal-500',
                   Uniswap: 'bg-pink-400',
+                  Pepe: 'bg-emerald-500',
+                  ShibaInu: 'bg-amber-500',
+                  Toncoin: 'bg-cyan-500',
+                  Arbitrum: 'bg-indigo-400',
                 };
                 const percentage = Math.round((chainData.totalValue / totalValue) * 100);
                 return (
