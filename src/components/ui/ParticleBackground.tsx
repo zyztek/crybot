@@ -19,7 +19,6 @@ export default function ParticleBackground() {
   const [particles, setParticles] = useState<Particle[]>([]);
   const [prefersReducedMotion] = useState(getInitialReducedMotion);
 
-   
   const [, setTick] = useState(0);
 
   useEffect(() => {

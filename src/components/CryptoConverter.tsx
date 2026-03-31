@@ -173,7 +173,7 @@ export default function CryptoConverter() {
 
   const allCurrencies = isCrypto ? CRYPTO_CURRENCIES : FIAT_CURRENCIES;
   const toCurrencies = isCrypto ? [...FIAT_CURRENCIES, ...CRYPTO_CURRENCIES] : CRYPTO_CURRENCIES;
-  
+
   // Static percentages for demo - no need for dynamic random values
   const cryptoChanges = ['+2.45%', '+1.82%', '+3.21%', '+0.95%', '+1.56%', '+2.10%'];
 
@@ -341,9 +341,7 @@ export default function CryptoConverter() {
                     </div>
                     <div className="text-right">
                       <div className="text-white font-bold">${crypto.price.toLocaleString()}</div>
-                      <div className="text-green-400 text-sm">
-                        {cryptoChanges[idx]}
-                      </div>
+                      <div className="text-green-400 text-sm">{cryptoChanges[idx]}</div>
                     </div>
                   </div>
                 ))}

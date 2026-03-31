@@ -10,13 +10,13 @@ export default tseslint.config(
     files: ['**/*.{ts,tsx}'],
     plugins: {
       'react-hooks': reactHooks,
-      react
+      react,
     },
     languageOptions: {
       parserOptions: {
         ecmaFeatures: {
-          jsx: true
-        }
+          jsx: true,
+        },
       },
       globals: {
         window: 'readonly',
@@ -39,8 +39,8 @@ export default tseslint.config(
         Event: 'readonly',
         FormData: 'readonly',
         File: 'readonly',
-        fetch: 'readonly'
-      }
+        fetch: 'readonly',
+      },
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -50,15 +50,15 @@ export default tseslint.config(
       'react-hooks/purity': 'off',
       'react-hooks/set-state-in-effect': 'off',
       'no-unused-vars': 'off',
-      'no-explicit-any': 'off'
+      'no-explicit-any': 'off',
     },
     settings: {
       react: {
-        version: 'detect'
-      }
-    }
+        version: 'detect',
+      },
+    },
   },
   {
-    ignores: ['dist/', 'node_modules/', 'coverage/', '*.config.js', '*.config.ts']
+    ignores: ['dist/', 'node_modules/', 'coverage/', '*.config.js', '*.config.ts'],
   }
 );

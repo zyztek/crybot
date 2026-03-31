@@ -112,7 +112,6 @@ export interface AchievementsState {
   unlockAchievement: (id: number) => void;
 }
 
- 
 export const createAchievementsStore: StateCreator<AchievementsState> = (
   set: any,
   get: any,
