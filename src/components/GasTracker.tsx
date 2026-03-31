@@ -137,7 +137,7 @@ export default function GasTracker() {
               <span className="text-slate-400 text-sm">{t.fast}</span>
             </div>
             <p className="text-white text-2xl font-bold">{currentGas.fast}</p>
-            <p className="text-slate-400 text-xs mt-1">~<30s</p>
+            <p className="text-slate-400 text-xs mt-1">~{"<30s"}</p>
           </div>
         </div>
 

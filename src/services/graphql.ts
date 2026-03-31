@@ -5,7 +5,11 @@
  * Connects to the backend GraphQL endpoint
  */
 
-import { getToken } from './api';
+// Helper to get auth token from localStorage
+const getToken = (): string | null => {
+  if (typeof window === 'undefined') return null;
+  return localStorage.getItem('accessToken');
+};
 
 const GRAPHQL_ENDPOINT = '/graphql';
 

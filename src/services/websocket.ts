@@ -5,7 +5,11 @@
  * Connects to the backend WebSocket endpoint
  */
 
-import { getToken } from './api';
+// Helper to get auth token from localStorage
+const getToken = (): string | null => {
+  if (typeof window === 'undefined') return null;
+  return localStorage.getItem('accessToken');
+};
 
 const WS_ENDPOINT = '/ws';
 const RECONNECT_INTERVAL = 3000;
