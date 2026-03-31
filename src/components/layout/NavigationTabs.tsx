@@ -131,6 +131,27 @@ export default function NavigationTabs({
         Price Alerts
       </NavTab>
       <NavTab
+        active={activeTab === 'staking'}
+        onClick={() => onTabChange('staking')}
+        icon={<TrendingUp className="w-4 h-4" />}
+      >
+        Staking
+      </NavTab>
+      <NavTab
+        active={activeTab === 'defi-dashboard'}
+        onClick={() => onTabChange('defi-dashboard')}
+        icon={<BarChart3 className="w-4 h-4" />}
+      >
+        DeFi
+      </NavTab>
+      <NavTab
+        active={activeTab === 'news'}
+        onClick={() => onTabChange('news')}
+        icon={<Activity className="w-4 h-4" />}
+      >
+        News
+      </NavTab>
+      <NavTab
         active={activeTab === 'games'}
         onClick={() => onTabChange('games')}
         icon={<Gamepad2 className="w-4 h-4" />}

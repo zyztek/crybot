@@ -118,6 +118,8 @@ export type TabType =
   | 'signals'
   | 'whale alerts'
   | 'price alerts'
+  | 'staking'
+  | 'defi-dashboard'
   | 'missions'
   | 'shop'
   | 'vip'

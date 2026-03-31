@@ -31,6 +31,9 @@ const MiniGames = createLazyComponent(() => import('../MiniGames'));
 const TradingSignals = createLazyComponent(() => import('../TradingSignals'));
 const WhaleAlerts = createLazyComponent(() => import('../WhaleAlerts'));
 const PriceAlerts = createLazyComponent(() => import('../PriceAlerts'));
+const Staking = createLazyComponent(() => import('../Staking'));
+const DeFiDashboard = createLazyComponent(() => import('../DeFiDashboard'));
+const NewsAggregator = createLazyComponent(() => import('../NewsAggregator'));
 const AdvancedAnalytics = createLazyComponent(() => import('../AdvancedAnalytics'));
 const Portfolio = createLazyComponent(() => import('../Portfolio'));
 const Lottery = createLazyComponent(() => import('../Lottery'));
@@ -196,6 +199,12 @@ export default function ContentArea({
       return renderLazy(WhaleAlerts);
     case 'price alerts':
       return renderLazy(PriceAlerts);
+    case 'staking':
+      return renderLazy(Staking);
+    case 'defi-dashboard':
+      return renderLazy(DeFiDashboard);
+    case 'news':
+      return renderLazy(NewsAggregator);
     case 'games':
       return renderLazy(MiniGames);
     case 'portfolio':

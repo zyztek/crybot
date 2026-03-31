@@ -1,379 +1,245 @@
 import { useState } from 'react';
-import { Clock, TrendingUp, Shield, Award, Lock, Unlock, Zap } from 'lucide-react';
+import { Lock, TrendingUp, Clock, Coins, ArrowUpRight, ArrowDownRight, Award, Info } from 'lucide-react';
+import { useCryptoStore } from '../store/cryptoStore';
 
-const stakingPlans = [
-  {
-    id: 1,
-    name: 'Micro Staking',
-    icon: '🌱',
-    minAmount: 0.0001,
-    maxAmount: 0.5,
-    duration: 7,
-    apy: 5,
-    compounding: false,
-    earlyWithdrawal: true,
-    color: 'from-green-500 to-emerald-600',
-  },
-  {
-    id: 2,
-    name: 'Growth Pool',
-    icon: '🌿',
-    minAmount: 0.001,
-    maxAmount: 1,
-    duration: 14,
-    apy: 12,
-    compounding: true,
-    earlyWithdrawal: true,
-    penalty: 2,
-    color: 'from-blue-500 to-cyan-600',
-  },
-  {
-    id: 3,
-    name: 'Power Vault',
-    icon: '⚡',
-    minAmount: 0.01,
-    maxAmount: 5,
-    duration: 30,
-    apy: 25,
-    compounding: true,
-    earlyWithdrawal: true,
-    penalty: 5,
-    color: 'from-purple-500 to-pink-600',
-  },
-  {
-    id: 4,
-    name: 'Mega Yield',
-    icon: '🔥',
-    minAmount: 0.05,
-    maxAmount: 10,
-    duration: 90,
-    apy: 45,
-    compounding: true,
-    earlyWithdrawal: false,
-    color: 'from-orange-500 to-red-600',
-  },
+interface StakingPlan {
+  id: string;
+  name: string;
+  coin: string;
+  apy: number;
+  minAmount: number;
+  lockPeriod: number; // days
+  rewards: string;
+}
+
+const STAKING_PLANS: StakingPlan[] = [
+  { id: '1', name: 'Flexible', coin: 'ETH', apy: 3.5, minAmount: 0.01, lockPeriod: 0, rewards: 'Daily' },
+  { id: '2', name: '30 Days', coin: 'ETH', apy: 5.2, minAmount: 0.1, lockPeriod: 30, rewards: 'Weekly' },
+  { id: '3', name: '60 Days', coin: 'ETH', apy: 7.8, minAmount: 0.1, lockPeriod: 60, rewards: 'Weekly' },
+  { id: '4', name: '90 Days', coin: 'ETH', apy: 12.5, minAmount: 0.1, lockPeriod: 90, rewards: 'Weekly' },
+  { id: '5', name: 'Flexible', coin: 'SOL', apy: 4.2, minAmount: 1, lockPeriod: 0, rewards: 'Daily' },
+  { id: '6', name: '30 Days', coin: 'SOL', apy: 6.5, minAmount: 5, lockPeriod: 30, rewards: 'Weekly' },
+  { id: '7', name: 'Flexible', coin: 'BTC', apy: 2.1, minAmount: 0.001, lockPeriod: 0, rewards: 'Daily' },
+  { id: '8', name: '60 Days', coin: 'BTC', apy: 4.8, minAmount: 0.01, lockPeriod: 60, rewards: 'Weekly' },
 ];
 
-const myStakes = [
-  {
-    id: 1,
-    planName: 'Growth Pool',
-    amount: 0.0025,
-    startTime: '2024-01-15',
-    endTime: '2024-01-29',
-    earned: 0.00015,
-    status: 'active',
-  },
-  {
-    id: 2,
-    planName: 'Micro Staking',
-    amount: 0.0005,
-    startTime: '2024-01-10',
-    endTime: '2024-01-17',
-    earned: 0.00002,
-    status: 'completed',
-  },
+interface StakedPosition {
+  id: string;
+  plan: string;
+  coin: string;
+  amount: number;
+  startDate: string;
+  endDate: string | null;
+  earned: number;
+  status: 'active' | 'unlocked';
+}
+
+const MOCK_STAKES: StakedPosition[] = [
+  { id: '1', plan: '30 Days', coin: 'ETH', amount: 0.5, startDate: '2024-01-01', endDate: '2024-01-31', earned: 0.0089, status: 'active' },
+  { id: '2', plan: 'Flexible', coin: 'SOL', amount: 10, startDate: '2024-01-05', endDate: null, earned: 0.042, status: 'active' },
 ];
 
-export default function Staking({ language }: { language: 'zh' | 'en' }) {
-  const [selectedPlan, setSelectedPlan] = useState<number | null>(null);
-  const [stakeAmount, setStakeAmount] = useState('');
-  const [showModal, setShowModal] = useState(false);
+export default function Staking() {
+  const { language } = useCryptoStore();
+  const [activeTab, setActiveTab] = useState<'earn' | 'positions'>('earn');
+  const [selectedCoin, setSelectedCoin] = useState<string>('all');
 
-  const texts = {
-    zh: {
-      title: '质押中心',
-      subtitle: '让你的加密货币为你工作 - 锁仓赚取被动收入',
-      myStakes: '我的质押',
-      plans: '质押方案',
-      balance: '可用余额',
-      stakeButton: '开始质押',
-      earn: '预期收益',
-      duration: '锁仓期限',
-      compounding: '复利计算',
-      earlyWithdrawal: '提前提取',
-      penalty: '罚息',
-      noPenalty: '无罚息',
-      modalTitle: '确认质押',
-      amountPlaceholder: '输入质押金额',
-      confirmButton: '确认质押',
-      cancelButton: '取消',
-      minAmount: '最小金额',
-      maxAmount: '最大金额',
-      statusActive: '进行中',
-      statusCompleted: '已完成',
-    },
-    en: {
-      title: 'Staking Center',
-      subtitle: 'Make your crypto work for you - Lock and earn passive income',
-      myStakes: 'My Stakes',
-      plans: 'Staking Plans',
-      balance: 'Available Balance',
-      stakeButton: 'Start Staking',
-      earn: 'Expected Earnings',
-      duration: 'Lock Period',
-      compounding: 'Compound Interest',
-      earlyWithdrawal: 'Early Withdrawal',
-      penalty: 'Penalty',
-      noPenalty: 'No Penalty',
-      modalTitle: 'Confirm Staking',
-      amountPlaceholder: 'Enter stake amount',
-      confirmButton: 'Confirm Staking',
-      cancelButton: 'Cancel',
-      minAmount: 'Min Amount',
-      maxAmount: 'Max Amount',
-      statusActive: 'Active',
-      statusCompleted: 'Completed',
-    },
-  };
+  const filteredPlans = selectedCoin === 'all' 
+    ? STAKING_PLANS 
+    : STAKING_PLANS.filter(p => p.coin === selectedCoin);
 
-  const t = texts[language];
+  const totalStaked = MOCK_STAKES.reduce((acc, s) => acc + s.amount, 0);
+  const totalEarned = MOCK_STAKES.reduce((acc, s) => acc + s.earned, 0);
 
-  const handleStake = (planId: number) => {
-    setSelectedPlan(planId);
-    setShowModal(true);
-  };
-
-  const calculateEarnings = (amount: number, apy: number, days: number) => {
-    return (amount * (apy / 100) * (days / 365)).toFixed(6);
+  const t = {
+    title: language === 'es' ? 'Staking Rewards' : 'Staking Rewards',
+    subtitle: language === 'es' ? 'Earn passive income on your crypto' : 'Earn passive income on your crypto',
+    earn: language === 'es' ? 'Ganar' : 'Earn',
+    positions: language === 'es' ? 'Posiciones' : 'Positions',
+    apy: language === 'es' ? 'APY' : 'APY',
+    stake: language === 'es' ? 'Stake' : 'Stake',
+    lockPeriod: language === 'es' ? 'Período de bloqueo' : 'Lock Period',
+    rewards: language === 'es' ? 'Recompensas' : 'Rewards',
+    minAmount: language === 'es' ? 'Monto mínimo' : 'Min Amount',
+    active: language === 'es' ? 'Activo' : 'Active',
+    unlocked: language === 'es' ? 'Desbloqueado' : 'Unlocked',
+    earned: language === 'es' ? 'Ganado' : 'Earned',
+    days: language === 'es' ? 'días' : 'days',
+    flexible: language === 'es' ? 'Flexible' : 'Flexible',
+    totalStaked: language === 'es' ? 'Total en Staking' : 'Total Staked',
+    totalEarned: language === 'es' ? 'Total Ganado' : 'Total Earned',
+    viewPlan: language === 'es' ? 'Ver Plan' : 'View Plan',
+    daysAbbrev: 'd',
   };
 
   return (
-    <div className="space-y-8">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-white mb-3">{t.title}</h1>
-        <p className="text-gray-400">{t.subtitle}</p>
+    <div className="space-y-6">
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-xl p-5">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
+              <Coins className="w-5 h-5 text-purple-400" />
+            </div>
+            <div>
+              <p className="text-purple-300 text-sm">{t.totalStaked}</p>
+              <p className="text-white text-xl font-bold">$1,245.80</p>
+            </div>
+          </div>
+        </div>
+        <div className="bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-green-500/30 rounded-xl p-5">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center">
+              <TrendingUp className="w-5 h-5 text-green-400" />
+            </div>
+            <div>
+              <p className="text-green-300 text-sm">{t.totalEarned}</p>
+              <p className="text-white text-xl font-bold">$42.50</p>
+            </div>
+          </div>
+        </div>
+        <div className="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30 rounded-xl p-5">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
+              <Award className="w-5 h-5 text-blue-400" />
+            </div>
+            <div>
+              <p className="text-blue-300 text-sm">Avg. APY</p>
+              <p className="text-white text-xl font-bold">5.8%</p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="flex items-center justify-between p-5 bg-gradient-to-br from-yellow-500/20 to-amber-500/10 rounded-2xl">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-xl flex items-center justify-center">
-            <Award className="w-6 h-6 text-white" />
-          </div>
-          <div>
-            <p className="text-gray-400 text-sm">{t.balance}</p>
-            <p className="text-2xl font-bold text-yellow-400">0.00450 BTC</p>
-          </div>
-        </div>
-        <div className="text-right">
-          <p className="text-gray-400 text-sm">Total Earned</p>
-          <p className="text-xl font-bold text-green-400">0.00680 BTC</p>
-        </div>
+      {/* Tabs */}
+      <div className="flex gap-2 border-b border-purple-500/20 pb-2">
+        <button
+          onClick={() => setActiveTab('earn')}
+          className={`px-4 py-2 rounded-t-lg font-medium transition-all ${
+            activeTab === 'earn'
+              ? 'bg-purple-500/20 text-purple-300 border-b-2 border-purple-500'
+              : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          {t.earn}
+        </button>
+        <button
+          onClick={() => setActiveTab('positions')}
+          className={`px-4 py-2 rounded-t-lg font-medium transition-all ${
+            activeTab === 'positions'
+              ? 'bg-purple-500/20 text-purple-300 border-b-2 border-purple-500'
+              : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          {t.positions}
+        </button>
       </div>
 
-      {myStakes.length > 0 && (
-        <div>
-          <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-            <Lock className="w-6 h-6" />
-            {t.myStakes}
-          </h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            {myStakes.map(stake => (
-              <div
-                key={stake.id}
-                className="p-5 bg-slate-800/50 rounded-2xl border border-slate-700"
-              >
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-lg font-bold text-white">{stake.planName}</h3>
-                    <p className="text-gray-400 text-sm mt-1">
-                      {stake.startTime} → {stake.endTime}
-                    </p>
-                  </div>
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      stake.status === 'active'
-                        ? 'bg-green-500/20 text-green-400'
-                        : 'bg-blue-500/20 text-blue-400'
-                    }`}
-                  >
-                    {stake.status === 'active' ? t.statusActive : t.statusCompleted}
-                  </span>
-                </div>
-                <div className="flex justify-between items-end">
-                  <div>
-                    <p className="text-gray-400 text-sm">Staked</p>
-                    <p className="text-xl font-bold text-white">{stake.amount} BTC</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-gray-400 text-sm">Earned</p>
-                    <p className="text-xl font-bold text-green-400">+{stake.earned} BTC</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      {/* Coin Filter */}
+      <div className="flex gap-2 flex-wrap">
+        {['all', 'ETH', 'SOL', 'BTC'].map(coin => (
+          <button
+            key={coin}
+            onClick={() => setSelectedCoin(coin)}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              selectedCoin === coin
+                ? 'bg-purple-500 text-white'
+                : 'bg-slate-800 text-slate-400 hover:text-white'
+            }`}
+          >
+            {coin === 'all' ? (language === 'es' ? 'Todas' : 'All') : coin}
+          </button>
+        ))}
+      </div>
 
-      <div>
-        <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-          <TrendingUp className="w-6 h-6" />
-          {t.plans}
-        </h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {stakingPlans.map(plan => (
+      {activeTab === 'earn' ? (
+        /* Staking Plans Grid */
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredPlans.map(plan => (
             <div
               key={plan.id}
-              className="group p-5 bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-2xl border border-slate-700 hover:border-slate-500/50 transition-all duration-300"
+              className="bg-slate-800/50 border border-purple-500/20 rounded-xl p-5 hover:border-purple-500/40 transition-all"
             >
-              <div
-                className={`w-14 h-14 bg-gradient-to-br ${plan.color} rounded-2xl flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform`}
-              >
-                {plan.icon}
-              </div>
-
-              <h3 className="text-xl font-bold text-white mb-1">{plan.name}</h3>
-              <div className="flex items-center gap-2 mb-4">
-                <TrendingUp className="w-4 h-4 text-green-400" />
-                <span className="text-3xl font-bold text-green-400">{plan.apy}%</span>
-                <span className="text-gray-400">APY</span>
-              </div>
-
-              <div className="space-y-3 mb-5">
-                <div className="flex items-center gap-2 text-sm">
-                  <Clock className="w-4 h-4 text-blue-400" />
-                  <span className="text-gray-400">{t.duration}:</span>
-                  <span className="text-white font-medium">{plan.duration} days</span>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl font-bold text-white">{plan.coin}</span>
+                  <span className="text-slate-400 text-sm">- {plan.name}</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <Zap className="w-4 h-4 text-purple-400" />
-                  <span className="text-gray-400">{t.compounding}:</span>
-                  <span
-                    className={`font-medium ${plan.compounding ? 'text-green-400' : 'text-gray-400'}`}
-                  >
-                    {plan.compounding ? '✓ Yes' : '✗ No'}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 text-sm">
-                  {plan.earlyWithdrawal ? (
-                    <Unlock className="w-4 h-4 text-green-400" />
-                  ) : (
-                    <Lock className="w-4 h-4 text-red-400" />
-                  )}
-                  <span className="text-gray-400">{t.earlyWithdrawal}:</span>
-                  <span
-                    className={`font-medium ${plan.earlyWithdrawal ? 'text-green-400' : 'text-red-400'}`}
-                  >
-                    {plan.earlyWithdrawal
-                      ? plan.penalty
-                        ? `${t.penalty} ${plan.penalty}%`
-                        : t.noPenalty
-                      : '✗ Not Available'}
-                  </span>
+                <div className="text-right">
+                  <p className="text-green-400 font-bold text-xl">{plan.apy}%</p>
+                  <p className="text-slate-400 text-xs">{t.apy}</p>
                 </div>
               </div>
-
-              <div className="pt-4 border-t border-slate-700 space-y-2 mb-4">
+              <div className="space-y-2 mb-4">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">{t.minAmount}</span>
-                  <span className="text-white">{plan.minAmount} BTC</span>
+                  <span className="text-slate-400">{t.lockPeriod}</span>
+                  <span className="text-white">{plan.lockPeriod === 0 ? t.flexible : `${plan.lockPeriod} ${t.days}`}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">{t.maxAmount}</span>
-                  <span className="text-white">{plan.maxAmount} BTC</span>
+                  <span className="text-slate-400">{t.rewards}</span>
+                  <span className="text-white">{plan.rewards}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-400">{t.minAmount}</span>
+                  <span className="text-white">{plan.minAmount} {plan.coin}</span>
                 </div>
               </div>
-
-              <button
-                onClick={() => handleStake(plan.id)}
-                className="w-full py-3 bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-white font-semibold rounded-xl transition-all duration-300 flex items-center justify-center gap-2"
-              >
-                <Shield className="w-4 h-4" />
-                {t.stakeButton}
+              <button className="w-full py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium transition-all">
+                {t.stake}
               </button>
             </div>
           ))}
         </div>
-      </div>
-
-      {showModal && selectedPlan && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-slate-800 rounded-2xl p-6 w-full max-w-md mx-4 border border-slate-600">
-            <h3 className="text-xl font-bold text-white mb-4">{t.modalTitle}</h3>
-
-            {(() => {
-              const plan = stakingPlans.find(p => p.id === selectedPlan)!;
-              return (
-                <div className="space-y-4">
-                  <div className="p-4 bg-slate-700/50 rounded-xl">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div
-                        className={`w-10 h-10 bg-gradient-to-br ${plan.color} rounded-xl flex items-center justify-center text-lg`}
-                      >
-                        {plan.icon}
-                      </div>
-                      <div>
-                        <p className="font-bold text-white">{plan.name}</p>
-                        <p className="text-green-400">{plan.apy}% APY</p>
-                      </div>
-                    </div>
-                    <div className="text-sm text-gray-400 space-y-1">
-                      <p>
-                        {language === 'zh'
-                          ? `预计收益: 0.000036 BTC (${plan.apy}% APY)`
-                          : `Est. Earnings: 0.000036 BTC (${plan.apy}% APY)`}
-                      </p>
-                      <p>
-                        {language === 'zh'
-                          ? `锁仓时间: ${plan.duration} 天`
-                          : `Lock Period: ${plan.duration} days`}
-                      </p>
-                    </div>
+      ) : (
+        /* Active Positions */
+        <div className="space-y-4">
+          {MOCK_STAKES.map(stake => (
+            <div
+              key={stake.id}
+              className="bg-slate-800/50 border border-purple-500/20 rounded-xl p-5"
+            >
+              <div className="flex items-center justify-between flex-wrap gap-4">
+                <div className="flex items-center gap-4">
+                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
+                    stake.coin === 'ETH' ? 'bg-gradient-to-br from-blue-400 to-purple-500' :
+                    stake.coin === 'SOL' ? 'bg-gradient-to-br from-purple-400 to-pink-500' :
+                    'bg-gradient-to-br from-yellow-400 to-orange-500'
+                  }`}>
+                    <span className="text-white font-bold">{stake.coin}</span>
                   </div>
-
                   <div>
-                    <label className="text-gray-400 text-sm mb-2 block">
-                      {t.amountPlaceholder}
-                    </label>
-                    <input
-                      type="number"
-                      value={stakeAmount}
-                      onChange={e => setStakeAmount(e.target.value)}
-                      min={plan.minAmount}
-                      max={plan.maxAmount}
-                      step="0.0001"
-                      className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white focus:outline-none focus:border-yellow-500"
-                      placeholder={`${plan.minAmount} - ${plan.maxAmount} BTC`}
-                    />
-                  </div>
-
-                  {stakeAmount && (
-                    <div className="p-4 bg-green-500/10 rounded-xl border border-green-500/20">
-                      <p className="text-green-400 font-medium">
-                        {language === 'zh' ? '预计收益' : t.earn}: 0.000
-                        {calculateEarnings(parseFloat(stakeAmount), plan.apy, plan.duration)} BTC
-                      </p>
-                    </div>
-                  )}
-
-                  <div className="flex gap-3">
-                    <button
-                      onClick={() => {
-                        setShowModal(false);
-                        setStakeAmount('');
-                      }}
-                      className="flex-1 py-3 bg-slate-700 hover:bg-slate-600 text-white font-semibold rounded-xl transition-colors"
-                    >
-                      {t.cancelButton}
-                    </button>
-                    <button
-                      onClick={() => {
-                        setShowModal(false);
-                        setStakeAmount('');
-                      }}
-                      className="flex-1 py-3 bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-white font-semibold rounded-xl transition-all"
-                      disabled={!stakeAmount || parseFloat(stakeAmount) < plan.minAmount}
-                    >
-                      {t.confirmButton}
-                    </button>
+                    <p className="text-white font-bold">{stake.amount} {stake.coin}</p>
+                    <p className="text-slate-400 text-sm">{stake.plan} - {stake.startDate}</p>
                   </div>
                 </div>
-              );
-            })()}
-          </div>
+                <div className="flex items-center gap-6">
+                  <div className="text-right">
+                    <p className="text-green-400 font-bold">+{stake.earned} {stake.coin}</p>
+                    <p className="text-slate-400 text-xs">{t.earned}</p>
+                  </div>
+                  <div className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    stake.status === 'active' 
+                      ? 'bg-green-500/20 text-green-400' 
+                      : 'bg-slate-500/20 text-slate-400'
+                  }`}>
+                    {stake.status === 'active' ? t.active : t.unlocked}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       )}
+
+      {/* Info Box */}
+      <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4 flex items-start gap-3">
+        <Info className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+        <p className="text-blue-200 text-sm">
+          {language === 'es' 
+            ? 'Los rendimientos de staking se calculan diariamente y se distribuyen según el plan escolhido. Los fondos en staking flexible pueden retirarse en cualquier momento.'
+            : 'Staking rewards are calculated daily and distributed according to the selected plan. Flexible staking funds can be withdrawn at any time.'}
+        </p>
+      </div>
     </div>
   );
 }

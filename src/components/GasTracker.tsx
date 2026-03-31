@@ -1,499 +1,188 @@
-import { useState } from 'react';
-import {
-  Zap,
-  TrendingUp,
-  TrendingDown,
-  Clock,
-  Activity,
-  AlertCircle,
-  CheckCircle,
-  RefreshCw,
-  Gauge,
-} from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Fuel, Zap, Clock, TrendingUp, TrendingDown, Activity, RefreshCw } from 'lucide-react';
+import { useCryptoStore } from '../store/cryptoStore';
 
-interface GasNetwork {
-  name: string;
-  symbol: string;
-  gasPrice: string;
-  gasPriceGwei: number;
-  change24h: number;
-  tps: number;
-  status: 'low' | 'medium' | 'high';
-  color: string;
+interface GasPrice {
+  slow: number;
+  average: number;
+  fast: number;
+  unit: string;
+  lastUpdated: string;
 }
 
-interface GasTx {
-  type: string;
-  name: string;
-  estimatedGas: string;
-  estimatedTime: string;
-  priority: 'slow' | 'average' | 'fast' | 'instant';
-}
-
-const GAS_NETWORKS: GasNetwork[] = [
-  {
-    name: 'Ethereum',
-    symbol: 'ETH',
-    gasPrice: '$4.52',
-    gasPriceGwei: 28,
-    change24h: 12.3,
-    tps: 15.2,
-    status: 'low',
-    color: '#627EEA',
-  },
-  {
-    name: 'Bitcoin',
-    symbol: 'BTC',
-    gasPrice: '$2.18',
-    gasPriceGwei: 12,
-    change24h: -8.5,
-    tps: 5.4,
-    status: 'low',
-    color: '#F7931A',
-  },
-  {
-    name: 'Solana',
-    symbol: 'SOL',
-    gasPrice: '$0.00025',
-    gasPriceGwei: 0.00001,
-    change24h: 0,
-    tps: 4500,
-    status: 'low',
-    color: '#9945FF',
-  },
-  {
-    name: 'Binance Smart Chain',
-    symbol: 'BSC',
-    gasPrice: '$0.15',
-    gasPriceGwei: 5,
-    change24h: 3.2,
-    tps: 85,
-    status: 'low',
-    color: '#F0B90B',
-  },
-  {
-    name: 'Polygon',
-    symbol: 'MATIC',
-    gasPrice: '$0.01',
-    gasPriceGwei: 150,
-    change24h: 15.8,
-    tps: 185,
-    status: 'medium',
-    color: '#8247E5',
-  },
-  {
-    name: 'Arbitrum',
-    symbol: 'ARB',
-    gasPrice: '$0.08',
-    gasPriceGwei: 0.5,
-    change24h: -2.1,
-    tps: 22,
-    status: 'low',
-    color: '#28A0F0',
-  },
-  {
-    name: 'Optimism',
-    symbol: 'OP',
-    gasPrice: '$0.12',
-    gasPriceGwei: 0.75,
-    change24h: 5.4,
-    tps: 18,
-    status: 'low',
-    color: '#FF0420',
-  },
-  {
-    name: 'Avalanche',
-    symbol: 'AVAX',
-    gasPrice: '$0.03',
-    gasPriceGwei: 25,
-    change24h: 8.9,
-    tps: 45,
-    status: 'low',
-    color: '#E84142',
-  },
-];
-
-const ETHEREUM_TXS: GasTx[] = [
-  {
-    type: 'Transfer',
-    name: 'ETH Transfer',
-    estimatedGas: '21000',
-    estimatedTime: '~30s',
-    priority: 'slow',
-  },
-  {
-    type: 'ERC20',
-    name: 'Token Transfer',
-    estimatedGas: '52000',
-    estimatedTime: '~45s',
-    priority: 'average',
-  },
-  {
-    type: 'Swap',
-    name: 'DEX Swap',
-    estimatedGas: '150000',
-    estimatedTime: '~1m',
-    priority: 'average',
-  },
-  {
-    type: 'Add LIQ',
-    name: 'Add Liquidity',
-    estimatedGas: '180000',
-    estimatedTime: '~1m',
-    priority: 'fast',
-  },
-  {
-    type: 'NFT Mint',
-    name: 'NFT Mint',
-    estimatedGas: '85000',
-    estimatedTime: '~45s',
-    priority: 'average',
-  },
-  {
-    type: 'Bridge',
-    name: 'Cross-Chain Bridge',
-    estimatedGas: '350000',
-    estimatedTime: '~3m',
-    priority: 'instant',
-  },
-];
+const MOCK_GAS_DATA: Record<string, GasPrice> = {
+  ethereum: { slow: 15, average: 22, fast: 35, unit: 'Gwei', lastUpdated: new Date().toISOString() },
+  solana: { slow: 0.00025, average: 0.0005, fast: 0.001, unit: 'SOL', lastUpdated: new Date().toISOString() },
+  polygon: { slow: 45, average: 65, fast: 95, unit: 'Gwei', lastUpdated: new Date().toISOString() },
+  arbitrum: { slow: 0.08, average: 0.12, fast: 0.2, unit: 'Gwei', lastUpdated: new Date().toISOString() },
+};
 
 export default function GasTracker() {
-  const [language, setLanguage] = useState<'es' | 'en'>('es');
-  const [selectedNetwork, setSelectedNetwork] = useState('Ethereum');
-  const [refreshing, setRefreshing] = useState(false);
+  const { language } = useCryptoStore();
+  const [selectedNetwork, setSelectedNetwork] = useState<string>('ethereum');
+  const [gasData, setGasData] = useState<Record<string, GasPrice>>(MOCK_GAS_DATA);
+  const [isLoading, setIsLoading] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState(new Date());
 
-  const texts = {
-    es: {
-      title: 'Gas Tracker',
-      subtitle: 'Monitorea las tarifas de gas en tiempo real',
-      currentGas: 'Gas Actual',
-      network: 'Red',
-      gasPrice: 'Precio del Gas',
-      change24h: 'Cambio 24h',
-      tps: 'TPS',
-      txType: 'Tipo de tx',
-      estimatedGas: 'Gas estimado',
-      estimatedTime: 'Tiempo estimado',
-      refresh: 'Actualizar',
-      slow: 'Lento',
-      average: 'Promedio',
-      fast: 'Rápido',
-      instant: 'Instantáneo',
-      lowGas: 'Gas bajo',
-      mediumGas: 'Gas medio',
-      highGas: 'Gas alto',
-      gasHistory: 'Historial de gas',
-      quickTips: 'Tips rápidos',
-      tip1: 'El gas es más bajo durante fines de semana',
-      tip2: 'Usa L2s como Arbitrum para transacciones más baratas',
-      tip3: 'Solana tiene tarifas casi nulas',
-      gasAlerts: 'Alertas de gas',
-      alert1: 'Ethereum gas subió 15% en la última hora',
-      alert2: 'Optimism gas considerablly más bajo que Ethereum',
-      alert3: 'BSC mantiene gas estable en $0.15',
-    },
-    en: {
-      title: 'Gas Tracker',
-      subtitle: 'Monitor gas fees in real-time',
-      currentGas: 'Current Gas',
-      network: 'Network',
-      gasPrice: 'Gas Price',
-      change24h: '24h Change',
-      tps: 'TPS',
-      txType: 'Tx Type',
-      estimatedGas: 'Est. Gas',
-      estimatedTime: 'Est. Time',
-      refresh: 'Refresh',
-      slow: 'Slow',
-      average: 'Average',
-      fast: 'Fast',
-      instant: 'Instant',
-      lowGas: 'Low Gas',
-      mediumGas: 'Medium Gas',
-      highGas: 'High Gas',
-      gasHistory: 'Gas History',
-      quickTips: 'Quick Tips',
-      tip1: 'Gas is lower during weekends',
-      tip2: 'Use L2s like Arbitrum for cheaper transactions',
-      tip3: 'Solana has near-zero fees',
-      gasAlerts: 'Gas Alerts',
-      alert1: 'Ethereum gas up 15% in last hour',
-      alert2: 'Optimism gas significantly lower than Ethereum',
-      alert3: 'BSC maintaining stable gas at $0.15',
-    },
+  const t = {
+    title: language === 'es' ? 'Gas Tracker' : 'Gas Tracker',
+    subtitle: language === 'es' ? 'Comisiones de red en tiempo real' : 'Real-time network fees',
+    slow: language === 'es' ? 'Lento' : 'Slow',
+    average: language === 'es' ? 'Promedio' : 'Average',
+    fast: language === 'es' ? 'Rápido' : 'Fast',
+    lastUpdate: language === 'es' ? 'Última actualización' : 'Last updated',
+    refresh: language === 'es' ? 'Actualizar' : 'Refresh',
+    gasPrice: language === 'es' ? 'Precio Gas' : 'Gas Price',
+    estimatedTime: language === 'es' ? 'Tiempo Est.' : 'Est. Time',
+    network: language === 'es' ? 'Red' : 'Network',
   };
-
-  const t = texts[language];
-  const selectedNetworkData = GAS_NETWORKS.find(n => n.name === selectedNetwork);
 
   const handleRefresh = () => {
-    setRefreshing(true);
-    setTimeout(() => setRefreshing(false), 2000);
+    setIsLoading(true);
+    setTimeout(() => {
+      setLastUpdate(new Date());
+      setIsLoading(false);
+    }, 1000);
   };
 
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'slow':
-        return 'from-gray-400 to-gray-500';
-      case 'average':
-        return 'from-blue-400 to-blue-500';
-      case 'fast':
-        return 'from-green-400 to-green-500';
-      case 'instant':
-        return 'from-purple-400 to-purple-500';
-      default:
-        return 'from-gray-400 to-gray-500';
+  const getNetworkIcon = (network: string) => {
+    switch(network) {
+      case 'ethereum': return 'E';
+      case 'solana': return 'S';
+      case 'polygon': return 'M';
+      case 'arbitrum': return 'A';
+      default: return '?';
     }
   };
 
-  return (
-    <div className="min-h-screen pt-24 pb-12 px-4">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="p-3 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl">
-              <Zap className="w-8 h-8 text-white" />
-            </div>
-            <h1 className="text-4xl font-bold text-white">{t.title}</h1>
-          </div>
-          <p className="text-gray-400 text-lg">{t.subtitle}</p>
-        </div>
+  const getNetworkColor = (network: string) => {
+    switch(network) {
+      case 'ethereum': return 'from-blue-400 to-purple-500';
+      case 'solana': return 'from-purple-400 to-pink-500';
+      case 'polygon': return 'from-purple-500 to-indigo-500';
+      case 'arbitrum': return 'from-blue-500 to-cyan-500';
+      default: return 'from-purple-500 to-pink-500';
+    }
+  };
 
-        {/* Language & Refresh */}
-        <div className="flex justify-between items-center mb-6">
+  const currentGas = gasData[selectedNetwork];
+
+  return (
+    <div className="space-y-6">
+      {/* Network Selector */}
+      <div className="flex gap-2 flex-wrap">
+        {Object.keys(gasData).map(network => (
+          <button
+            key={network}
+            onClick={() => setSelectedNetwork(network)}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              selectedNetwork === network
+                ? 'bg-purple-500 text-white'
+                : 'bg-slate-800 text-slate-400 hover:text-white'
+            }`}
+          >
+            <span className="mr-2">{getNetworkIcon(network)}</span>
+            {network.charAt(0).toUpperCase() + network.slice(1)}
+          </button>
+        ))}
+      </div>
+
+      {/* Current Network Gas Info */}
+      <div className="bg-slate-800/50 border border-purple-500/20 rounded-xl p-6">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div className={`w-12 h-12 bg-gradient-to-r ${getNetworkColor(selectedNetwork)} rounded-xl flex items-center justify-center`}>
+              <Fuel className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h3 className="text-white font-bold text-lg capitalize">{selectedNetwork} {t.gasPrice}</h3>
+              <p className="text-slate-400 text-sm">{currentGas.unit}</p>
+            </div>
+          </div>
           <button
             onClick={handleRefresh}
-            disabled={refreshing}
-            className="px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition flex items-center gap-2 disabled:opacity-50"
+            disabled={isLoading}
+            className="p-2 bg-slate-700 rounded-lg text-purple-400 hover:text-white transition-all disabled:opacity-50"
           >
-            <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
-            {t.refresh}
-          </button>
-          <button
-            onClick={() => setLanguage(language === 'es' ? 'en' : 'es')}
-            className="px-4 py-2 bg-white/10 rounded-lg text-white hover:bg-white/20 transition"
-          >
-            {language === 'es' ? '🇺🇸 EN' : '🇪🇸 ES'}
+            <RefreshCw className={`w-5 h-5 ${isLoading ? 'animate-spin' : ''}`} />
           </button>
         </div>
 
-        {/* Main Gas Display */}
-        {selectedNetworkData && (
-          <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl rounded-3xl p-8 border border-white/10 mb-6">
-            <div className="flex flex-wrap items-center justify-between gap-6">
-              <div className="flex items-center gap-4">
-                <div
-                  className="w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl font-bold"
-                  style={{ background: selectedNetworkData.color }}
-                >
-                  {selectedNetworkData.symbol}
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-white">{selectedNetworkData.name}</h3>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span
-                      className={`flex items-center gap-1 ${selectedNetworkData.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}
-                    >
-                      {selectedNetworkData.change24h >= 0 ? (
-                        <TrendingUp className="w-4 h-4" />
-                      ) : (
-                        <TrendingDown className="w-4 h-4" />
-                      )}
-                      {Math.abs(selectedNetworkData.change24h).toFixed(1)}%
-                    </span>
-                    <span
-                      className={`px-2 py-1 rounded-full text-sm font-medium ${
-                        selectedNetworkData.status === 'low'
-                          ? 'bg-green-500/20 text-green-400'
-                          : selectedNetworkData.status === 'medium'
-                            ? 'bg-yellow-500/20 text-yellow-400'
-                            : 'bg-red-500/20 text-red-400'
-                      }`}
-                    >
-                      {selectedNetworkData.status === 'low'
-                        ? t.lowGas
-                        : selectedNetworkData.status === 'medium'
-                          ? t.mediumGas
-                          : t.highGas}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex gap-8">
-                <div className="text-center">
-                  <p className="text-gray-400 text-sm">{t.gasPrice}</p>
-                  <p className="text-3xl font-bold bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
-                    {selectedNetworkData.gasPrice}
-                  </p>
-                </div>
-                <div className="text-center">
-                  <p className="text-gray-400 text-sm">Gwei</p>
-                  <p className="text-3xl font-bold text-white">
-                    {selectedNetworkData.gasPriceGwei}
-                  </p>
-                </div>
-                <div className="text-center">
-                  <p className="text-gray-400 text-sm">{t.tps}</p>
-                  <p className="text-3xl font-bold text-white">{selectedNetworkData.tps}</p>
-                </div>
-              </div>
+        {/* Gas Price Tiers */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Slow */}
+          <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-700">
+            <div className="flex items-center gap-2 mb-3">
+              <Clock className="w-4 h-4 text-slate-400" />
+              <span className="text-slate-400 text-sm">{t.slow}</span>
             </div>
-
-            {/* Gauge */}
-            <div className="mt-6">
-              <div className="flex justify-between text-sm text-gray-400 mb-2">
-                <span>0</span>
-                <span>Gwei</span>
-                <span>100</span>
-              </div>
-              <div className="relative h-4 bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 rounded-full overflow-hidden">
-                <div
-                  className="absolute top-0 w-1 h-full bg-white shadow-lg"
-                  style={{ left: `${selectedNetworkData.gasPriceGwei}%` }}
-                />
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div className="grid lg:grid-cols-3 gap-6">
-          {/* Networks Grid */}
-          <div className="lg:col-span-2">
-            <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-              <Activity className="w-5 h-5 text-orange-400" />
-              {t.network}
-            </h3>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {GAS_NETWORKS.map((network, idx) => (
-                <div
-                  key={idx}
-                  onClick={() => setSelectedNetwork(network.name)}
-                  className={`cursor-pointer bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl rounded-2xl p-5 border transition ${
-                    selectedNetwork === network.name
-                      ? 'border-orange-500/50'
-                      : 'border-white/10 hover:border-orange-500/30'
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div
-                        className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm"
-                        style={{ background: network.color }}
-                      >
-                        {network.symbol}
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-white">{network.name}</h4>
-                        <div
-                          className={`flex items-center gap-1 text-sm ${network.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}
-                        >
-                          {network.change24h >= 0 ? (
-                            <TrendingUp className="w-3 h-3" />
-                          ) : (
-                            <TrendingDown className="w-3 h-3" />
-                          )}
-                          {Math.abs(network.change24h).toFixed(1)}%
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-lg font-bold text-white">{network.gasPrice}</p>
-                      <span
-                        className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                          network.status === 'low'
-                            ? 'bg-green-500/20 text-green-400'
-                            : network.status === 'medium'
-                              ? 'bg-yellow-500/20 text-yellow-400'
-                              : 'bg-red-500/20 text-red-400'
-                        }`}
-                      >
-                        {network.status}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <p className="text-white text-2xl font-bold">{currentGas.slow}</p>
+            <p className="text-slate-400 text-xs mt-1">~5-10 min</p>
           </div>
 
-          {/* Transaction Types */}
-          <div>
-            <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-              <Gauge className="w-5 h-5 text-orange-400" />
-              {t.network} - Transaction Types
-            </h3>
-            <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl rounded-2xl p-5 border border-white/10">
-              <div className="space-y-3">
-                {ETHEREUM_TXS.map((tx, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-center justify-between p-3 bg-white/5 rounded-lg"
-                  >
-                    <div>
-                      <p className="text-white font-medium">{tx.name}</p>
-                      <div className="flex items-center gap-2 text-sm text-gray-400">
-                        <Clock className="w-3 h-3" />
-                        {tx.estimatedTime}
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-white font-bold">{tx.estimatedGas}</p>
-                      <span
-                        className={`px-2 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r ${getPriorityColor(tx.priority)} text-white`}
-                      >
-                        {t[tx.priority as keyof typeof t]}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+          {/* Average */}
+          <div className="bg-slate-900/50 rounded-xl p-4 border border-purple-500/30">
+            <div className="flex items-center gap-2 mb-3">
+              <Activity className="w-4 h-4 text-purple-400" />
+              <span className="text-purple-400 text-sm font-medium">{t.average}</span>
             </div>
+            <p className="text-white text-2xl font-bold">{currentGas.average}</p>
+            <p className="text-slate-400 text-xs mt-1">~1-3 min</p>
+          </div>
+
+          {/* Fast */}
+          <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-700">
+            <div className="flex items-center gap-2 mb-3">
+              <Zap className="w-4 h-4 text-green-400" />
+              <span className="text-slate-400 text-sm">{t.fast}</span>
+            </div>
+            <p className="text-white text-2xl font-bold">{currentGas.fast}</p>
+            <p className="text-slate-400 text-xs mt-1">~<30s</p>
           </div>
         </div>
 
-        {/* Bottom Section */}
-        <div className="grid md:grid-cols-2 gap-6 mt-6">
-          {/* Quick Tips */}
-          <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl rounded-2xl p-6 border border-white/10">
-            <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-              <Zap className="w-5 h-5 text-orange-400" />
-              {t.quickTips}
-            </h3>
-            <div className="space-y-3">
-              {[1, 2, 3].map(i => (
-                <div
-                  key={i}
-                  className="flex items-start gap-3 p-3 bg-orange-500/10 rounded-lg border border-orange-500/30"
-                >
-                  <CheckCircle className="w-5 h-5 text-orange-400 mt-0.5 flex-shrink-0" />
-                  <p className="text-gray-300 text-sm">{t[`tip${i}` as keyof typeof t]}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Gas Alerts */}
-          <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl rounded-2xl p-6 border border-white/10">
-            <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-              <AlertCircle className="w-5 h-5 text-orange-400" />
-              {t.gasAlerts}
-            </h3>
-            <div className="space-y-3">
-              {[1, 2, 3].map(i => (
-                <div
-                  key={i}
-                  className="flex items-start gap-3 p-3 bg-yellow-500/10 rounded-lg border border-yellow-500/30"
-                >
-                  <Activity className="w-5 h-5 text-yellow-400 mt-0.5 flex-shrink-0" />
-                  <p className="text-gray-300 text-sm">{t[`alert${i}` as keyof typeof t]}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+        {/* Last Update */}
+        <div className="mt-4 text-center text-slate-400 text-sm">
+          {t.lastUpdate}: {lastUpdate.toLocaleTimeString()}
         </div>
+      </div>
+
+      {/* All Networks Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {Object.entries(gasData).map(([network, data]) => (
+          <div
+            key={network}
+            onClick={() => setSelectedNetwork(network)}
+            className={`bg-slate-800/50 border rounded-xl p-4 cursor-pointer transition-all hover:border-purple-500/40 ${
+              selectedNetwork === network ? 'border-purple-500/30' : 'border-purple-500/10'
+            }`}
+          >
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-white font-medium capitalize">{network}</span>
+              <div className={`w-6 h-6 bg-gradient-to-r ${getNetworkColor(network)} rounded flex items-center justify-center text-xs text-white font-bold`}>
+                {getNetworkIcon(network)}
+              </div>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-slate-400">Avg:</span>
+              <span className="text-white font-medium">{data.average} {data.unit}</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-slate-400">Fast:</span>
+              <span className="text-green-400 font-medium">{data.fast} {data.unit}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Info */}
+      <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4 flex items-start gap-3">
+        <Fuel className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+        <p className="text-blue-200 text-sm">
+          {language === 'es' 
+            ? 'Los precios de gas son aproximados y pueden cambiar rápidamente. Para transacciones importantes, usa gas más alto para confirmar más rápido.'
+            : 'Gas prices are approximate and can change rapidly. For important transactions, use higher gas for faster confirmation.'}
+        </p>
       </div>
     </div>
   );
