@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     if: false # Disabled - requires SONAR_TOKEN
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -45,7 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     if: false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Dependency Review
         uses: actions/dependency-review-action@v4
@@ -63,7 +63,7 @@ jobs:
 
     if: false # Disabled - requires OSSF scorecard setup
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Run Scorecard
         uses: ossf/scorecard-action@0864cf434267fc06e5f7c1f4e7f0f4b3a0c3aabd
