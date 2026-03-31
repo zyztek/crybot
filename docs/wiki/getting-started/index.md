@@ -19,13 +19,13 @@ Before you begin, ensure your development environment meets the following requir
 
 ### Required Software
 
-| Software | Version | Description |
-|----------|---------|-------------|
-| **Node.js** | ≥20.x | JavaScript runtime - LTS recommended |
-| **npm** | ≥10.x | Package manager - comes with Node.js |
-| **Git** | ≥2.x | Version control system |
-| **PostgreSQL** | ≥16.x | Database (optional for frontend-only) |
-| **Docker** | ≥24.x | Containerization (optional) |
+| Software       | Version | Description                           |
+| -------------- | ------- | ------------------------------------- |
+| **Node.js**    | ≥20.x   | JavaScript runtime - LTS recommended  |
+| **npm**        | ≥10.x   | Package manager - comes with Node.js  |
+| **Git**        | ≥2.x    | Version control system                |
+| **PostgreSQL** | ≥16.x   | Database (optional for frontend-only) |
+| **Docker**     | ≥24.x   | Containerization (optional)           |
 
 ### System Requirements
 
@@ -194,11 +194,11 @@ ENABLE_WEBHOOKS=false
 
 ### Environment Modes
 
-| Mode | Description | Use Case |
-|------|-------------|----------|
-| `development` | Full debugging, hot reload | Local development |
-| `production` | Optimized, minified | Production deployment |
-| `test` | Test database, mock services | Running tests |
+| Mode          | Description                  | Use Case              |
+| ------------- | ---------------------------- | --------------------- |
+| `development` | Full debugging, hot reload   | Local development     |
+| `production`  | Optimized, minified          | Production deployment |
+| `test`        | Test database, mock services | Running tests         |
 
 ---
 
@@ -243,18 +243,18 @@ docker-compose down
 
 ### Available npm Scripts
 
-| Script | Description |
-|--------|-------------|
-| `npm run dev` | Start Vite development server |
-| `npm run build` | Create production build |
-| `npm run preview` | Preview production build locally |
-| `npm test` | Run unit tests (single run) |
-| `npm run test:watch` | Run tests in watch mode |
-| `npm run test:e2e` | Run end-to-end tests |
-| `npm run lint` | Run ESLint |
-| `npm run lint:fix` | Run ESLint with auto-fix |
-| `npm run typecheck` | Run TypeScript type checking |
-| `npm run setup:auto` | Run interactive setup wizard |
+| Script               | Description                      |
+| -------------------- | -------------------------------- |
+| `npm run dev`        | Start Vite development server    |
+| `npm run build`      | Create production build          |
+| `npm run preview`    | Preview production build locally |
+| `npm test`           | Run unit tests (single run)      |
+| `npm run test:watch` | Run tests in watch mode          |
+| `npm run test:e2e`   | Run end-to-end tests             |
+| `npm run lint`       | Run ESLint                       |
+| `npm run lint:fix`   | Run ESLint with auto-fix         |
+| `npm run typecheck`  | Run TypeScript type checking     |
+| `npm run setup:auto` | Run interactive setup wizard     |
 
 ---
 
@@ -288,13 +288,13 @@ crybot/
 
 ### Key Directories
 
-| Directory | Purpose |
-|-----------|---------|
-| `src/components/` | 70+ React components for all features |
-| `src/store/slices/` | Zustand state management slices |
-| `server/src/routes/` | Express API route handlers |
-| `server/src/services/` | Backend business logic |
-| `server/prisma/` | PostgreSQL schema and migrations |
+| Directory              | Purpose                               |
+| ---------------------- | ------------------------------------- |
+| `src/components/`      | 70+ React components for all features |
+| `src/store/slices/`    | Zustand state management slices       |
+| `server/src/routes/`   | Express API route handlers            |
+| `server/src/services/` | Backend business logic                |
+| `server/prisma/`       | PostgreSQL schema and migrations      |
 
 ---
 
@@ -315,6 +315,7 @@ Now that you have the application running, explore these resources:
 ### Common Issues
 
 #### Port Already in Use
+
 ```bash
 # Find and kill process using port 5173
 lsof -i :5173
@@ -322,6 +323,7 @@ kill -9 <PID>
 ```
 
 #### Node Version Mismatch
+
 ```bash
 # Check your Node version
 node --version
@@ -331,6 +333,7 @@ nvm use 20
 ```
 
 #### Database Connection Failed
+
 ```bash
 # Verify PostgreSQL is running
 pg_isready -h localhost -p 5432
@@ -340,6 +343,7 @@ postgresql://user:password@host:port/database
 ```
 
 #### Missing Dependencies
+
 ```bash
 # Clear node_modules and reinstall
 rm -rf node_modules package-lock.json
@@ -356,4 +360,4 @@ npm install --legacy-peer-deps
 
 ---
 
-*Last updated: 2025-01-27*
+_Last updated: 2025-01-27_

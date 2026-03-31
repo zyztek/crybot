@@ -27,12 +27,14 @@ npm run dev
 ## Code Standards
 
 ### Frontend
+
 - React 19 with TypeScript
 - Tailwind CSS 4 for styling
 - Zustand for state management
 - Recharts for charts
 
 ### Backend
+
 - Express.js with TypeScript
 - Prisma ORM
 - PostgreSQL database
@@ -59,6 +61,7 @@ npm run test:e2e
 ## Commit Messages
 
 Follow conventional commits:
+
 - `feat:` New feature
 - `fix:` Bug fix
 - `docs:` Documentation

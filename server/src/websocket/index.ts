@@ -1,6 +1,6 @@
 /**
  * WebSocket Handler
- * 
+ *
  * Real-time updates for wallet balance, transactions, and notifications
  */
 
@@ -22,7 +22,7 @@ interface WSMessage {
 export function setupWebSocket(wss: WebSocketServer) {
   // Heartbeat interval
   const heartbeatInterval = setInterval(() => {
-    wss.clients.forEach((ws) => {
+    wss.clients.forEach(ws => {
       const authWs = ws as AuthenticatedWebSocket;
       if (authWs.isAlive === false) {
         return authWs.terminate();
@@ -37,14 +37,11 @@ export function setupWebSocket(wss: WebSocketServer) {
 
     // Authenticate WebSocket connection
     const token = new URL(req.url || '', `http://${req.headers.host}`).searchParams.get('token');
-    
+
     if (token) {
       try {
-        const payload = jwt.verify(
-          token,
-          jwtConfig.secret
-        ) as { userId: string };
-        
+        const payload = jwt.verify(token, jwtConfig.secret) as { userId: string };
+
         ws.userId = payload.userId;
         console.log(`WebSocket connected: User ${ws.userId}`);
       } catch {
@@ -58,20 +55,20 @@ export function setupWebSocket(wss: WebSocketServer) {
     });
 
     // Handle incoming messages
-    ws.on('message', async (message) => {
+    ws.on('message', async message => {
       try {
         const parsed: WSMessage = JSON.parse(message.toString());
-        
+
         switch (parsed.type) {
           case 'ping':
             ws.send(JSON.stringify({ type: 'pong', timestamp: Date.now() }));
             break;
-            
+
           case 'subscribe':
             // Handle subscription to specific events
             console.log(`User ${ws.userId} subscribed to: ${parsed.data}`);
             break;
-            
+
           default:
             console.log(`Unknown message type: ${parsed.type}`);
         }
@@ -86,13 +83,15 @@ export function setupWebSocket(wss: WebSocketServer) {
     });
 
     // Send welcome message
-    ws.send(JSON.stringify({
-      type: 'connected',
-      data: {
-        timestamp: Date.now(),
-        userId: ws.userId || null,
-      },
-    }));
+    ws.send(
+      JSON.stringify({
+        type: 'connected',
+        data: {
+          timestamp: Date.now(),
+          userId: ws.userId || null,
+        },
+      })
+    );
   });
 
   wss.on('close', () => {
@@ -102,7 +101,7 @@ export function setupWebSocket(wss: WebSocketServer) {
 
 // Broadcast to all connected clients
 export function broadcast(wss: WebSocketServer, message: WSMessage) {
-  wss.clients.forEach((client) => {
+  wss.clients.forEach(client => {
     if (client.readyState === WebSocket.OPEN) {
       client.send(JSON.stringify(message));
     }
@@ -111,7 +110,7 @@ export function broadcast(wss: WebSocketServer, message: WSMessage) {
 
 // Send to specific user
 export function sendToUser(wss: WebSocketServer, userId: string, message: WSMessage) {
-  wss.clients.forEach((client) => {
+  wss.clients.forEach(client => {
     const authWs = client as AuthenticatedWebSocket;
     if (authWs.userId === userId && client.readyState === WebSocket.OPEN) {
       client.send(JSON.stringify(message));

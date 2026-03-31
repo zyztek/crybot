@@ -17,13 +17,13 @@
 
 Before you begin, ensure you have installed:
 
-| Requirement | Version | Installation |
-|-------------|---------|--------------|
-| Node.js | ≥20.x | [nodejs.org](https://nodejs.org/) |
-| npm | ≥10.x | Comes with Node.js |
-| PostgreSQL | ≥16.x | [postgresql.org](https://www.postgresql.org/download/) |
-| Docker | ≥24.x (optional) | [docker.com](https://www.docker.com/) |
-| Git | ≥2.x | [git-scm.com](https://git-scm.com/) |
+| Requirement | Version          | Installation                                           |
+| ----------- | ---------------- | ------------------------------------------------------ |
+| Node.js     | ≥20.x            | [nodejs.org](https://nodejs.org/)                      |
+| npm         | ≥10.x            | Comes with Node.js                                     |
+| PostgreSQL  | ≥16.x            | [postgresql.org](https://www.postgresql.org/download/) |
+| Docker      | ≥24.x (optional) | [docker.com](https://www.docker.com/)                  |
+| Git         | ≥2.x             | [git-scm.com](https://git-scm.com/)                    |
 
 ### Quick Start (5 minutes)
 
@@ -160,39 +160,39 @@ User Action → Component → Hook → Store → Action → API → Database
 
 ### Authentication Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/auth/register` | Register new user |
-| POST | `/api/auth/login` | Login user |
-| POST | `/api/auth/logout` | Logout user |
-| GET | `/api/auth/me` | Get current user |
+| Method | Endpoint             | Description       |
+| ------ | -------------------- | ----------------- |
+| POST   | `/api/auth/register` | Register new user |
+| POST   | `/api/auth/login`    | Login user        |
+| POST   | `/api/auth/logout`   | Logout user       |
+| GET    | `/api/auth/me`       | Get current user  |
 
 ### User Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/user/profile` | Get user profile |
-| PUT | `/api/user/profile` | Update user profile |
-| GET | `/api/user/wallets` | Get user wallets |
-| GET | `/api/user/referrals` | Get referral data |
+| Method | Endpoint              | Description         |
+| ------ | --------------------- | ------------------- |
+| GET    | `/api/user/profile`   | Get user profile    |
+| PUT    | `/api/user/profile`   | Update user profile |
+| GET    | `/api/user/wallets`   | Get user wallets    |
+| GET    | `/api/user/referrals` | Get referral data   |
 
 ### Faucet Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/faucets` | List all faucets |
-| GET | `/api/faucets/:id` | Get faucet details |
-| POST | `/api/faucets/:id/claim` | Claim faucet |
-| GET | `/api/faucets/history` | Get claim history |
+| Method | Endpoint                 | Description        |
+| ------ | ------------------------ | ------------------ |
+| GET    | `/api/faucets`           | List all faucets   |
+| GET    | `/api/faucets/:id`       | Get faucet details |
+| POST   | `/api/faucets/:id/claim` | Claim faucet       |
+| GET    | `/api/faucets/history`   | Get claim history  |
 
 ### Achievement Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/achievements` | List achievements |
-| GET | `/api/achievements/progress` | User progress |
-| POST | `/api/achievements/:id/progress` | Update progress |
-| GET | `/api/leaderboard` | Get leaderboard |
+| Method | Endpoint                         | Description       |
+| ------ | -------------------------------- | ----------------- |
+| GET    | `/api/achievements`              | List achievements |
+| GET    | `/api/achievements/progress`     | User progress     |
+| POST   | `/api/achievements/:id/progress` | Update progress   |
+| GET    | `/api/leaderboard`               | Get leaderboard   |
 
 ### API Response Format
 
@@ -201,7 +201,7 @@ All responses follow this structure:
 ```json
 {
   "success": true,
-  "data": { },
+  "data": {},
   "message": "Success message",
   "timestamp": "2024-01-01T00:00:00.000Z"
 }
@@ -238,12 +238,12 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - '5432:5432'
 
   backend:
     build: ./server
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       DATABASE_URL: postgresql://crybot:your-password@postgres:5432/crybot
       JWT_SECRET: your-secret
@@ -253,7 +253,7 @@ services:
   frontend:
     build: .
     ports:
-      - "5173:80"
+      - '5173:80'
     depends_on:
       - backend
 
@@ -294,6 +294,7 @@ docker-compose up -d
 **Error:** `Error: P1001: Can't reach database server`
 
 **Solution:**
+
 ```bash
 # Check PostgreSQL is running
 pg_isready -h localhost -p 5432
@@ -310,6 +311,7 @@ sudo systemctl start postgresql
 **Error:** `Error: listen EADDRINUSE: address already in use :::5173`
 
 **Solution:**
+
 ```bash
 # Find process using port
 lsof -i :5173
@@ -326,6 +328,7 @@ npm run dev -- --port 3001
 **Error:** Multiple TypeScript compilation errors
 
 **Solution:**
+
 ```bash
 # Clear node_modules and reinstall
 rm -rf node_modules package-lock.json
@@ -340,6 +343,7 @@ npm run typecheck
 **Error:** Tests failing
 
 **Solution:**
+
 ```bash
 # Run tests in watch mode
 npm run test:watch
@@ -354,16 +358,16 @@ npm test -- src/store/cryptoStore.test.ts
 
 ### Available Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Build for production |
-| `npm run preview` | Preview production build |
-| `npm test` | Run all tests |
-| `npm run test:watch` | Run tests in watch mode |
-| `npm run lint` | Run ESLint |
-| `npm run lint:fix` | Fix ESLint issues |
-| `npm run typecheck` | Run TypeScript check |
+| Command              | Description              |
+| -------------------- | ------------------------ |
+| `npm run dev`        | Start development server |
+| `npm run build`      | Build for production     |
+| `npm run preview`    | Preview production build |
+| `npm test`           | Run all tests            |
+| `npm run test:watch` | Run tests in watch mode  |
+| `npm run lint`       | Run ESLint               |
+| `npm run lint:fix`   | Fix ESLint issues        |
+| `npm run typecheck`  | Run TypeScript check     |
 
 ### Running with Docker
 
@@ -406,17 +410,18 @@ npm test -- --coverage
 ```
 
 Current coverage:
+
 - Unit Tests: 95+
 - Test Files: 30+
 - Coverage: ~85%
 
 ### Performance Benchmarks
 
-| Metric | Value |
-|--------|-------|
-| Initial Load | <2s |
-| Build Time | ~30s |
-| Test Suite | ~90s |
+| Metric       | Value |
+| ------------ | ----- |
+| Initial Load | <2s   |
+| Build Time   | ~30s  |
+| Test Suite   | ~90s  |
 
 ---
 
@@ -446,5 +451,5 @@ MIT License - See [LICENSE](./LICENSE) for details.
 
 ---
 
-*Last Updated: January 2024*
-*Version: 1.0.0*
+_Last Updated: January 2024_
+_Version: 1.0.0_

@@ -1,6 +1,6 @@
 /**
  * Database Seed Script
- * 
+ *
  * Run with: npx tsx prisma/seed.ts
  */
 
@@ -162,12 +162,12 @@ async function main() {
 
   // ============== CREATE DEFAULT USER ACHIEVEMENTS ==============
   // This would be done when users register
-  
+
   console.log('🌱 Seeding complete!');
 }
 
 main()
-  .catch((e) => {
+  .catch(e => {
     console.error('❌ Seed error:', e);
     process.exit(1);
   })

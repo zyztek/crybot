@@ -20,158 +20,174 @@ const updateProfileSchema = z.object({
 // ============== ROUTES ==============
 
 // GET /api/user/profile - Get user profile
-router.get('/profile', authenticate, asyncHandler(async (req: AuthRequest, res) => {
-  const user = await prisma.user.findUnique({
-    where: { id: req.user!.id },
-    include: {
-      wallets: true,
-      referrals: {
-        select: {
-          id: true,
-          username: true,
-          createdAt: true,
+router.get(
+  '/profile',
+  authenticate,
+  asyncHandler(async (req: AuthRequest, res) => {
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      include: {
+        wallets: true,
+        referrals: {
+          select: {
+            id: true,
+            username: true,
+            createdAt: true,
+          },
         },
       },
-    },
-  });
-
-  if (!user) {
-    return res.status(404).json({
-      success: false,
-      error: 'User not found',
     });
-  }
 
-  return res.json({
-    success: true,
-    data: {
-      id: user.id,
-      email: user.email,
-      username: user.username,
-      walletAddress: user.walletAddress,
-      referralCode: user.referralCode,
-      referrerEarnings: user.referrerEarnings,
-      referralCount: user.referrals.length,
-      level: user.level,
-      totalEarned: user.totalEarned,
-      createdAt: user.createdAt,
-      wallets: user.wallets,
-    },
-  });
-}));
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        error: 'User not found',
+      });
+    }
+
+    return res.json({
+      success: true,
+      data: {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        walletAddress: user.walletAddress,
+        referralCode: user.referralCode,
+        referrerEarnings: user.referrerEarnings,
+        referralCount: user.referrals.length,
+        level: user.level,
+        totalEarned: user.totalEarned,
+        createdAt: user.createdAt,
+        wallets: user.wallets,
+      },
+    });
+  })
+);
 
 // PUT /api/user/profile - Update user profile
-router.put('/profile', authenticate, asyncHandler(async (req: AuthRequest, res) => {
-  const data = updateProfileSchema.parse(req.body);
+router.put(
+  '/profile',
+  authenticate,
+  asyncHandler(async (req: AuthRequest, res) => {
+    const data = updateProfileSchema.parse(req.body);
 
-  const user = await prisma.user.update({
-    where: { id: req.user!.id },
-    data: {
-      ...(data.username && { username: data.username }),
-      ...(data.walletAddress && { walletAddress: data.walletAddress }),
-    },
-    include: {
-      wallets: true,
-    },
-  });
+    const user = await prisma.user.update({
+      where: { id: req.user!.id },
+      data: {
+        ...(data.username && { username: data.username }),
+        ...(data.walletAddress && { walletAddress: data.walletAddress }),
+      },
+      include: {
+        wallets: true,
+      },
+    });
 
-  res.json({
-    success: true,
-    data: {
-      id: user.id,
-      email: user.email,
-      username: user.username,
-      walletAddress: user.walletAddress,
-    },
-  });
-}));
+    res.json({
+      success: true,
+      data: {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        walletAddress: user.walletAddress,
+      },
+    });
+  })
+);
 
 // GET /api/user/referrals - Get user's referrals
-router.get('/referrals', authenticate, asyncHandler(async (req: AuthRequest, res) => {
-  const user = await prisma.user.findUnique({
-    where: { id: req.user!.id },
-    include: {
-      referrals: {
-        select: {
-          id: true,
-          username: true,
-          email: true,
-          createdAt: true,
-          totalEarned: true,
-        },
-        orderBy: {
-          createdAt: 'desc',
+router.get(
+  '/referrals',
+  authenticate,
+  asyncHandler(async (req: AuthRequest, res) => {
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      include: {
+        referrals: {
+          select: {
+            id: true,
+            username: true,
+            email: true,
+            createdAt: true,
+            totalEarned: true,
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
         },
       },
-    },
-  });
+    });
 
-  res.json({
-    success: true,
-    data: {
-      referrals: user?.referrals || [],
-      totalReferrals: user?.referrals.length || 0,
-      totalEarnings: user?.referrerEarnings || '0',
-    },
-  });
-}));
+    res.json({
+      success: true,
+      data: {
+        referrals: user?.referrals || [],
+        totalReferrals: user?.referrals.length || 0,
+        totalEarnings: user?.referrerEarnings || '0',
+      },
+    });
+  })
+);
 
 // POST /api/user/claim-referral - Claim referral bonus
-router.post('/claim-referral', authenticate, asyncHandler(async (req: AuthRequest, res) => {
-  const user = await prisma.user.findUnique({
-    where: { id: req.user!.id },
-  });
-
-  if (!user || user.referrerEarnings === '0') {
-    return res.status(400).json({
-      success: false,
-      error: 'No referral earnings to claim',
+router.post(
+  '/claim-referral',
+  authenticate,
+  asyncHandler(async (req: AuthRequest, res) => {
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
     });
-  }
 
-  // Transfer earnings to user's ETH wallet
-  const wallet = await prisma.wallet.findFirst({
-    where: { userId: user.id, coin: 'ETH' },
-  });
+    if (!user || user.referrerEarnings === '0') {
+      return res.status(400).json({
+        success: false,
+        error: 'No referral earnings to claim',
+      });
+    }
 
-  if (!wallet) {
-    return res.status(400).json({
-      success: false,
-      error: 'Wallet not found',
+    // Transfer earnings to user's ETH wallet
+    const wallet = await prisma.wallet.findFirst({
+      where: { userId: user.id, coin: 'ETH' },
     });
-  }
 
-  const earnings = user.referrerEarnings;
-  const newBalance = (BigInt(wallet.balance) + BigInt(earnings)).toString();
+    if (!wallet) {
+      return res.status(400).json({
+        success: false,
+        error: 'Wallet not found',
+      });
+    }
 
-  await prisma.$transaction([
-    prisma.wallet.update({
-      where: { id: wallet.id },
-      data: { balance: newBalance },
-    }),
-    prisma.user.update({
-      where: { id: user.id },
-      data: { referrerEarnings: '0' },
-    }),
-    prisma.transaction.create({
+    const earnings = user.referrerEarnings;
+    const newBalance = (BigInt(wallet.balance) + BigInt(earnings)).toString();
+
+    await prisma.$transaction([
+      prisma.wallet.update({
+        where: { id: wallet.id },
+        data: { balance: newBalance },
+      }),
+      prisma.user.update({
+        where: { id: user.id },
+        data: { referrerEarnings: '0' },
+      }),
+      prisma.transaction.create({
+        data: {
+          userId: user.id,
+          type: 'referral_bonus',
+          coin: 'ETH',
+          amount: earnings,
+          status: 'confirmed',
+        },
+      }),
+    ]);
+
+    return res.json({
+      success: true,
+      message: `Claimed ${earnings} ETH from referrals`,
       data: {
-        userId: user.id,
-        type: 'referral_bonus',
-        coin: 'ETH',
         amount: earnings,
-        status: 'confirmed',
+        newBalance,
       },
-    }),
-  ]);
-
-  return res.json({
-    success: true,
-    message: `Claimed ${earnings} ETH from referrals`,
-    data: {
-      amount: earnings,
-      newBalance,
-    },
-  });
-}));
+    });
+  })
+);
 
 export default router;

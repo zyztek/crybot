@@ -3,12 +3,14 @@
 ## Data Handling
 
 ### What We Collect
+
 - Email address (for account identification)
 - Username (for display purposes)
 - Wallet addresses (for faucet distribution)
 - Usage statistics (anonymous)
 
 ### What We Don't Collect
+
 - Real cryptocurrency or private keys
 - Payment information
 - Location data

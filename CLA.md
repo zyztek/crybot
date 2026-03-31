@@ -9,6 +9,7 @@ You grant to the project maintainers a perpetual, worldwide, non-exclusive, roya
 ## 2. Originality
 
 You confirm that:
+
 - Your contributions are original or you have the right to submit them
 - You have the legal authority to enter into this agreement
 
@@ -19,6 +20,7 @@ You retain copyright over your contributions. The project maintains license over
 ## 4. Third Party Code
 
 If your contribution includes third-party code, you will:
+
 - Clearly identify the third-party code
 - Include the appropriate license notices
 - Obtain all necessary permissions

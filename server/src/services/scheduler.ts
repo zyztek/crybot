@@ -1,9 +1,9 @@
 /**
  * Testnet Funding Scheduler
- * 
+ *
  * LEGITIMATE USE CASE: Automated test wallet funding for authorized personas
  * Runs on a schedule to maintain minimum balances across testnet chains
- * 
+ *
  * This scheduler:
  * - Runs every N minutes to check wallet balances
  * - Funds wallets that are below minimum balance threshold
@@ -15,17 +15,17 @@
 import { testnetOrchestrator } from './testnetOrchestrator.js';
 
 export interface SchedulerConfig {
-  intervalMs: number;           // How often to run (default: 5 minutes)
-  minBalance: string;           // Minimum balance threshold
-  maxClaimsPerCycle: number;    // Max claims per funding cycle
-  jitterMs: number;             // Random jitter to add (0-30 minutes)
+  intervalMs: number; // How often to run (default: 5 minutes)
+  minBalance: string; // Minimum balance threshold
+  maxClaimsPerCycle: number; // Max claims per funding cycle
+  jitterMs: number; // Random jitter to add (0-30 minutes)
 }
 
 const DEFAULT_CONFIG: SchedulerConfig = {
-  intervalMs: 5 * 60 * 1000,    // 5 minutes
-  minBalance: '0.005',          // 0.005 ETH minimum
-  maxClaimsPerCycle: 10,        // Max 10 claims per cycle
-  jitterMs: 30 * 60 * 1000,     // 0-30 minutes jitter
+  intervalMs: 5 * 60 * 1000, // 5 minutes
+  minBalance: '0.005', // 0.005 ETH minimum
+  maxClaimsPerCycle: 10, // Max 10 claims per cycle
+  jitterMs: 30 * 60 * 1000, // 0-30 minutes jitter
 };
 
 class TestnetScheduler {
@@ -49,7 +49,9 @@ class TestnetScheduler {
       return;
     }
 
-    console.log(`[Scheduler] Starting testnet funding scheduler (interval: ${this.config.intervalMs}ms)`);
+    console.log(
+      `[Scheduler] Starting testnet funding scheduler (interval: ${this.config.intervalMs}ms)`
+    );
     this.isRunning = true;
 
     // Run immediately on start
@@ -79,8 +81,10 @@ class TestnetScheduler {
   private async runCycle(): Promise<void> {
     this.totalRuns++;
     this.lastRun = new Date();
-    
-    console.log(`[Scheduler] Running funding cycle #${this.totalRuns} at ${this.lastRun.toISOString()}`);
+
+    console.log(
+      `[Scheduler] Running funding cycle #${this.totalRuns} at ${this.lastRun.toISOString()}`
+    );
 
     if (!testnetOrchestrator.isReady()) {
       console.log('[Scheduler] Orchestrator not ready, skipping cycle');
@@ -90,7 +94,7 @@ class TestnetScheduler {
     try {
       // Get all personas
       const personas = await testnetOrchestrator.getPersonas();
-      
+
       if (personas.length === 0) {
         console.log('[Scheduler] No personas configured, skipping cycle');
         return;
@@ -126,7 +130,9 @@ class TestnetScheduler {
           // Check cooldown
           const cooldown = await testnetOrchestrator.checkCooldown(persona.id, chain, 24);
           if (!cooldown.canClaim) {
-            console.log(`[Scheduler] ${persona.name} on ${chain}: cooldown active until ${cooldown.nextClaimAt}`);
+            console.log(
+              `[Scheduler] ${persona.name} on ${chain}: cooldown active until ${cooldown.nextClaimAt}`
+            );
             continue;
           }
 
@@ -136,25 +142,27 @@ class TestnetScheduler {
 
           // Get default amount for chain
           const amount = this.getDefaultAmount(chain);
-          
+
           // Fund the wallet
-          const result = await testnetOrchestrator.fundWallet(
-            persona.walletAddress,
-            chain,
-            amount
-          );
+          const result = await testnetOrchestrator.fundWallet(persona.walletAddress, chain, amount);
 
           if (result.success) {
             fundedThisCycle++;
             this.totalFunded++;
-            console.log(`[Scheduler] ✅ Funded ${persona.name}: ${amount} ${chain} (tx: ${result.txHash})`);
+            console.log(
+              `[Scheduler] ✅ Funded ${persona.name}: ${amount} ${chain} (tx: ${result.txHash})`
+            );
           } else {
-            console.log(`[Scheduler] ❌ Failed to fund ${persona.name} on ${chain}: ${result.error}`);
+            console.log(
+              `[Scheduler] ❌ Failed to fund ${persona.name} on ${chain}: ${result.error}`
+            );
           }
         }
       }
 
-      console.log(`[Scheduler] Cycle #${this.totalRuns} complete: ${fundedThisCycle} wallets funded`);
+      console.log(
+        `[Scheduler] Cycle #${this.totalRuns} complete: ${fundedThisCycle} wallets funded`
+      );
     } catch (error) {
       console.error('[Scheduler] Error during funding cycle:', error);
     }

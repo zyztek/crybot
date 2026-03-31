@@ -11,7 +11,7 @@ on:
 jobs:
   snyk:
     runs-on: ubuntu-latest
-    if: false  # Disabled - requires SNYK_TOKEN secret to be configured
+    if: false # Disabled - requires SNYK_TOKEN secret to be configured
     continue-on-error: true
     steps:
       - uses: actions/checkout@v6

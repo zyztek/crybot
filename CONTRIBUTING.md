@@ -5,16 +5,19 @@ Thank you for your interest in contributing to CryptoFaucet Hub!
 ## 🤝 How to Contribute
 
 ### Reporting Bugs
+
 1. Check existing issues to avoid duplicates
 2. Use bug report template
 3. Include steps to reproduce, expected vs actual behavior
 
 ### Suggesting Features
+
 1. Check feature request discussions
 2. Provide clear use cases
 3. Explain why this feature would help
 
 ### Pull Requests
+
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/amazing-feature`
 3. Make your changes following our code style
@@ -35,10 +38,11 @@ Thank you for your interest in contributing to CryptoFaucet Hub!
 
 - All new features must include tests
 - Run tests before submitting PR:
+
   ```bash
   # Frontend tests
   npm test
-  
+
   # Backend tests
   cd server && npm test
   ```
@@ -46,6 +50,7 @@ Thank you for your interest in contributing to CryptoFaucet Hub!
 ## 📝 Commit Messages
 
 Use conventional commits:
+
 - `feat:` New feature
 - `fix:` Bug fix
 - `docs:` Documentation

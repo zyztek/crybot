@@ -1,6 +1,6 @@
 /**
  * CryptoFaucet Hub - Backend API Server
- * 
+ *
  * Main entry point for the Express API server
  */
 
@@ -44,16 +44,18 @@ let server: ReturnType<typeof app.listen> | null = null;
 // ============== MIDDLEWARE ==============
 
 // Security headers
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", "data:", "https:"],
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", 'data:', 'https:'],
+      },
     },
-  },
-}));
+  })
+);
 
 // CORS configuration
 app.use(cors(corsConfig));
@@ -119,20 +121,23 @@ app.get('/health', (req, res) => {
 });
 
 // Deep health check (with DB connectivity)
-app.get('/health/ready', asyncHandler(async (req, res) => {
-  // Check database connection
-  await prisma.$queryRaw`SELECT 1`;
-  
-  res.json({
-    status: 'ready',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime(),
-    checks: {
-      database: 'connected',
-      api: 'ready',
-    },
-  });
-}));
+app.get(
+  '/health/ready',
+  asyncHandler(async (req, res) => {
+    // Check database connection
+    await prisma.$queryRaw`SELECT 1`;
+
+    res.json({
+      status: 'ready',
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime(),
+      checks: {
+        database: 'connected',
+        api: 'ready',
+      },
+    });
+  })
+);
 
 // Liveness check (for Kubernetes/Docker)
 app.get('/health/live', (req, res) => {

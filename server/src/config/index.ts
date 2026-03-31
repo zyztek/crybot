@@ -1,6 +1,6 @@
 /**
  * Server Configuration - Centralized environment-based settings
- * 
+ *
  * Provides type-safe access to environment variables with defaults
  */
 

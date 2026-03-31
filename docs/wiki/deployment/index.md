@@ -16,6 +16,7 @@ on:
 ```
 
 **Manual Deploy:**
+
 ```bash
 npm run build
 npm run preview
@@ -44,12 +45,14 @@ vercel
 ### 4. Manual Server Deployment
 
 **Frontend:**
+
 ```bash
 npm run build
 npm run preview -- --port 5173 --host
 ```
 
 **Backend:**
+
 ```bash
 cd server
 npm run build

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - Comprehensive GitHub Actions workflows
 - GitHub Projects board configuration
 - Detailed wiki documentation
@@ -16,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Issue automation workflows
 
 ### Improved
+
 - Enhanced CI/CD pipelines
 - Better issue templates
 - More detailed PR templates
@@ -24,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2024-03-23
 
 ### Added
+
 - Initial release of CryptoFaucet Hub
 - React 19 + TypeScript + Tailwind CSS frontend
 - Express.js + Prisma + PostgreSQL backend
@@ -39,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rate limiting and security middleware
 
 ### Features
+
 - User authentication and authorization
 - Wallet management
 - Faucet claiming system
@@ -49,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Referral system
 
 ### Infrastructure
+
 - GitHub Actions CI/CD
 - Dependabot dependency updates
 - CodeQL security scanning

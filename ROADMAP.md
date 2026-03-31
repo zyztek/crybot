@@ -3,6 +3,7 @@
 ## v1.1.0 - Enhanced Features (Q2 2024)
 
 ### Planned Features
+
 - [ ] Advanced analytics dashboard with more charts
 - [ ] Portfolio diversification analysis
 - [ ] Enhanced referral system with tiers
@@ -10,6 +11,7 @@
 - [ ] Mobile app (React Native)
 
 ### Improvements
+
 - [ ] Add password reset functionality
 - [ ] Improve search and filtering
 - [ ] Add dark/light theme toggle
@@ -20,6 +22,7 @@
 ## v1.2.0 - Blockchain Expansion (Q3 2024)
 
 ### Planned Blockchains
+
 - [ ] Polygon (Mumbai Testnet)
 - [ ] Arbitrum (Sepolia Testnet)
 - [ ] Optimism (Sepolia Testnet)
@@ -27,6 +30,7 @@
 - [ ] BNB Smart Chain (Testnet)
 
 ### New Features
+
 - [ ] Cross-chain portfolio view
 - [ ] Multi-sig wallet support
 - [ ] Hardware wallet integration
@@ -36,6 +40,7 @@
 ## v2.0.0 - Major Release (Q4 2024)
 
 ### Features
+
 - [ ] Mainnet support (optional)
 - [ ] NFT faucet support
 - [ ] Token swap integration
@@ -48,12 +53,14 @@
 ## Long-term Goals
 
 ### Community
+
 - [ ] Active Discord community
 - [ ] YouTube tutorials
 - [ ] Blog with crypto news
 - [ ] Community events
 
 ### Technical
+
 - [ ] GraphQL API
 - [ ] WebSocket real-time updates
 - [ ] Microservices architecture
@@ -64,6 +71,7 @@
 ## Completed Features
 
 ### v1.0.0 (Current)
+
 - ✅ User authentication (JWT + Refresh Tokens)
 - ✅ Multi-chain faucet support (ETH, BTC, SOL)
 - ✅ Wallet management (CRUD)

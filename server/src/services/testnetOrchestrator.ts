@@ -1,16 +1,16 @@
 /**
  * Testnet Operations Orchestrator
- * 
+ *
  * LEGITIMATE USE CASE: Multi-chain test wallet funding automation
  * for QA teams, demo environments, education, and DevRel operations.
- * 
+ *
  * Features:
  * - Manage authorized personas (named test identities)
  * - Auto-fund testnet wallets across multiple chains
  * - Jittered claim scheduling with cooldown awareness
  * - Balance monitoring and health checks
  * - Audit logging for compliance
- * 
+ *
  * NOT for: faucet abuse, mass account farming, or disposable email registration
  */
 
@@ -19,7 +19,13 @@ import { prisma } from '../lib/prisma.js';
 import { blockchainConfig } from '../config/index.js';
 
 // Supported testnet chains
-export type TestnetChain = 'sepolia' | 'holesky' | 'goerli' | 'solana' | 'bitcoin-testnet' | 'bsc-testnet';
+export type TestnetChain =
+  | 'sepolia'
+  | 'holesky'
+  | 'goerli'
+  | 'solana'
+  | 'bitcoin-testnet'
+  | 'bsc-testnet';
 
 export interface Persona {
   id: string;
@@ -105,7 +111,8 @@ const CHAIN_CONFIGS: Record<TestnetChain, ChainConfig> = {
   'bsc-testnet': {
     name: 'BNB Smart Chain Testnet',
     chainId: 97,
-    rpcUrl: blockchainConfig.bscTestnet?.rpcUrl || 'https://data-seed-prebsc-1-s1.bnbchain.org:8545',
+    rpcUrl:
+      blockchainConfig.bscTestnet?.rpcUrl || 'https://data-seed-prebsc-1-s1.bnbchain.org:8545',
     explorer: 'https://testnet.bscscan.com',
     faucetUrl: 'https://testnet.bnbchain.org/faucet-smart',
     nativeSymbol: 'BNB',
@@ -194,7 +201,11 @@ class TestnetOrchestrator {
   /**
    * Check if wallet needs funding (below minimum balance)
    */
-  async needsFunding(walletAddress: string, chain: TestnetChain, minBalance: string): Promise<boolean> {
+  async needsFunding(
+    walletAddress: string,
+    chain: TestnetChain,
+    minBalance: string
+  ): Promise<boolean> {
     try {
       const currentBalance = await this.getBalance(walletAddress, chain);
       return parseFloat(currentBalance) < parseFloat(minBalance);
@@ -207,7 +218,11 @@ class TestnetOrchestrator {
   /**
    * Check cooldown for a persona on a specific chain
    */
-  async checkCooldown(personaId: string, chain: TestnetChain, intervalHours: number): Promise<{
+  async checkCooldown(
+    personaId: string,
+    chain: TestnetChain,
+    intervalHours: number
+  ): Promise<{
     canClaim: boolean;
     nextClaimAt: Date | null;
   }> {
@@ -327,7 +342,9 @@ class TestnetOrchestrator {
         gasPrice,
       });
 
-      console.log(`[TestnetOps] Funded ${amount} ${config.nativeSymbol} to ${walletAddress} on ${chain}: ${tx.hash}`);
+      console.log(
+        `[TestnetOps] Funded ${amount} ${config.nativeSymbol} to ${walletAddress} on ${chain}: ${tx.hash}`
+      );
 
       return {
         success: true,
@@ -475,7 +492,11 @@ class TestnetOrchestrator {
     return amounts[chain] || '0.01';
   }
 
-  private async logClaim(personaId: string, chain: TestnetChain, result: ClaimResult): Promise<void> {
+  private async logClaim(
+    personaId: string,
+    chain: TestnetChain,
+    result: ClaimResult
+  ): Promise<void> {
     // Create audit log entry in database
     await prisma.personaFundingLog.create({
       data: {
@@ -487,7 +508,9 @@ class TestnetOrchestrator {
         error: result.error || null,
       },
     });
-    console.log(`[TestnetOps] Audit: Persona ${personaId} on ${chain}: ${result.success ? 'SUCCESS' : 'FAILED'}`);
+    console.log(
+      `[TestnetOps] Audit: Persona ${personaId} on ${chain}: ${result.success ? 'SUCCESS' : 'FAILED'}`
+    );
   }
 }
 

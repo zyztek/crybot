@@ -33,17 +33,18 @@
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|------------|
-| Frontend | React 19, Vite 7, Tailwind CSS 4, Zustand, Recharts |
-| Backend | Express.js, TypeScript, Prisma |
-| Database | PostgreSQL 16 |
-| Auth | JWT with refresh tokens |
-| Container | Docker, Docker Compose |
+| Layer     | Technology                                          |
+| --------- | --------------------------------------------------- |
+| Frontend  | React 19, Vite 7, Tailwind CSS 4, Zustand, Recharts |
+| Backend   | Express.js, TypeScript, Prisma                      |
+| Database  | PostgreSQL 16                                       |
+| Auth      | JWT with refresh tokens                             |
+| Container | Docker, Docker Compose                              |
 
 ## Project Structure
 
 ### Frontend (`/src`)
+
 ```
 src/
 ├── components/          # React components
@@ -58,6 +59,7 @@ src/
 ```
 
 ### Backend (`/server`)
+
 ```
 server/
 ├── src/
@@ -83,12 +85,14 @@ server/
 ## Deployment
 
 ### Development
+
 ```bash
 npm run dev          # Frontend
 cd server && npm run dev  # Backend
 ```
 
 ### Docker
+
 ```bash
 docker-compose up -d  # Full stack
 ```

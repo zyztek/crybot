@@ -10,9 +10,9 @@
  */
 import { PrismaClient } from '@prisma/client';
 interface SetupResult {
-    success: boolean;
-    error?: string;
-    cleanup?: () => Promise<void>;
+  success: boolean;
+  error?: string;
+  cleanup?: () => Promise<void>;
 }
 /**
  * Drop all tables to clean the database
@@ -26,7 +26,7 @@ declare function seedDatabase(prisma: PrismaClient): Promise<void>;
  * Create test users with transactions and achievements for testing
  */
 declare function createTestData(prisma: PrismaClient): Promise<{
-    userIds: string[];
+  userIds: string[];
 }>;
 /**
  * Main setup function

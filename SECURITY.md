@@ -37,23 +37,27 @@ We release security updates as needed. Critical vulnerabilities may trigger emer
 ## Scope
 
 This policy covers:
+
 - Frontend application (src/)
 - Backend API (server/)
 - GitHub workflows (.github/)
 
 Out of scope:
+
 - Third-party services
 - User-deployed instances
 
 ## Best Practices
 
 ### For Users
+
 - Use strong, unique passwords
 - Enable 2FA when available
 - Keep wallet seeds secure
 - Verify URLs before connecting
 
 ### For Developers
+
 - Never commit secrets
 - Use environment variables
 - Follow OWASP guidelines

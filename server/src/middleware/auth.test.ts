@@ -1,6 +1,6 @@
 /**
  * Auth Middleware Tests
- * 
+ *
  * Unit tests for server/src/middleware/auth.ts
  */
 
@@ -100,7 +100,7 @@ describe('Auth Middleware', () => {
     it('should call next() with error when session not found', async () => {
       const token = generateTestToken();
       mockReq.headers!.authorization = `Bearer ${token}`;
-      
+
       (prisma.session.findUnique as any).mockResolvedValue(null);
 
       await authenticate(mockReq as AuthRequest, mockRes as Response, mockNext);
@@ -113,7 +113,7 @@ describe('Auth Middleware', () => {
     it('should call next() with error when session is expired', async () => {
       const token = generateTestToken();
       mockReq.headers!.authorization = `Bearer ${token}`;
-      
+
       const expiredSession = {
         id: 'session-456',
         expiresAt: new Date(Date.now() - 1000), // Expired
@@ -131,7 +131,7 @@ describe('Auth Middleware', () => {
     it('should attach user to request when session is valid', async () => {
       const token = generateTestToken();
       mockReq.headers!.authorization = `Bearer ${token}`;
-      
+
       const validSession = {
         id: 'session-456',
         expiresAt: new Date(Date.now() + 3600000), // Not expired
@@ -180,7 +180,7 @@ describe('Auth Middleware', () => {
     it('should attach user when session is valid', async () => {
       const token = generateTestToken();
       mockReq.headers!.authorization = `Bearer ${token}`;
-      
+
       const validSession = {
         id: 'session-456',
         expiresAt: new Date(Date.now() + 3600000),
@@ -201,7 +201,7 @@ describe('Auth Middleware', () => {
     it('should not attach user when session is expired', async () => {
       const token = generateTestToken();
       mockReq.headers!.authorization = `Bearer ${token}`;
-      
+
       const expiredSession = {
         id: 'session-456',
         expiresAt: new Date(Date.now() - 1000),

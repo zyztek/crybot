@@ -1,6 +1,6 @@
 /**
  * Ethereum Faucet Service
- * 
+ *
  * Real Ethereum testnet faucet integration with automatic claiming
  * Supports Sepolia, Goerli, and Holesky testnets
  */
@@ -57,12 +57,12 @@ export class EthereumFaucetService {
   constructor(network: TestnetType = 'sepolia') {
     this.network = network;
     this.config = TESTNET_CONFIGS[network];
-    
+
     // Initialize provider if RPC URL is configured
     if (this.config.rpcUrl) {
       this.provider = new ethers.JsonRpcProvider(this.config.rpcUrl);
     }
-    
+
     // Initialize faucet wallet if private key is configured
     if (blockchainConfig.faucet.privateKey) {
       this.faucetWallet = {
@@ -110,7 +110,7 @@ export class EthereumFaucetService {
     if (!this.provider || !this.faucetWallet) {
       throw new Error('Faucet service not configured');
     }
-    
+
     const balance = await this.provider.getBalance(this.faucetWallet.address);
     return ethers.formatEther(balance);
   }
@@ -137,28 +137,28 @@ export class EthereumFaucetService {
 
       // Create wallet instance
       const wallet = new ethers.Wallet(this.faucetWallet.privateKey, this.provider);
-      
+
       // Get current gas price
       const feeData = await this.provider.getFeeData();
       const gasPrice = feeData.gasPrice ?? BigInt(1000000000); // 1 gwei fallback
-      
+
       // Parse amount
       const amount = ethers.parseEther(amountEth);
-      
+
       // Estimate gas
       const estimatedGas = await this.provider.estimateGas({
         to: toAddress,
         value: amount,
       });
-      
+
       // Add 20% buffer to gas estimate
       const gasLimitBigInt = (estimatedGas * 120n) / 100n;
       const gasLimit = gasLimitBigInt;
-      
+
       // Calculate total cost
       const gasCost = gasPrice * gasLimitBigInt;
       const totalCost = amount + gasCost;
-      
+
       // Check if faucet has enough balance
       const faucetBalance = await this.provider.getBalance(this.faucetWallet.address);
       if (faucetBalance < totalCost) {
@@ -199,13 +199,15 @@ export class EthereumFaucetService {
   /**
    * Get transaction status
    */
-  async getTransactionStatus(txHash: string): Promise<{ confirmed: boolean; blockNumber?: number; logs?: unknown }> {
+  async getTransactionStatus(
+    txHash: string
+  ): Promise<{ confirmed: boolean; blockNumber?: number; logs?: unknown }> {
     if (!this.provider) {
       throw new Error('Provider not configured');
     }
 
     const receipt = await this.provider.getTransactionReceipt(txHash);
-    
+
     if (!receipt) {
       return { confirmed: false };
     }
@@ -243,9 +245,9 @@ export class EthereumFaucetService {
     const feeData = await this.provider.getFeeData();
     const gasPrice = feeData.gasPrice ?? BigInt(20000000000); // 20 gwei fallback
     const gasLimit = 21000; // Standard ETH transfer
-    
+
     const estimatedCost = gasPrice * BigInt(gasLimit);
-    
+
     return {
       gasPrice: ethers.formatUnits(gasPrice, 'gwei'),
       estimatedCost: ethers.formatEther(estimatedCost),

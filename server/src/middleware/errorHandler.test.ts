@@ -1,22 +1,22 @@
 /**
  * Error Handler Middleware Tests
- * 
+ *
  * Unit tests for server/src/middleware/errorHandler.ts
  */
 
 import { describe, it, expect, vi } from 'vitest';
 import { Request, Response, NextFunction } from 'express';
 import { ZodError } from 'zod';
-import { 
-  AppError, 
-  NotFoundError, 
-  UnauthorizedError, 
+import {
+  AppError,
+  NotFoundError,
+  UnauthorizedError,
   ForbiddenError,
   ValidationError,
   ConflictError,
-  errorHandler, 
+  errorHandler,
   notFoundHandler,
-  asyncHandler
+  asyncHandler,
 } from './errorHandler.js';
 
 // Mock Response
@@ -103,7 +103,7 @@ describe('errorHandler', () => {
     const res = createMockResponse();
     const req = createMockRequest();
     const zodError = new ZodError([
-      { path: ['email'], message: 'Invalid email', code: 'invalid_enum_value' }
+      { path: ['email'], message: 'Invalid email', code: 'invalid_enum_value' },
     ] as any);
 
     errorHandler(zodError as Error, req, res, mockNext);
@@ -136,23 +136,23 @@ describe('errorHandler', () => {
   it('should handle unknown error in production', () => {
     const res = createMockResponse();
     const req = createMockRequest();
-    
+
     // Mock process.env.NODE_ENV and console.error
     const originalEnv = process.env.NODE_ENV;
     const originalConsoleError = console.error;
     console.error = vi.fn();
     process.env.NODE_ENV = 'production';
-    
+
     const unknownError = new Error('Something went wrong');
     errorHandler(unknownError, req, res, mockNext);
-    
+
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({
       success: false,
       error: 'Internal server error',
       code: 'INTERNAL_ERROR',
     });
-    
+
     // Restore
     process.env.NODE_ENV = originalEnv;
     console.error = originalConsoleError;
@@ -180,13 +180,13 @@ describe('asyncHandler', () => {
     const res = createMockResponse();
     const req = createMockRequest();
     const error = new Error('Async error');
-    
+
     const handler = asyncHandler(async (req, res, next) => {
       throw error;
     });
-    
+
     await handler(req, res, mockNext);
-    
+
     expect(mockNext).toHaveBeenCalledWith(error);
   });
 
@@ -194,14 +194,14 @@ describe('asyncHandler', () => {
     const res = createMockResponse();
     const req = createMockRequest();
     const result = { data: 'test' };
-    
+
     const handler = asyncHandler(async (req, res, next) => {
       res.json(result);
       return result;
     });
-    
+
     await handler(req, res, mockNext);
-    
+
     // Verify the response was sent with the result
     expect(res.json).toHaveBeenCalledWith(result);
   });

@@ -20,6 +20,7 @@ Production:  https://api.crybot.com/api
 Register a new user account.
 
 **Request Body:**
+
 ```json
 {
   "email": "user@example.com",
@@ -30,6 +31,7 @@ Register a new user account.
 ```
 
 **Response (201):**
+
 ```json
 {
   "success": true,
@@ -46,6 +48,7 @@ Register a new user account.
 Authenticate user and receive tokens.
 
 **Request Body:**
+
 ```json
 {
   "email": "user@example.com",

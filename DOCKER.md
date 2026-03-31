@@ -16,6 +16,7 @@ docker-compose up -d
 ```
 
 This will:
+
 - Start PostgreSQL on port 5432
 - Start the backend API on port 3000
 - Run database migrations automatically
@@ -49,27 +50,30 @@ curl -X POST http://localhost:3000/api/auth/register \
 ### 4. Connect the frontend
 
 Update your frontend `.env`:
+
 ```
 VITE_API_URL=http://localhost:3000/api
 ```
 
 Then start the frontend:
+
 ```bash
 npm run dev
 ```
 
 ## Services
 
-| Service | Port | Description |
-|---------|------|-------------|
-| PostgreSQL | 5432 | Database |
-| Backend API | 3000 | REST API |
+| Service     | Port | Description |
+| ----------- | ---- | ----------- |
+| PostgreSQL  | 5432 | Database    |
+| Backend API | 3000 | REST API    |
 
 ## Configuration
 
 ### Environment Variables
 
 The Docker Compose sets these defaults:
+
 - `DATABASE_URL`: PostgreSQL connection string
 - `JWT_SECRET`: JWT signing key
 - `CORS_ORIGIN`: Frontend URL for CORS
@@ -79,6 +83,7 @@ To customize, edit the `environment` section in `docker-compose.yml`.
 ### Database Connection
 
 The backend connects to PostgreSQL using the Docker internal network:
+
 - Hostname: `postgres` (the service name)
 - Port: `5432`
 - Database: `crybot`
@@ -111,18 +116,23 @@ docker-compose exec postgres psql -U crybot -d crybot
 ## Troubleshooting
 
 ### "Database connection refused"
+
 Wait a few seconds for PostgreSQL to initialize, or check logs:
+
 ```bash
 docker-compose logs postgres
 ```
 
 ### "Prisma migration failed"
+
 The entrypoint should run migrations automatically. If it fails:
+
 ```bash
 docker-compose exec backend npx prisma db push
 ```
 
 ### Reset everything
+
 ```bash
 docker-compose down -v
 docker-compose up -d
@@ -131,6 +141,7 @@ docker-compose up -d
 ## Production Notes
 
 For production deployment:
+
 1. Change the JWT_SECRET to a secure random value
 2. Use strong database passwords
 3. Enable SSL for PostgreSQL

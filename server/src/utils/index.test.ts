@@ -1,6 +1,6 @@
 /**
  * Utility Function Tests
- * 
+ *
  * Unit tests for server/src/utils/index.ts
  * Testing helper functions for amount calculations
  */
@@ -25,20 +25,12 @@ describe('sumStringAmounts', () => {
   });
 
   it('should sum multiple items', () => {
-    const result = sumStringAmounts([
-      { amount: '100' },
-      { amount: '200' },
-      { amount: '300' },
-    ]);
+    const result = sumStringAmounts([{ amount: '100' }, { amount: '200' }, { amount: '300' }]);
     expect(result).toBe('600');
   });
 
   it('should handle empty string amounts as 0', () => {
-    const result = sumStringAmounts([
-      { amount: '100' },
-      { amount: '' },
-      { amount: '200' },
-    ]);
+    const result = sumStringAmounts([{ amount: '100' }, { amount: '' }, { amount: '200' }]);
     expect(result).toBe('300');
   });
 
@@ -63,7 +55,7 @@ describe('groupAndSumByCoin', () => {
       { coin: 'ETH', amount: '200' },
       { coin: 'BTC', amount: '50' },
     ]);
-    
+
     expect(result['ETH'].count).toBe(2);
     expect(result['ETH'].total).toBe('300');
     expect(result['BTC'].count).toBe(1);
@@ -77,7 +69,7 @@ describe('groupAndSumByCoin', () => {
       { coin: 'SOL', amount: '100' },
       { coin: 'ETH', amount: '100' },
     ]);
-    
+
     expect(Object.keys(result)).toHaveLength(3);
     expect(result['ETH'].count).toBe(2);
     expect(result['BTC'].count).toBe(1);
@@ -89,7 +81,7 @@ describe('groupAndSumByCoin', () => {
       { coin: 'ETH', amount: '' },
       { coin: 'ETH', amount: '100' },
     ]);
-    
+
     expect(result['ETH'].total).toBe('100');
   });
 });

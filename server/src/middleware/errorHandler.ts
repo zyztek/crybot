@@ -15,7 +15,7 @@ export class AppError extends Error {
     this.statusCode = statusCode;
     this.isOperational = true;
     this.code = code;
-    
+
     Error.captureStackTrace(this, this.constructor);
   }
 }
@@ -68,7 +68,7 @@ export const errorHandler = (
     return res.status(400).json({
       success: false,
       error: 'Validation Error',
-      message: err.errors.map((e) => `${e.path.join('.')}: ${e.message}`).join(', '),
+      message: err.errors.map(e => `${e.path.join('.')}: ${e.message}`).join(', '),
       code: 'VALIDATION_ERROR',
     });
   }
@@ -85,7 +85,7 @@ export const errorHandler = (
   if (err.name === 'PrismaClientKnownRequestError') {
     const prismaErr = err as unknown as { code: string; meta?: Record<string, unknown> };
     const target = prismaErr.meta?.target as string[] | undefined;
-    
+
     if (prismaErr.code === 'P2002') {
       return res.status(409).json({
         success: false,
@@ -93,7 +93,7 @@ export const errorHandler = (
         code: 'DUPLICATE_ENTRY',
       });
     }
-    
+
     if (prismaErr.code === 'P2025') {
       return res.status(404).json({
         success: false,
@@ -107,9 +107,7 @@ export const errorHandler = (
   console.error('Unexpected Error:', err);
 
   // Don't leak error details in production
-  const message = process.env.NODE_ENV === 'production' 
-    ? 'Internal server error' 
-    : err.message;
+  const message = process.env.NODE_ENV === 'production' ? 'Internal server error' : err.message;
 
   return res.status(500).json({
     success: false,

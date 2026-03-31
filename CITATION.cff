@@ -1,16 +1,16 @@
-cff-version: "1.2.0"
+cff-version: '1.2.0'
 title: CryptoFaucet Hub
-message: "If you use this software, please cite it as below."
+message: 'If you use this software, please cite it as below.'
 type: software
 authors:
-  - name: "CryptoFaucet Hub Team"
-    email: "zyztek@gmail.com"
-  - name: "Contributors"
-    url: "https://github.com/zyztek/crybot/graphs/contributors"
+  - name: 'CryptoFaucet Hub Team'
+    email: 'zyztek@gmail.com'
+  - name: 'Contributors'
+    url: 'https://github.com/zyztek/crybot/graphs/contributors'
 
-repository-code: "https://github.com/zyztek/crybot"
-url: "https://crypto-faucet-hub.com"
-description: "Cryptocurrency faucet automation platform for testnet development"
+repository-code: 'https://github.com/zyztek/crybot'
+url: 'https://crypto-faucet-hub.com'
+description: 'Cryptocurrency faucet automation platform for testnet development'
 
 keywords:
   - cryptocurrency
@@ -25,7 +25,7 @@ license: MIT
 # For academic citation
 preferred-citation:
   type: article
-  title: "CryptoFaucet Hub: Multi-Chain Cryptocurrency Faucet Platform"
+  title: 'CryptoFaucet Hub: Multi-Chain Cryptocurrency Faucet Platform'
   authors:
-    - name: "CryptoFaucet Hub Team"
+    - name: 'CryptoFaucet Hub Team'
   year: 2024

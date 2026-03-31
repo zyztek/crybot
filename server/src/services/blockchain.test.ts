@@ -1,6 +1,6 @@
 /**
  * Blockchain Service Tests
- * 
+ *
  * Unit tests for server/src/services/blockchain.ts
  * Testing blockchain service operations
  */
@@ -38,9 +38,7 @@ describe('EthereumService', () => {
 
   describe('getBalance', () => {
     it('should throw error when provider not configured', async () => {
-      await expect(service.getBalance('0x123')).rejects.toThrow(
-        'Ethereum provider not configured'
-      );
+      await expect(service.getBalance('0x123')).rejects.toThrow('Ethereum provider not configured');
     });
   });
 
@@ -62,9 +60,7 @@ describe('EthereumService', () => {
 
   describe('getGasPrice', () => {
     it('should throw error when provider not configured', async () => {
-      await expect(service.getGasPrice()).rejects.toThrow(
-        'Ethereum provider not configured'
-      );
+      await expect(service.getGasPrice()).rejects.toThrow('Ethereum provider not configured');
     });
   });
 
@@ -98,25 +94,21 @@ describe('BitcoinService', () => {
 
   describe('getBalance', () => {
     it('should throw error when RPC not configured', async () => {
-      await expect(service.getBalance('bc1qxyz')).rejects.toThrow(
-        'Bitcoin RPC not configured'
-      );
+      await expect(service.getBalance('bc1qxyz')).rejects.toThrow('Bitcoin RPC not configured');
     });
   });
 
   describe('sendTransaction', () => {
     it('should throw error when RPC not configured', async () => {
-      await expect(
-        service.sendTransaction('from', 'to', '1000')
-      ).rejects.toThrow('Bitcoin RPC not configured');
+      await expect(service.sendTransaction('from', 'to', '1000')).rejects.toThrow(
+        'Bitcoin RPC not configured'
+      );
     });
   });
 
   describe('getTransaction', () => {
     it('should throw error when RPC not configured', async () => {
-      await expect(service.getTransaction('txhash')).rejects.toThrow(
-        'Bitcoin RPC not configured'
-      );
+      await expect(service.getTransaction('txhash')).rejects.toThrow('Bitcoin RPC not configured');
     });
   });
 });

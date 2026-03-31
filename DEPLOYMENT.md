@@ -22,6 +22,7 @@ docker-compose ps
 ### Option 2: Manual Deployment
 
 #### Backend
+
 ```bash
 cd server
 
@@ -36,6 +37,7 @@ npm start
 ```
 
 #### Frontend
+
 ```bash
 # Build for production
 npm run build:production
@@ -47,18 +49,21 @@ npm run build:production
 ## Environment-Specific Configuration
 
 ### Development
+
 ```bash
 npm run dev          # Frontend (port 5173)
 cd server && npm run dev  # Backend (port 3000)
 ```
 
 ### Staging
+
 ```bash
 npm run dev:staging
 cd server && npm run dev:staging
 ```
 
 ### Production
+
 ```bash
 npm run build:production
 cd server && npm run build:production && npm start
@@ -67,6 +72,7 @@ cd server && npm run build:production && npm start
 ## Docker Services
 
 ### PostgreSQL
+
 ```yaml
 postgres:
   image: postgres:16-alpine
@@ -77,22 +83,24 @@ postgres:
 ```
 
 ### Backend
+
 ```yaml
 backend:
   build: ./server
   ports:
-    - "3000:3000"
+    - '3000:3000'
   environment:
     - NODE_ENV=production
     - DATABASE_URL=postgresql://user:pass@postgres:5432/crybot
 ```
 
 ### Frontend
+
 ```yaml
 frontend:
   build: .
   ports:
-    - "80:80"
+    - '80:80'
 ```
 
 ## Health Checks
@@ -103,6 +111,7 @@ frontend:
 ## Monitoring
 
 Check logs:
+
 ```bash
 docker-compose logs -f backend
 ```

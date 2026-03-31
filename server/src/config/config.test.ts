@@ -1,6 +1,6 @@
 /**
  * Server Configuration Tests
- * 
+ *
  * Unit tests for server/src/config/index.ts
  * Testing config structure and default behavior
  */
@@ -11,12 +11,12 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 describe('Config Helper Functions', () => {
   // Import the module with cleared env to test defaults
   const originalEnv = process.env;
-  
+
   beforeEach(() => {
     // Clear all env to test defaults
     process.env = {};
   });
-  
+
   afterEach(() => {
     process.env = originalEnv;
   });
@@ -49,11 +49,11 @@ describe('Config Helper Functions', () => {
 
 describe('Database Config', () => {
   const originalEnv = process.env;
-  
+
   beforeEach(() => {
     process.env = {};
   });
-  
+
   afterEach(() => {
     process.env = originalEnv;
   });
@@ -67,11 +67,11 @@ describe('Database Config', () => {
 
 describe('JWT Config', () => {
   const originalEnv = process.env;
-  
+
   beforeEach(() => {
     process.env = {};
   });
-  
+
   afterEach(() => {
     process.env = originalEnv;
   });
@@ -94,11 +94,11 @@ describe('JWT Config', () => {
 
 describe('CORS Config', () => {
   const originalEnv = process.env;
-  
+
   beforeEach(() => {
     process.env = {};
   });
-  
+
   afterEach(() => {
     process.env = originalEnv;
   });
@@ -132,11 +132,11 @@ describe('CORS Config', () => {
 
 describe('Rate Limit Config', () => {
   const originalEnv = process.env;
-  
+
   beforeEach(() => {
     process.env = {};
   });
-  
+
   afterEach(() => {
     process.env = originalEnv;
   });
@@ -169,11 +169,11 @@ describe('Rate Limit Config', () => {
 
 describe('Blockchain Config', () => {
   const originalEnv = process.env;
-  
+
   beforeEach(() => {
     process.env = {};
   });
-  
+
   afterEach(() => {
     process.env = originalEnv;
   });
@@ -206,11 +206,11 @@ describe('Blockchain Config', () => {
 
 describe('App Config', () => {
   const originalEnv = process.env;
-  
+
   beforeEach(() => {
     process.env = {};
   });
-  
+
   afterEach(() => {
     process.env = originalEnv;
   });
@@ -233,11 +233,11 @@ describe('App Config', () => {
 
 describe('Combined Config Export', () => {
   const originalEnv = process.env;
-  
+
   beforeEach(() => {
     process.env = {};
   });
-  
+
   afterEach(() => {
     process.env = originalEnv;
   });

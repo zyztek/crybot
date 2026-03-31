@@ -33,11 +33,7 @@ interface ComponentProps {
 }
 
 // Component usage
-<Component 
-  title="Example" 
-  variant="default"
-  onAction={() => console.log('clicked')}
-/>
+<Component title="Example" variant="default" onAction={() => console.log('clicked')} />;
 ```
 
 ### Shared Utilities
@@ -47,11 +43,7 @@ All components use the `cn()` utility for class name merging:
 ```tsx
 import { cn } from '@/utils/cn';
 
-<div className={cn(
-  'base-class',
-  isActive && 'active-class',
-  variant === 'compact' && 'p-2'
-)} />
+<div className={cn('base-class', isActive && 'active-class', variant === 'compact' && 'p-2')} />;
 ```
 
 ---
@@ -71,16 +63,15 @@ Main dashboard displaying user statistics, portfolio overview, and quick actions
 | `defaultTab` | `string` | `'overview'` | Initial tab selection |
 
 **State:**
+
 - Active tab navigation
 - Portfolio balance display
 - Recent transactions
 
 **Example:**
+
 ```tsx
-<DashboardView 
-  showSidebar={true}
-  defaultTab="overview"
-/>
+<DashboardView showSidebar={true} defaultTab="overview" />
 ```
 
 ---
@@ -92,16 +83,18 @@ Wallet management interface supporting multiple blockchain networks.
 **Location:** `src/components/WalletView.tsx`
 
 **Features:**
+
 - Connect multiple wallets (MetaMask, WalletConnect)
 - View balances across networks
 - Send/receive transactions
 - Network switching
 
 **Supported Networks:**
+
 ```typescript
 const SUPPORTED_NETWORKS = [
   'ethereum',
-  'sepolia',      // Testnet
+  'sepolia', // Testnet
   'arbitrum',
   'optimism',
   'polygon',
@@ -119,12 +112,14 @@ Cryptocurrency faucet listing and claiming interface.
 **Location:** `src/components/FaucetsView.tsx`
 
 **Features:**
+
 - Filter faucets by network
 - Claim history tracking
 - Cooldown timers
 - Claim limits
 
 **Faucet Data Structure:**
+
 ```typescript
 interface Faucet {
   id: string;
@@ -146,6 +141,7 @@ User preferences and application settings.
 **Location:** `src/components/SettingsView.tsx`
 
 **Setting Categories:**
+
 - **Appearance:** Theme, language, currency
 - **Notifications:** Email, push, SMS
 - **Security:** 2FA, password, sessions
@@ -163,6 +159,7 @@ Comprehensive analytics dashboard with charts and metrics.
 **Location:** `src/components/AdvancedAnalytics.tsx`
 
 **Features:**
+
 - Portfolio performance charts (Recharts)
 - ROI calculator
 - Time range filtering (7d, 30d, 90d, custom)
@@ -170,14 +167,10 @@ Comprehensive analytics dashboard with charts and metrics.
 - Comparison mode
 
 **Charts:**
+
 ```tsx
 // Uses Recharts for data visualization
-import { 
-  AreaChart, 
-  LineChart, 
-  BarChart,
-  PieChart 
-} from 'recharts';
+import { AreaChart, LineChart, BarChart, PieChart } from 'recharts';
 ```
 
 ---
@@ -189,12 +182,14 @@ Interactive cryptocurrency price charts.
 **Location:** `src/components/CryptoChart.tsx`
 
 **Features:**
+
 - Multiple timeframe views (1H, 4H, 1D, 1W, 1M)
 - Technical indicators
 - Volume display
 - Price alerts
 
 **Configuration:**
+
 ```typescript
 interface ChartConfig {
   symbol: string;
@@ -212,16 +207,18 @@ Real-time gas price monitoring across networks.
 **Location:** `src/components/GasTracker.tsx`
 
 **Features:**
+
 - Current gas prices (Gwei)
 - Historical gas chart
 - Gas estimation for transactions
 - Network comparison
 
 **Gas Data:**
+
 ```typescript
 interface GasPrice {
   network: string;
-  slow: number;    // Gwei
+  slow: number; // Gwei
   standard: number;
   fast: number;
   baseFee: number;
@@ -237,6 +234,7 @@ Portfolio performance tracking and analysis.
 **Location:** `src/components/PerformanceAnalyzer.tsx`
 
 **Metrics:**
+
 - Total portfolio value
 - Profit/Loss calculation
 - ROI percentage
@@ -254,12 +252,14 @@ Yield farming opportunities display and management.
 **Location:** `src/components/YieldFarming.tsx`
 
 **Features:**
+
 - APY comparison across protocols
 - Pool information
 - Risk assessment
 - One-click deposit (mock)
 
 **Supported Protocols:**
+
 ```typescript
 const YIELD_PROTOCOLS = [
   { name: 'Uniswap V3', chain: 'ethereum' },
@@ -278,6 +278,7 @@ Staking pools and rewards tracking.
 **Location:** `src/components/Staking.tsx`
 
 **Features:**
+
 - Active stakes display
 - Reward calculation
 - Unstaking interface
@@ -292,6 +293,7 @@ Lending and borrowing interface.
 **Location:** `src/components/LendingProtocol.tsx`
 
 **Features:**
+
 - Supply assets (lend)
 - Borrow against collateral
 - Interest rate display
@@ -306,6 +308,7 @@ LP position analysis and impermanent loss calculator.
 **Location:** `src/components/LiquidityPoolAnalyzer.tsx`
 
 **Features:**
+
 - Position value tracking
 - Impermanent loss calculation
 - Fee revenue display
@@ -322,6 +325,7 @@ Central hub for all crypto games.
 **Location:** `src/components/Games.tsx`
 
 **Available Games:**
+
 - Crash Game
 - Dice Game
 - Lottery
@@ -336,6 +340,7 @@ NFT collection viewer and manager.
 **Location:** `src/components/NFTGallery.tsx`
 
 **Features:**
+
 - Grid/list view toggle
 - Collection filtering
 - Metadata display
@@ -350,6 +355,7 @@ NFT trading platform interface.
 **Location:** `src/components/NFTMarketplace.tsx`
 
 **Features:**
+
 - Browse listings
 - Filter by collection
 - Price history
@@ -364,6 +370,7 @@ Crypto lottery system with rewards.
 **Location:** `src/components/Lottery.tsx`
 
 **Features:**
+
 - Current jackpot display
 - Ticket purchase (mock)
 - Previous winners
@@ -380,6 +387,7 @@ On-chain data exploration tool.
 **Location:** `src/components/BlockchainExplorer.tsx`
 
 **Features:**
+
 - Address lookup
 - Transaction search
 - Block information
@@ -394,6 +402,7 @@ Transaction simulation and gas estimation.
 **Location:** `src/components/TransactionSimulator.tsx`
 
 **Features:**
+
 - TX preview
 - Gas estimation
 - Failure analysis
@@ -408,6 +417,7 @@ Smart contract security analysis.
 **Location:** `src/components/SmartContractAuditor.tsx`
 
 **Features:**
+
 - Contract verification
 - Vulnerability scanning
 - ABI decoding
@@ -422,6 +432,7 @@ Cross-chain asset bridging interface.
 **Location:** `src/components/CrossChainBridge.tsx`
 
 **Supported Bridges:**
+
 - Across Protocol
 - Stargate
 - Celer Bridge
@@ -437,6 +448,7 @@ React error boundary for graceful error handling.
 **Location:** `src/components/ErrorBoundary.tsx`
 
 **Usage:**
+
 ```tsx
 <ErrorBoundary fallback={<ErrorFallback />}>
   <YourComponent />
@@ -452,6 +464,7 @@ Reusable card component for faucet display.
 **Location:** `src/components/FaucetCard.tsx`
 
 **Props:**
+
 ```typescript
 interface FaucetCardProps {
   faucet: Faucet;
@@ -470,6 +483,7 @@ User rankings and leaderboard display.
 **Location:** `src/components/LeaderboardView.tsx`
 
 **Features:**
+
 - Top users by points
 - Filter by timeframe
 - User search
@@ -483,25 +497,25 @@ User rankings and leaderboard display.
 
 Located in `src/components/layout/`:
 
-| Component | Purpose |
-|-----------|---------|
-| `Sidebar` | Navigation sidebar |
-| `Header` | Top navigation bar |
-| `Footer` | Page footer |
+| Component   | Purpose              |
+| ----------- | -------------------- |
+| `Sidebar`   | Navigation sidebar   |
+| `Header`    | Top navigation bar   |
+| `Footer`    | Page footer          |
 | `Container` | Main content wrapper |
 
 ### UI Components
 
 Located in `src/components/ui/`:
 
-| Component | Purpose |
-|-----------|---------|
-| `Button` | Action buttons with variants |
-| `Input` | Form inputs |
-| `Card` | Content containers |
-| `Modal` | Dialog windows |
-| `Toast` | Notification toasts |
-| `Dropdown` | Selection menus |
+| Component  | Purpose                      |
+| ---------- | ---------------------------- |
+| `Button`   | Action buttons with variants |
+| `Input`    | Form inputs                  |
+| `Card`     | Content containers           |
+| `Modal`    | Dialog windows               |
+| `Toast`    | Notification toasts          |
+| `Dropdown` | Selection menus              |
 
 ---
 
@@ -519,6 +533,7 @@ src/components/
 ```
 
 **Running Component Tests:**
+
 ```bash
 # Test specific component
 npm test -- src/components/DashboardView.test.tsx
@@ -546,9 +561,7 @@ export const ExpensiveComponent = React.memo(({ data }) => {
 Large components are lazy-loaded:
 
 ```tsx
-const HeavyComponent = React.lazy(() => 
-  import('./HeavyComponent')
-);
+const HeavyComponent = React.lazy(() => import('./HeavyComponent'));
 ```
 
 ---
@@ -561,4 +574,4 @@ const HeavyComponent = React.lazy(() =>
 
 ---
 
-*Last updated: 2025-01-27*
+_Last updated: 2025-01-27_

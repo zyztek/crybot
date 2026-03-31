@@ -1,9 +1,9 @@
 /**
  * Test Database Setup Script
- * 
+ *
  * Sets up a clean PostgreSQL database for integration tests.
  * Usage: npx tsx scripts/setup-test-db.ts
- * 
+ *
  * Environment variables:
  *   TEST_DATABASE_URL - Full connection string for test database (required)
  *   DATABASE_URL - Fallback connection string (used if TEST_DATABASE_URL not set)
@@ -46,21 +46,24 @@ function getDbName(connectionString: string): string {
 function validateConnectionString(connectionString: string): { valid: boolean; error?: string } {
   try {
     const url = new URL(connectionString);
-    
+
     // Check required parts
     const validProtocols = ['postgresql:', 'postgres:'];
     if (!validProtocols.includes(url.protocol)) {
-      return { valid: false, error: 'Connection string must use postgresql:// or postgres:// protocol' };
+      return {
+        valid: false,
+        error: 'Connection string must use postgresql:// or postgres:// protocol',
+      };
     }
     if (!url.hostname) {
       return { valid: false, error: 'Connection string must include hostname' };
     }
-    
+
     return { valid: true };
   } catch (error) {
-    return { 
-      valid: false, 
-      error: `Invalid connection string format: ${error instanceof Error ? error.message : 'Unknown error'}` 
+    return {
+      valid: false,
+      error: `Invalid connection string format: ${error instanceof Error ? error.message : 'Unknown error'}`,
     };
   }
 }
@@ -74,7 +77,7 @@ async function testConnection(prisma: PrismaClient): Promise<{ success: boolean;
     return { success: true };
   } catch (error) {
     const dbError = error as DbError;
-    
+
     // Provide more helpful error messages
     if (dbError.code === 'ECONNREFUSED') {
       return { success: false, error: 'Connection refused - is PostgreSQL running?' };
@@ -83,9 +86,12 @@ async function testConnection(prisma: PrismaClient): Promise<{ success: boolean;
       return { success: false, error: 'Authentication failed - check username and password' };
     }
     if (dbError.code === '3D000') {
-      return { success: false, error: `Database does not exist. Create it first or ensure user has CREATE privilege.` };
+      return {
+        success: false,
+        error: `Database does not exist. Create it first or ensure user has CREATE privilege.`,
+      };
     }
-    
+
     return { success: false, error: dbError.message || 'Failed to connect to database' };
   }
 }
@@ -93,15 +99,17 @@ async function testConnection(prisma: PrismaClient): Promise<{ success: boolean;
 /**
  * Create a new database if it doesn't exist
  */
-async function createDatabase(connectionString: string): Promise<{ success: boolean; error?: string }> {
+async function createDatabase(
+  connectionString: string
+): Promise<{ success: boolean; error?: string }> {
   const dbName = getDbName(connectionString);
-  
+
   // Validate connection string first
   const validation = validateConnectionString(connectionString);
   if (!validation.valid) {
     return { success: false, error: validation.error };
   }
-  
+
   // Create connection string without database name for admin connection
   let adminConnectionString = connectionString;
   try {
@@ -130,37 +138,35 @@ async function createDatabase(connectionString: string): Promise<{ success: bool
       return { success: false, error: `Cannot connect to PostgreSQL: ${connTest.error}` };
     }
     console.log(`✓ Connected to PostgreSQL server`);
-    
+
     // Try to create the database (will fail if already exists - that's OK)
     console.log(`📦 Creating database: ${dbName}...`);
-    await adminPrisma.$executeRawUnsafe(
-      `CREATE DATABASE ${dbName}`
-    );
+    await adminPrisma.$executeRawUnsafe(`CREATE DATABASE ${dbName}`);
     console.log(`✓ Created database: ${dbName}`);
     return { success: true };
   } catch (error) {
     const dbError = error as DbError;
     const errorMessage = dbError.message || 'Unknown error';
-    
+
     // Handle specific errors
     if (errorMessage.includes('already exists')) {
       console.log(`ℹ Database already exists: ${dbName}`);
       return { success: true };
     }
-    
+
     // Permission denied - user doesn't have CREATE privilege
     if (dbError.code === '42501' || errorMessage.includes('permission denied')) {
-      return { 
-        success: false, 
-        error: `Permission denied to create database. Either: (1) Grant CREATE privilege to user, (2) Create database manually as superuser, or (3) Use an existing database.` 
+      return {
+        success: false,
+        error: `Permission denied to create database. Either: (1) Grant CREATE privilege to user, (2) Create database manually as superuser, or (3) Use an existing database.`,
       };
     }
-    
+
     // Database server not running
     if (dbError.code === 'ECONNREFUSED' || errorMessage.includes('ECONNREFUSED')) {
       return { success: false, error: 'Cannot connect to PostgreSQL server. Is it running?' };
     }
-    
+
     console.error('Failed to create database:', errorMessage);
     return { success: false, error: `Failed to create database: ${errorMessage}` };
   } finally {
@@ -173,10 +179,10 @@ async function createDatabase(connectionString: string): Promise<{ success: bool
  */
 async function cleanDatabase(prisma: PrismaClient): Promise<void> {
   console.log('🧹 Cleaning database tables...');
-  
+
   // Disable foreign key checks temporarily
   await prisma.$executeRawUnsafe(`SET FOREIGN_KEY_CHECKS = 0`);
-  
+
   // Drop all tables (in correct order due to foreign keys)
   const tables = [
     'user_achievements',
@@ -189,16 +195,19 @@ async function cleanDatabase(prisma: PrismaClient): Promise<void> {
     'sessions',
     'users',
   ];
-  
+
   for (const table of tables) {
     try {
       await prisma.$executeRawUnsafe(`DROP TABLE IF EXISTS "${table}" CASCADE`);
     } catch (error) {
       // Table might not exist, continue but log warning
-      console.warn(`⚠ Warning: Could not drop table "${table}":`, error instanceof Error ? error.message : 'Unknown');
+      console.warn(
+        `⚠ Warning: Could not drop table "${table}":`,
+        error instanceof Error ? error.message : 'Unknown'
+      );
     }
   }
-  
+
   await prisma.$executeRawUnsafe(`SET FOREIGN_KEY_CHECKS = 1`);
   console.log('✓ Database cleaned');
 }
@@ -208,7 +217,7 @@ async function cleanDatabase(prisma: PrismaClient): Promise<void> {
  */
 async function runMigrations(dbUrl: string): Promise<boolean> {
   console.log('📦 Running migrations...');
-  
+
   try {
     // Run migrate deploy for test environment (non-interactive)
     execSync('npx prisma migrate deploy', {
@@ -240,7 +249,7 @@ async function runMigrations(dbUrl: string): Promise<boolean> {
  */
 async function seedDatabase(prisma: PrismaClient): Promise<void> {
   console.log('🌱 Seeding test data...');
-  
+
   // Create test achievements - Claims type
   await prisma.achievement.createMany({
     data: [
@@ -413,10 +422,10 @@ async function seedDatabase(prisma: PrismaClient): Promise<void> {
  */
 async function createTestData(prisma: PrismaClient): Promise<{ userIds: string[] }> {
   console.log('📝 Creating test users with transaction history...');
-  
+
   const userIds: string[] = [];
   const now = new Date();
-  
+
   // ===========================================
   // User 1: Active user with balanced history
   // ===========================================
@@ -434,31 +443,139 @@ async function createTestData(prisma: PrismaClient): Promise<{ userIds: string[]
   // Create wallets for user1 (multiple coins)
   await prisma.wallet.createMany({
     data: [
-      { userId: user1.id, coin: 'ETH', balance: '100', address: '0x742d35Cc6634C0532925a3b844Bc9e7595f0fE00' },
-      { userId: user1.id, coin: 'BTC', balance: '50', address: 'tb1qxy2kfgx4h8n6r4k5v7l9m3c2p0a9s8d7f6g5' },
-      { userId: user1.id, coin: 'SOL', balance: '25', address: 'Dk7G9rYykV1j8W4L6N3M2P1K9J8H7G6F5E4D3C2B1A' },
+      {
+        userId: user1.id,
+        coin: 'ETH',
+        balance: '100',
+        address: '0x742d35Cc6634C0532925a3b844Bc9e7595f0fE00',
+      },
+      {
+        userId: user1.id,
+        coin: 'BTC',
+        balance: '50',
+        address: 'tb1qxy2kfgx4h8n6r4k5v7l9m3c2p0a9s8d7f6g5',
+      },
+      {
+        userId: user1.id,
+        coin: 'SOL',
+        balance: '25',
+        address: 'Dk7G9rYykV1j8W4L6N3M2P1K9J8H7G6F5E4D3C2B1A',
+      },
     ],
   });
 
   // Create varied transactions for user1
   const transactionData = [
     // ETH claims (last 7 days)
-    { userId: user1.id, type: 'claim', coin: 'ETH', amount: '10', status: 'confirmed', txHash: '0xabc123', createdAt: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000) },
-    { userId: user1.id, type: 'claim', coin: 'ETH', amount: '15', status: 'confirmed', txHash: '0xdef456', createdAt: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000) },
-    { userId: user1.id, type: 'claim', coin: 'ETH', amount: '20', status: 'confirmed', txHash: '0xghi789', createdAt: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000) },
-    { userId: user1.id, type: 'claim', coin: 'ETH', amount: '8', status: 'confirmed', txHash: '0xjkl012', createdAt: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000) },
-    { userId: user1.id, type: 'claim', coin: 'ETH', amount: '12', status: 'pending', createdAt: new Date(now.getTime() - 6 * 24 * 60 * 60 * 1000) },
+    {
+      userId: user1.id,
+      type: 'claim',
+      coin: 'ETH',
+      amount: '10',
+      status: 'confirmed',
+      txHash: '0xabc123',
+      createdAt: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000),
+    },
+    {
+      userId: user1.id,
+      type: 'claim',
+      coin: 'ETH',
+      amount: '15',
+      status: 'confirmed',
+      txHash: '0xdef456',
+      createdAt: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000),
+    },
+    {
+      userId: user1.id,
+      type: 'claim',
+      coin: 'ETH',
+      amount: '20',
+      status: 'confirmed',
+      txHash: '0xghi789',
+      createdAt: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000),
+    },
+    {
+      userId: user1.id,
+      type: 'claim',
+      coin: 'ETH',
+      amount: '8',
+      status: 'confirmed',
+      txHash: '0xjkl012',
+      createdAt: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000),
+    },
+    {
+      userId: user1.id,
+      type: 'claim',
+      coin: 'ETH',
+      amount: '12',
+      status: 'pending',
+      createdAt: new Date(now.getTime() - 6 * 24 * 60 * 60 * 1000),
+    },
     // BTC claims
-    { userId: user1.id, type: 'claim', coin: 'BTC', amount: '0.01', status: 'confirmed', txHash: 'btc123abc', createdAt: new Date(now.getTime() - 4 * 24 * 60 * 60 * 1000) },
-    { userId: user1.id, type: 'claim', coin: 'BTC', amount: '0.02', status: 'confirmed', txHash: 'btc456def', createdAt: new Date(now.getTime() - 8 * 24 * 60 * 60 * 1000) },
+    {
+      userId: user1.id,
+      type: 'claim',
+      coin: 'BTC',
+      amount: '0.01',
+      status: 'confirmed',
+      txHash: 'btc123abc',
+      createdAt: new Date(now.getTime() - 4 * 24 * 60 * 60 * 1000),
+    },
+    {
+      userId: user1.id,
+      type: 'claim',
+      coin: 'BTC',
+      amount: '0.02',
+      status: 'confirmed',
+      txHash: 'btc456def',
+      createdAt: new Date(now.getTime() - 8 * 24 * 60 * 60 * 1000),
+    },
     // Deposits
-    { userId: user1.id, type: 'deposit', coin: 'ETH', amount: '50', status: 'confirmed', txHash: '0xdep001', createdAt: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000) },
-    { userId: user1.id, type: 'deposit', coin: 'BTC', amount: '0.1', status: 'confirmed', txHash: 'btcdep001', createdAt: new Date(now.getTime() - 12 * 24 * 60 * 60 * 1000) },
+    {
+      userId: user1.id,
+      type: 'deposit',
+      coin: 'ETH',
+      amount: '50',
+      status: 'confirmed',
+      txHash: '0xdep001',
+      createdAt: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000),
+    },
+    {
+      userId: user1.id,
+      type: 'deposit',
+      coin: 'BTC',
+      amount: '0.1',
+      status: 'confirmed',
+      txHash: 'btcdep001',
+      createdAt: new Date(now.getTime() - 12 * 24 * 60 * 60 * 1000),
+    },
     // Referral bonuses
-    { userId: user1.id, type: 'referral_bonus', coin: 'ETH', amount: '25', status: 'confirmed', createdAt: new Date(now.getTime() - 10 * 24 * 60 * 60 * 1000) },
-    { userId: user1.id, type: 'referral_bonus', coin: 'ETH', amount: '15', status: 'confirmed', createdAt: new Date(now.getTime() - 15 * 24 * 60 * 60 * 1000) },
+    {
+      userId: user1.id,
+      type: 'referral_bonus',
+      coin: 'ETH',
+      amount: '25',
+      status: 'confirmed',
+      createdAt: new Date(now.getTime() - 10 * 24 * 60 * 60 * 1000),
+    },
+    {
+      userId: user1.id,
+      type: 'referral_bonus',
+      coin: 'ETH',
+      amount: '15',
+      status: 'confirmed',
+      createdAt: new Date(now.getTime() - 15 * 24 * 60 * 60 * 1000),
+    },
     // Withdrawal
-    { userId: user1.id, type: 'withdrawal', coin: 'ETH', amount: '5', status: 'confirmed', txHash: '0xwith001', createdAt: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000) },
+    {
+      userId: user1.id,
+      type: 'withdrawal',
+      coin: 'ETH',
+      amount: '5',
+      status: 'confirmed',
+      txHash: '0xwith001',
+      createdAt: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000),
+    },
   ];
   await prisma.transaction.createMany({ data: transactionData });
 
@@ -466,10 +583,42 @@ async function createTestData(prisma: PrismaClient): Promise<{ userIds: string[]
   const faucets = await prisma.faucet.findMany();
   if (faucets.length > 0) {
     const faucetClaimData = [
-      { userId: user1.id, faucetId: faucets[0].id, coin: 'ETH', amount: '10', ipAddress: '127.0.0.1', status: 'confirmed', claimedAt: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000) },
-      { userId: user1.id, faucetId: faucets[0].id, coin: 'ETH', amount: '15', ipAddress: '127.0.0.1', status: 'confirmed', claimedAt: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000) },
-      { userId: user1.id, faucetId: faucets[0].id, coin: 'ETH', amount: '20', ipAddress: '127.0.0.1', status: 'confirmed', claimedAt: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000) },
-      { userId: user1.id, faucetId: faucets[1]?.id, coin: 'ETH', amount: '8', ipAddress: '192.168.1.1', status: 'confirmed', claimedAt: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000) },
+      {
+        userId: user1.id,
+        faucetId: faucets[0].id,
+        coin: 'ETH',
+        amount: '10',
+        ipAddress: '127.0.0.1',
+        status: 'confirmed',
+        claimedAt: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000),
+      },
+      {
+        userId: user1.id,
+        faucetId: faucets[0].id,
+        coin: 'ETH',
+        amount: '15',
+        ipAddress: '127.0.0.1',
+        status: 'confirmed',
+        claimedAt: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000),
+      },
+      {
+        userId: user1.id,
+        faucetId: faucets[0].id,
+        coin: 'ETH',
+        amount: '20',
+        ipAddress: '127.0.0.1',
+        status: 'confirmed',
+        claimedAt: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000),
+      },
+      {
+        userId: user1.id,
+        faucetId: faucets[1]?.id,
+        coin: 'ETH',
+        amount: '8',
+        ipAddress: '192.168.1.1',
+        status: 'confirmed',
+        claimedAt: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000),
+      },
     ];
     await prisma.faucetClaim.createMany({ data: faucetClaimData });
   }
@@ -480,8 +629,20 @@ async function createTestData(prisma: PrismaClient): Promise<{ userIds: string[]
     await prisma.userAchievement.createMany({
       data: [
         // Completed achievements
-        { userId: user1.id, achievementId: achievements[0].id, progress: 1, completed: true, completedAt: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000) },
-        { userId: user1.id, achievementId: achievements[1].id, progress: 10, completed: true, completedAt: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000) },
+        {
+          userId: user1.id,
+          achievementId: achievements[0].id,
+          progress: 1,
+          completed: true,
+          completedAt: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000),
+        },
+        {
+          userId: user1.id,
+          achievementId: achievements[1].id,
+          progress: 10,
+          completed: true,
+          completedAt: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000),
+        },
         // In-progress achievements
         { userId: user1.id, achievementId: achievements[2]?.id, progress: 25, completed: false },
         { userId: user1.id, achievementId: achievements[4]?.id, progress: 3, completed: false },
@@ -506,8 +667,18 @@ async function createTestData(prisma: PrismaClient): Promise<{ userIds: string[]
   // Create wallets for user2
   await prisma.wallet.createMany({
     data: [
-      { userId: user2.id, coin: 'ETH', balance: '400', address: '0x8ba1f109551bD432803012645Ac136ddd64DBA72' },
-      { userId: user2.id, coin: 'BTC', balance: '200', address: 'tb1qzy2lfgx4h8n6r4k5v7l9m3c2p0a9s8d7f6g4' },
+      {
+        userId: user2.id,
+        coin: 'ETH',
+        balance: '400',
+        address: '0x8ba1f109551bD432803012645Ac136ddd64DBA72',
+      },
+      {
+        userId: user2.id,
+        coin: 'BTC',
+        balance: '200',
+        address: 'tb1qzy2lfgx4h8n6r4k5v7l9m3c2p0a9s8d7f6g4',
+      },
     ],
   });
 
@@ -518,10 +689,11 @@ async function createTestData(prisma: PrismaClient): Promise<{ userIds: string[]
   for (let i = 0; i < 30; i++) {
     const isClaim = i % 2 === 0;
     const coin = i % 3 === 0 ? 'BTC' : 'ETH';
-    const amount = coin === 'BTC' ? btcAmounts[i % btcAmounts.length] : ethAmounts[i % ethAmounts.length];
+    const amount =
+      coin === 'BTC' ? btcAmounts[i % btcAmounts.length] : ethAmounts[i % ethAmounts.length];
     moreTransactions.push({
       userId: user2.id,
-      type: isClaim ? 'claim' : (i % 5 === 0 ? 'referral_bonus' : 'deposit'),
+      type: isClaim ? 'claim' : i % 5 === 0 ? 'referral_bonus' : 'deposit',
       coin,
       amount,
       status: 'confirmed',
@@ -535,10 +707,34 @@ async function createTestData(prisma: PrismaClient): Promise<{ userIds: string[]
   if (achievements.length > 0) {
     await prisma.userAchievement.createMany({
       data: [
-        { userId: user2.id, achievementId: achievements[0].id, progress: 1, completed: true, completedAt: new Date(now.getTime() - 25 * 24 * 60 * 60 * 1000) },
-        { userId: user2.id, achievementId: achievements[1].id, progress: 10, completed: true, completedAt: new Date(now.getTime() - 20 * 24 * 60 * 60 * 1000) },
-        { userId: user2.id, achievementId: achievements[2].id, progress: 50, completed: true, completedAt: new Date(now.getTime() - 10 * 24 * 60 * 60 * 1000) },
-        { userId: user2.id, achievementId: achievements[3]?.id, progress: 100, completed: true, completedAt: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000) },
+        {
+          userId: user2.id,
+          achievementId: achievements[0].id,
+          progress: 1,
+          completed: true,
+          completedAt: new Date(now.getTime() - 25 * 24 * 60 * 60 * 1000),
+        },
+        {
+          userId: user2.id,
+          achievementId: achievements[1].id,
+          progress: 10,
+          completed: true,
+          completedAt: new Date(now.getTime() - 20 * 24 * 60 * 60 * 1000),
+        },
+        {
+          userId: user2.id,
+          achievementId: achievements[2].id,
+          progress: 50,
+          completed: true,
+          completedAt: new Date(now.getTime() - 10 * 24 * 60 * 60 * 1000),
+        },
+        {
+          userId: user2.id,
+          achievementId: achievements[3]?.id,
+          progress: 100,
+          completed: true,
+          completedAt: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000),
+        },
       ],
     });
   }
@@ -559,15 +755,34 @@ async function createTestData(prisma: PrismaClient): Promise<{ userIds: string[]
 
   await prisma.wallet.createMany({
     data: [
-      { userId: user3.id, coin: 'ETH', balance: '5', address: '0x9ca2f109551bD432803012645Ac136ddd64DBA73' },
+      {
+        userId: user3.id,
+        coin: 'ETH',
+        balance: '5',
+        address: '0x9ca2f109551bD432803012645Ac136ddd64DBA73',
+      },
     ],
   });
 
   // Only a few transactions for new user
   await prisma.transaction.createMany({
     data: [
-      { userId: user3.id, type: 'claim', coin: 'ETH', amount: '5', status: 'confirmed', createdAt: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000) },
-      { userId: user3.id, type: 'claim', coin: 'ETH', amount: '5', status: 'confirmed', createdAt: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000) },
+      {
+        userId: user3.id,
+        type: 'claim',
+        coin: 'ETH',
+        amount: '5',
+        status: 'confirmed',
+        createdAt: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000),
+      },
+      {
+        userId: user3.id,
+        type: 'claim',
+        coin: 'ETH',
+        amount: '5',
+        status: 'confirmed',
+        createdAt: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000),
+      },
     ],
   });
 
@@ -582,7 +797,7 @@ async function createTestData(prisma: PrismaClient): Promise<{ userIds: string[]
     dailyStatsData.push(
       { userId: user1.id, date, claims: 3, earned: '55', volume: '100' },
       { userId: user2.id, date, claims: 5, earned: '120', volume: '250' },
-      { userId: user3.id, date, claims: 1, earned: '5', volume: '5' },
+      { userId: user3.id, date, claims: 1, earned: '5', volume: '5' }
     );
   }
   await prisma.dailyStats.createMany({ data: dailyStatsData });
@@ -595,14 +810,44 @@ async function createTestData(prisma: PrismaClient): Promise<{ userIds: string[]
     prisma.user.findUnique({ where: { id: user2.id } }),
     prisma.user.findUnique({ where: { id: user3.id } }),
   ]);
-  
+
   await prisma.leaderboard.createMany({
     data: [
-      { userId: user2.id, username: user2Data?.username || 'testuser2', score: '500', period: 'weekly', rank: 1 },
-      { userId: user1.id, username: user1Data?.username || 'testuser1', score: '150', period: 'weekly', rank: 2 },
-      { userId: user3.id, username: user3Data?.username || 'testuser3', score: '10', period: 'weekly', rank: 3 },
-      { userId: user2.id, username: user2Data?.username || 'testuser2', score: '500', period: 'monthly', rank: 1 },
-      { userId: user1.id, username: user1Data?.username || 'testuser1', score: '150', period: 'monthly', rank: 5 },
+      {
+        userId: user2.id,
+        username: user2Data?.username || 'testuser2',
+        score: '500',
+        period: 'weekly',
+        rank: 1,
+      },
+      {
+        userId: user1.id,
+        username: user1Data?.username || 'testuser1',
+        score: '150',
+        period: 'weekly',
+        rank: 2,
+      },
+      {
+        userId: user3.id,
+        username: user3Data?.username || 'testuser3',
+        score: '10',
+        period: 'weekly',
+        rank: 3,
+      },
+      {
+        userId: user2.id,
+        username: user2Data?.username || 'testuser2',
+        score: '500',
+        period: 'monthly',
+        rank: 1,
+      },
+      {
+        userId: user1.id,
+        username: user1Data?.username || 'testuser1',
+        score: '150',
+        period: 'monthly',
+        rank: 5,
+      },
     ],
   });
 
@@ -618,7 +863,7 @@ async function setupTestDatabase(): Promise<SetupResult> {
 
   // Get database URL
   const testDbUrl = process.env.TEST_DATABASE_URL || process.env.DATABASE_URL;
-  
+
   if (!testDbUrl) {
     return {
       success: false,
@@ -657,9 +902,12 @@ async function setupTestDatabase(): Promise<SetupResult> {
     // Clean and migrate
     await cleanDatabase(prisma);
     const migrated = await runMigrations(testDbUrl);
-    
+
     if (!migrated) {
-      return { success: false, error: 'Failed to run migrations. Run "npx prisma db push" manually to create the schema.' };
+      return {
+        success: false,
+        error: 'Failed to run migrations. Run "npx prisma db push" manually to create the schema.',
+      };
     }
 
     // Seed base test data
@@ -679,7 +927,10 @@ async function setupTestDatabase(): Promise<SetupResult> {
           await cleanDatabase(prisma);
           console.log('✓ Cleanup complete');
         } catch (error) {
-          console.error('⚠ Cleanup warning:', error instanceof Error ? error.message : 'Unknown error');
+          console.error(
+            '⚠ Cleanup warning:',
+            error instanceof Error ? error.message : 'Unknown error'
+          );
         } finally {
           await prisma.$disconnect();
         }
@@ -689,7 +940,7 @@ async function setupTestDatabase(): Promise<SetupResult> {
     // Provide more helpful error message for common issues
     const dbError = error as DbError;
     let errorMessage = dbError.message || 'Unknown error';
-    
+
     // Check for specific errors
     if (dbError.code === 'P1001') {
       errorMessage = `Database server not reachable: ${errorMessage}`;
@@ -698,13 +949,13 @@ async function setupTestDatabase(): Promise<SetupResult> {
     } else if (dbError.code === 'P1003') {
       errorMessage = `Database does not exist: ${errorMessage}`;
     }
-    
+
     try {
       await prisma.$disconnect();
     } catch {
       // Ignore disconnect errors during cleanup
     }
-    
+
     return {
       success: false,
       error: errorMessage,
@@ -717,14 +968,14 @@ async function setupTestDatabase(): Promise<SetupResult> {
  */
 if (import.meta.url === `file://${process.argv[1]}`) {
   setupTestDatabase()
-    .then((result) => {
+    .then(result => {
       if (!result.success) {
         console.error('\n❌ Setup failed:', result.error);
         process.exit(1);
       }
       process.exit(0);
     })
-    .catch((error) => {
+    .catch(error => {
       console.error('❌ Unexpected error:', error);
       process.exit(1);
     });
@@ -743,7 +994,7 @@ async function main() {
   process.exit(0);
 }
 
-main().catch((error) => {
+main().catch(error => {
   console.error('❌ Unexpected error:', error);
   process.exit(1);
 });

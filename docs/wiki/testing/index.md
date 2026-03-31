@@ -41,6 +41,7 @@ src/
 ## Writing Tests
 
 ### Component Tests
+
 ```tsx
 import { render, screen } from '@testing-library/react';
 import { Component } from './Component';
@@ -52,15 +53,16 @@ test('renders title', () => {
 ```
 
 ### Store Tests
+
 ```tsx
 import { create } from 'zustand';
 
 test('store updates state', () => {
-  const useStore = create((set) => ({
+  const useStore = create(set => ({
     value: 0,
-    setValue: (v) => set({ value: v }),
+    setValue: v => set({ value: v }),
   }));
-  
+
   useStore.getState().setValue(10);
   expect(useStore.getState().value).toBe(10);
 });
@@ -71,6 +73,7 @@ test('store updates state', () => {
 Current test coverage: 95%+
 
 Run coverage report:
+
 ```bash
 npm test -- --coverage
 ```

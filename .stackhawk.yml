@@ -21,10 +21,10 @@ app:
 
   # Exclude files
   pathExcludeFilters:
-    - "**/node_modules/**"
-    - "**/*.test.ts"
-    - "**/*.test.tsx"
-    - "**/dist/**"
+    - '**/node_modules/**'
+    - '**/*.test.ts'
+    - '**/*.test.tsx'
+    - '**/dist/**'
 
   # Environment variables (do not include secrets)
   env:

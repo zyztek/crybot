@@ -1,10 +1,10 @@
 #!/usr/bin/env tsx
 /**
  * CryptoFaucet Hub - Interactive Setup Wizard
- * 
+ *
  * This script guides users through setting up the entire project
  * with interactive prompts and automatic configuration.
- * 
+ *
  * Usage: npx tsx scripts/setup-wizard.ts
  */
 
@@ -61,14 +61,14 @@ function info(message: string) {
 
 // Interactive prompt
 function prompt(question: string, defaultValue = ''): Promise<string> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const rl = createInterface({
       input: process.stdin,
       output: process.stdout,
     });
-    
+
     const defaultText = defaultValue ? ` (default: ${defaultValue})` : '';
-    rl.question(`${colors.cyan}? ${question}${defaultText}: ${colors.reset}`, (answer) => {
+    rl.question(`${colors.cyan}? ${question}${defaultText}: ${colors.reset}`, answer => {
       rl.close();
       resolve(answer.trim() || defaultValue);
     });
@@ -89,7 +89,7 @@ async function select(question: string, options: string[], defaultIndex = 0): Pr
     const prefix = i === defaultIndex ? '→ ' : '  ';
     log(`${prefix}${i + 1}. ${opt}`, colors.white);
   });
-  
+
   const answer = await prompt('Select option', String(defaultIndex + 1));
   const index = parseInt(answer) - 1;
   return Math.max(0, Math.min(index, options.length - 1));
@@ -122,37 +122,37 @@ function runCommand(cmd: string, cwd = projectRoot, showOutput = false) {
 // Main setup wizard
 async function main() {
   header('CryptoFaucet Hub - Setup Wizard');
-  
+
   log('\nWelcome to CryptoFaucet Hub! This wizard will help you', colors.white);
   log('set up the complete fullstack application automatically.\n', colors.white);
-  
+
   const totalSteps = 8;
   let currentStep = 0;
-  
+
   // ========================================
   // STEP 1: Check Prerequisites
   // ========================================
   step(++currentStep, totalSteps, 'Checking System Prerequisites');
-  
+
   const checks = {
     node: commandExists('node'),
     npm: commandExists('npm'),
     docker: commandExists('docker'),
     git: commandExists('git'),
   };
-  
+
   log('\n  System checks:', colors.dim);
   log(`    Node.js: ${checks.node ? '✓' : '✗'}`, checks.node ? colors.green : colors.red);
   log(`    npm: ${checks.npm ? '✓' : '✗'}`, checks.npm ? colors.green : colors.red);
   log(`    Docker: ${checks.docker ? '✓' : '✗'}`, checks.docker ? colors.green : colors.red);
   log(`    Git: ${checks.git ? '✓' : '✗'}`, checks.git ? colors.green : colors.red);
-  
+
   if (!checks.node || !checks.npm) {
     error('\n  Node.js and npm are required!');
     log('\n  Please install Node.js from: https://nodejs.org', colors.yellow);
     process.exit(1);
   }
-  
+
   // Check Node version
   const nodeVersion = execSync('node --version', { encoding: 'utf8' }).trim();
   const nodeMajor = parseInt(nodeVersion.split('.')[0].replace('v', ''));
@@ -161,12 +161,12 @@ async function main() {
     process.exit(1);
   }
   success(`  Node.js ${nodeVersion} detected`);
-  
+
   // ========================================
   // STEP 2: Project Configuration
   // ========================================
   step(++currentStep, totalSteps, 'Project Configuration');
-  
+
   const config = {
     projectName: await prompt('Project name', 'crybot'),
     backendPort: await prompt('Backend port', '3000'),
@@ -176,37 +176,37 @@ async function main() {
     dbPassword: await prompt('Database password', 'crybot_dev_password'),
     jwtSecret: await prompt('JWT secret', 'crybot-jwt-secret-key-minimum-32-chars'),
   };
-  
+
   success('  Configuration saved');
-  
+
   // ========================================
   // STEP 3: Install Dependencies
   // ========================================
   step(++currentStep, totalSteps, 'Installing Dependencies');
-  
+
   log('\n  Installing frontend dependencies...', colors.dim);
   runCommand('npm install', projectRoot, true);
   success('  Frontend dependencies installed');
-  
+
   log('\n  Installing backend dependencies...', colors.dim);
   runCommand('npm install', join(projectRoot, 'server'), true);
   success('  Backend dependencies installed');
-  
+
   // ========================================
   // STEP 4: Environment Setup
   // ========================================
   step(++currentStep, totalSteps, 'Environment Configuration');
-  
+
   // Frontend .env
   const frontendEnv = `VITE_API_URL=http://localhost:${config.backendPort}/api
 VITE_WS_URL=ws://localhost:${config.backendPort}/ws
 VITE_APP_NAME=CryptoFaucet Hub
 `;
-  
+
   const frontendEnvPath = join(projectRoot, '.env');
   writeFileSync(frontendEnvPath, frontendEnv);
   success('  Frontend .env created');
-  
+
   // Backend .env
   const backendEnv = `# Server Configuration
 NODE_ENV=development
@@ -230,21 +230,21 @@ HOLESKY_RPC_URL=https://rpc.holesky.org
 BTC_RPC_URL=http://localhost:8332
 SOLANA_RPC_URL=https://api.devnet.solana.com
 `;
-  
+
   const backendEnvPath = join(projectRoot, 'server/.env');
   writeFileSync(backendEnvPath, backendEnv);
   success('  Backend .env created');
-  
+
   // ========================================
   // STEP 5: Database Setup
   // ========================================
   step(++currentStep, totalSteps, 'Database Setup');
-  
+
   const useDocker = await confirm('Use Docker for PostgreSQL?', true);
-  
+
   if (useDocker) {
     info('  Starting PostgreSQL with Docker...');
-    
+
     // Create docker-compose for database only
     const dbCompose = `version: '3.8'
 
@@ -267,33 +267,33 @@ services:
       timeout: 5s
       retries: 5
 `;
-    
+
     const dbComposePath = join(projectRoot, 'docker-compose.db.yml');
     writeFileSync(dbComposePath, dbCompose);
     success('  Docker compose file created');
-    
+
     // Start PostgreSQL
     if (commandExists('docker-compose')) {
       runCommand('docker-compose -f docker-compose.db.yml up -d', projectRoot, true);
       success('  PostgreSQL container started');
-      
+
       // Wait for database to be ready
       info('  Waiting for database to be ready...');
       await new Promise(resolve => setTimeout(resolve, 5000));
     } else if (commandExists('docker')) {
       runCommand('docker compose -f docker-compose.db.yml up -d', projectRoot, true);
       success('  PostgreSQL container started');
-      
+
       info('  Waiting for database to be ready...');
       await new Promise(resolve => setTimeout(resolve, 5000));
     }
   }
-  
+
   // Generate Prisma client
   info('  Generating Prisma client...');
   runCommand('npx prisma generate', join(projectRoot, 'server'), true);
   success('  Prisma client generated');
-  
+
   // Run migrations
   info('  Running database migrations...');
   const migrateSuccess = runCommand('npx prisma db push', join(projectRoot, 'server'), true);
@@ -302,12 +302,12 @@ services:
   } else {
     info('  Database setup skipped (no connection)');
   }
-  
+
   // ========================================
   // STEP 6: Build Verification
   // ========================================
   step(++currentStep, totalSteps, 'Building Project');
-  
+
   log('\n  Building frontend...', colors.dim);
   const frontendBuild = runCommand('npm run build', projectRoot);
   if (frontendBuild) {
@@ -315,7 +315,7 @@ services:
   } else {
     error('  Frontend build failed');
   }
-  
+
   log('\n  Building backend...', colors.dim);
   const backendBuild = runCommand('npm run build', join(projectRoot, 'server'));
   if (backendBuild) {
@@ -323,33 +323,33 @@ services:
   } else {
     error('  Backend build failed - checking for non-critical errors...');
   }
-  
+
   // ========================================
   // STEP 7: Running Tests
   // ========================================
   step(++currentStep, totalSteps, 'Running Tests');
-  
+
   const runTests = await confirm('Run tests now?', false);
-  
+
   if (runTests) {
     log('\n  Running frontend tests...', colors.dim);
     runCommand('npm test', projectRoot);
     success('  Frontend tests completed');
-    
+
     log('\n  Running backend tests...', colors.dim);
     runCommand('npm test', join(projectRoot, 'server'));
     success('  Backend tests completed');
   }
-  
+
   // ========================================
   // STEP 8: Final Summary
   // ========================================
   step(currentStep, totalSteps, 'Setup Complete!');
-  
+
   header('Setup Complete!');
-  
+
   log('\n  Your CryptoFaucet Hub is ready!', colors.green);
-  
+
   console.log(`
   ${colors.cyan}┌─────────────────────────────────────────────────────────┐
   │                    QUICK START COMMANDS                    │
@@ -359,19 +359,19 @@ services:
   │  Full Stack: docker-compose up -d                         │
   └─────────────────────────────────────────────────────────┘${colors.reset}
   `);
-  
+
   log('\n  Available scripts:', colors.dim);
   log('    npm run dev         - Start frontend dev server', colors.white);
   log('    npm run build       - Build frontend for production', colors.white);
   log('    cd server && npm run dev  - Start backend server', colors.white);
   log('    docker-compose up   - Run full stack with Docker', colors.white);
-  
+
   log('\n  Configuration:', colors.dim);
   log(`    Frontend: http://localhost:${config.frontendPort}`, colors.white);
   log(`    Backend:  http://localhost:${config.backendPort}`, colors.white);
   log(`    API:      http://localhost:${config.backendPort}/api`, colors.white);
   log(`    Database: localhost:5432/${config.dbName}`, colors.white);
-  
+
   console.log('\n');
   log('  Thank you for setting up CryptoFaucet Hub!', colors.magenta);
   console.log('  ==================================================\n');

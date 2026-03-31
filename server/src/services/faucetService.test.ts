@@ -1,12 +1,17 @@
 /**
  * Faucet Service Tests
- * 
+ *
  * Unit tests for server/src/services/faucetService.ts
  * Testing faucet service initialization and configuration checks
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { EthereumFaucetService, sepoliaFaucet, goerliFaucet, holeskyFaucet } from './faucetService.js';
+import {
+  EthereumFaucetService,
+  sepoliaFaucet,
+  goerliFaucet,
+  holeskyFaucet,
+} from './faucetService.js';
 
 // Mock the config module
 vi.mock('../config/index.js', () => ({

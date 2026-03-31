@@ -1,15 +1,15 @@
 /**
  * API Integration Tests
- * 
+ *
  * Tests for server API endpoints
- * 
+ *
  * Prerequisites:
  * 1. Create .env.test file with TEST_DATABASE_URL
  * 2. Run: npm run test:setup-db
  * 3. Run tests: npm test -- api.integration.test.ts
- * 
+ *
  * Or use: npm run test:integration (runs setup + tests)
- * 
+ *
  * Test Isolation:
  * Each test runs in a database transaction that is rolled back after the test.
  * This ensures tests don't interfere with each other.
@@ -37,9 +37,11 @@ const agent = request.agent(app);
 
 // Prisma client for test isolation (with correct DB URL)
 const prisma = new PrismaClient({
-  datasources: testDbUrl ? {
-    db: { url: testDbUrl }
-  } : undefined,
+  datasources: testDbUrl
+    ? {
+        db: { url: testDbUrl },
+      }
+    : undefined,
 });
 
 // Store cleanup function for afterAll
@@ -79,7 +81,7 @@ beforeEach(async () => {
     console.warn('⚠ TEST_DATABASE_URL not set - test isolation may not work properly');
     return;
   }
-  
+
   try {
     // Disable foreign key checks, truncate tables, re-enable
     await prisma.$executeRawUnsafe('SET FOREIGN_KEY_CHECKS = 0');
@@ -126,9 +128,7 @@ describe('Auth Endpoints', () => {
 
   describe('POST /api/auth/register', () => {
     it('should register a new user', async () => {
-      const response = await agent
-        .post('/api/auth/register')
-        .send(testUser);
+      const response = await agent.post('/api/auth/register').send(testUser);
 
       expect(response.status).toBe(201);
       expect(response.body.success).toBe(true);
@@ -138,34 +138,28 @@ describe('Auth Endpoints', () => {
 
     it('should reject duplicate email', async () => {
       // First registration succeeded, try again with same email
-      const response = await agent
-        .post('/api/auth/register')
-        .send(testUser);
+      const response = await agent.post('/api/auth/register').send(testUser);
 
       expect(response.status).toBe(400);
       expect(response.body.error).toContain('already exists');
     });
 
     it('should reject invalid email', async () => {
-      const response = await agent
-        .post('/api/auth/register')
-        .send({
-          email: 'not-an-email',
-          username: 'testuser',
-          password: 'TestPassword123!',
-        });
+      const response = await agent.post('/api/auth/register').send({
+        email: 'not-an-email',
+        username: 'testuser',
+        password: 'TestPassword123!',
+      });
 
       expect(response.status).toBe(400);
     });
 
     it('should reject weak password', async () => {
-      const response = await agent
-        .post('/api/auth/register')
-        .send({
-          email: 'test2@example.com',
-          username: 'testuser2',
-          password: 'weak',
-        });
+      const response = await agent.post('/api/auth/register').send({
+        email: 'test2@example.com',
+        username: 'testuser2',
+        password: 'weak',
+      });
 
       expect(response.status).toBe(400);
     });
@@ -173,12 +167,10 @@ describe('Auth Endpoints', () => {
 
   describe('POST /api/auth/login', () => {
     it('should login with valid credentials', async () => {
-      const response = await agent
-        .post('/api/auth/login')
-        .send({
-          email: testUser.email,
-          password: testUser.password,
-        });
+      const response = await agent.post('/api/auth/login').send({
+        email: testUser.email,
+        password: testUser.password,
+      });
 
       expect(response.status).toBe(200);
       expect(response.body.success).toBe(true);
@@ -186,24 +178,20 @@ describe('Auth Endpoints', () => {
     });
 
     it('should reject invalid password', async () => {
-      const response = await agent
-        .post('/api/auth/login')
-        .send({
-          email: testUser.email,
-          password: 'wrong-password',
-        });
+      const response = await agent.post('/api/auth/login').send({
+        email: testUser.email,
+        password: 'wrong-password',
+      });
 
       expect(response.status).toBe(401);
       expect(response.body.error).toContain('Invalid');
     });
 
     it('should reject non-existent user', async () => {
-      const response = await agent
-        .post('/api/auth/login')
-        .send({
-          email: 'nonexistent@example.com',
-          password: 'somepassword',
-        });
+      const response = await agent.post('/api/auth/login').send({
+        email: 'nonexistent@example.com',
+        password: 'somepassword',
+      });
 
       expect(response.status).toBe(401);
     });
@@ -217,13 +205,11 @@ describe('User Endpoints', () => {
   beforeAll(async () => {
     // Create a test user and get token
     const testEmail = `profiletest-${Date.now()}@example.com`;
-    const registerResponse = await agent
-      .post('/api/auth/register')
-      .send({
-        email: testEmail,
-        username: `profiletest-${Date.now()}`,
-        password: 'TestPassword123!',
-      });
+    const registerResponse = await agent.post('/api/auth/register').send({
+      email: testEmail,
+      username: `profiletest-${Date.now()}`,
+      password: 'TestPassword123!',
+    });
 
     authToken = registerResponse.body.data.accessToken;
     testUserId = registerResponse.body.data.user.id;
@@ -273,22 +259,18 @@ describe('Wallet Endpoints', () => {
 
   beforeAll(async () => {
     const testEmail = `wallettest-${Date.now()}@example.com`;
-    const registerResponse = await agent
-      .post('/api/auth/register')
-      .send({
-        email: testEmail,
-        username: `wallettest-${Date.now()}`,
-        password: 'TestPassword123!',
-      });
+    const registerResponse = await agent.post('/api/auth/register').send({
+      email: testEmail,
+      username: `wallettest-${Date.now()}`,
+      password: 'TestPassword123!',
+    });
 
     authToken = registerResponse.body.data.accessToken;
   });
 
   describe('GET /api/wallet', () => {
     it('should get user wallets', async () => {
-      const response = await agent
-        .get('/api/wallet')
-        .set('Authorization', `Bearer ${authToken}`);
+      const response = await agent.get('/api/wallet').set('Authorization', `Bearer ${authToken}`);
 
       expect(response.status).toBe(200);
       expect(Array.isArray(response.body.data.wallets)).toBe(true);
@@ -296,18 +278,14 @@ describe('Wallet Endpoints', () => {
     });
 
     it('should return empty wallets array for new user', async () => {
-      const response = await agent
-        .get('/api/wallet')
-        .set('Authorization', `Bearer ${authToken}`);
+      const response = await agent.get('/api/wallet').set('Authorization', `Bearer ${authToken}`);
 
       expect(response.status).toBe(200);
       expect(response.body.data.wallets).toEqual([]);
     });
 
     it('should include pagination metadata', async () => {
-      const response = await agent
-        .get('/api/wallet')
-        .set('Authorization', `Bearer ${authToken}`);
+      const response = await agent.get('/api/wallet').set('Authorization', `Bearer ${authToken}`);
 
       expect(response.status).toBe(200);
       expect(response.body.data.pagination.page).toBe(1);
@@ -386,13 +364,11 @@ describe('Faucet Endpoints', () => {
 
   beforeAll(async () => {
     const testEmail = `faucettest-${Date.now()}@example.com`;
-    const registerResponse = await agent
-      .post('/api/auth/register')
-      .send({
-        email: testEmail,
-        username: `faucettest-${Date.now()}`,
-        password: 'TestPassword123!',
-      });
+    const registerResponse = await agent.post('/api/auth/register').send({
+      email: testEmail,
+      username: `faucettest-${Date.now()}`,
+      password: 'TestPassword123!',
+    });
 
     authToken = registerResponse.body.data.accessToken;
   });
@@ -431,13 +407,11 @@ describe('Analytics Endpoints', () => {
 
   beforeAll(async () => {
     const testEmail = `analyticstest-${Date.now()}@example.com`;
-    const registerResponse = await agent
-      .post('/api/auth/register')
-      .send({
-        email: testEmail,
-        username: `analyticstest-${Date.now()}`,
-        password: 'TestPassword123!',
-      });
+    const registerResponse = await agent.post('/api/auth/register').send({
+      email: testEmail,
+      username: `analyticstest-${Date.now()}`,
+      password: 'TestPassword123!',
+    });
 
     authToken = registerResponse.body.data.accessToken;
   });
@@ -458,13 +432,11 @@ describe('Transaction Endpoints', () => {
 
   beforeAll(async () => {
     const testEmail = `transactiontest-${Date.now()}@example.com`;
-    const registerResponse = await agent
-      .post('/api/auth/register')
-      .send({
-        email: testEmail,
-        username: `transactiontest-${Date.now()}`,
-        password: 'TestPassword123!',
-      });
+    const registerResponse = await agent.post('/api/auth/register').send({
+      email: testEmail,
+      username: `transactiontest-${Date.now()}`,
+      password: 'TestPassword123!',
+    });
 
     authToken = registerResponse.body.data.accessToken;
   });
@@ -635,13 +607,11 @@ describe('Achievement Endpoints', () => {
 
   beforeAll(async () => {
     const testEmail = `achievementtest-${Date.now()}@example.com`;
-    const registerResponse = await agent
-      .post('/api/auth/register')
-      .send({
-        email: testEmail,
-        username: `achievementtest-${Date.now()}`,
-        password: 'TestPassword123!',
-      });
+    const registerResponse = await agent.post('/api/auth/register').send({
+      email: testEmail,
+      username: `achievementtest-${Date.now()}`,
+      password: 'TestPassword123!',
+    });
 
     authToken = registerResponse.body.data.accessToken;
   });
@@ -778,13 +748,11 @@ describe('Auth Token Refresh', () => {
 
   beforeAll(async () => {
     const testEmail = `refreshtest-${Date.now()}@example.com`;
-    const registerResponse = await agent
-      .post('/api/auth/register')
-      .send({
-        email: testEmail,
-        username: `refreshtest-${Date.now()}`,
-        password: 'TestPassword123!',
-      });
+    const registerResponse = await agent.post('/api/auth/register').send({
+      email: testEmail,
+      username: `refreshtest-${Date.now()}`,
+      password: 'TestPassword123!',
+    });
 
     refreshToken = registerResponse.body.data.refreshToken;
     authToken = registerResponse.body.data.accessToken;
@@ -792,9 +760,7 @@ describe('Auth Token Refresh', () => {
 
   describe('POST /api/auth/refresh', () => {
     it('should refresh access token with valid refresh token', async () => {
-      const response = await agent
-        .post('/api/auth/refresh')
-        .send({ refreshToken });
+      const response = await agent.post('/api/auth/refresh').send({ refreshToken });
 
       expect(response.status).toBe(200);
       expect(response.body.success).toBe(true);
@@ -810,9 +776,7 @@ describe('Auth Token Refresh', () => {
     });
 
     it('should reject refresh without token', async () => {
-      const response = await agent
-        .post('/api/auth/refresh')
-        .send({});
+      const response = await agent.post('/api/auth/refresh').send({});
 
       expect(response.status).toBe(400);
     });
@@ -842,13 +806,11 @@ describe('Error Handling', () => {
 
   it('should return 404 for non-existent route with auth', async () => {
     const testEmail = `errortest-${Date.now()}@example.com`;
-    const registerResponse = await agent
-      .post('/api/auth/register')
-      .send({
-        email: testEmail,
-        username: `errortest-${Date.now()}`,
-        password: 'TestPassword123!',
-      });
+    const registerResponse = await agent.post('/api/auth/register').send({
+      email: testEmail,
+      username: `errortest-${Date.now()}`,
+      password: 'TestPassword123!',
+    });
 
     const authToken = registerResponse.body.data.accessToken;
     const response = await agent
@@ -882,7 +844,7 @@ describe('Rate Limiting', () => {
     }
 
     const responses = await Promise.all(promises);
-    
+
     // Should be rate limited eventually
     const hasRateLimit = responses.some(r => r.status === 429);
     expect(hasRateLimit).toBe(true);

@@ -38,20 +38,20 @@
 
 ### Technology Stack
 
-| Layer | Technology | Version | Purpose |
-|-------|------------|---------|---------|
-| **Frontend** | React | 19.x | UI Framework |
-| **Language** | TypeScript | 5.6.x | Type Safety |
-| **Styling** | Tailwind CSS | 4.x | UI Styling |
-| **State** | Zustand | 5.x | State Management |
-| **Charts** | Recharts | 2.x | Data Visualization |
-| **Icons** | Lucide React | 0.577.x | Icon System |
-| **Build** | Vite | 6.x | Development & Build |
-| **Backend** | Express | 5.x | API Server |
-| **ORM** | Prisma | 7.x | Database ORM |
-| **Database** | PostgreSQL | 16.x | Primary Database |
-| **Testing** | Vitest | 2.x | Unit Testing |
-| **E2E** | Playwright | 1.x | End-to-End Testing |
+| Layer        | Technology   | Version | Purpose             |
+| ------------ | ------------ | ------- | ------------------- |
+| **Frontend** | React        | 19.x    | UI Framework        |
+| **Language** | TypeScript   | 5.6.x   | Type Safety         |
+| **Styling**  | Tailwind CSS | 4.x     | UI Styling          |
+| **State**    | Zustand      | 5.x     | State Management    |
+| **Charts**   | Recharts     | 2.x     | Data Visualization  |
+| **Icons**    | Lucide React | 0.577.x | Icon System         |
+| **Build**    | Vite         | 6.x     | Development & Build |
+| **Backend**  | Express      | 5.x     | API Server          |
+| **ORM**      | Prisma       | 7.x     | Database ORM        |
+| **Database** | PostgreSQL   | 16.x    | Primary Database    |
+| **Testing**  | Vitest       | 2.x     | Unit Testing        |
+| **E2E**      | Playwright   | 1.x     | End-to-End Testing  |
 
 ---
 
@@ -77,30 +77,35 @@ src/
 ### Component Categories
 
 #### Core Components
+
 - **DashboardView** - Main dashboard with stats and charts
 - **WalletView** - Wallet management and connections
 - **FaucetsView** - Crypto faucet listing and interactions
 - **SettingsView** - User preferences and configuration
 
 #### Analytics Components
+
 - **AdvancedAnalytics** - Comprehensive analytics dashboard
 - **CryptoChart** - Interactive price charts
 - **GasTracker** - Gas price monitoring
 - **PerformanceAnalyzer** - Portfolio performance tracking
 
 #### DeFi Components
+
 - **YieldFarming** - Yield farming opportunities
 - **Staking** - Staking pools and rewards
 - **LendingProtocol** - Lending/borrowing platforms
 - **LiquidityPoolAnalyzer** - LP analysis tools
 
 #### Gaming & NFTs
+
 - **Games** - Crypto gaming hub
 - **NFTGallery** - NFT collection viewer
 - **NFTMarketplace** - NFT trading platform
 - **Lottery** - Crypto lottery system
 
 #### Blockchain Tools
+
 - **BlockchainExplorer** - On-chain data explorer
 - **TransactionSimulator** - TX simulation
 - **SmartContractAuditor** - Contract analysis
@@ -112,27 +117,22 @@ src/
 
 ```typescript
 // Main store combining all slices
-interface CryptoStore extends 
-  AuthStore, 
-  UIStore, 
-  UserStore, 
-  WalletStore, 
-  FaucetStore, 
-  AchievementsStore {
+interface CryptoStore
+  extends AuthStore, UIStore, UserStore, WalletStore, FaucetStore, AchievementsStore {
   // Combined state and actions
 }
 ```
 
 #### Store Slices
 
-| Slice | Purpose | Key State |
-|-------|---------|-----------|
-| **authStore** | Authentication state | user, token, isAuthenticated |
-| **uiStore** | UI preferences | theme, language, sidebar |
-| **userStore** | User profile | profile, preferences, stats |
-| **walletStore** | Wallet connections | wallets, balances, connections |
-| **faucetStore** | Faucet data | faucets, claims, history |
-| **achievementsStore** | Achievements | achievements, progress |
+| Slice                 | Purpose              | Key State                      |
+| --------------------- | -------------------- | ------------------------------ |
+| **authStore**         | Authentication state | user, token, isAuthenticated   |
+| **uiStore**           | UI preferences       | theme, language, sidebar       |
+| **userStore**         | User profile         | profile, preferences, stats    |
+| **walletStore**       | Wallet connections   | wallets, balances, connections |
+| **faucetStore**       | Faucet data          | faucets, claims, history       |
+| **achievementsStore** | Achievements         | achievements, progress         |
 
 #### Persistence Configuration
 
@@ -140,9 +140,9 @@ interface CryptoStore extends
 const createStorage = () => {
   // Handles localStorage with error recovery
   return {
-    getItem: (name) => localStorage.getItem(name),
+    getItem: name => localStorage.getItem(name),
     setItem: (name, value) => localStorage.setItem(name, value),
-    removeItem: (name) => localStorage.removeItem(name),
+    removeItem: name => localStorage.removeItem(name),
   };
 };
 
@@ -154,7 +154,9 @@ export const useCryptoStore = create(
     {
       name: 'crybot-storage',
       storage: createStorage(),
-      partialize: (state) => ({ /* selective persistence */ }),
+      partialize: state => ({
+        /* selective persistence */
+      }),
     }
   )
 );
@@ -259,17 +261,17 @@ server/
 
 ### API Routes
 
-| Route | Methods | Description |
-|-------|---------|-------------|
-| `/api/auth` | POST | Authentication (login, register, refresh) |
-| `/api/user` | GET, PUT, DELETE | User profile management |
-| `/api/wallet` | GET, POST, DELETE | Wallet connections |
-| `/api/faucet` | GET, POST | Faucet operations |
-| `/api/transaction` | GET, POST | Transaction tracking |
-| `/api/achievement` | GET, POST | Achievement management |
-| `/api/leaderboard` | GET | Rankings and scores |
-| `/api/analytics` | GET | Analytics data |
-| `/api/testnetOps` | POST | Testnet operations (authorized) |
+| Route              | Methods           | Description                               |
+| ------------------ | ----------------- | ----------------------------------------- |
+| `/api/auth`        | POST              | Authentication (login, register, refresh) |
+| `/api/user`        | GET, PUT, DELETE  | User profile management                   |
+| `/api/wallet`      | GET, POST, DELETE | Wallet connections                        |
+| `/api/faucet`      | GET, POST         | Faucet operations                         |
+| `/api/transaction` | GET, POST         | Transaction tracking                      |
+| `/api/achievement` | GET, POST         | Achievement management                    |
+| `/api/leaderboard` | GET               | Rankings and scores                       |
+| `/api/analytics`   | GET               | Analytics data                            |
+| `/api/testnetOps`  | POST              | Testnet operations (authorized)           |
 
 ### Service Layer
 
@@ -312,13 +314,13 @@ export class FaucetService {
   async claimFaucet(userId: string, network: string): Promise<FaucetClaim> {
     // Rate limiting check
     await this.checkRateLimit(userId, network);
-    
+
     // Balance check
     await this.checkFaucetBalance(network);
-    
+
     // Process claim
     const tx = await this.processClaim(userId, network);
-    
+
     // Record in database
     return this.recordClaim(userId, network, tx.hash);
   }
@@ -328,10 +330,10 @@ export class FaucetService {
       where: {
         userId,
         network,
-        createdAt: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000) }
-      }
+        createdAt: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000) },
+      },
     });
-    
+
     if (recentClaims.length >= MAX_CLAIMS_PER_DAY) {
       throw new RateLimitError('Daily claim limit exceeded');
     }
@@ -343,11 +345,11 @@ export class FaucetService {
 
 ```typescript
 // Middleware execution order
-app.use(corsMiddleware);           // CORS headers
-app.use(rateLimitMiddleware);      // Rate limiting
-app.use(authMiddleware);           // JWT verification (protected routes)
-app.use(validateMiddleware);       // Request validation
-app.use(loggingMiddleware);        // Request logging
+app.use(corsMiddleware); // CORS headers
+app.use(rateLimitMiddleware); // Rate limiting
+app.use(authMiddleware); // JWT verification (protected routes)
+app.use(validateMiddleware); // Request validation
+app.use(loggingMiddleware); // Request logging
 ```
 
 ---
@@ -384,7 +386,7 @@ model User {
   passwordHash  String
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  
+
   wallets       Wallet[]
   faucetClaims  FaucetClaim[]
   achievements  UserAchievement[]
@@ -412,7 +414,7 @@ model Faucet {
   dripAmount  Decimal
   cooldown    Int      // hours
   isActive    Boolean  @default(true)
-  
+
   claims      FaucetClaim[]
 }
 
@@ -425,7 +427,7 @@ model FaucetClaim {
   amount      Decimal
   network     String
   createdAt   DateTime @default(now())
-  
+
   @@index([userId, createdAt])
 }
 
@@ -437,7 +439,7 @@ model Achievement {
   requirement Int
   reward      Decimal
   category    String
-  
+
   userProgress UserAchievement[]
 }
 
@@ -449,7 +451,7 @@ model UserAchievement {
   progress      Int        @default(0)
   unlockedAt    DateTime?
   claimed       Boolean    @default(false)
-  
+
   @@unique([userId, achievementId])
 }
 
@@ -459,7 +461,7 @@ model Persona {
   authorized  Boolean  @default(false)
   address     String
   createdAt   DateTime @default(now())
-  
+
   operations  TestnetOperation[]
 }
 
@@ -493,17 +495,19 @@ model TestnetOperation {
 ### REST API Conventions
 
 #### URL Structure
+
 ```
 /api/{resource}/{action}
 ```
 
 #### HTTP Methods
-| Method | Usage | Response Code |
-|--------|-------|---------------|
-| `GET` | Retrieve resources | 200, 404 |
-| `POST` | Create resources | 201, 400 |
-| `PUT` | Update resources | 200, 400 |
-| `DELETE` | Remove resources | 204, 404 |
+
+| Method   | Usage              | Response Code |
+| -------- | ------------------ | ------------- |
+| `GET`    | Retrieve resources | 200, 404      |
+| `POST`   | Create resources   | 201, 400      |
+| `PUT`    | Update resources   | 200, 400      |
+| `DELETE` | Remove resources   | 204, 404      |
 
 #### Response Format
 
@@ -578,24 +582,20 @@ const rateLimitConfig = {
 
 ### API Security
 
-| Protection | Implementation |
-|------------|----------------|
-| **CORS** | Configured allowed origins |
-| **Rate Limiting** | Per-IP and per-user limits |
-| **Input Validation** | Zod schema validation |
-| **SQL Injection** | Prisma parameterized queries |
-| **XSS Prevention** | React auto-escaping |
-| **CSRF Protection** | Token-based validation |
+| Protection           | Implementation               |
+| -------------------- | ---------------------------- |
+| **CORS**             | Configured allowed origins   |
+| **Rate Limiting**    | Per-IP and per-user limits   |
+| **Input Validation** | Zod schema validation        |
+| **SQL Injection**    | Prisma parameterized queries |
+| **XSS Prevention**   | React auto-escaping          |
+| **CSRF Protection**  | Token-based validation       |
 
 ### Environment Security
 
 ```typescript
 // Required environment variables for production
-const requiredEnvVars = [
-  'JWT_SECRET',
-  'DATABASE_URL',
-  'NODE_ENV',
-];
+const requiredEnvVars = ['JWT_SECRET', 'DATABASE_URL', 'NODE_ENV'];
 ```
 
 ---
@@ -610,14 +610,14 @@ services:
   frontend:
     build: .
     ports:
-      - "5173:5173"
+      - '5173:5173'
     environment:
       - VITE_API_URL=http://backend:3000
 
   backend:
     build: ./server
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       - DATABASE_URL=postgresql://user:pass@db:5432/crybot
     depends_on:
@@ -666,23 +666,23 @@ jobs:
 
 ### Frontend Optimizations
 
-| Technique | Implementation |
-|-----------|----------------|
-| **Code Splitting** | Vite automatic chunks |
-| **Lazy Loading** | React.lazy() for routes |
-| **Memoization** | useMemo, useCallback |
-| **Virtualization** | react-window for lists |
-| **Image Optimization** | Lazy loaded images |
+| Technique              | Implementation          |
+| ---------------------- | ----------------------- |
+| **Code Splitting**     | Vite automatic chunks   |
+| **Lazy Loading**       | React.lazy() for routes |
+| **Memoization**        | useMemo, useCallback    |
+| **Virtualization**     | react-window for lists  |
+| **Image Optimization** | Lazy loaded images      |
 
 ### Backend Optimizations
 
-| Technique | Implementation |
-|-----------|----------------|
-| **Caching** | Redis for API responses |
-| **Database Indexing** | Prisma indexes |
-| **Connection Pooling** | Prisma connection pool |
-| **Pagination** | Cursor-based pagination |
-| **Compression** | Gzip compression |
+| Technique              | Implementation          |
+| ---------------------- | ----------------------- |
+| **Caching**            | Redis for API responses |
+| **Database Indexing**  | Prisma indexes          |
+| **Connection Pooling** | Prisma connection pool  |
+| **Pagination**         | Cursor-based pagination |
+| **Compression**        | Gzip compression        |
 
 ---
 
@@ -692,14 +692,16 @@ jobs:
 
 ```typescript
 // Structured logging
-console.log(JSON.stringify({
-  level: 'info',
-  message: 'API request',
-  timestamp: new Date().toISOString(),
-  path: '/api/user',
-  userId: user.id,
-  duration: responseTime,
-}));
+console.log(
+  JSON.stringify({
+    level: 'info',
+    message: 'API request',
+    timestamp: new Date().toISOString(),
+    path: '/api/user',
+    userId: user.id,
+    duration: responseTime,
+  })
+);
 ```
 
 ### Health Checks
@@ -729,4 +731,4 @@ jobs:
 
 ---
 
-*Last updated: 2025-01-27*
+_Last updated: 2025-01-27_

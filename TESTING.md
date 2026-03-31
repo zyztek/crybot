@@ -7,6 +7,7 @@ This project includes comprehensive testing for both frontend and backend.
 ## Running Tests
 
 ### Frontend Tests
+
 ```bash
 # All tests
 npm test
@@ -22,6 +23,7 @@ npm test -- --coverage
 ```
 
 ### Backend Tests
+
 ```bash
 cd server
 
@@ -40,16 +42,17 @@ npm run test:integration
 
 ## Test Coverage
 
-| Category | Tests | Coverage |
-|----------|-------|----------|
-| Frontend Components | 40+ | UI, Integration |
-| Backend Services | 30+ | Unit, Integration |
-| API Routes | 20+ | E2E |
-| Utils | 5+ | Unit |
+| Category            | Tests | Coverage          |
+| ------------------- | ----- | ----------------- |
+| Frontend Components | 40+   | UI, Integration   |
+| Backend Services    | 30+   | Unit, Integration |
+| API Routes          | 20+   | E2E               |
+| Utils               | 5+    | Unit              |
 
 ## Writing Tests
 
 ### Frontend Component Test
+
 ```tsx
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
@@ -64,6 +67,7 @@ describe('Component', () => {
 ```
 
 ### Backend Service Test
+
 ```ts
 import { describe, it, expect } from 'vitest';
 import { serviceFunction } from './service';
