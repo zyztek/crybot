@@ -1,14 +1,14 @@
-import { useState } from 'react'
-import { Network, Zap, ExternalLink, CheckCircle, Copy, Wallet } from 'lucide-react'
-import type { TranslationTexts } from '@/i18n/translations'
+import { useState } from 'react';
+import { Network, Zap, ExternalLink, CheckCircle, Copy, Wallet } from 'lucide-react';
+import type { TranslationTexts } from '@/i18n/translations';
 
 /**
  * Props for TestnetView component
  * @interface TestnetViewProps
  */
 interface TestnetViewProps {
-  t: TranslationTexts
-  language: 'es' | 'en'
+  t: TranslationTexts;
+  language: 'es' | 'en';
 }
 
 // Testnet configurations
@@ -88,7 +88,7 @@ const testnets = [
     description: 'BNB Smart Chain testnet',
     descriptionES: 'Testnet de BNB Smart Chain',
   },
-]
+];
 
 /**
  * TestnetView - Component displaying available testnet networks
@@ -97,14 +97,14 @@ const testnets = [
  * @returns Cards showing testnet info, RPC URLs, faucets, and setup guide
  */
 export default function TestnetView({ t, language }: TestnetViewProps) {
-  const [copiedField, setCopiedField] = useState<string | null>(null)
-  const isSpanish = language === 'es'
+  const [copiedField, setCopiedField] = useState<string | null>(null);
+  const isSpanish = language === 'es';
 
   const copyToClipboard = (text: string, field: string) => {
-    navigator.clipboard.writeText(text)
-    setCopiedField(field)
-    setTimeout(() => setCopiedField(null), 2000)
-  }
+    navigator.clipboard.writeText(text);
+    setCopiedField(field);
+    setTimeout(() => setCopiedField(null), 2000);
+  };
 
   return (
     <div className="space-y-6">
@@ -119,8 +119,8 @@ export default function TestnetView({ t, language }: TestnetViewProps) {
               {isSpanish ? 'Testnets Disponibles' : 'Available Testnets'}
             </h2>
             <p className="text-purple-300">
-              {isSpanish 
-                ? 'Redes de prueba para desarrollo y pruebas' 
+              {isSpanish
+                ? 'Redes de prueba para desarrollo y pruebas'
                 : 'Test networks for development and testing'}
             </p>
           </div>
@@ -129,14 +129,14 @@ export default function TestnetView({ t, language }: TestnetViewProps) {
 
       {/* Testnet Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {testnets.map((testnet) => (
+        {testnets.map(testnet => (
           <div
             key={testnet.id}
             className={`bg-slate-800/50 border ${testnet.borderColor} rounded-xl p-5 backdrop-blur-sm hover:border-purple-500/50 transition-all`}
           >
             {/* Testnet Header */}
             <div className={`w-full h-1 ${testnet.color} rounded-full mb-4`} />
-            
+
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-white font-bold text-lg">
                 {isSpanish ? testnet.nameES : testnet.name}
@@ -145,7 +145,7 @@ export default function TestnetView({ t, language }: TestnetViewProps) {
                 {testnet.chain}
               </span>
             </div>
-            
+
             <p className="text-purple-300 text-sm mb-4">
               {isSpanish ? testnet.descriptionES : testnet.description}
             </p>
@@ -199,7 +199,7 @@ export default function TestnetView({ t, language }: TestnetViewProps) {
           <Wallet className="w-5 h-5 text-purple-400" />
           {isSpanish ? 'Guía de Configuración Rápida' : 'Quick Setup Guide'}
         </h3>
-        
+
         <div className="space-y-4">
           <div className="flex gap-3">
             <div className="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center text-purple-300 font-bold flex-shrink-0">
@@ -210,13 +210,13 @@ export default function TestnetView({ t, language }: TestnetViewProps) {
                 {isSpanish ? 'Añadir Red a MetaMask' : 'Add Network to MetaMask'}
               </h4>
               <p className="text-purple-300 text-sm">
-                {isSpanish 
-                  ? 'Copia el RPC URL y añádelo manualmente en MetaMask' 
+                {isSpanish
+                  ? 'Copia el RPC URL y añádelo manualmente en MetaMask'
                   : 'Copy the RPC URL and add it manually in MetaMask'}
               </p>
             </div>
           </div>
-          
+
           <div className="flex gap-3">
             <div className="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center text-purple-300 font-bold flex-shrink-0">
               2
@@ -226,13 +226,13 @@ export default function TestnetView({ t, language }: TestnetViewProps) {
                 {isSpanish ? 'Obtener Tokens de Prueba' : 'Get Test Tokens'}
               </h4>
               <p className="text-purple-300 text-sm">
-                {isSpanish 
-                  ? 'Usa el botón Faucet para obtener tokens de prueba' 
+                {isSpanish
+                  ? 'Usa el botón Faucet para obtener tokens de prueba'
                   : 'Use the Faucet button to get test tokens'}
               </p>
             </div>
           </div>
-          
+
           <div className="flex gap-3">
             <div className="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center text-purple-300 font-bold flex-shrink-0">
               3
@@ -242,8 +242,8 @@ export default function TestnetView({ t, language }: TestnetViewProps) {
                 {isSpanish ? 'Conectar a la DApp' : 'Connect to DApp'}
               </h4>
               <p className="text-purple-300 text-sm">
-                {isSpanish 
-                  ? 'Cambia a la red de prueba en tu wallet' 
+                {isSpanish
+                  ? 'Cambia a la red de prueba en tu wallet'
                   : 'Switch to the test network in your wallet'}
               </p>
             </div>
@@ -251,5 +251,5 @@ export default function TestnetView({ t, language }: TestnetViewProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }

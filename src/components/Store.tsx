@@ -25,7 +25,7 @@ export default function Store() {
       price: 2000,
       image: '🎁',
       stock: 15,
-      featured: true
+      featured: true,
     },
     {
       id: 2,
@@ -34,7 +34,7 @@ export default function Store() {
       price: 5000,
       image: '₿',
       stock: 5,
-      featured: true
+      featured: true,
     },
     {
       id: 3,
@@ -43,7 +43,7 @@ export default function Store() {
       price: 4500,
       image: 'Ξ',
       stock: 8,
-      featured: false
+      featured: false,
     },
     {
       id: 4,
@@ -52,7 +52,7 @@ export default function Store() {
       price: 15000,
       image: '🎧',
       stock: 3,
-      featured: true
+      featured: true,
     },
     {
       id: 5,
@@ -61,7 +61,7 @@ export default function Store() {
       price: 30000,
       image: '👑',
       stock: 999,
-      featured: true
+      featured: true,
     },
     {
       id: 6,
@@ -70,7 +70,7 @@ export default function Store() {
       price: 5000,
       image: '🎮',
       stock: 7,
-      featured: false
+      featured: false,
     },
     {
       id: 7,
@@ -79,7 +79,7 @@ export default function Store() {
       price: 3000,
       image: '💾',
       stock: 20,
-      featured: false
+      featured: false,
     },
     {
       id: 8,
@@ -88,7 +88,7 @@ export default function Store() {
       price: 4000,
       image: '◎',
       stock: 10,
-      featured: false
+      featured: false,
     },
     {
       id: 9,
@@ -97,7 +97,7 @@ export default function Store() {
       price: 8000,
       image: '🎬',
       stock: 999,
-      featured: true
+      featured: true,
     },
     {
       id: 10,
@@ -106,7 +106,7 @@ export default function Store() {
       price: 4000,
       image: '🎲',
       stock: 12,
-      featured: false
+      featured: false,
     },
     {
       id: 11,
@@ -115,7 +115,7 @@ export default function Store() {
       price: 1000,
       image: 'Ð',
       stock: 25,
-      featured: false
+      featured: false,
     },
     {
       id: 12,
@@ -124,13 +124,14 @@ export default function Store() {
       price: 2000,
       image: '🖱️',
       stock: 18,
-      featured: false
-    }
+      featured: false,
+    },
   ];
 
-  const filteredItems = selectedCategory === 'all' 
-    ? storeItems 
-    : storeItems.filter(item => item.category === selectedCategory);
+  const filteredItems =
+    selectedCategory === 'all'
+      ? storeItems
+      : storeItems.filter(item => item.category === selectedCategory);
 
   const featuredItems = storeItems.filter(item => item.featured);
 
@@ -165,7 +166,7 @@ export default function Store() {
 
       {/* Category Tabs */}
       <div className="flex overflow-x-auto gap-2 pb-2">
-        {categories.map((cat) => {
+        {categories.map(cat => {
           const Icon = cat.icon;
           return (
             <button
@@ -192,7 +193,7 @@ export default function Store() {
             {t('store.featured')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {featuredItems.slice(0, 3).map((item) => (
+            {featuredItems.slice(0, 3).map(item => (
               <div
                 key={item.id}
                 className="bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 rounded-xl p-4 relative"
@@ -232,7 +233,7 @@ export default function Store() {
 
       {/* Store Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {filteredItems.map((item) => (
+        {filteredItems.map(item => (
           <div
             key={item.id}
             className="bg-white/10 backdrop-blur-lg rounded-xl p-5 border border-white/20 hover:border-white/40 transition-all hover:scale-[1.02]"
@@ -241,17 +242,23 @@ export default function Store() {
               <div className="text-5xl">{item.image}</div>
               {item.featured && <Star className="text-yellow-400 fill-yellow-400" />}
             </div>
-            
+
             <h3 className="text-white font-bold mb-2 line-clamp-2">{item.name}</h3>
-            
+
             <div className="flex items-center justify-between mt-4">
               <div className="text-xl font-bold text-yellow-400 flex items-center gap-1">
                 <span>⭐</span>
                 {item.price.toLocaleString()}
               </div>
-              <div className={`text-sm ${
-                item.stock > 10 ? 'text-green-400' : item.stock > 0 ? 'text-yellow-400' : 'text-red-400'
-              }`}>
+              <div
+                className={`text-sm ${
+                  item.stock > 10
+                    ? 'text-green-400'
+                    : item.stock > 0
+                      ? 'text-yellow-400'
+                      : 'text-red-400'
+                }`}
+              >
                 {item.stock} {item.stock === 1 ? 'left' : 'left'}
               </div>
             </div>
@@ -263,10 +270,10 @@ export default function Store() {
                 isOwned(item.id)
                   ? 'bg-green-500/20 text-green-400'
                   : item.stock === 0
-                  ? 'bg-red-500/20 text-red-400 cursor-not-allowed'
-                  : userPoints >= item.price
-                  ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90'
-                  : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                    ? 'bg-red-500/20 text-red-400 cursor-not-allowed'
+                    : userPoints >= item.price
+                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90'
+                      : 'bg-gray-600 text-gray-400 cursor-not-allowed'
               }`}
             >
               {isOwned(item.id) ? (

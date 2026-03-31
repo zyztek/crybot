@@ -1,8 +1,8 @@
-import { describe, it, expect } from 'vitest'
-import { render } from '@testing-library/react'
-import StatsBar from './StatsBar'
-import type { WalletBalance, ClaimHistory, Faucet } from '@/types'
-import type { TranslationTexts } from '@/i18n/translations'
+import { describe, it, expect } from 'vitest';
+import { render } from '@testing-library/react';
+import StatsBar from './StatsBar';
+import type { WalletBalance, ClaimHistory, Faucet } from '@/types';
+import type { TranslationTexts } from '@/i18n/translations';
 
 const mockWalletBalance: WalletBalance = {
   btc: '0.00023045',
@@ -10,19 +10,68 @@ const mockWalletBalance: WalletBalance = {
   doge: '45.6789',
   sol: '2.4567',
   ltc: '0.5678',
-  bnb: '0.1234'
-}
+  bnb: '0.1234',
+};
 
 const mockHistory: ClaimHistory[] = [
-  { id: 1, faucet: 'FreeBitco.in', faucetId: 1, coin: 'BTC', amount: '0.00001000', time: '14:32', date: 'Hoy' },
-  { id: 2, faucet: 'FireFaucet', faucetId: 2, coin: 'ETH', amount: '0.0005', time: '14:25', date: 'Hoy' },
-]
+  {
+    id: 1,
+    faucet: 'FreeBitco.in',
+    faucetId: 1,
+    coin: 'BTC',
+    amount: '0.00001000',
+    time: '14:32',
+    date: 'Hoy',
+  },
+  {
+    id: 2,
+    faucet: 'FireFaucet',
+    faucetId: 2,
+    coin: 'ETH',
+    amount: '0.0005',
+    time: '14:25',
+    date: 'Hoy',
+  },
+];
 
 const mockFaucets: Faucet[] = [
-  { id: 1, name: 'FreeBitco.in', coin: 'BTC', icon: '₿', reward: '0.00001000', timer: 60, status: 'available', category: 'premium', difficulty: 'easy', translations: { es: 'Bitcoin Gratis', en: 'Free Bitcoin' } },
-  { id: 2, name: 'FireFaucet', coin: 'ETH', icon: 'Ξ', reward: '0.0005', timer: 30, status: 'available', category: 'hot', difficulty: 'medium', translations: { es: 'Faucet de Fuego', en: 'Fire Faucet' } },
-  { id: 3, name: 'Cointiply', coin: 'DOGE', icon: 'Ð', reward: '5.50', timer: 45, status: 'wait', category: 'stable', difficulty: 'easy', translations: { es: 'Moneda Gratis', en: 'Free Coins' } },
-]
+  {
+    id: 1,
+    name: 'FreeBitco.in',
+    coin: 'BTC',
+    icon: '₿',
+    reward: '0.00001000',
+    timer: 60,
+    status: 'available',
+    category: 'premium',
+    difficulty: 'easy',
+    translations: { es: 'Bitcoin Gratis', en: 'Free Bitcoin' },
+  },
+  {
+    id: 2,
+    name: 'FireFaucet',
+    coin: 'ETH',
+    icon: 'Ξ',
+    reward: '0.0005',
+    timer: 30,
+    status: 'available',
+    category: 'hot',
+    difficulty: 'medium',
+    translations: { es: 'Faucet de Fuego', en: 'Fire Faucet' },
+  },
+  {
+    id: 3,
+    name: 'Cointiply',
+    coin: 'DOGE',
+    icon: 'Ð',
+    reward: '5.50',
+    timer: 45,
+    status: 'wait',
+    category: 'stable',
+    difficulty: 'easy',
+    translations: { es: 'Moneda Gratis', en: 'Free Coins' },
+  },
+];
 
 const mockTranslations: TranslationTexts = {
   login: 'Iniciar Sesión',
@@ -78,8 +127,8 @@ const mockTranslations: TranslationTexts = {
   theme: 'Tema',
   logout: 'Cerrar Sesión',
   viewMore: 'Ver Más',
-  connect: 'Conectar'
-}
+  connect: 'Conectar',
+};
 
 describe('StatsBar Snapshot Tests', () => {
   it('matches snapshot with all data (Spanish)', () => {
@@ -90,9 +139,9 @@ describe('StatsBar Snapshot Tests', () => {
         faucets={mockFaucets}
         t={mockTranslations}
       />
-    )
-    expect(container.firstChild).toMatchSnapshot()
-  })
+    );
+    expect(container.firstChild).toMatchSnapshot();
+  });
 
   it('matches snapshot with empty history', () => {
     const { container } = render(
@@ -102,12 +151,12 @@ describe('StatsBar Snapshot Tests', () => {
         faucets={mockFaucets}
         t={mockTranslations}
       />
-    )
-    expect(container.firstChild).toMatchSnapshot()
-  })
+    );
+    expect(container.firstChild).toMatchSnapshot();
+  });
 
   it('matches snapshot with all faucets available', () => {
-    const availableFaucets = mockFaucets.map(f => ({ ...f, status: 'available' as const }))
+    const availableFaucets = mockFaucets.map(f => ({ ...f, status: 'available' as const }));
     const { container } = render(
       <StatsBar
         walletBalance={mockWalletBalance}
@@ -115,7 +164,7 @@ describe('StatsBar Snapshot Tests', () => {
         faucets={availableFaucets}
         t={mockTranslations}
       />
-    )
-    expect(container.firstChild).toMatchSnapshot()
-  })
-})
+    );
+    expect(container.firstChild).toMatchSnapshot();
+  });
+});

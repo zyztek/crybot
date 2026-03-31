@@ -1,6 +1,6 @@
 /**
  * Frontend App Configuration Tests
- * 
+ *
  * Unit tests for src/config/appConfig.ts
  */
 

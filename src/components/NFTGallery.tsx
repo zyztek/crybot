@@ -1,5 +1,17 @@
 import React, { useState } from 'react';
-import { Image as ImageIcon, Palette, Gem, TrendingUp, Heart, Eye, Clock, ExternalLink, Filter, Tag, Zap } from 'lucide-react';
+import {
+  Image as ImageIcon,
+  Palette,
+  Gem,
+  TrendingUp,
+  Heart,
+  Eye,
+  Clock,
+  ExternalLink,
+  Filter,
+  Tag,
+  Zap,
+} from 'lucide-react';
 
 interface NFT {
   id: number;
@@ -18,16 +30,156 @@ interface NFT {
 }
 
 const nfts: NFT[] = [
-  { id: 1, name: 'Cosmic Ape #1234', collection: 'Bored Ape YC', image: '🦍', price: 45.5, currency: 'ETH', creator: '0x1a2b...3c4d', likes: 2341, views: 15420, category: 'collectibles', rarity: 'legendary', listed: true, lastSale: 42.3 },
-  { id: 2, name: 'Digital Dreams #567', collection: 'Art Blocks', image: '🎨', price: 8.2, currency: 'ETH', creator: '0x5e6f...7g8h', likes: 987, views: 5620, category: 'art', rarity: 'epic', listed: true, lastSale: 7.5 },
-  { id: 3, name: 'Space Explorer #89', collection: 'Galactic Quest', image: '🚀', price: 2.1, currency: 'ETH', creator: '0x9i0j...1k2l', likes: 543, views: 3210, category: 'gaming', rarity: 'rare', listed: true, lastSale: 1.8 },
-  { id: 4, name: 'Virtual Land #456', collection: 'Decentraland', image: '🏝️', price: 15.8, currency: 'ETH', creator: '0x3m4n...5o6p', likes: 1876, views: 12340, category: 'metaverse', rarity: 'legendary', listed: true, lastSale: 14.2 },
-  { id: 5, name: 'Beat Token #234', collection: 'Audius', image: '🎵', price: 0.8, currency: 'ETH', creator: '0x7q8r...9s0t', likes: 432, views: 2870, category: 'music', rarity: 'common', listed: true, lastSale: 0.65 },
-  { id: 6, name: 'Pixel Punk #7890', collection: 'CryptoPunks', image: '👾', price: 68.4, currency: 'ETH', creator: '0x1u2v...3w4x', likes: 4567, views: 23450, category: 'collectibles', rarity: 'legendary', listed: false, lastSale: 65.0 },
-  { id: 7, name: 'Abstract Mind #345', collection: 'Generative Art', image: '🌌', price: 4.5, currency: 'ETH', creator: '0x5y6z...7a8b', likes: 1234, views: 8900, category: 'art', rarity: 'rare', listed: true, lastSale: 4.0 },
-  { id: 8, name: 'Warrior Hero #123', collection: 'Axie Infinity', image: '⚔️', price: 0.25, currency: 'ETH', creator: '0x9c0d...1e2f', likes: 876, views: 5430, category: 'gaming', rarity: 'common', listed: true, lastSale: 0.2 },
-  { id: 9, name: 'Fashion Item #567', collection: 'DressX', image: '👗', price: 1.2, currency: 'ETH', creator: '0x3g4h...5i6j', likes: 654, views: 4120, category: 'metaverse', rarity: 'rare', listed: true, lastSale: 1.0 },
-  { id: 10, name: 'Sound Wave #890', collection: 'audioNFT', image: '🎹', price: 0.35, currency: 'ETH', creator: '0x7k8l...9m0n', likes: 321, views: 2340, category: 'music', rarity: 'common', listed: true, lastSale: 0.3 }
+  {
+    id: 1,
+    name: 'Cosmic Ape #1234',
+    collection: 'Bored Ape YC',
+    image: '🦍',
+    price: 45.5,
+    currency: 'ETH',
+    creator: '0x1a2b...3c4d',
+    likes: 2341,
+    views: 15420,
+    category: 'collectibles',
+    rarity: 'legendary',
+    listed: true,
+    lastSale: 42.3,
+  },
+  {
+    id: 2,
+    name: 'Digital Dreams #567',
+    collection: 'Art Blocks',
+    image: '🎨',
+    price: 8.2,
+    currency: 'ETH',
+    creator: '0x5e6f...7g8h',
+    likes: 987,
+    views: 5620,
+    category: 'art',
+    rarity: 'epic',
+    listed: true,
+    lastSale: 7.5,
+  },
+  {
+    id: 3,
+    name: 'Space Explorer #89',
+    collection: 'Galactic Quest',
+    image: '🚀',
+    price: 2.1,
+    currency: 'ETH',
+    creator: '0x9i0j...1k2l',
+    likes: 543,
+    views: 3210,
+    category: 'gaming',
+    rarity: 'rare',
+    listed: true,
+    lastSale: 1.8,
+  },
+  {
+    id: 4,
+    name: 'Virtual Land #456',
+    collection: 'Decentraland',
+    image: '🏝️',
+    price: 15.8,
+    currency: 'ETH',
+    creator: '0x3m4n...5o6p',
+    likes: 1876,
+    views: 12340,
+    category: 'metaverse',
+    rarity: 'legendary',
+    listed: true,
+    lastSale: 14.2,
+  },
+  {
+    id: 5,
+    name: 'Beat Token #234',
+    collection: 'Audius',
+    image: '🎵',
+    price: 0.8,
+    currency: 'ETH',
+    creator: '0x7q8r...9s0t',
+    likes: 432,
+    views: 2870,
+    category: 'music',
+    rarity: 'common',
+    listed: true,
+    lastSale: 0.65,
+  },
+  {
+    id: 6,
+    name: 'Pixel Punk #7890',
+    collection: 'CryptoPunks',
+    image: '👾',
+    price: 68.4,
+    currency: 'ETH',
+    creator: '0x1u2v...3w4x',
+    likes: 4567,
+    views: 23450,
+    category: 'collectibles',
+    rarity: 'legendary',
+    listed: false,
+    lastSale: 65.0,
+  },
+  {
+    id: 7,
+    name: 'Abstract Mind #345',
+    collection: 'Generative Art',
+    image: '🌌',
+    price: 4.5,
+    currency: 'ETH',
+    creator: '0x5y6z...7a8b',
+    likes: 1234,
+    views: 8900,
+    category: 'art',
+    rarity: 'rare',
+    listed: true,
+    lastSale: 4.0,
+  },
+  {
+    id: 8,
+    name: 'Warrior Hero #123',
+    collection: 'Axie Infinity',
+    image: '⚔️',
+    price: 0.25,
+    currency: 'ETH',
+    creator: '0x9c0d...1e2f',
+    likes: 876,
+    views: 5430,
+    category: 'gaming',
+    rarity: 'common',
+    listed: true,
+    lastSale: 0.2,
+  },
+  {
+    id: 9,
+    name: 'Fashion Item #567',
+    collection: 'DressX',
+    image: '👗',
+    price: 1.2,
+    currency: 'ETH',
+    creator: '0x3g4h...5i6j',
+    likes: 654,
+    views: 4120,
+    category: 'metaverse',
+    rarity: 'rare',
+    listed: true,
+    lastSale: 1.0,
+  },
+  {
+    id: 10,
+    name: 'Sound Wave #890',
+    collection: 'audioNFT',
+    image: '🎹',
+    price: 0.35,
+    currency: 'ETH',
+    creator: '0x7k8l...9m0n',
+    likes: 321,
+    views: 2340,
+    category: 'music',
+    rarity: 'common',
+    listed: true,
+    lastSale: 0.3,
+  },
 ];
 
 const collections = [
@@ -35,7 +187,7 @@ const collections = [
   { name: 'CryptoPunks', volume: '45,230 ETH', items: 10000, floor: '68.5 ETH', change: '+8%' },
   { name: 'Art Blocks', volume: '12,340 ETH', items: 5600, floor: '2.5 ETH', change: '-5%' },
   { name: 'Azuki', volume: '8,920 ETH', items: 10000, floor: '9.8 ETH', change: '+3%' },
-  { name: 'Decentraland', volume: '15,670 ETH', items: 96000, floor: '0.8 ETH', change: '-2%' }
+  { name: 'Decentraland', volume: '15,670 ETH', items: 96000, floor: '0.8 ETH', change: '-2%' },
 ];
 
 export const NFTGallery: React.FC = () => {
@@ -43,31 +195,41 @@ export const NFTGallery: React.FC = () => {
   const [selectedRarity, setSelectedRarity] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'price' | 'likes' | 'views'>('price');
 
-  const filteredNFTs = nfts.filter(nft => {
-    const matchesCategory = selectedCategory === 'all' || nft.category === selectedCategory;
-    const matchesRarity = selectedRarity === 'all' || nft.rarity === selectedRarity;
-    return matchesCategory && matchesRarity;
-  }).sort((a, b) => {
-    if (sortBy === 'price') return b.price - a.price;
-    if (sortBy === 'likes') return b.likes - a.likes;
-    return b.views - a.views;
-  });
+  const filteredNFTs = nfts
+    .filter(nft => {
+      const matchesCategory = selectedCategory === 'all' || nft.category === selectedCategory;
+      const matchesRarity = selectedRarity === 'all' || nft.rarity === selectedRarity;
+      return matchesCategory && matchesRarity;
+    })
+    .sort((a, b) => {
+      if (sortBy === 'price') return b.price - a.price;
+      if (sortBy === 'likes') return b.likes - a.likes;
+      return b.views - a.views;
+    });
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
-      case 'common': return 'bg-gray-500/20 text-gray-400 border-gray-500/30';
-      case 'rare': return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
-      case 'epic': return 'bg-purple-500/20 text-purple-400 border-purple-500/30';
-      case 'legendary': return 'bg-amber-500/20 text-amber-400 border-amber-500/30';
+      case 'common':
+        return 'bg-gray-500/20 text-gray-400 border-gray-500/30';
+      case 'rare':
+        return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
+      case 'epic':
+        return 'bg-purple-500/20 text-purple-400 border-purple-500/30';
+      case 'legendary':
+        return 'bg-amber-500/20 text-amber-400 border-amber-500/30';
     }
   };
 
   const getRarityBadge = (rarity: string) => {
     switch (rarity) {
-      case 'common': return '●';
-      case 'rare': return '◆';
-      case 'epic': return '⬡';
-      case 'legendary': return '★';
+      case 'common':
+        return '●';
+      case 'rare':
+        return '◆';
+      case 'epic':
+        return '⬡';
+      case 'legendary':
+        return '★';
     }
   };
 
@@ -75,7 +237,7 @@ export const NFTGallery: React.FC = () => {
     totalVolume: '210,890 ETH',
     activeCollections: 156,
     itemsListed: 12456,
-    dailySales: 892
+    dailySales: 892,
   };
 
   return (
@@ -163,7 +325,9 @@ export const NFTGallery: React.FC = () => {
                     <td className="py-3">{col.volume}</td>
                     <td className="py-3">{col.items.toLocaleString()}</td>
                     <td className="py-3">{col.floor}</td>
-                    <td className={`py-3 ${col.change.startsWith('+') ? 'text-green-400' : 'text-red-400'}`}>
+                    <td
+                      className={`py-3 ${col.change.startsWith('+') ? 'text-green-400' : 'text-red-400'}`}
+                    >
                       {col.change}
                     </td>
                   </tr>
@@ -209,7 +373,7 @@ export const NFTGallery: React.FC = () => {
             </div>
             <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
+              onChange={e => setSortBy(e.target.value as any)}
               className="px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               <option value="price">Precio</option>
@@ -221,8 +385,11 @@ export const NFTGallery: React.FC = () => {
 
         {/* NFT Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredNFTs.map((nft) => (
-            <div key={nft.id} className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 overflow-hidden hover:border-purple-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10">
+          {filteredNFTs.map(nft => (
+            <div
+              key={nft.id}
+              className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 overflow-hidden hover:border-purple-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10"
+            >
               {nft.image ? (
                 <div className="relative aspect-square bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center">
                   <span className="text-7xl">{nft.image}</span>
@@ -243,7 +410,9 @@ export const NFTGallery: React.FC = () => {
                     <h3 className="font-semibold text-white text-sm">{nft.name}</h3>
                     <p className="text-xs text-slate-400">{nft.collection}</p>
                   </div>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getRarityColor(nft.rarity)}`}>
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium border ${getRarityColor(nft.rarity)}`}
+                  >
                     {getRarityBadge(nft.rarity)} {nft.rarity}
                   </span>
                 </div>

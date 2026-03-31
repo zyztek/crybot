@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-import { Gift, Clock, CheckCircle, AlertTriangle, Sparkles, Trophy, ExternalLink, Filter, Search } from 'lucide-react';
+import {
+  Gift,
+  Clock,
+  CheckCircle,
+  AlertTriangle,
+  Sparkles,
+  Trophy,
+  ExternalLink,
+  Filter,
+  Search,
+} from 'lucide-react';
 
 interface Airdrop {
   id: number;
@@ -29,7 +39,7 @@ const airdrops: Airdrop[] = [
     requirements: 'Min $100 TVL',
     difficulty: 'medium',
     verified: true,
-    logo: '🌐'
+    logo: '🌐',
   },
   {
     id: 2,
@@ -43,7 +53,7 @@ const airdrops: Airdrop[] = [
     requirements: 'Min 5 transactions',
     difficulty: 'easy',
     verified: true,
-    logo: '⚡'
+    logo: '⚡',
   },
   {
     id: 3,
@@ -57,7 +67,7 @@ const airdrops: Airdrop[] = [
     requirements: 'No minimum',
     difficulty: 'easy',
     verified: true,
-    logo: '🔷'
+    logo: '🔷',
   },
   {
     id: 4,
@@ -71,7 +81,7 @@ const airdrops: Airdrop[] = [
     requirements: 'Min $50 spent',
     difficulty: 'hard',
     verified: true,
-    logo: '🔺'
+    logo: '🔺',
   },
   {
     id: 5,
@@ -85,7 +95,7 @@ const airdrops: Airdrop[] = [
     requirements: 'Min 3 txns',
     difficulty: 'easy',
     verified: true,
-    logo: '📜'
+    logo: '📜',
   },
   {
     id: 6,
@@ -99,7 +109,7 @@ const airdrops: Airdrop[] = [
     requirements: 'Min $20 spent',
     difficulty: 'medium',
     verified: true,
-    logo: '🌊'
+    logo: '🌊',
   },
   {
     id: 7,
@@ -113,7 +123,7 @@ const airdrops: Airdrop[] = [
     requirements: 'No minimum',
     difficulty: 'easy',
     verified: true,
-    logo: '🔵'
+    logo: '🔵',
   },
   {
     id: 8,
@@ -127,7 +137,7 @@ const airdrops: Airdrop[] = [
     requirements: 'Testnet participation',
     difficulty: 'medium',
     verified: false,
-    logo: '🐻'
+    logo: '🐻',
   },
   {
     id: 9,
@@ -141,7 +151,7 @@ const airdrops: Airdrop[] = [
     requirements: 'Min 500 METIS staked',
     difficulty: 'medium',
     verified: true,
-    logo: '⚙️'
+    logo: '⚙️',
   },
   {
     id: 10,
@@ -155,37 +165,46 @@ const airdrops: Airdrop[] = [
     requirements: 'Multiple rollups',
     difficulty: 'hard',
     verified: false,
-    logo: '🚀'
-  }
+    logo: '🚀',
+  },
 ];
 
 export const AirdropHunter: React.FC = () => {
   const [filter, setFilter] = useState<'all' | 'active' | 'upcoming' | 'ended'>('all');
-  const [difficultyFilter, setDifficultyFilter] = useState<'all' | 'easy' | 'medium' | 'hard'>('all');
+  const [difficultyFilter, setDifficultyFilter] = useState<'all' | 'easy' | 'medium' | 'hard'>(
+    'all'
+  );
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedAirdrop, setSelectedAirdrop] = useState<Airdrop | null>(null);
 
   const filteredAirdrops = airdrops.filter(airdrop => {
     const matchesStatus = filter === 'all' || airdrop.status === filter;
     const matchesDifficulty = difficultyFilter === 'all' || airdrop.difficulty === difficultyFilter;
-    const matchesSearch = airdrop.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const matchesSearch =
+      airdrop.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       airdrop.project.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesStatus && matchesDifficulty && matchesSearch;
   });
 
   const getStatusColor = (status: Airdrop['status']) => {
     switch (status) {
-      case 'active': return 'bg-green-500/20 text-green-400 border-green-500/30';
-      case 'upcoming': return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
-      case 'ended': return 'bg-gray-500/20 text-gray-400 border-gray-500/30';
+      case 'active':
+        return 'bg-green-500/20 text-green-400 border-green-500/30';
+      case 'upcoming':
+        return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
+      case 'ended':
+        return 'bg-gray-500/20 text-gray-400 border-gray-500/30';
     }
   };
 
   const getDifficultyColor = (difficulty: Airdrop['difficulty']) => {
     switch (difficulty) {
-      case 'easy': return 'bg-emerald-500/20 text-emerald-400';
-      case 'medium': return 'bg-amber-500/20 text-amber-400';
-      case 'hard': return 'bg-red-500/20 text-red-400';
+      case 'easy':
+        return 'bg-emerald-500/20 text-emerald-400';
+      case 'medium':
+        return 'bg-amber-500/20 text-amber-400';
+      case 'hard':
+        return 'bg-red-500/20 text-red-400';
     }
   };
 
@@ -193,7 +212,7 @@ export const AirdropHunter: React.FC = () => {
     active: airdrops.filter(a => a.status === 'active').length,
     upcoming: airdrops.filter(a => a.status === 'upcoming').length,
     ended: airdrops.filter(a => a.status === 'ended').length,
-    verified: airdrops.filter(a => a.verified).length
+    verified: airdrops.filter(a => a.verified).length,
   };
 
   return (
@@ -267,7 +286,7 @@ export const AirdropHunter: React.FC = () => {
                 type="text"
                 placeholder="Buscar airdrop..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={e => setSearchTerm(e.target.value)}
                 className="pl-10 pr-4 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 w-64"
               />
             </div>
@@ -275,7 +294,7 @@ export const AirdropHunter: React.FC = () => {
               <Filter className="w-4 h-4 text-slate-400" />
               <select
                 value={filter}
-                onChange={(e) => setFilter(e.target.value as any)}
+                onChange={e => setFilter(e.target.value as any)}
                 className="px-4 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
               >
                 <option value="all">Todos los estados</option>
@@ -287,7 +306,7 @@ export const AirdropHunter: React.FC = () => {
             <div className="flex items-center gap-2">
               <select
                 value={difficultyFilter}
-                onChange={(e) => setDifficultyFilter(e.target.value as any)}
+                onChange={e => setDifficultyFilter(e.target.value as any)}
                 className="px-4 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
               >
                 <option value="all">Todas las dificultades</option>
@@ -301,7 +320,7 @@ export const AirdropHunter: React.FC = () => {
 
         {/* Airdrop Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredAirdrops.map((airdrop) => (
+          {filteredAirdrops.map(airdrop => (
             <div
               key={airdrop.id}
               className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 overflow-hidden hover:border-purple-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10"
@@ -315,17 +334,27 @@ export const AirdropHunter: React.FC = () => {
                       <p className="text-sm text-slate-400">{airdrop.project}</p>
                     </div>
                   </div>
-                  {airdrop.verified && (
-                    <CheckCircle className="w-5 h-5 text-green-400" />
-                  )}
+                  {airdrop.verified && <CheckCircle className="w-5 h-5 text-green-400" />}
                 </div>
 
                 <div className="flex gap-2 mb-4">
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(airdrop.status)}`}>
-                    {airdrop.status === 'active' ? '🔥 Activo' : airdrop.status === 'upcoming' ? '⏳ Próximo' : '✅ Finalizado'}
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(airdrop.status)}`}
+                  >
+                    {airdrop.status === 'active'
+                      ? '🔥 Activo'
+                      : airdrop.status === 'upcoming'
+                        ? '⏳ Próximo'
+                        : '✅ Finalizado'}
                   </span>
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${getDifficultyColor(airdrop.difficulty)}`}>
-                    {airdrop.difficulty === 'easy' ? '🟢 Fácil' : airdrop.difficulty === 'medium' ? '🟡 Medio' : '🔴 Difícil'}
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-medium ${getDifficultyColor(airdrop.difficulty)}`}
+                  >
+                    {airdrop.difficulty === 'easy'
+                      ? '🟢 Fácil'
+                      : airdrop.difficulty === 'medium'
+                        ? '🟡 Medio'
+                        : '🔴 Difícil'}
                   </span>
                 </div>
 
@@ -358,7 +387,9 @@ export const AirdropHunter: React.FC = () => {
                       </div>
                     ))}
                     {airdrop.tasks.length > 2 && (
-                      <p className="text-xs text-purple-400">+{airdrop.tasks.length - 2} tareas más...</p>
+                      <p className="text-xs text-purple-400">
+                        +{airdrop.tasks.length - 2} tareas más...
+                      </p>
                     )}
                   </div>
                 </div>
@@ -388,8 +419,14 @@ export const AirdropHunter: React.FC = () => {
 
         {/* Airdrop Detail Modal */}
         {selectedAirdrop && (
-          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50" onClick={() => setSelectedAirdrop(null)}>
-            <div className="bg-slate-800 rounded-2xl border border-slate-700 max-w-2xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+            onClick={() => setSelectedAirdrop(null)}
+          >
+            <div
+              className="bg-slate-800 rounded-2xl border border-slate-700 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+              onClick={e => e.stopPropagation()}
+            >
               <div className="p-6">
                 <div className="flex items-start justify-between mb-6">
                   <div className="flex items-center gap-4">
@@ -408,11 +445,23 @@ export const AirdropHunter: React.FC = () => {
                 </div>
 
                 <div className="flex gap-2 mb-6">
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(selectedAirdrop.status)}`}>
-                    {selectedAirdrop.status === 'active' ? '🔥 Activo' : selectedAirdrop.status === 'upcoming' ? '⏳ Próximo' : '✅ Finalizado'}
+                  <span
+                    className={`px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(selectedAirdrop.status)}`}
+                  >
+                    {selectedAirdrop.status === 'active'
+                      ? '🔥 Activo'
+                      : selectedAirdrop.status === 'upcoming'
+                        ? '⏳ Próximo'
+                        : '✅ Finalizado'}
                   </span>
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${getDifficultyColor(selectedAirdrop.difficulty)}`}>
-                    {selectedAirdrop.difficulty === 'easy' ? '🟢 Fácil' : selectedAirdrop.difficulty === 'medium' ? '🟡 Medio' : '🔴 Difícil'}
+                  <span
+                    className={`px-3 py-1 rounded-full text-sm font-medium ${getDifficultyColor(selectedAirdrop.difficulty)}`}
+                  >
+                    {selectedAirdrop.difficulty === 'easy'
+                      ? '🟢 Fácil'
+                      : selectedAirdrop.difficulty === 'medium'
+                        ? '🟡 Medio'
+                        : '🔴 Difícil'}
                   </span>
                   {selectedAirdrop.verified && (
                     <span className="px-3 py-1 rounded-full text-sm font-medium bg-green-500/20 text-green-400">
@@ -436,7 +485,10 @@ export const AirdropHunter: React.FC = () => {
                   <h3 className="text-lg font-semibold text-white mb-3">Tareas requeridas</h3>
                   <div className="space-y-3">
                     {selectedAirdrop.tasks.map((task, idx) => (
-                      <div key={idx} className="flex items-start gap-3 bg-slate-700/30 rounded-lg p-3">
+                      <div
+                        key={idx}
+                        className="flex items-start gap-3 bg-slate-700/30 rounded-lg p-3"
+                      >
                         <div className="w-6 h-6 bg-purple-500/20 rounded-full flex items-center justify-center shrink-0">
                           <span className="text-purple-400 text-sm font-medium">{idx + 1}</span>
                         </div>

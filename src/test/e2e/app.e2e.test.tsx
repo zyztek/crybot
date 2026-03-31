@@ -1,6 +1,6 @@
 /**
  * CryptoFaucet Hub - E2E Tests
- * 
+ *
  * Comprehensive end-to-end tests covering:
  * - Authentication flow (login/register)
  * - Navigation and tab switching
@@ -18,9 +18,7 @@ import App from '../../App';
 describe('CryptoFaucet Hub - E2E Tests', () => {
   describe('Authentication Flow', () => {
     it('should display login screen on initial load', async () => {
-      render(
-        <App />
-      );
+      render(<App />);
 
       await waitFor(() => {
         expect(screen.getByText(/CryptoFaucet Hub/i)).toBeInTheDocument();
@@ -28,9 +26,7 @@ describe('CryptoFaucet Hub - E2E Tests', () => {
     });
 
     it('should show login form by default', async () => {
-      render(
-        <App />
-      );
+      render(<App />);
 
       await waitFor(() => {
         expect(screen.getByPlaceholderText(/tu@email/i)).toBeInTheDocument();
@@ -38,9 +34,7 @@ describe('CryptoFaucet Hub - E2E Tests', () => {
     });
 
     it('should toggle between login and register forms', async () => {
-      render(
-        <App />
-      );
+      render(<App />);
 
       await waitFor(() => {
         const registerButton = screen.getByText(/Registrarse|Iniciar sesión/i);
@@ -53,9 +47,7 @@ describe('CryptoFaucet Hub - E2E Tests', () => {
     });
 
     it('should validate form inputs', async () => {
-      render(
-        <App />
-      );
+      render(<App />);
 
       await waitFor(() => {
         const submitButton = screen.getByRole('button', { name: /Iniciar sesión|Login/i });
@@ -63,14 +55,14 @@ describe('CryptoFaucet Hub - E2E Tests', () => {
       });
 
       await waitFor(() => {
-        expect(screen.getByText(/fill in all required fields|completa todos los campos/i)).toBeInTheDocument();
+        expect(
+          screen.getByText(/fill in all required fields|completa todos los campos/i)
+        ).toBeInTheDocument();
       });
     });
 
     it('should show password strength validation on register', async () => {
-      render(
-        <App />
-      );
+      render(<App />);
 
       await waitFor(() => {
         const registerButton = screen.getByText(/Registrarse|Iniciar sesión/i);
@@ -91,10 +83,8 @@ describe('CryptoFaucet Hub - E2E Tests', () => {
   describe('Navigation', () => {
     it('should render navigation elements', async () => {
       // Basic navigation test - App renders navigation via state
-      const { container } = render(
-        <App />
-      );
-      
+      const { container } = render(<App />);
+
       // The app should render without errors
       expect(container).toBeInTheDocument();
     });
@@ -102,60 +92,48 @@ describe('CryptoFaucet Hub - E2E Tests', () => {
 
   describe('Dashboard', () => {
     it('should render without errors', async () => {
-      const { container } = render(
-        <App />
-      );
-      
+      const { container } = render(<App />);
+
       expect(container).toBeInTheDocument();
     });
   });
 
   describe('Faucet System', () => {
     it('should render faucet section', async () => {
-      const { container } = render(
-        <App />
-      );
-      
+      const { container } = render(<App />);
+
       expect(container).toBeInTheDocument();
     });
   });
 
   describe('Wallet Management', () => {
     it('should render wallet section', async () => {
-      const { container } = render(
-        <App />
-      );
-      
+      const { container } = render(<App />);
+
       expect(container).toBeInTheDocument();
     });
   });
 
   describe('Achievements', () => {
     it('should render achievements section', async () => {
-      const { container } = render(
-        <App />
-      );
-      
+      const { container } = render(<App />);
+
       expect(container).toBeInTheDocument();
     });
   });
 
   describe('Leaderboard', () => {
     it('should render leaderboard section', async () => {
-      const { container } = render(
-        <App />
-      );
-      
+      const { container } = render(<App />);
+
       expect(container).toBeInTheDocument();
     });
   });
 
   describe('Settings', () => {
     it('should render settings section', async () => {
-      const { container } = render(
-        <App />
-      );
-      
+      const { container } = render(<App />);
+
       expect(container).toBeInTheDocument();
     });
   });
@@ -165,11 +143,9 @@ describe('CryptoFaucet Hub - E2E Tests', () => {
       // Test with mobile dimensions
       Object.defineProperty(window, 'innerWidth', { value: 375 });
       Object.defineProperty(window, 'innerHeight', { value: 667 });
-      
-      render(
-        <App />
-      );
-      
+
+      render(<App />);
+
       // Should render without errors
       expect(screen.getByText(/CryptoFaucet Hub/i)).toBeInTheDocument();
     });
@@ -177,31 +153,25 @@ describe('CryptoFaucet Hub - E2E Tests', () => {
     it('should render on tablet viewport', () => {
       Object.defineProperty(window, 'innerWidth', { value: 768 });
       Object.defineProperty(window, 'innerHeight', { value: 1024 });
-      
-      render(
-        <App />
-      );
-      
+
+      render(<App />);
+
       expect(screen.getByText(/CryptoFaucet Hub/i)).toBeInTheDocument();
     });
 
     it('should render on desktop viewport', () => {
       Object.defineProperty(window, 'innerWidth', { value: 1920 });
       Object.defineProperty(window, 'innerHeight', { value: 1080 });
-      
-      render(
-        <App />
-      );
-      
+
+      render(<App />);
+
       expect(screen.getByText(/CryptoFaucet Hub/i)).toBeInTheDocument();
     });
   });
 
   describe('Accessibility', () => {
     it('should have proper form labels', async () => {
-      render(
-        <App />
-      );
+      render(<App />);
 
       await waitFor(() => {
         const emailInput = screen.getByLabelText(/Email/i);
@@ -210,9 +180,7 @@ describe('CryptoFaucet Hub - E2E Tests', () => {
     });
 
     it('should have accessible buttons', async () => {
-      render(
-        <App />
-      );
+      render(<App />);
 
       await waitFor(() => {
         const buttons = screen.getAllByRole('button');
@@ -221,9 +189,7 @@ describe('CryptoFaucet Hub - E2E Tests', () => {
     });
 
     it('should handle keyboard navigation', async () => {
-      render(
-        <App />
-      );
+      render(<App />);
 
       await waitFor(() => {
         // Tab should move focus to interactive elements
@@ -243,9 +209,7 @@ describe('CryptoFaucet Hub - E2E Tests', () => {
         }),
       }));
 
-      render(
-        <App />
-      );
+      render(<App />);
 
       // Test would need proper mocking
     });
@@ -255,9 +219,7 @@ describe('CryptoFaucet Hub - E2E Tests', () => {
     });
 
     it('should show loading states', async () => {
-      render(
-        <App />
-      );
+      render(<App />);
 
       // Initial render should show loading
       expect(screen.getByText(/CryptoFaucet Hub/i)).toBeInTheDocument();
@@ -267,10 +229,8 @@ describe('CryptoFaucet Hub - E2E Tests', () => {
   describe('Performance', () => {
     it('should render within acceptable time', async () => {
       const startTime = performance.now();
-      
-      render(
-        <App />
-      );
+
+      render(<App />);
 
       await waitFor(() => {
         expect(screen.getByText(/CryptoFaucet Hub/i)).toBeInTheDocument();
@@ -278,15 +238,13 @@ describe('CryptoFaucet Hub - E2E Tests', () => {
 
       const endTime = performance.now();
       const renderTime = endTime - startTime;
-      
+
       // Should render in less than 2 seconds
       expect(renderTime).toBeLessThan(2000);
     });
 
     it('should not have memory leaks on re-renders', () => {
-      const { unmount } = render(
-        <App />
-      );
+      const { unmount } = render(<App />);
 
       // Unmount should not leave listeners or timers
       expect(() => unmount()).not.toThrow();

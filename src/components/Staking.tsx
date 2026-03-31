@@ -12,7 +12,7 @@ const stakingPlans = [
     apy: 5,
     compounding: false,
     earlyWithdrawal: true,
-    color: 'from-green-500 to-emerald-600'
+    color: 'from-green-500 to-emerald-600',
   },
   {
     id: 2,
@@ -25,7 +25,7 @@ const stakingPlans = [
     compounding: true,
     earlyWithdrawal: true,
     penalty: 2,
-    color: 'from-blue-500 to-cyan-600'
+    color: 'from-blue-500 to-cyan-600',
   },
   {
     id: 3,
@@ -38,7 +38,7 @@ const stakingPlans = [
     compounding: true,
     earlyWithdrawal: true,
     penalty: 5,
-    color: 'from-purple-500 to-pink-600'
+    color: 'from-purple-500 to-pink-600',
   },
   {
     id: 4,
@@ -50,8 +50,8 @@ const stakingPlans = [
     apy: 45,
     compounding: true,
     earlyWithdrawal: false,
-    color: 'from-orange-500 to-red-600'
-  }
+    color: 'from-orange-500 to-red-600',
+  },
 ];
 
 const myStakes = [
@@ -62,7 +62,7 @@ const myStakes = [
     startTime: '2024-01-15',
     endTime: '2024-01-29',
     earned: 0.00015,
-    status: 'active'
+    status: 'active',
   },
   {
     id: 2,
@@ -71,8 +71,8 @@ const myStakes = [
     startTime: '2024-01-10',
     endTime: '2024-01-17',
     earned: 0.00002,
-    status: 'completed'
-  }
+    status: 'completed',
+  },
 ];
 
 export default function Staking({ language }: { language: 'zh' | 'en' }) {
@@ -124,7 +124,7 @@ export default function Staking({ language }: { language: 'zh' | 'en' }) {
       maxAmount: 'Max Amount',
       statusActive: 'Active',
       statusCompleted: 'Completed',
-    }
+    },
   };
 
   const t = texts[language];
@@ -168,8 +168,11 @@ export default function Staking({ language }: { language: 'zh' | 'en' }) {
             {t.myStakes}
           </h2>
           <div className="grid md:grid-cols-2 gap-4">
-            {myStakes.map((stake) => (
-              <div key={stake.id} className="p-5 bg-slate-800/50 rounded-2xl border border-slate-700">
+            {myStakes.map(stake => (
+              <div
+                key={stake.id}
+                className="p-5 bg-slate-800/50 rounded-2xl border border-slate-700"
+              >
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <h3 className="text-lg font-bold text-white">{stake.planName}</h3>
@@ -177,11 +180,13 @@ export default function Staking({ language }: { language: 'zh' | 'en' }) {
                       {stake.startTime} → {stake.endTime}
                     </p>
                   </div>
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    stake.status === 'active' 
-                      ? 'bg-green-500/20 text-green-400' 
-                      : 'bg-blue-500/20 text-blue-400'
-                  }`}>
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-medium ${
+                      stake.status === 'active'
+                        ? 'bg-green-500/20 text-green-400'
+                        : 'bg-blue-500/20 text-blue-400'
+                    }`}
+                  >
                     {stake.status === 'active' ? t.statusActive : t.statusCompleted}
                   </span>
                 </div>
@@ -207,12 +212,17 @@ export default function Staking({ language }: { language: 'zh' | 'en' }) {
           {t.plans}
         </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {stakingPlans.map((plan) => (
-            <div key={plan.id} className="group p-5 bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-2xl border border-slate-700 hover:border-slate-500/50 transition-all duration-300">
-              <div className={`w-14 h-14 bg-gradient-to-br ${plan.color} rounded-2xl flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform`}>
+          {stakingPlans.map(plan => (
+            <div
+              key={plan.id}
+              className="group p-5 bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-2xl border border-slate-700 hover:border-slate-500/50 transition-all duration-300"
+            >
+              <div
+                className={`w-14 h-14 bg-gradient-to-br ${plan.color} rounded-2xl flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform`}
+              >
                 {plan.icon}
               </div>
-              
+
               <h3 className="text-xl font-bold text-white mb-1">{plan.name}</h3>
               <div className="flex items-center gap-2 mb-4">
                 <TrendingUp className="w-4 h-4 text-green-400" />
@@ -229,7 +239,9 @@ export default function Staking({ language }: { language: 'zh' | 'en' }) {
                 <div className="flex items-center gap-2 text-sm">
                   <Zap className="w-4 h-4 text-purple-400" />
                   <span className="text-gray-400">{t.compounding}:</span>
-                  <span className={`font-medium ${plan.compounding ? 'text-green-400' : 'text-gray-400'}`}>
+                  <span
+                    className={`font-medium ${plan.compounding ? 'text-green-400' : 'text-gray-400'}`}
+                  >
                     {plan.compounding ? '✓ Yes' : '✗ No'}
                   </span>
                 </div>
@@ -240,11 +252,14 @@ export default function Staking({ language }: { language: 'zh' | 'en' }) {
                     <Lock className="w-4 h-4 text-red-400" />
                   )}
                   <span className="text-gray-400">{t.earlyWithdrawal}:</span>
-                  <span className={`font-medium ${plan.earlyWithdrawal ? 'text-green-400' : 'text-red-400'}`}>
-                    {plan.earlyWithdrawal 
-                      ? (plan.penalty ? `${t.penalty} ${plan.penalty}%` : t.noPenalty)
-                      : '✗ Not Available'
-                    }
+                  <span
+                    className={`font-medium ${plan.earlyWithdrawal ? 'text-green-400' : 'text-red-400'}`}
+                  >
+                    {plan.earlyWithdrawal
+                      ? plan.penalty
+                        ? `${t.penalty} ${plan.penalty}%`
+                        : t.noPenalty
+                      : '✗ Not Available'}
                   </span>
                 </div>
               </div>
@@ -276,14 +291,16 @@ export default function Staking({ language }: { language: 'zh' | 'en' }) {
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-slate-800 rounded-2xl p-6 w-full max-w-md mx-4 border border-slate-600">
             <h3 className="text-xl font-bold text-white mb-4">{t.modalTitle}</h3>
-            
+
             {(() => {
               const plan = stakingPlans.find(p => p.id === selectedPlan)!;
               return (
                 <div className="space-y-4">
                   <div className="p-4 bg-slate-700/50 rounded-xl">
                     <div className="flex items-center gap-3 mb-3">
-                      <div className={`w-10 h-10 bg-gradient-to-br ${plan.color} rounded-xl flex items-center justify-center text-lg`}>
+                      <div
+                        className={`w-10 h-10 bg-gradient-to-br ${plan.color} rounded-xl flex items-center justify-center text-lg`}
+                      >
                         {plan.icon}
                       </div>
                       <div>
@@ -292,17 +309,27 @@ export default function Staking({ language }: { language: 'zh' | 'en' }) {
                       </div>
                     </div>
                     <div className="text-sm text-gray-400 space-y-1">
-                      <p>{language === 'zh' ? `预计收益: 0.000036 BTC (${plan.apy}% APY)` : `Est. Earnings: 0.000036 BTC (${plan.apy}% APY)`}</p>
-                      <p>{language === 'zh' ? `锁仓时间: ${plan.duration} 天` : `Lock Period: ${plan.duration} days`}</p>
+                      <p>
+                        {language === 'zh'
+                          ? `预计收益: 0.000036 BTC (${plan.apy}% APY)`
+                          : `Est. Earnings: 0.000036 BTC (${plan.apy}% APY)`}
+                      </p>
+                      <p>
+                        {language === 'zh'
+                          ? `锁仓时间: ${plan.duration} 天`
+                          : `Lock Period: ${plan.duration} days`}
+                      </p>
                     </div>
                   </div>
 
                   <div>
-                    <label className="text-gray-400 text-sm mb-2 block">{t.amountPlaceholder}</label>
+                    <label className="text-gray-400 text-sm mb-2 block">
+                      {t.amountPlaceholder}
+                    </label>
                     <input
                       type="number"
                       value={stakeAmount}
-                      onChange={(e) => setStakeAmount(e.target.value)}
+                      onChange={e => setStakeAmount(e.target.value)}
                       min={plan.minAmount}
                       max={plan.maxAmount}
                       step="0.0001"
@@ -314,20 +341,27 @@ export default function Staking({ language }: { language: 'zh' | 'en' }) {
                   {stakeAmount && (
                     <div className="p-4 bg-green-500/10 rounded-xl border border-green-500/20">
                       <p className="text-green-400 font-medium">
-                        {language === 'zh' ? '预计收益' : t.earn}: 0.000{calculateEarnings(parseFloat(stakeAmount), plan.apy, plan.duration)} BTC
+                        {language === 'zh' ? '预计收益' : t.earn}: 0.000
+                        {calculateEarnings(parseFloat(stakeAmount), plan.apy, plan.duration)} BTC
                       </p>
                     </div>
                   )}
 
                   <div className="flex gap-3">
                     <button
-                      onClick={() => { setShowModal(false); setStakeAmount(''); }}
+                      onClick={() => {
+                        setShowModal(false);
+                        setStakeAmount('');
+                      }}
                       className="flex-1 py-3 bg-slate-700 hover:bg-slate-600 text-white font-semibold rounded-xl transition-colors"
                     >
                       {t.cancelButton}
                     </button>
                     <button
-                      onClick={() => { setShowModal(false); setStakeAmount(''); }}
+                      onClick={() => {
+                        setShowModal(false);
+                        setStakeAmount('');
+                      }}
                       className="flex-1 py-3 bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-white font-semibold rounded-xl transition-all"
                       disabled={!stakeAmount || parseFloat(stakeAmount) < plan.minAmount}
                     >

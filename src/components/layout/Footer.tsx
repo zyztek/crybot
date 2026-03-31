@@ -1,4 +1,4 @@
-import { Coins } from 'lucide-react'
+import { Coins } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -11,12 +11,18 @@ export default function Footer() {
           </div>
           <p className="text-purple-300 text-xs">© 2026 CryptoFaucet Hub. All rights reserved.</p>
           <div className="flex gap-4 text-sm">
-            <a href="#" className="text-purple-300 hover:text-white transition-colors">Terms</a>
-            <a href="#" className="text-purple-300 hover:text-white transition-colors">Privacy</a>
-            <a href="#" className="text-purple-300 hover:text-white transition-colors">Contact</a>
+            <a href="#" className="text-purple-300 hover:text-white transition-colors">
+              Terms
+            </a>
+            <a href="#" className="text-purple-300 hover:text-white transition-colors">
+              Privacy
+            </a>
+            <a href="#" className="text-purple-300 hover:text-white transition-colors">
+              Contact
+            </a>
           </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }

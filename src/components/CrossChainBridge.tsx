@@ -1,5 +1,14 @@
 import { useState } from 'react';
-import { ArrowRight, Zap, ShieldCheck, Wallet, CheckCircle, RefreshCw, Clock, AlertTriangle } from 'lucide-react';
+import {
+  ArrowRight,
+  Zap,
+  ShieldCheck,
+  Wallet,
+  CheckCircle,
+  RefreshCw,
+  Clock,
+  AlertTriangle,
+} from 'lucide-react';
 
 interface BridgeRoute {
   fromChain: string;
@@ -34,25 +43,100 @@ const CHAINS = [
 ];
 
 const TOKENS = [
-  { symbol: 'USDC', name: 'USD Coin', icon: '🪙', balance: 1500.50 },
+  { symbol: 'USDC', name: 'USD Coin', icon: '🪙', balance: 1500.5 },
   { symbol: 'USDT', name: 'Tether', icon: '💲', balance: 2300.75 },
   { symbol: 'ETH', name: 'Ethereum', icon: '💎', balance: 2.5 },
   { symbol: 'USDB', name: 'Bridge USD', icon: '💵', balance: 890.25 },
 ];
 
 const BRIDGE_ROUTES: BridgeRoute[] = [
-  { fromChain: 'Ethereum', toChain: 'Arbitrum', symbol: 'USDC', fee: '$0.50', estimatedTime: '10-15 min', liquidity: '$250M', available: true },
-  { fromChain: 'Ethereum', toChain: 'Optimism', symbol: 'USDC', fee: '$0.45', estimatedTime: '8-12 min', liquidity: '$180M', available: true },
-  { fromChain: 'BNB Chain', toChain: 'Ethereum', symbol: 'USDT', fee: '$0.30', estimatedTime: '15-20 min', liquidity: '$120M', available: true },
-  { fromChain: 'Polygon', toChain: 'Ethereum', symbol: 'USDC', fee: '$0.15', estimatedTime: '5-10 min', liquidity: '$95M', available: true },
-  { fromChain: 'Arbitrum', toChain: 'Optimism', symbol: 'USDC', fee: '$0.20', estimatedTime: '3-5 min', liquidity: '$45M', available: true },
-  { fromChain: 'Ethereum', toChain: 'Base', symbol: 'USDC', fee: '$0.35', estimatedTime: '8-12 min', liquidity: '$85M', available: true },
+  {
+    fromChain: 'Ethereum',
+    toChain: 'Arbitrum',
+    symbol: 'USDC',
+    fee: '$0.50',
+    estimatedTime: '10-15 min',
+    liquidity: '$250M',
+    available: true,
+  },
+  {
+    fromChain: 'Ethereum',
+    toChain: 'Optimism',
+    symbol: 'USDC',
+    fee: '$0.45',
+    estimatedTime: '8-12 min',
+    liquidity: '$180M',
+    available: true,
+  },
+  {
+    fromChain: 'BNB Chain',
+    toChain: 'Ethereum',
+    symbol: 'USDT',
+    fee: '$0.30',
+    estimatedTime: '15-20 min',
+    liquidity: '$120M',
+    available: true,
+  },
+  {
+    fromChain: 'Polygon',
+    toChain: 'Ethereum',
+    symbol: 'USDC',
+    fee: '$0.15',
+    estimatedTime: '5-10 min',
+    liquidity: '$95M',
+    available: true,
+  },
+  {
+    fromChain: 'Arbitrum',
+    toChain: 'Optimism',
+    symbol: 'USDC',
+    fee: '$0.20',
+    estimatedTime: '3-5 min',
+    liquidity: '$45M',
+    available: true,
+  },
+  {
+    fromChain: 'Ethereum',
+    toChain: 'Base',
+    symbol: 'USDC',
+    fee: '$0.35',
+    estimatedTime: '8-12 min',
+    liquidity: '$85M',
+    available: true,
+  },
 ];
 
 const SWAP_HISTORY: SwapHistory[] = [
-  { id: '1', fromChain: 'Ethereum', toChain: 'Arbitrum', amount: '500', symbol: 'USDC', status: 'completed', txHash: '0x8f7...a3c2', timestamp: Date.now() - 3600000 },
-  { id: '2', fromChain: 'BNB Chain', toChain: 'Ethereum', amount: '1000', symbol: 'USDT', status: 'completed', txHash: '0x3d2...b7e1', timestamp: Date.now() - 86400000 },
-  { id: '3', fromChain: 'Polygon', toChain: 'Ethereum', amount: '250', symbol: 'USDC', status: 'pending', txHash: '0x9c1...f4d5', timestamp: Date.now() - 1800000 },
+  {
+    id: '1',
+    fromChain: 'Ethereum',
+    toChain: 'Arbitrum',
+    amount: '500',
+    symbol: 'USDC',
+    status: 'completed',
+    txHash: '0x8f7...a3c2',
+    timestamp: Date.now() - 3600000,
+  },
+  {
+    id: '2',
+    fromChain: 'BNB Chain',
+    toChain: 'Ethereum',
+    amount: '1000',
+    symbol: 'USDT',
+    status: 'completed',
+    txHash: '0x3d2...b7e1',
+    timestamp: Date.now() - 86400000,
+  },
+  {
+    id: '3',
+    fromChain: 'Polygon',
+    toChain: 'Ethereum',
+    amount: '250',
+    symbol: 'USDC',
+    status: 'pending',
+    txHash: '0x9c1...f4d5',
+    timestamp: Date.now() - 1800000,
+  },
 ];
 
 export default function CrossChainBridge() {
@@ -124,7 +208,10 @@ export default function CrossChainBridge() {
 
   const findRoute = () => {
     return BRIDGE_ROUTES.find(
-      r => r.fromChain === selectedFromChain?.name && r.toChain === selectedToChain?.name && r.symbol === selectedToken
+      r =>
+        r.fromChain === selectedFromChain?.name &&
+        r.toChain === selectedToChain?.name &&
+        r.symbol === selectedToken
     );
   };
 
@@ -178,7 +265,7 @@ export default function CrossChainBridge() {
                 <label className="block text-gray-400 mb-3 font-medium">{t.from}</label>
                 <select
                   value={fromChain}
-                  onChange={(e) => setFromChain(e.target.value)}
+                  onChange={e => setFromChain(e.target.value)}
                   className="w-full bg-slate-700/50 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-purple-500 transition"
                 >
                   {CHAINS.map(chain => (
@@ -204,7 +291,7 @@ export default function CrossChainBridge() {
                 <label className="block text-gray-400 mb-3 font-medium">{t.to}</label>
                 <select
                   value={toChain}
-                  onChange={(e) => setToChain(e.target.value)}
+                  onChange={e => setToChain(e.target.value)}
                   className="w-full bg-slate-700/50 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-purple-500 transition"
                 >
                   {CHAINS.filter(c => c.id !== fromChain).map(chain => (
@@ -233,7 +320,9 @@ export default function CrossChainBridge() {
                         <span className="text-2xl">{token.icon}</span>
                         <div className="text-right">
                           <span className="text-white font-bold block">{token.symbol}</span>
-                          <span className="text-gray-400 text-sm">{t.balance}: {token.balance}</span>
+                          <span className="text-gray-400 text-sm">
+                            {t.balance}: {token.balance}
+                          </span>
                         </div>
                       </div>
                     </button>
@@ -248,7 +337,7 @@ export default function CrossChainBridge() {
                   <input
                     type="number"
                     value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
+                    onChange={e => setAmount(e.target.value)}
                     placeholder="0.00"
                     className="w-full bg-slate-700/50 border border-white/10 rounded-xl p-4 pr-16 text-white text-2xl focus:outline-none focus:border-purple-500 transition"
                   />
@@ -264,15 +353,21 @@ export default function CrossChainBridge() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <Zap className="w-5 h-5 text-purple-400" />
-                      <span className="text-gray-300">{t.estimatedTime}: {route.estimatedTime}</span>
+                      <span className="text-gray-300">
+                        {t.estimatedTime}: {route.estimatedTime}
+                      </span>
                     </div>
                     <div className="flex items-center gap-3">
                       <ShieldCheck className="w-5 h-5 text-blue-400" />
-                      <span className="text-gray-300">{t.bridgeFee}: {route.fee}</span>
+                      <span className="text-gray-300">
+                        {t.bridgeFee}: {route.fee}
+                      </span>
                     </div>
                     <div className="flex items-center gap-3">
                       <Wallet className="w-5 h-5 text-green-400" />
-                      <span className="text-gray-300">{t.liquidity}: {route.liquidity}</span>
+                      <span className="text-gray-300">
+                        {t.liquidity}: {route.liquidity}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -292,7 +387,11 @@ export default function CrossChainBridge() {
                 disabled={!amount || isBridging}
                 className="w-full py-4 bg-gradient-to-r from-purple-500 to-blue-500 text-white font-bold rounded-xl hover:scale-[1.02] transition transform disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                {isBridging ? <RefreshCw className="w-5 h-5 animate-spin" /> : <ArrowRight className="w-5 h-5" />}
+                {isBridging ? (
+                  <RefreshCw className="w-5 h-5 animate-spin" />
+                ) : (
+                  <ArrowRight className="w-5 h-5" />
+                )}
                 {isBridging ? 'Bridging...' : t.bridge}
               </button>
             </div>
@@ -308,16 +407,22 @@ export default function CrossChainBridge() {
                   <div
                     key={idx}
                     className={`flex items-center justify-between p-4 rounded-xl border ${
-                      r.available ? 'border-green-500/30 bg-green-500/10' : 'border-gray-500/30 bg-gray-500/10'
+                      r.available
+                        ? 'border-green-500/30 bg-green-500/10'
+                        : 'border-gray-500/30 bg-gray-500/10'
                     }`}
                   >
                     <div className="flex items-center gap-4">
-                      <CheckCircle className={`w-5 h-5 ${r.available ? 'text-green-400' : 'text-gray-400'}`} />
+                      <CheckCircle
+                        className={`w-5 h-5 ${r.available ? 'text-green-400' : 'text-gray-400'}`}
+                      />
                       <div>
                         <p className="text-white font-medium">
                           {r.fromChain} → {r.toChain}
                         </p>
-                        <p className="text-gray-400 text-sm">{r.symbol} • {r.liquidity}</p>
+                        <p className="text-gray-400 text-sm">
+                          {r.symbol} • {r.liquidity}
+                        </p>
                       </div>
                     </div>
                     <div className="text-right">
@@ -358,15 +463,21 @@ export default function CrossChainBridge() {
                 {t.recentTransactions}
               </h3>
               <div className="space-y-3 max-h-80 overflow-y-auto">
-                {SWAP_HISTORY.map((tx) => (
+                {SWAP_HISTORY.map(tx => (
                   <div key={tx.id} className="p-3 bg-white/5 rounded-lg">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-white font-medium">{tx.amount} {tx.symbol}</span>
-                      <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                        tx.status === 'completed' ? 'bg-green-500/20 text-green-400' :
-                        tx.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
-                        'bg-red-500/20 text-red-400'
-                      }`}>
+                      <span className="text-white font-medium">
+                        {tx.amount} {tx.symbol}
+                      </span>
+                      <span
+                        className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                          tx.status === 'completed'
+                            ? 'bg-green-500/20 text-green-400'
+                            : tx.status === 'pending'
+                              ? 'bg-yellow-500/20 text-yellow-400'
+                              : 'bg-red-500/20 text-red-400'
+                        }`}
+                      >
                         {t[tx.status]}
                       </span>
                     </div>

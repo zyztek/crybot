@@ -1,37 +1,46 @@
-import { useState, useEffect } from 'react'
-import { Coins, Bell, Flame, Star, Users, Sun, Moon, Search, X } from 'lucide-react'
-import type { User } from '@/types'
+import { useState, useEffect } from 'react';
+import { Coins, Bell, Flame, Star, Users, Sun, Moon, Search, X } from 'lucide-react';
+import type { User } from '@/types';
 
 interface HeaderProps {
-  user: User
-  language: 'es' | 'en'
-  theme: 'dark' | 'light'
-  notifications: number
-  onToggleLanguage: () => void
-  onToggleTheme: () => void
-  searchTerm?: string
-  onSearch?: (term: string) => void
+  user: User;
+  language: 'es' | 'en';
+  theme: 'dark' | 'light';
+  notifications: number;
+  onToggleLanguage: () => void;
+  onToggleTheme: () => void;
+  searchTerm?: string;
+  onSearch?: (term: string) => void;
 }
 
-export default function Header({ user, language, theme, notifications, onToggleLanguage, onToggleTheme, searchTerm = '', onSearch }: HeaderProps) {
-  const [localSearch, setLocalSearch] = useState(searchTerm)
-  const [isSearchFocused, setIsSearchFocused] = useState(false)
+export default function Header({
+  user,
+  language,
+  theme,
+  notifications,
+  onToggleLanguage,
+  onToggleTheme,
+  searchTerm = '',
+  onSearch,
+}: HeaderProps) {
+  const [localSearch, setLocalSearch] = useState(searchTerm);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
 
   // Sync local search with parent searchTerm prop
   useEffect(() => {
-    setLocalSearch(searchTerm)
-  }, [searchTerm])
+    setLocalSearch(searchTerm);
+  }, [searchTerm]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setLocalSearch(value)
-    onSearch?.(value)
-  }
+    const value = e.target.value;
+    setLocalSearch(value);
+    onSearch?.(value);
+  };
 
   const clearSearch = () => {
-    setLocalSearch('')
-    onSearch?.('')
-  }
+    setLocalSearch('');
+    onSearch?.('');
+  };
 
   return (
     <header className="border-b border-purple-500/20 backdrop-blur-sm bg-slate-900/50 sticky top-0 z-50">
@@ -48,9 +57,11 @@ export default function Header({ user, language, theme, notifications, onToggleL
           </div>
 
           <div className="hidden md:flex items-center flex-1 max-w-md mx-8 relative">
-            <Search className={`absolute left-3 w-4 h-4 transition-colors ${isSearchFocused ? 'text-purple-400' : 'text-purple-500'}`} />
-            <input 
-              type="text" 
+            <Search
+              className={`absolute left-3 w-4 h-4 transition-colors ${isSearchFocused ? 'text-purple-400' : 'text-purple-500'}`}
+            />
+            <input
+              type="text"
               value={localSearch}
               onChange={handleSearchChange}
               onFocus={() => setIsSearchFocused(true)}
@@ -71,7 +82,10 @@ export default function Header({ user, language, theme, notifications, onToggleL
           </div>
 
           <div className="flex items-center gap-3">
-            <button className="relative p-2 text-purple-300 hover:text-white transition-colors" aria-label={language === 'es' ? 'Notificaciones' : 'Notifications'}>
+            <button
+              className="relative p-2 text-purple-300 hover:text-white transition-colors"
+              aria-label={language === 'es' ? 'Notificaciones' : 'Notifications'}
+            >
               <Bell className="w-5 h-5" aria-hidden="true" />
               {notifications > 0 && (
                 <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">
@@ -108,17 +122,26 @@ export default function Header({ user, language, theme, notifications, onToggleL
           </div>
         </div>
 
-        <div className="flex items-center gap-4 py-3 border-t border-purple-500/10" role="navigation" aria-label="User stats">
+        <div
+          className="flex items-center gap-4 py-3 border-t border-purple-500/10"
+          role="navigation"
+          aria-label="User stats"
+        >
           <div className="flex items-center gap-2">
             <Flame className="w-4 h-4 text-orange-400" />
             <span className="text-purple-300 text-sm">Racha: 5 días</span>
           </div>
           <div className="flex items-center gap-2">
             <Star className="w-4 h-4 text-yellow-400" />
-            <span className="text-purple-300 text-sm">{user.xp}/{user.maxXp} XP</span>
+            <span className="text-purple-300 text-sm">
+              {user.xp}/{user.maxXp} XP
+            </span>
           </div>
           <div className="flex-1 bg-slate-800 rounded-full h-2 max-w-xs">
-            <div className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all" style={{ width: `${(user.xp / user.maxXp) * 100}%` }} />
+            <div
+              className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all"
+              style={{ width: `${(user.xp / user.maxXp) * 100}%` }}
+            />
           </div>
           <div className="flex items-center gap-2">
             <Users className="w-4 h-4 text-green-400" />
@@ -127,5 +150,5 @@ export default function Header({ user, language, theme, notifications, onToggleL
         </div>
       </div>
     </header>
-  )
+  );
 }

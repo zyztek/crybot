@@ -1,7 +1,15 @@
-import { create } from 'zustand'
-import { persist, createJSONStorage } from 'zustand/middleware'
-import type { TabType, User, WalletBalance, Faucet, ClaimHistory, Achievement, LeaderboardEntry } from '@/types'
-import { texts } from '@/i18n/translations'
+import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import type {
+  TabType,
+  User,
+  WalletBalance,
+  Faucet,
+  ClaimHistory,
+  Achievement,
+  LeaderboardEntry,
+} from '@/types';
+import { texts } from '@/i18n/translations';
 
 // Import store slices
 import {
@@ -11,59 +19,62 @@ import {
   createWalletStore,
   createFaucetStore,
   createAchievementsStore,
-} from './slices'
+} from './slices';
 
 // Re-export initial data for testing
-export { INITIAL_USER } from './slices/userStore'
-export { INITIAL_WALLET_BALANCE } from './slices/walletStore'
-export { INITIAL_FAUCETS, INITIAL_HISTORY } from './slices/faucetStore'
-export { INITIAL_ACHIEVEMENTS } from './slices/achievementsStore'
-export { LEADERBOARD } from './slices/achievementsStore'
+export { INITIAL_USER } from './slices/userStore';
+export { INITIAL_WALLET_BALANCE } from './slices/walletStore';
+export { INITIAL_FAUCETS, INITIAL_HISTORY } from './slices/faucetStore';
+export { INITIAL_ACHIEVEMENTS } from './slices/achievementsStore';
+export { LEADERBOARD } from './slices/achievementsStore';
 
 // Combined store type
 interface CryptoStore {
   // Auth state
-  isLoggedIn: boolean
-  login: () => void
-  logout: () => void
-  
+  isLoggedIn: boolean;
+  login: () => void;
+  logout: () => void;
+
   // UI state
-  activeTab: TabType
-  language: 'es' | 'en'
-  theme: 'dark' | 'light'
-  notifications: number
-  showWalletAddress: boolean
-  setActiveTab: (tab: TabType) => void
-  toggleLanguage: () => void
-  toggleTheme: () => void
-  toggleWalletAddress: () => void
-  
+  activeTab: TabType;
+  language: 'es' | 'en';
+  theme: 'dark' | 'light';
+  notifications: number;
+  showWalletAddress: boolean;
+  setActiveTab: (tab: TabType) => void;
+  toggleLanguage: () => void;
+  toggleTheme: () => void;
+  toggleWalletAddress: () => void;
+
   // User state
-  user: User
-  copyReferralCode: () => void
-  
+  user: User;
+  copyReferralCode: () => void;
+
   // Wallet state
-  walletBalance: WalletBalance
-  updateBalance: (coin: keyof WalletBalance, amount: number) => void
-  
+  walletBalance: WalletBalance;
+  updateBalance: (coin: keyof WalletBalance, amount: number) => void;
+
   // Faucet state
-  faucets: Faucet[]
-  history: ClaimHistory[]
-  withdrawalHistory: ClaimHistory[]
+  faucets: Faucet[];
+  history: ClaimHistory[];
+  withdrawalHistory: ClaimHistory[];
   claimFaucet: (
     faucet: Faucet,
     onCountdownEnd?: () => void,
     actions?: {
-      updateBalance?: (coin: 'btc' | 'eth' | 'doge' | 'sol' | 'ltc' | 'bnb', amount: number) => void
-      updateAchievementProgress?: (id: number, progress: number) => void
+      updateBalance?: (
+        coin: 'btc' | 'eth' | 'doge' | 'sol' | 'ltc' | 'bnb',
+        amount: number
+      ) => void;
+      updateAchievementProgress?: (id: number, progress: number) => void;
     }
-  ) => void
-  
+  ) => void;
+
   // Achievements state
-  achievements: Achievement[]
-  leaderboard: LeaderboardEntry[]
-  updateAchievementProgress: (id: number, progress: number) => void
-  unlockAchievement: (id: number) => void
+  achievements: Achievement[];
+  leaderboard: LeaderboardEntry[];
+  updateAchievementProgress: (id: number, progress: number) => void;
+  unlockAchievement: (id: number) => void;
 }
 
 // Create storage interface that handles missing localStorage gracefully
@@ -73,56 +84,56 @@ const createStorage = () => {
       getItem: (_name: string) => null,
       setItem: (_name: string, _value: string) => {},
       removeItem: (_name: string) => {},
-    }
+    };
   }
 
   try {
-    const testKey = '__storage_test__'
-    localStorage.setItem(testKey, testKey)
-    localStorage.removeItem(testKey)
+    const testKey = '__storage_test__';
+    localStorage.setItem(testKey, testKey);
+    localStorage.removeItem(testKey);
 
     return {
       getItem: (name: string) => {
         try {
-          return localStorage.getItem(name)
+          return localStorage.getItem(name);
         } catch {
-          return null
+          return null;
         }
       },
       setItem: (name: string, value: string) => {
         try {
-          localStorage.setItem(name, value)
+          localStorage.setItem(name, value);
         } catch {
           // Silently fail on write errors - state still works in memory
         }
       },
       removeItem: (name: string) => {
         try {
-          localStorage.removeItem(name)
+          localStorage.removeItem(name);
         } catch {
           // Silently fail on remove errors
         }
       },
-    }
+    };
   } catch {
     return {
       getItem: (_name: string) => null,
       setItem: (_name: string, _value: string) => {},
       removeItem: (_name: string) => {},
-    }
+    };
   }
-}
+};
 
 // Create combined store using slice pattern - pass set/get/api to slice creators
 export const useCryptoStore = create<CryptoStore>()(
   persist(
     (set, get, api) => {
-      const auth = createAuthStore(set, get, api)
-      const ui = createUIStore(set, get, api)
-      const user = createUserStore(set, get, api)
-      const wallet = createWalletStore(set, get, api)
-      const faucet = createFaucetStore(set, get, api)
-      const achievements = createAchievementsStore(set, get, api)
+      const auth = createAuthStore(set, get, api);
+      const ui = createUIStore(set, get, api);
+      const user = createUserStore(set, get, api);
+      const wallet = createWalletStore(set, get, api);
+      const faucet = createFaucetStore(set, get, api);
+      const achievements = createAchievementsStore(set, get, api);
       return {
         ...auth,
         ...ui,
@@ -131,12 +142,12 @@ export const useCryptoStore = create<CryptoStore>()(
         ...faucet,
         ...achievements,
         withdrawalHistory: [],
-      } as CryptoStore
+      } as CryptoStore;
     },
     {
       name: 'crypto-faucet-storage',
       storage: createJSONStorage(createStorage),
-      partialize: (state) => ({
+      partialize: state => ({
         isLoggedIn: state.isLoggedIn,
         language: state.language,
         theme: state.theme,
@@ -149,7 +160,7 @@ export const useCryptoStore = create<CryptoStore>()(
       }),
     }
   )
-)
+);
 
 // Export texts for direct access in components
-export { texts }
+export { texts };

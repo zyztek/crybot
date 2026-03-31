@@ -1,5 +1,14 @@
 import { useState } from 'react';
-import { TrendingUp, TrendingDown, DollarSign, Wallet, PieChart, Activity, Zap, ExternalLink } from 'lucide-react';
+import {
+  TrendingUp,
+  TrendingDown,
+  DollarSign,
+  Wallet,
+  PieChart,
+  Activity,
+  Zap,
+  ExternalLink,
+} from 'lucide-react';
 
 interface DeFiProtocol {
   name: string;
@@ -115,12 +124,60 @@ const DEFI_PROTOCOLS: DeFiProtocol[] = [
 ];
 
 const DEFI_POOLS: DeFiPool[] = [
-  { name: 'USDC-ETH Pool', protocol: 'Uniswap', pair: 'USDC/ETH', tvl: 450, apy: 12.3, chain: 'Ethereum', status: 'active' },
-  { name: 'wbtc-eth Pool', protocol: 'Curve', pair: 'WBTC/ETH', tvl: 890, apy: 8.7, chain: 'Ethereum', status: 'active' },
-  { name: 'SOL-USDC Pool', protocol: 'Raydium', pair: 'SOL/USDC', tvl: 120, apy: 85.4, chain: 'Solana', status: 'active' },
-  { name: ' Рыночный Pool', protocol: 'Jupiter', pair: 'SOL/USDT', tvl: 85, apy: 67.2, chain: 'Solana', status: 'active' },
-  { name: 'CAKE-BNB Pool', protocol: 'PancakeSwap', pair: 'CAKE/BNB', tvl: 45, apy: 52.8, chain: 'BNB Chain', status: 'risky' },
-  { name: 'stETH-ETH Pool', protocol: 'Curve', pair: 'stETH/ETH', tvl: 1250, apy: 6.4, chain: 'Ethereum', status: 'active' },
+  {
+    name: 'USDC-ETH Pool',
+    protocol: 'Uniswap',
+    pair: 'USDC/ETH',
+    tvl: 450,
+    apy: 12.3,
+    chain: 'Ethereum',
+    status: 'active',
+  },
+  {
+    name: 'wbtc-eth Pool',
+    protocol: 'Curve',
+    pair: 'WBTC/ETH',
+    tvl: 890,
+    apy: 8.7,
+    chain: 'Ethereum',
+    status: 'active',
+  },
+  {
+    name: 'SOL-USDC Pool',
+    protocol: 'Raydium',
+    pair: 'SOL/USDC',
+    tvl: 120,
+    apy: 85.4,
+    chain: 'Solana',
+    status: 'active',
+  },
+  {
+    name: ' Рыночный Pool',
+    protocol: 'Jupiter',
+    pair: 'SOL/USDT',
+    tvl: 85,
+    apy: 67.2,
+    chain: 'Solana',
+    status: 'active',
+  },
+  {
+    name: 'CAKE-BNB Pool',
+    protocol: 'PancakeSwap',
+    pair: 'CAKE/BNB',
+    tvl: 45,
+    apy: 52.8,
+    chain: 'BNB Chain',
+    status: 'risky',
+  },
+  {
+    name: 'stETH-ETH Pool',
+    protocol: 'Curve',
+    pair: 'stETH/ETH',
+    tvl: 1250,
+    apy: 6.4,
+    chain: 'Ethereum',
+    status: 'active',
+  },
 ];
 
 const CHAINS = ['All', 'Ethereum', 'Solana', 'BNB Chain', 'Arbitrum', 'Optimism', 'Avalanche'];
@@ -203,7 +260,10 @@ export default function DeFiExplorer() {
 
   const totalTvl = filteredProtocols.reduce((sum, p) => sum + p.tvl, 0);
   const totalUsers = filteredProtocols.reduce((sum, p) => sum + p.users, 0);
-  const avgApy = filteredProtocols.length > 0 ? filteredProtocols.reduce((sum, p) => sum + p.apy, 0) / filteredProtocols.length : 0;
+  const avgApy =
+    filteredProtocols.length > 0
+      ? filteredProtocols.reduce((sum, p) => sum + p.apy, 0) / filteredProtocols.length
+      : 0;
 
   return (
     <div className="min-h-screen pt-24 pb-12 px-4">
@@ -276,7 +336,9 @@ export default function DeFiExplorer() {
               <button
                 onClick={() => setViewMode('protocols')}
                 className={`px-4 py-2 rounded-lg transition ${
-                  viewMode === 'protocols' ? 'bg-gradient-to-r from-blue-400 to-purple-500 text-white' : 'bg-white/10 text-gray-300'
+                  viewMode === 'protocols'
+                    ? 'bg-gradient-to-r from-blue-400 to-purple-500 text-white'
+                    : 'bg-white/10 text-gray-300'
                 }`}
               >
                 {t.protocols}
@@ -284,7 +346,9 @@ export default function DeFiExplorer() {
               <button
                 onClick={() => setViewMode('pools')}
                 className={`px-4 py-2 rounded-lg transition ${
-                  viewMode === 'pools' ? 'bg-gradient-to-r from-blue-400 to-purple-500 text-white' : 'bg-white/10 text-gray-300'
+                  viewMode === 'pools'
+                    ? 'bg-gradient-to-r from-blue-400 to-purple-500 text-white'
+                    : 'bg-white/10 text-gray-300'
                 }`}
               >
                 {t.pools}
@@ -294,25 +358,33 @@ export default function DeFiExplorer() {
             <div className="flex flex-wrap gap-2">
               <select
                 value={selectedChain}
-                onChange={(e) => setSelectedChain(e.target.value)}
+                onChange={e => setSelectedChain(e.target.value)}
                 className="bg-slate-700/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none"
               >
-                {CHAINS.map(chain => <option key={chain} value={chain}>{chain}</option>)}
+                {CHAINS.map(chain => (
+                  <option key={chain} value={chain}>
+                    {chain}
+                  </option>
+                ))}
               </select>
 
               {viewMode === 'protocols' && (
                 <select
                   value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  onChange={e => setSelectedCategory(e.target.value)}
                   className="bg-slate-700/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none"
                 >
-                  {CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                  {CATEGORIES.map(cat => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
                 </select>
               )}
 
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
+                onChange={e => setSortBy(e.target.value as any)}
                 className="bg-slate-700/50 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none"
               >
                 <option value="tvl">TVL</option>
@@ -326,7 +398,9 @@ export default function DeFiExplorer() {
         {/* Content */}
         {viewMode === 'protocols' ? (
           <div className="space-y-4">
-            <p className="text-gray-400 mb-4">{t.protocolsFound}: {filteredProtocols.length}</p>
+            <p className="text-gray-400 mb-4">
+              {t.protocolsFound}: {filteredProtocols.length}
+            </p>
             {filteredProtocols.map((protocol, idx) => (
               <div
                 key={idx}
@@ -340,11 +414,19 @@ export default function DeFiExplorer() {
                     <div>
                       <div className="flex items-center gap-2">
                         <h3 className="text-xl font-bold text-white">{protocol.name}</h3>
-                        {protocol.verified && <span className="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs rounded-full">✓</span>}
+                        {protocol.verified && (
+                          <span className="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs rounded-full">
+                            ✓
+                          </span>
+                        )}
                       </div>
                       <div className="flex gap-2 mt-1">
-                        <span className="px-2 py-0.5 bg-purple-500/20 text-purple-300 text-xs rounded-full">{protocol.category}</span>
-                        <span className="px-2 py-0.5 bg-green-500/20 text-green-300 text-xs rounded-full">{protocol.chain}</span>
+                        <span className="px-2 py-0.5 bg-purple-500/20 text-purple-300 text-xs rounded-full">
+                          {protocol.category}
+                        </span>
+                        <span className="px-2 py-0.5 bg-green-500/20 text-green-300 text-xs rounded-full">
+                          {protocol.chain}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -361,13 +443,23 @@ export default function DeFiExplorer() {
 
                   <div className="text-center">
                     <p className="text-gray-400 text-sm">{t.users}</p>
-                    <p className="text-lg font-bold text-white">{(protocol.users / 1000).toFixed(0)}K</p>
+                    <p className="text-lg font-bold text-white">
+                      {(protocol.users / 1000).toFixed(0)}K
+                    </p>
                   </div>
 
                   <div className="text-center">
-                    <p className="text-gray-400 text-sm" style={{fontSize:'0.75rem'}}>24h</p>
-                    <div className={`flex items-center gap-1 ${protocol.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                      {protocol.change24h >= 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
+                    <p className="text-gray-400 text-sm" style={{ fontSize: '0.75rem' }}>
+                      24h
+                    </p>
+                    <div
+                      className={`flex items-center gap-1 ${protocol.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}
+                    >
+                      {protocol.change24h >= 0 ? (
+                        <TrendingUp className="w-4 h-4" />
+                      ) : (
+                        <TrendingDown className="w-4 h-4" />
+                      )}
                       <span className="font-bold">{Math.abs(protocol.change24h).toFixed(1)}%</span>
                     </div>
                   </div>
@@ -382,7 +474,9 @@ export default function DeFiExplorer() {
           </div>
         ) : (
           <div className="space-y-4">
-            <p className="text-gray-400 mb-4">{t.poolsFound}: {filteredPools.length}</p>
+            <p className="text-gray-400 mb-4">
+              {t.poolsFound}: {filteredPools.length}
+            </p>
             {filteredPools.map((pool, idx) => (
               <div
                 key={idx}
@@ -391,7 +485,7 @@ export default function DeFiExplorer() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center text-white font-bold">
-                      {pool.protocol.slice(0,2)}
+                      {pool.protocol.slice(0, 2)}
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-white">{pool.name}</h3>
@@ -420,12 +514,20 @@ export default function DeFiExplorer() {
 
                   <div className="text-center">
                     <p className="text-gray-400 text-sm">{t.status}</p>
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                      pool.status === 'active' ? 'bg-green-500/20 text-green-400' :
-                      pool.status === 'risky' ? 'bg-yellow-500/20 text-yellow-400' :
-                      'bg-red-500/20 text-red-400'
-                    }`}>
-                      {pool.status === 'active' ? t.active : pool.status === 'risky' ? t.risky : t.paused}
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${
+                        pool.status === 'active'
+                          ? 'bg-green-500/20 text-green-400'
+                          : pool.status === 'risky'
+                            ? 'bg-yellow-500/20 text-yellow-400'
+                            : 'bg-red-500/20 text-red-400'
+                      }`}
+                    >
+                      {pool.status === 'active'
+                        ? t.active
+                        : pool.status === 'risky'
+                          ? t.risky
+                          : t.paused}
                     </span>
                   </div>
 

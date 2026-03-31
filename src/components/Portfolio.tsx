@@ -1,5 +1,21 @@
 import React, { useState, useMemo } from 'react';
-import { ArrowUpRight, ArrowDownRight, TrendingUp, Wallet, Activity, Percent, ChevronDown, Plus, Globe, Layers, Link2, Bitcoin, Coins, Flame, Box } from 'lucide-react';
+import {
+  ArrowUpRight,
+  ArrowDownRight,
+  TrendingUp,
+  Wallet,
+  Activity,
+  Percent,
+  ChevronDown,
+  Plus,
+  Globe,
+  Layers,
+  Link2,
+  Bitcoin,
+  Coins,
+  Flame,
+  Box,
+} from 'lucide-react';
 import { useCryptoStore } from '../store/cryptoStore';
 import CryptoChart from './CryptoChart';
 
@@ -20,7 +36,7 @@ const Portfolio: React.FC = () => {
   const { language } = useCryptoStore();
   const [timeframe, setTimeframe] = useState('1D');
   const [showDetails, setShowDetails] = useState<string | null>(null);
-  
+
   const [activeChain, setActiveChain] = useState<string | null>(null);
   const [showChainBreakdown, setShowChainBreakdown] = useState(true);
 
@@ -34,12 +50,78 @@ const Portfolio: React.FC = () => {
   };
 
   const assets: Asset[] = [
-    { symbol: 'BTC', name: 'Bitcoin', amount: 0.125, value: 5423.50, change24h: 2.5, change7d: 8.3, allocation: 42, chain: 'Bitcoin', chainIcon: ChainIcons.Bitcoin, chainColor: 'from-orange-500 to-yellow-500' },
-    { symbol: 'ETH', name: 'Ethereum', amount: 2.5, value: 3987.75, change24h: 3.2, change7d: 12.1, allocation: 31, chain: 'Ethereum', chainIcon: ChainIcons.Ethereum, chainColor: 'from-indigo-500 to-purple-500' },
-    { symbol: 'DOGE', name: 'Dogecoin', amount: 15420, value: 865.32, change24h: -1.8, change7d: 5.4, allocation: 6, chain: 'Bitcoin', chainIcon: ChainIcons.Bitcoin, chainColor: 'from-orange-500 to-yellow-500' },
-    { symbol: 'SOL', name: 'Solana', amount: 18.75, value: 1875.00, change24h: 4.8, change7d: 15.2, allocation: 14, chain: 'Solana', chainIcon: ChainIcons.Solana, chainColor: 'from-purple-500 to-pink-500' },
-    { symbol: 'LTC', name: 'Litecoin', amount: 4.2, value: 319.80, change24h: 1.2, change7d: 3.8, allocation: 2, chain: 'Litecoin', chainIcon: ChainIcons.Litecoin, chainColor: 'from-slate-500 to-slate-600' },
-    { symbol: 'BNB', name: 'BNB', amount: 1.8, value: 540.00, change24h: 0.9, change7d: 2.1, allocation: 5, chain: 'BNB', chainIcon: ChainIcons.BNB, chainColor: 'from-yellow-500 to-amber-600' },
+    {
+      symbol: 'BTC',
+      name: 'Bitcoin',
+      amount: 0.125,
+      value: 5423.5,
+      change24h: 2.5,
+      change7d: 8.3,
+      allocation: 42,
+      chain: 'Bitcoin',
+      chainIcon: ChainIcons.Bitcoin,
+      chainColor: 'from-orange-500 to-yellow-500',
+    },
+    {
+      symbol: 'ETH',
+      name: 'Ethereum',
+      amount: 2.5,
+      value: 3987.75,
+      change24h: 3.2,
+      change7d: 12.1,
+      allocation: 31,
+      chain: 'Ethereum',
+      chainIcon: ChainIcons.Ethereum,
+      chainColor: 'from-indigo-500 to-purple-500',
+    },
+    {
+      symbol: 'DOGE',
+      name: 'Dogecoin',
+      amount: 15420,
+      value: 865.32,
+      change24h: -1.8,
+      change7d: 5.4,
+      allocation: 6,
+      chain: 'Bitcoin',
+      chainIcon: ChainIcons.Bitcoin,
+      chainColor: 'from-orange-500 to-yellow-500',
+    },
+    {
+      symbol: 'SOL',
+      name: 'Solana',
+      amount: 18.75,
+      value: 1875.0,
+      change24h: 4.8,
+      change7d: 15.2,
+      allocation: 14,
+      chain: 'Solana',
+      chainIcon: ChainIcons.Solana,
+      chainColor: 'from-purple-500 to-pink-500',
+    },
+    {
+      symbol: 'LTC',
+      name: 'Litecoin',
+      amount: 4.2,
+      value: 319.8,
+      change24h: 1.2,
+      change7d: 3.8,
+      allocation: 2,
+      chain: 'Litecoin',
+      chainIcon: ChainIcons.Litecoin,
+      chainColor: 'from-slate-500 to-slate-600',
+    },
+    {
+      symbol: 'BNB',
+      name: 'BNB',
+      amount: 1.8,
+      value: 540.0,
+      change24h: 0.9,
+      change7d: 2.1,
+      allocation: 5,
+      chain: 'BNB',
+      chainIcon: ChainIcons.BNB,
+      chainColor: 'from-yellow-500 to-amber-600',
+    },
   ];
 
   // Group assets by chain
@@ -56,21 +138,26 @@ const Portfolio: React.FC = () => {
 
   // Calculate chain totals
   const chainTotals = useMemo(() => {
-    return Object.entries(assetsByChain).map(([chain, chainAssets]) => {
-      const totalValue = chainAssets.reduce((sum, a) => sum + a.value, 0);
-      const totalChange24h = chainAssets.reduce((sum, a) => sum + (a.value * a.change24h / 100), 0);
-      const avgChange24h = totalValue > 0 ? (totalChange24h / totalValue) * 100 : 0;
-      return {
-        chain,
-        totalValue,
-        totalChange24h,
-        avgChange24h,
-        assetCount: chainAssets.length,
-        assets: chainAssets,
-        icon: chainAssets[0].chainIcon,
-        color: chainAssets[0].chainColor,
-      };
-    }).sort((a, b) => b.totalValue - a.totalValue);
+    return Object.entries(assetsByChain)
+      .map(([chain, chainAssets]) => {
+        const totalValue = chainAssets.reduce((sum, a) => sum + a.value, 0);
+        const totalChange24h = chainAssets.reduce(
+          (sum, a) => sum + (a.value * a.change24h) / 100,
+          0
+        );
+        const avgChange24h = totalValue > 0 ? (totalChange24h / totalValue) * 100 : 0;
+        return {
+          chain,
+          totalValue,
+          totalChange24h,
+          avgChange24h,
+          assetCount: chainAssets.length,
+          assets: chainAssets,
+          icon: chainAssets[0].chainIcon,
+          color: chainAssets[0].chainColor,
+        };
+      })
+      .sort((a, b) => b.totalValue - a.totalValue);
   }, [assetsByChain]);
 
   // Filter assets by active chain
@@ -80,8 +167,14 @@ const Portfolio: React.FC = () => {
   }, [activeChain, assets]);
 
   const totalValue = assets.reduce((sum, asset) => sum + asset.value, 0);
-  const totalChange24h = assets.reduce((sum, asset) => sum + (asset.value * asset.change24h / 100), 0);
-  const totalChange7d = assets.reduce((sum, asset) => sum + (asset.value * asset.change7d / 100), 0);
+  const totalChange24h = assets.reduce(
+    (sum, asset) => sum + (asset.value * asset.change24h) / 100,
+    0
+  );
+  const totalChange7d = assets.reduce(
+    (sum, asset) => sum + (asset.value * asset.change7d) / 100,
+    0
+  );
 
   const text = {
     es: {
@@ -131,7 +224,7 @@ const Portfolio: React.FC = () => {
       bridge: 'Bridge',
       crossChain: 'Cross-Chain',
       viewChain: 'View Chain',
-    }
+    },
   };
 
   const t = text[language as keyof typeof text];
@@ -146,42 +239,52 @@ const Portfolio: React.FC = () => {
             {t.title}
           </h1>
           <div className="flex gap-3">
-            <button 
+            <button
               onClick={() => setTimeframe('1D')}
               className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                timeframe === '1D' ? 'bg-purple-600 text-white' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+                timeframe === '1D'
+                  ? 'bg-purple-600 text-white'
+                  : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
               }`}
             >
               1D
             </button>
-            <button 
+            <button
               onClick={() => setTimeframe('1W')}
               className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                timeframe === '1W' ? 'bg-purple-600 text-white' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+                timeframe === '1W'
+                  ? 'bg-purple-600 text-white'
+                  : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
               }`}
             >
               1W
             </button>
-            <button 
+            <button
               onClick={() => setTimeframe('1M')}
               className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                timeframe === '1M' ? 'bg-purple-600 text-white' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+                timeframe === '1M'
+                  ? 'bg-purple-600 text-white'
+                  : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
               }`}
             >
               1M
             </button>
-            <button 
+            <button
               onClick={() => setTimeframe('1Y')}
               className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                timeframe === '1Y' ? 'bg-purple-600 text-white' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+                timeframe === '1Y'
+                  ? 'bg-purple-600 text-white'
+                  : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
               }`}
             >
               1Y
             </button>
-            <button 
+            <button
               onClick={() => setShowChainBreakdown(!showChainBreakdown)}
               className={`px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 ${
-                showChainBreakdown ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+                showChainBreakdown
+                  ? 'bg-indigo-600 text-white'
+                  : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
               }`}
             >
               <Layers className="w-4 h-4" />
@@ -210,10 +313,12 @@ const Portfolio: React.FC = () => {
             </button>
 
             {/* Chain-specific cards */}
-            {chainTotals.map((chainData) => (
+            {chainTotals.map(chainData => (
               <button
                 key={chainData.chain}
-                onClick={() => setActiveChain(activeChain === chainData.chain ? null : chainData.chain)}
+                onClick={() =>
+                  setActiveChain(activeChain === chainData.chain ? null : chainData.chain)
+                }
                 className={`bg-gradient-to-br ${chainData.color} border rounded-xl p-4 text-left transition-all hover:opacity-90 ${activeChain === chainData.chain ? 'border-white ring-2 ring-white/30' : 'border-transparent'}`}
               >
                 <div className="flex items-center justify-between mb-2">
@@ -223,18 +328,29 @@ const Portfolio: React.FC = () => {
                   </div>
                   {activeChain === chainData.chain && <span className="text-white text-xs">✓</span>}
                 </div>
-                <p className="text-2xl font-bold text-white">${chainData.totalValue.toLocaleString()}</p>
+                <p className="text-2xl font-bold text-white">
+                  ${chainData.totalValue.toLocaleString()}
+                </p>
                 <div className="flex items-center gap-1 mt-1">
                   {chainData.avgChange24h >= 0 ? (
                     <ArrowUpRight className="w-3 h-3 text-green-300" />
                   ) : (
                     <ArrowDownRight className="w-3 h-3 text-red-300" />
                   )}
-                  <span className={chainData.avgChange24h >= 0 ? 'text-green-300 text-sm' : 'text-red-300 text-sm'}>
-                    {chainData.avgChange24h >= 0 ? '+' : ''}{chainData.avgChange24h.toFixed(2)}%
+                  <span
+                    className={
+                      chainData.avgChange24h >= 0
+                        ? 'text-green-300 text-sm'
+                        : 'text-red-300 text-sm'
+                    }
+                  >
+                    {chainData.avgChange24h >= 0 ? '+' : ''}
+                    {chainData.avgChange24h.toFixed(2)}%
                   </span>
                 </div>
-                <p className="text-xs text-white/70 mt-1">{chainData.assetCount} {t.holdings}</p>
+                <p className="text-xs text-white/70 mt-1">
+                  {chainData.assetCount} {t.holdings}
+                </p>
               </button>
             ))}
           </div>
@@ -256,8 +372,11 @@ const Portfolio: React.FC = () => {
                   <span className={totalChange24h >= 0 ? 'text-green-400' : 'text-red-400'}>
                     {totalChange24h >= 0 ? '+' : ''}${Math.abs(totalChange24h).toFixed(2)}
                   </span>
-                  <span className={`text-sm ${totalChange24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                    ({totalChange24h >= 0 ? '+' : ''}{totalChange24h.toFixed(2)}%)
+                  <span
+                    className={`text-sm ${totalChange24h >= 0 ? 'text-green-400' : 'text-red-400'}`}
+                  >
+                    ({totalChange24h >= 0 ? '+' : ''}
+                    {totalChange24h.toFixed(2)}%)
                   </span>
                 </div>
               </div>
@@ -271,8 +390,11 @@ const Portfolio: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-slate-400 text-sm">{t.performance} 7D</p>
-                <p className={`text-3xl font-bold mt-1 ${totalChange7d >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                  {totalChange7d >= 0 ? '+' : ''}{totalChange7d.toFixed(2)}%
+                <p
+                  className={`text-3xl font-bold mt-1 ${totalChange7d >= 0 ? 'text-green-400' : 'text-red-400'}`}
+                >
+                  {totalChange7d >= 0 ? '+' : ''}
+                  {totalChange7d.toFixed(2)}%
                 </p>
                 <p className="text-slate-400 text-sm mt-2">
                   {totalChange7d >= 0 ? '+' : ''}${Math.abs(totalChange7d).toFixed(2)}
@@ -335,12 +457,14 @@ const Portfolio: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredAssets.map((asset) => (
+                    {filteredAssets.map(asset => (
                       <React.Fragment key={asset.symbol}>
                         <tr className="border-t border-slate-700/50 hover:bg-slate-700/30">
                           <td className="py-4">
                             <div className="flex items-center gap-3">
-                              <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${asset.chainColor} flex items-center justify-center text-white font-bold`}>
+                              <div
+                                className={`w-10 h-10 rounded-full bg-gradient-to-br ${asset.chainColor} flex items-center justify-center text-white font-bold`}
+                              >
                                 {asset.symbol[0]}
                               </div>
                               <div>
@@ -353,7 +477,9 @@ const Portfolio: React.FC = () => {
                             <p className="text-white font-medium">{asset.amount.toFixed(4)}</p>
                           </td>
                           <td className="text-right py-4">
-                            <p className="text-white font-medium">${asset.value.toLocaleString()}</p>
+                            <p className="text-white font-medium">
+                              ${asset.value.toLocaleString()}
+                            </p>
                           </td>
                           <td className="text-right py-4">
                             <div className="flex items-center justify-end gap-1">
@@ -362,16 +488,19 @@ const Portfolio: React.FC = () => {
                               ) : (
                                 <ArrowDownRight className="w-4 h-4 text-red-400" />
                               )}
-                              <span className={asset.change24h >= 0 ? 'text-green-400' : 'text-red-400'}>
-                                {asset.change24h >= 0 ? '+' : ''}{asset.change24h.toFixed(2)}%
+                              <span
+                                className={asset.change24h >= 0 ? 'text-green-400' : 'text-red-400'}
+                              >
+                                {asset.change24h >= 0 ? '+' : ''}
+                                {asset.change24h.toFixed(2)}%
                               </span>
                             </div>
                           </td>
                           <td className="text-right py-4">
                             <div className="flex items-center justify-end">
                               <div className="w-24 bg-slate-700 rounded-full h-2">
-                                <div 
-                                  className="bg-purple-500 h-2 rounded-full" 
+                                <div
+                                  className="bg-purple-500 h-2 rounded-full"
                                   style={{ width: `${asset.allocation}%` }}
                                 ></div>
                               </div>
@@ -379,11 +508,15 @@ const Portfolio: React.FC = () => {
                             </div>
                           </td>
                           <td className="py-4">
-                            <button 
-                              onClick={() => setShowDetails(showDetails === asset.symbol ? null : asset.symbol)}
+                            <button
+                              onClick={() =>
+                                setShowDetails(showDetails === asset.symbol ? null : asset.symbol)
+                              }
                               className="p-2 hover:bg-slate-700 rounded-lg transition-all"
                             >
-                              <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform ${showDetails === asset.symbol ? 'rotate-180' : ''}`} />
+                              <ChevronDown
+                                className={`w-5 h-5 text-slate-400 transition-transform ${showDetails === asset.symbol ? 'rotate-180' : ''}`}
+                              />
                             </button>
                           </td>
                         </tr>
@@ -393,27 +526,36 @@ const Portfolio: React.FC = () => {
                               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                 <div className="bg-slate-800 rounded-lg p-4">
                                   <p className="text-slate-400 text-sm">7D Change</p>
-                                  <p className={`text-lg font-semibold ${asset.change7d >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                                    {asset.change7d >= 0 ? '+' : ''}{asset.change7d.toFixed(2)}%
+                                  <p
+                                    className={`text-lg font-semibold ${asset.change7d >= 0 ? 'text-green-400' : 'text-red-400'}`}
+                                  >
+                                    {asset.change7d >= 0 ? '+' : ''}
+                                    {asset.change7d.toFixed(2)}%
                                   </p>
                                 </div>
                                 <div className="bg-slate-800 rounded-lg p-4">
                                   <p className="text-slate-400 text-sm">Avg Buy Price</p>
                                   <p className="text-lg font-semibold text-white">
-                                    ${(asset.value / asset.amount * 0.95).toFixed(2)}
+                                    ${((asset.value / asset.amount) * 0.95).toFixed(2)}
                                   </p>
                                 </div>
                                 <div className="bg-slate-800 rounded-lg p-4">
                                   <p className="text-slate-400 text-sm">P&L</p>
-                                  <p className={`text-lg font-semibold ${(asset.value / asset.amount * 0.95) < (asset.value / asset.amount) ? 'text-green-400' : 'text-red-400'}`}>
+                                  <p
+                                    className={`text-lg font-semibold ${(asset.value / asset.amount) * 0.95 < asset.value / asset.amount ? 'text-green-400' : 'text-red-400'}`}
+                                  >
                                     +${(asset.value * 0.05).toFixed(2)}
                                   </p>
                                 </div>
                                 <div className="bg-slate-800 rounded-lg p-4">
                                   <p className="text-slate-400 text-sm">Actions</p>
                                   <div className="flex gap-2 mt-1">
-                                    <button className="px-3 py-1 bg-green-600 hover:bg-green-700 rounded text-white text-sm">Buy</button>
-                                    <button className="px-3 py-1 bg-red-600 hover:bg-red-700 rounded text-white text-sm">Sell</button>
+                                    <button className="px-3 py-1 bg-green-600 hover:bg-green-700 rounded text-white text-sm">
+                                      Buy
+                                    </button>
+                                    <button className="px-3 py-1 bg-red-600 hover:bg-red-700 rounded text-white text-sm">
+                                      Sell
+                                    </button>
                                   </div>
                                 </div>
                               </div>
@@ -429,9 +571,11 @@ const Portfolio: React.FC = () => {
                 </table>
               </div>
             </div>
-          </div>              {/* Chain Allocation Chart */}
+          </div>{' '}
+          {/* Chain Allocation Chart */}
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
-            <h2 className="text-xl font-semibold text-white mb-6">{t.chainBreakdown}</h2>              {/* Chain Donut Chart */}
+            <h2 className="text-xl font-semibold text-white mb-6">{t.chainBreakdown}</h2>{' '}
+            {/* Chain Donut Chart */}
             <div className="relative w-64 h-64 mx-auto mb-6">
               <svg viewBox="0 0 100 100" className="w-full h-full transform -rotate-90">
                 {(() => {
@@ -442,28 +586,26 @@ const Portfolio: React.FC = () => {
                     BNB: '#F59E0B',
                     Litecoin: '#6B7280',
                   };
-                  
+
                   // Precompute segments immutably to avoid ESLint error
-                  const chartSegments = chainTotals.reduce<Array<{ chain: string; dash: number; offset: number; color: string }>>(
-                    (acc, chainData) => {
-                      const previousOffset = acc.length > 0
-                        ? acc[acc.length - 1].offset + acc[acc.length - 1].dash
-                        : 0;
-                      const percentage = chainData.totalValue / totalValue;
-                      const dash = percentage * 314;
-                      
-                      acc.push({
-                        chain: chainData.chain,
-                        dash,
-                        offset: previousOffset,
-                        color: chainColors[chainData.chain] || '#6B7280',
-                      });
-                      return acc;
-                    },
-                    []
-                  );
-                  
-                  return chartSegments.map((segment) => (
+                  const chartSegments = chainTotals.reduce<
+                    Array<{ chain: string; dash: number; offset: number; color: string }>
+                  >((acc, chainData) => {
+                    const previousOffset =
+                      acc.length > 0 ? acc[acc.length - 1].offset + acc[acc.length - 1].dash : 0;
+                    const percentage = chainData.totalValue / totalValue;
+                    const dash = percentage * 314;
+
+                    acc.push({
+                      chain: chainData.chain,
+                      dash,
+                      offset: previousOffset,
+                      color: chainColors[chainData.chain] || '#6B7280',
+                    });
+                    return acc;
+                  }, []);
+
+                  return chartSegments.map(segment => (
                     <circle
                       key={segment.chain}
                       cx="50"
@@ -486,7 +628,6 @@ const Portfolio: React.FC = () => {
                 </div>
               </div>
             </div>
-
             {/* Chain Legend */}
             <div className="space-y-3">
               {chainTotals.map((chainData, i) => {
@@ -501,15 +642,18 @@ const Portfolio: React.FC = () => {
                 return (
                   <div key={chainData.chain} className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className={`w-3 h-3 rounded-full ${chainColors[chainData.chain] || 'bg-slate-500'}`}></div>
+                      <div
+                        className={`w-3 h-3 rounded-full ${chainColors[chainData.chain] || 'bg-slate-500'}`}
+                      ></div>
                       <span className="text-white">{chainData.chain}</span>
                     </div>
-                    <span className="text-slate-400">${chainData.totalValue.toLocaleString()} ({percentage}%)</span>
+                    <span className="text-slate-400">
+                      ${chainData.totalValue.toLocaleString()} ({percentage}%)
+                    </span>
                   </div>
                 );
               })}
             </div>
-
             {/* Cross-Chain Actions */}
             <div className="mt-6 pt-4 border-t border-slate-700">
               <button className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-lg transition-all">

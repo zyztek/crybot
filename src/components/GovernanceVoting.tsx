@@ -1,62 +1,65 @@
-import { useState } from 'react'
-import { Vote, CheckCircle, XCircle, Clock, Users, PieChart } from 'lucide-react'
+import { useState } from 'react';
+import { Vote, CheckCircle, XCircle, Clock, Users, PieChart } from 'lucide-react';
 
 interface Proposal {
-  id: number
-  title: string
-  description: string
-  proposer: string
-  status: 'Active' | 'Passed' | 'Rejected' | 'Pending'
-  votesFor: number
-  votesAgainst: number
-  totalVotes: number
-  endDate: string
-  category: string
+  id: number;
+  title: string;
+  description: string;
+  proposer: string;
+  status: 'Active' | 'Passed' | 'Rejected' | 'Pending';
+  votesFor: number;
+  votesAgainst: number;
+  totalVotes: number;
+  endDate: string;
+  category: string;
 }
 
 export default function GovernanceVoting() {
-  const [selectedProposal, setSelectedProposal] = useState<number | null>(null)
-  const [voteModalOpen, setVoteModalOpen] = useState(false)
-  const [voteAmount, setVoteAmount] = useState('')
-  const [userVotes] = useState(12500)
-  const [voteWeight] = useState(1)
+  const [selectedProposal, setSelectedProposal] = useState<number | null>(null);
+  const [voteModalOpen, setVoteModalOpen] = useState(false);
+  const [voteAmount, setVoteAmount] = useState('');
+  const [userVotes] = useState(12500);
+  const [voteWeight] = useState(1);
 
   const proposals: Proposal[] = [
     {
       id: 1,
       title: 'Increase DAO Treasury Yield Strategy',
-      description: 'Proposal to diversify the DAO treasury into additional yield-bearing DeFi protocols including Aave, Compound, and Curve Finance.',
+      description:
+        'Proposal to diversify the DAO treasury into additional yield-bearing DeFi protocols including Aave, Compound, and Curve Finance.',
       proposer: '0x7a2...f4e9',
       status: 'Active',
       votesFor: 85420,
       votesAgainst: 12350,
       totalVotes: 97770,
       endDate: '2 days 14 hours',
-      category: 'Treasury'
+      category: 'Treasury',
     },
     {
       id: 2,
       title: ' 降低 Protocol Fees to 0.2%',
-      description: 'Reduce the protocol fee from 0.3% to 0.2% to encourage higher trading volume and increase platform competitiveness.',
+      description:
+        'Reduce the protocol fee from 0.3% to 0.2% to encourage higher trading volume and increase platform competitiveness.',
       proposer: '0x3b1...a8d2',
       status: 'Active',
       votesFor: 45230,
       votesAgainst: 28900,
       totalVotes: 74130,
       endDate: '5 days 8 hours',
-      category: 'Protocol'
+      category: 'Protocol',
     },
     {
       id: 3,
       title: 'Grant for Community Development',
-      description: 'Allocate 50,000 tokens to fund community-led development initiatives and educational programs.',
+      description:
+        'Allocate 50,000 tokens to fund community-led development initiatives and educational programs.',
       proposer: '0x9c4...e2b1',
       status: 'Passed',
       votesFor: 125400,
       votesAgainst: 8500,
       totalVotes: 133900,
       endDate: 'Ended',
-      category: 'Community'
+      category: 'Community',
     },
     {
       id: 4,
@@ -68,47 +71,53 @@ export default function GovernanceVoting() {
       votesAgainst: 34100,
       totalVotes: 101420,
       endDate: '7 days 2 hours',
-      category: 'Operations'
+      category: 'Operations',
     },
     {
       id: 5,
       title: 'Improve Gas Optimization',
-      description: 'Allocate resources to research and implement gas optimization strategies to reduce transaction costs for users.',
+      description:
+        'Allocate resources to research and implement gas optimization strategies to reduce transaction costs for users.',
       proposer: '0x8e1...d4a7',
       status: 'Rejected',
       votesFor: 23450,
       votesAgainst: 67890,
       totalVotes: 91340,
       endDate: 'Ended',
-      category: 'Technical'
+      category: 'Technical',
     },
     {
       id: 6,
       title: 'Staking Rewards Enhancement',
-      description: 'Increase staking rewards for long-term token holders with a tiered reward system.',
+      description:
+        'Increase staking rewards for long-term token holders with a tiered reward system.',
       proposer: '0x1f2...b5e6',
       status: 'Pending',
       votesFor: 0,
       votesAgainst: 0,
       totalVotes: 0,
       endDate: 'Starting soon',
-      category: 'Rewards'
+      category: 'Rewards',
     },
-  ]
+  ];
 
   const getStatusColor = (status: Proposal['status']) => {
     switch (status) {
-      case 'Active': return 'text-green-400 bg-green-500/20 border-green-500/50'
-      case 'Passed': return 'text-blue-400 bg-blue-500/20 border-blue-500/50'
-      case 'Rejected': return 'text-red-400 bg-red-500/20 border-red-500/50'
-      case 'Pending': return 'text-yellow-400 bg-yellow-500/20 border-yellow-500/50'
+      case 'Active':
+        return 'text-green-400 bg-green-500/20 border-green-500/50';
+      case 'Passed':
+        return 'text-blue-400 bg-blue-500/20 border-blue-500/50';
+      case 'Rejected':
+        return 'text-red-400 bg-red-500/20 border-red-500/50';
+      case 'Pending':
+        return 'text-yellow-400 bg-yellow-500/20 border-yellow-500/50';
     }
-  }
+  };
 
-  const totalProposals = proposals.length
-  const activeProposals = proposals.filter(p => p.status === 'Active').length
-  const passedProposals = proposals.filter(p => p.status === 'Passed').length
-  const totalParticipation = proposals.reduce((sum, p) => sum + p.totalVotes, 0)
+  const totalProposals = proposals.length;
+  const activeProposals = proposals.filter(p => p.status === 'Active').length;
+  const passedProposals = proposals.filter(p => p.status === 'Passed').length;
+  const totalParticipation = proposals.reduce((sum, p) => sum + p.totalVotes, 0);
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
@@ -120,7 +129,9 @@ export default function GovernanceVoting() {
               <Vote className="w-8 h-8 text-indigo-400" />
               Governance Voting
             </h1>
-            <p className="text-gray-400">Participate in DAO governance and shape the future of the protocol</p>
+            <p className="text-gray-400">
+              Participate in DAO governance and shape the future of the protocol
+            </p>
           </div>
           <div className="flex gap-3">
             <div className="bg-indigo-500/20 border border-indigo-500/50 rounded-xl px-4 py-2 text-indigo-400 font-semibold flex items-center gap-2">
@@ -169,7 +180,9 @@ export default function GovernanceVoting() {
             <span className="text-gray-400 font-medium">Total Participation</span>
             <Users className="w-5 h-5 text-purple-400" />
           </div>
-          <div className="text-3xl font-bold text-white">{(totalParticipation / 1000).toFixed(0)}K</div>
+          <div className="text-3xl font-bold text-white">
+            {(totalParticipation / 1000).toFixed(0)}K
+          </div>
           <div className="text-purple-400 text-sm mt-2">All-time votes</div>
         </div>
       </div>
@@ -185,9 +198,9 @@ export default function GovernanceVoting() {
       {/* Proposals List */}
       <div className="bg-gradient-to-b from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-2xl border border-gray-700/50 p-6">
         <h2 className="text-2xl font-bold text-white mb-6">Governance Proposals</h2>
-        
+
         <div className="space-y-4">
-          {proposals.map((proposal) => (
+          {proposals.map(proposal => (
             <div
               key={proposal.id}
               className="bg-gray-800/50 rounded-xl p-5 border border-gray-700/50 hover:border-gray-600 transition-all cursor-pointer"
@@ -196,25 +209,32 @@ export default function GovernanceVoting() {
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-3">
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(proposal.status)}`}>
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(proposal.status)}`}
+                    >
                       {proposal.status}
                     </span>
-                    <span className="bg-gray-700 text-gray-300 px-2 py-1 rounded text-xs font-medium">{proposal.category}</span>
+                    <span className="bg-gray-700 text-gray-300 px-2 py-1 rounded text-xs font-medium">
+                      {proposal.category}
+                    </span>
                     <span className="text-gray-400 text-sm flex items-center gap-1">
                       <Clock className="w-4 h-4" />
                       {proposal.endDate}
                     </span>
                   </div>
-                  
+
                   <h3 className="text-xl font-bold text-white mb-2">{proposal.title}</h3>
                   <p className="text-gray-400 text-sm mb-4 line-clamp-2">{proposal.description}</p>
-                  
+
                   <div className="flex items-center gap-6 text-sm">
                     <span className="text-gray-400">
                       Proposer: <span className="text-white font-mono">{proposal.proposer}</span>
                     </span>
                     <span className="text-gray-400">
-                      Total Votes: <span className="text-white font-semibold">{proposal.totalVotes.toLocaleString()}</span>
+                      Total Votes:{' '}
+                      <span className="text-white font-semibold">
+                        {proposal.totalVotes.toLocaleString()}
+                      </span>
                     </span>
                   </div>
                 </div>
@@ -226,34 +246,48 @@ export default function GovernanceVoting() {
                         <CheckCircle className="w-4 h-4" />
                         For
                       </span>
-                      <span className="text-white font-bold">{proposal.votesFor.toLocaleString()}</span>
+                      <span className="text-white font-bold">
+                        {proposal.votesFor.toLocaleString()}
+                      </span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-red-400 text-sm font-semibold flex items-center gap-1">
                         <XCircle className="w-4 h-4" />
                         Against
                       </span>
-                      <span className="text-white font-bold">{proposal.votesAgainst.toLocaleString()}</span>
+                      <span className="text-white font-bold">
+                        {proposal.votesAgainst.toLocaleString()}
+                      </span>
                     </div>
                   </div>
 
                   <div className="h-3 bg-gray-700 rounded-full overflow-hidden flex">
                     <div
                       className="h-full bg-gradient-to-r from-green-500 to-green-400"
-                      style={{ width: `${proposal.totalVotes > 0 ? (proposal.votesFor / proposal.totalVotes) * 100 : 50}%` }}
+                      style={{
+                        width: `${proposal.totalVotes > 0 ? (proposal.votesFor / proposal.totalVotes) * 100 : 50}%`,
+                      }}
                     />
                     <div
                       className="h-full bg-gradient-to-r from-red-500 to-red-400"
-                      style={{ width: `${proposal.totalVotes > 0 ? (proposal.votesAgainst / proposal.totalVotes) * 100 : 50}%` }}
+                      style={{
+                        width: `${proposal.totalVotes > 0 ? (proposal.votesAgainst / proposal.totalVotes) * 100 : 50}%`,
+                      }}
                     />
                   </div>
 
                   <div className="flex justify-between mt-1 text-xs">
                     <span className="text-green-400 font-semibold">
-                      {proposal.totalVotes > 0 ? ((proposal.votesFor / proposal.totalVotes) * 100).toFixed(1) : 0}%
+                      {proposal.totalVotes > 0
+                        ? ((proposal.votesFor / proposal.totalVotes) * 100).toFixed(1)
+                        : 0}
+                      %
                     </span>
                     <span className="text-red-400 font-semibold">
-                      {proposal.totalVotes > 0 ? ((proposal.votesAgainst / proposal.totalVotes) * 100).toFixed(1) : 0}%
+                      {proposal.totalVotes > 0
+                        ? ((proposal.votesAgainst / proposal.totalVotes) * 100).toFixed(1)
+                        : 0}
+                      %
                     </span>
                   </div>
                 </div>
@@ -275,7 +309,7 @@ export default function GovernanceVoting() {
                   <input
                     type="number"
                     value={voteAmount}
-                    onChange={(e) => setVoteAmount(e.target.value)}
+                    onChange={e => setVoteAmount(e.target.value)}
                     className="w-full bg-transparent text-2xl text-white font-bold outline-none"
                     placeholder={`${userVotes.toLocaleString()}`}
                   />
@@ -315,19 +349,28 @@ export default function GovernanceVoting() {
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl border border-gray-700 p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             {(() => {
-              const prop = proposals.find(p => p.id === selectedProposal)!
+              const prop = proposals.find(p => p.id === selectedProposal)!;
               return (
                 <>
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-2xl font-bold text-white">{prop.title}</h2>
-                    <button onClick={() => setSelectedProposal(null)} className="text-gray-400 hover:text-white text-2xl">&times;</button>
+                    <button
+                      onClick={() => setSelectedProposal(null)}
+                      className="text-gray-400 hover:text-white text-2xl"
+                    >
+                      &times;
+                    </button>
                   </div>
 
                   <div className="flex items-center gap-3 mb-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(prop.status)}`}>
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(prop.status)}`}
+                    >
                       {prop.status}
                     </span>
-                    <span className="bg-gray-700 text-gray-300 px-2 py-1 rounded text-sm">{prop.category}</span>
+                    <span className="bg-gray-700 text-gray-300 px-2 py-1 rounded text-sm">
+                      {prop.category}
+                    </span>
                   </div>
 
                   <p className="text-gray-300 mb-6">{prop.description}</p>
@@ -357,11 +400,11 @@ export default function GovernanceVoting() {
                   <div className="h-6 bg-gray-700 rounded-full overflow-hidden flex mb-6">
                     <div
                       className="h-full bg-gradient-to-r from-green-500 to-green-400"
-                      style={{ width: `${prop.votesFor / prop.totalVotes * 100}%` }}
+                      style={{ width: `${(prop.votesFor / prop.totalVotes) * 100}%` }}
                     />
                     <div
                       className="h-full bg-gradient-to-r from-red-500 to-red-400"
-                      style={{ width: `${prop.votesAgainst / prop.totalVotes * 100}%` }}
+                      style={{ width: `${(prop.votesAgainst / prop.totalVotes) * 100}%` }}
                     />
                   </div>
 
@@ -382,11 +425,11 @@ export default function GovernanceVoting() {
                     Close
                   </button>
                 </>
-              )
+              );
             })()}
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }

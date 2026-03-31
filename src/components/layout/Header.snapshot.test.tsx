@@ -1,7 +1,7 @@
-import { describe, it, expect } from 'vitest'
-import { render } from '@testing-library/react'
-import Header from './Header'
-import type { User } from '@/types'
+import { describe, it, expect } from 'vitest';
+import { render } from '@testing-library/react';
+import Header from './Header';
+import type { User } from '@/types';
 
 const mockUser: User = {
   username: 'CryptoUser123',
@@ -14,8 +14,8 @@ const mockUser: User = {
   twoFactorEnabled: true,
   referralCode: 'CRYPTO2024',
   totalReferrals: 24,
-  referralEarnings: '0.00450 BTC'
-}
+  referralEarnings: '0.00450 BTC',
+};
 
 describe('Header Snapshot Tests', () => {
   it('matches snapshot with user and Spanish language', () => {
@@ -28,9 +28,9 @@ describe('Header Snapshot Tests', () => {
         onToggleLanguage={() => {}}
         onToggleTheme={() => {}}
       />
-    )
-    expect(container.firstChild).toMatchSnapshot()
-  })
+    );
+    expect(container.firstChild).toMatchSnapshot();
+  });
 
   it('matches snapshot with user and English language', () => {
     const { container } = render(
@@ -42,9 +42,9 @@ describe('Header Snapshot Tests', () => {
         onToggleLanguage={() => {}}
         onToggleTheme={() => {}}
       />
-    )
-    expect(container.firstChild).toMatchSnapshot()
-  })
+    );
+    expect(container.firstChild).toMatchSnapshot();
+  });
 
   it('matches snapshot with no notifications', () => {
     const { container } = render(
@@ -56,7 +56,7 @@ describe('Header Snapshot Tests', () => {
         onToggleLanguage={() => {}}
         onToggleTheme={() => {}}
       />
-    )
-    expect(container.firstChild).toMatchSnapshot()
-  })
-})
+    );
+    expect(container.firstChild).toMatchSnapshot();
+  });
+});

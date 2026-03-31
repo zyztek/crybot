@@ -1,20 +1,33 @@
-import { useState } from 'react'
-import { Users, TrendingUp, Copy, ExternalLink, Star, Trophy, CheckCircle, AlertCircle, Handshake, Eye, RefreshCw, Filter } from 'lucide-react'
+import { useState } from 'react';
+import {
+  Users,
+  TrendingUp,
+  Copy,
+  ExternalLink,
+  Star,
+  Trophy,
+  CheckCircle,
+  AlertCircle,
+  Handshake,
+  Eye,
+  RefreshCw,
+  Filter,
+} from 'lucide-react';
 
 interface Trader {
-  id: number
-  username: string
-  avatar: string
-  roi: number
-  profit: number
-  trades: number
-  winRate: number
-  followers: number
-  copiers: number
-  riskLevel: 'low' | 'medium' | 'high'
-  streak: number
-  isVerified: boolean
-  badge?: 'top' | 'verified' | 'rising'
+  id: number;
+  username: string;
+  avatar: string;
+  roi: number;
+  profit: number;
+  trades: number;
+  winRate: number;
+  followers: number;
+  copiers: number;
+  riskLevel: 'low' | 'medium' | 'high';
+  streak: number;
+  isVerified: boolean;
+  badge?: 'top' | 'verified' | 'rising';
 }
 
 const traders: Trader[] = [
@@ -31,7 +44,7 @@ const traders: Trader[] = [
     riskLevel: 'medium',
     streak: 12,
     isVerified: true,
-    badge: 'top'
+    badge: 'top',
   },
   {
     id: 2,
@@ -46,7 +59,7 @@ const traders: Trader[] = [
     riskLevel: 'low',
     streak: 8,
     isVerified: true,
-    badge: 'verified'
+    badge: 'verified',
   },
   {
     id: 3,
@@ -61,7 +74,7 @@ const traders: Trader[] = [
     riskLevel: 'high',
     streak: 5,
     isVerified: true,
-    badge: 'rising'
+    badge: 'rising',
   },
   {
     id: 4,
@@ -75,7 +88,7 @@ const traders: Trader[] = [
     copiers: 378,
     riskLevel: 'high',
     streak: 3,
-    isVerified: false
+    isVerified: false,
   },
   {
     id: 5,
@@ -89,7 +102,7 @@ const traders: Trader[] = [
     copiers: 267,
     riskLevel: 'low',
     streak: 7,
-    isVerified: true
+    isVerified: true,
   },
   {
     id: 6,
@@ -103,7 +116,7 @@ const traders: Trader[] = [
     copiers: 198,
     riskLevel: 'medium',
     streak: 4,
-    isVerified: false
+    isVerified: false,
   },
   {
     id: 7,
@@ -117,7 +130,7 @@ const traders: Trader[] = [
     copiers: 156,
     riskLevel: 'low',
     streak: 2,
-    isVerified: true
+    isVerified: true,
   },
   {
     id: 8,
@@ -131,19 +144,19 @@ const traders: Trader[] = [
     copiers: 89,
     riskLevel: 'medium',
     streak: 6,
-    isVerified: false
-  }
-]
+    isVerified: false,
+  },
+];
 
 interface MyCopy {
-  traderId: number
-  traderName: string
-  amount: number
-  startDate: string
-  profit: number
-  roi: number
-  autoCopy: boolean
-  riskMultiplier: number
+  traderId: number;
+  traderName: string;
+  amount: number;
+  startDate: string;
+  profit: number;
+  roi: number;
+  autoCopy: boolean;
+  riskMultiplier: number;
 }
 
 const myCopies: MyCopy[] = [
@@ -152,45 +165,45 @@ const myCopies: MyCopy[] = [
     traderName: 'CryptoWhale',
     amount: 1000,
     startDate: '2024-01-15',
-    profit: 2456.70,
+    profit: 2456.7,
     roi: 245.67,
     autoCopy: true,
-    riskMultiplier: 1.0
+    riskMultiplier: 1.0,
   },
   {
     traderId: 2,
     traderName: 'SatoshiJr',
     amount: 500,
     startDate: '2024-02-01',
-    profit: 946.70,
+    profit: 946.7,
     roi: 189.34,
     autoCopy: true,
-    riskMultiplier: 0.8
-  }
-]
+    riskMultiplier: 0.8,
+  },
+];
 
 const SocialTrading = () => {
-  const [selectedTab, setSelectedTab] = useState<'traders' | 'my-copies' | 'portfolio'>('traders')
-  const [selectedRisk, setSelectedRisk] = useState<string>('all')
-  const [selectedBadge, setSelectedBadge] = useState<string>('all')
+  const [selectedTab, setSelectedTab] = useState<'traders' | 'my-copies' | 'portfolio'>('traders');
+  const [selectedRisk, setSelectedRisk] = useState<string>('all');
+  const [selectedBadge, setSelectedBadge] = useState<string>('all');
 
   const filteredTraders = traders.filter(trader => {
-    const matchesRisk = selectedRisk === 'all' || trader.riskLevel === selectedRisk
-    const matchesBadge = selectedBadge === 'all' || trader.badge === selectedBadge
-    return matchesRisk && matchesBadge
-  })
+    const matchesRisk = selectedRisk === 'all' || trader.riskLevel === selectedRisk;
+    const matchesBadge = selectedBadge === 'all' || trader.badge === selectedBadge;
+    return matchesRisk && matchesBadge;
+  });
 
   const riskColors = {
     low: 'bg-green-500/20 text-green-400 border-green-400/30',
     medium: 'bg-yellow-500/20 text-yellow-400 border-yellow-400/30',
-    high: 'bg-red-500/20 text-red-400 border-red-400/30'
-  }
+    high: 'bg-red-500/20 text-red-400 border-red-400/30',
+  };
 
   const badgeIcons: Record<string, any> = {
     top: Trophy,
     verified: CheckCircle,
-    rising: TrendingUp
-  }
+    rising: TrendingUp,
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 p-6">
@@ -208,7 +221,9 @@ const SocialTrading = () => {
               <Users className="w-8 h-8 text-purple-400" />
               <div>
                 <p className="text-sm text-slate-400">Total Copiers</p>
-                <p className="text-2xl font-bold text-white">{traders.reduce((sum, t) => sum + t.copiers, 0)}</p>
+                <p className="text-2xl font-bold text-white">
+                  {traders.reduce((sum, t) => sum + t.copiers, 0)}
+                </p>
               </div>
             </div>
           </div>
@@ -217,7 +232,9 @@ const SocialTrading = () => {
               <TrendingUp className="w-8 h-8 text-green-400" />
               <div>
                 <p className="text-sm text-slate-400">Avg ROI</p>
-                <p className="text-2xl font-bold text-green-400">{(traders.reduce((sum, t) => sum + t.roi, 0) / traders.length).toFixed(1)}%</p>
+                <p className="text-2xl font-bold text-green-400">
+                  {(traders.reduce((sum, t) => sum + t.roi, 0) / traders.length).toFixed(1)}%
+                </p>
               </div>
             </div>
           </div>
@@ -226,7 +243,9 @@ const SocialTrading = () => {
               <Trophy className="w-8 h-8 text-yellow-400" />
               <div>
                 <p className="text-sm text-slate-400">Top ROI</p>
-                <p className="text-2xl font-bold text-white">{Math.max(...traders.map(t => t.roi)).toFixed(1)}%</p>
+                <p className="text-2xl font-bold text-white">
+                  {Math.max(...traders.map(t => t.roi)).toFixed(1)}%
+                </p>
               </div>
             </div>
           </div>
@@ -253,7 +272,11 @@ const SocialTrading = () => {
                   : 'bg-slate-800/50 text-slate-300 hover:bg-slate-700/50'
               }`}
             >
-              {tab === 'traders' ? 'Top Traders' : tab === 'my-copies' ? 'My Copies' : 'My Portfolio'}
+              {tab === 'traders'
+                ? 'Top Traders'
+                : tab === 'my-copies'
+                  ? 'My Copies'
+                  : 'My Portfolio'}
             </button>
           ))}
         </div>
@@ -266,7 +289,7 @@ const SocialTrading = () => {
                 <Filter className="w-5 h-5 text-slate-400 self-center" />
                 <select
                   value={selectedRisk}
-                  onChange={(e) => setSelectedRisk(e.target.value)}
+                  onChange={e => setSelectedRisk(e.target.value)}
                   className="bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                 >
                   <option value="all">All Risk Levels</option>
@@ -276,7 +299,7 @@ const SocialTrading = () => {
                 </select>
                 <select
                   value={selectedBadge}
-                  onChange={(e) => setSelectedBadge(e.target.value)}
+                  onChange={e => setSelectedBadge(e.target.value)}
                   className="bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                 >
                   <option value="all">All Traders</option>
@@ -304,12 +327,20 @@ const SocialTrading = () => {
                           <h3 className="text-lg font-bold text-white">{trader.username}</h3>
                           {trader.isVerified && <CheckCircle className="w-4 h-4 text-blue-400" />}
                           {trader.badge && (
-                            <span className={`px-2 py-0.5 rounded-full text-xs ${
-                              trader.badge === 'top' ? 'bg-yellow-500/20 text-yellow-400' :
-                              trader.badge === 'verified' ? 'bg-blue-500/20 text-blue-400' :
-                              'bg-green-500/20 text-green-400'
-                            }`}>
-                              {trader.badge === 'top' ? '🏆 Top' : trader.badge === 'verified' ? '✓ Verified' : '📈 Rising'}
+                            <span
+                              className={`px-2 py-0.5 rounded-full text-xs ${
+                                trader.badge === 'top'
+                                  ? 'bg-yellow-500/20 text-yellow-400'
+                                  : trader.badge === 'verified'
+                                    ? 'bg-blue-500/20 text-blue-400'
+                                    : 'bg-green-500/20 text-green-400'
+                              }`}
+                            >
+                              {trader.badge === 'top'
+                                ? '🏆 Top'
+                                : trader.badge === 'verified'
+                                  ? '✓ Verified'
+                                  : '📈 Rising'}
                             </span>
                           )}
                         </div>
@@ -328,7 +359,9 @@ const SocialTrading = () => {
                     </div>
                     <div className="bg-slate-900/50 rounded-lg p-3">
                       <p className="text-slate-400 text-sm">Profit</p>
-                      <p className="text-xl font-bold text-white">${trader.profit.toLocaleString()}</p>
+                      <p className="text-xl font-bold text-white">
+                        ${trader.profit.toLocaleString()}
+                      </p>
                     </div>
                     <div className="bg-slate-900/50 rounded-lg p-3">
                       <p className="text-slate-400 text-sm">Win Rate</p>
@@ -341,7 +374,9 @@ const SocialTrading = () => {
                   </div>
 
                   <div className="flex flex-wrap gap-2 mb-4">
-                    <span className={`px-2 py-1 rounded-full text-xs border ${riskColors[trader.riskLevel]}`}>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs border ${riskColors[trader.riskLevel]}`}
+                    >
                       {trader.riskLevel.toUpperCase()} RISK
                     </span>
                     <span className="px-2 py-1 bg-slate-700/50 text-slate-300 rounded-full text-xs">
@@ -374,17 +409,30 @@ const SocialTrading = () => {
               <thead>
                 <tr className="border-b border-slate-700/50">
                   <th className="px-6 py-4 text-left text-sm font-medium text-slate-400">Trader</th>
-                  <th className="px-6 py-4 text-right text-sm font-medium text-slate-400">Amount</th>
-                  <th className="px-6 py-4 text-right text-sm font-medium text-slate-400">Profit</th>
+                  <th className="px-6 py-4 text-right text-sm font-medium text-slate-400">
+                    Amount
+                  </th>
+                  <th className="px-6 py-4 text-right text-sm font-medium text-slate-400">
+                    Profit
+                  </th>
                   <th className="px-6 py-4 text-right text-sm font-medium text-slate-400">ROI</th>
-                  <th className="px-6 py-4 text-center text-sm font-medium text-slate-400">Auto-Copy</th>
-                  <th className="px-6 py-4 text-center text-sm font-medium text-slate-400">Risk Multiplier</th>
-                  <th className="px-6 py-4 text-center text-sm font-medium text-slate-400">Actions</th>
+                  <th className="px-6 py-4 text-center text-sm font-medium text-slate-400">
+                    Auto-Copy
+                  </th>
+                  <th className="px-6 py-4 text-center text-sm font-medium text-slate-400">
+                    Risk Multiplier
+                  </th>
+                  <th className="px-6 py-4 text-center text-sm font-medium text-slate-400">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {myCopies.map(copy => (
-                  <tr key={copy.traderId} className="border-b border-slate-700/30 hover:bg-slate-700/30 transition-colors">
+                  <tr
+                    key={copy.traderId}
+                    className="border-b border-slate-700/30 hover:bg-slate-700/30 transition-colors"
+                  >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold">
@@ -397,17 +445,25 @@ const SocialTrading = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 text-right text-white">${copy.amount}</td>
-                    <td className="px-6 py-4 text-right text-green-400">+${copy.profit.toFixed(2)}</td>
+                    <td className="px-6 py-4 text-right text-green-400">
+                      +${copy.profit.toFixed(2)}
+                    </td>
                     <td className="px-6 py-4 text-right text-green-400">+{copy.roi.toFixed(2)}%</td>
                     <td className="px-6 py-4 text-center">
                       {copy.autoCopy ? (
-                        <span className="px-2 py-1 bg-green-500/20 text-green-400 rounded-full text-xs">ON</span>
+                        <span className="px-2 py-1 bg-green-500/20 text-green-400 rounded-full text-xs">
+                          ON
+                        </span>
                       ) : (
-                        <span className="px-2 py-1 bg-slate-700/50 text-slate-400 rounded-full text-xs">OFF</span>
+                        <span className="px-2 py-1 bg-slate-700/50 text-slate-400 rounded-full text-xs">
+                          OFF
+                        </span>
                       )}
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <span className="px-2 py-1 bg-purple-500/20 text-purple-300 rounded-full text-xs">{copy.riskMultiplier}x</span>
+                      <span className="px-2 py-1 bg-purple-500/20 text-purple-300 rounded-full text-xs">
+                        {copy.riskMultiplier}x
+                      </span>
                     </td>
                     <td className="px-6 py-4 text-center">
                       <div className="flex items-center justify-center gap-2">
@@ -433,22 +489,28 @@ const SocialTrading = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
               <div className="bg-slate-900/50 rounded-lg p-4">
                 <p className="text-slate-400">Total Invested</p>
-                <p className="text-2xl font-bold text-white">${myCopies.reduce((sum, c) => sum + c.amount, 0).toLocaleString()}</p>
+                <p className="text-2xl font-bold text-white">
+                  ${myCopies.reduce((sum, c) => sum + c.amount, 0).toLocaleString()}
+                </p>
               </div>
               <div className="bg-slate-900/50 rounded-lg p-4">
                 <p className="text-slate-400">Total Profit</p>
-                <p className="text-2xl font-bold text-green-400">+${myCopies.reduce((sum, c) => sum + c.profit, 0).toFixed(2)}</p>
+                <p className="text-2xl font-bold text-green-400">
+                  +${myCopies.reduce((sum, c) => sum + c.profit, 0).toFixed(2)}
+                </p>
               </div>
               <div className="bg-slate-900/50 rounded-lg p-4">
                 <p className="text-slate-400">Average ROI</p>
-                <p className="text-2xl font-bold text-purple-400">+{(myCopies.reduce((sum, c) => sum + c.roi, 0) / myCopies.length).toFixed(2)}%</p>
+                <p className="text-2xl font-bold text-purple-400">
+                  +{(myCopies.reduce((sum, c) => sum + c.roi, 0) / myCopies.length).toFixed(2)}%
+                </p>
               </div>
             </div>
           </div>
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SocialTrading
+export default SocialTrading;

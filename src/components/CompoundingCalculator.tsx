@@ -7,54 +7,63 @@ const CompoundingCalculator: React.FC = () => {
   const [period, setPeriod] = useState(12);
   const [compounding, setCompounding] = useState<'daily' | 'weekly' | 'monthly'>('monthly');
   const [contributions, setContributions] = useState(0);
-  const [contributionFrequency, setContributionFrequency] = useState<'monthly' | 'weekly'>('monthly');
+  const [contributionFrequency, setContributionFrequency] = useState<'monthly' | 'weekly'>(
+    'monthly'
+  );
 
   const calculateCompound = () => {
     const n = compounding === 'daily' ? 365 : compounding === 'weekly' ? 52 : 12;
     const r = apy / 100;
     const t = period / 12;
-    
-    let finalAmount = initialAmount * Math.pow((1 + r/n), n * t);
-    
+
+    let finalAmount = initialAmount * Math.pow(1 + r / n, n * t);
+
     // Add contributions
     if (contributions > 0) {
       const contrFreq = contributionFrequency === 'monthly' ? 12 : 52;
       const periods = contributionFrequency === 'monthly' ? period : period * 4;
       for (let i = 1; i <= periods; i++) {
-        finalAmount += contributions * Math.pow((1 + r/n), n * (t - (i / contrFreq)));
+        finalAmount += contributions * Math.pow(1 + r / n, n * (t - i / contrFreq));
       }
     }
-    
+
     return finalAmount;
   };
 
-  const calculateYearlyBreakdown = (): Array<{year: number; amount: number; earnings: number}> => {
-    const breakdown: Array<{year: number; amount: number; earnings: number}> = [];
+  const calculateYearlyBreakdown = (): Array<{
+    year: number;
+    amount: number;
+    earnings: number;
+  }> => {
+    const breakdown: Array<{ year: number; amount: number; earnings: number }> = [];
     const n = compounding === 'daily' ? 365 : compounding === 'weekly' ? 52 : 12;
     const r = apy / 100;
-    
+
     let amount = initialAmount;
     breakdown.push({ year: 0, amount, earnings: 0 });
-    
+
     for (let year = 1; year <= period; year++) {
       const t = year;
-      amount = initialAmount * Math.pow((1 + r/n), n * t);
-      
+      amount = initialAmount * Math.pow(1 + r / n, n * t);
+
       // Add contributions for this year
       if (contributions > 0) {
         const contrFreq = contributionFrequency === 'monthly' ? 12 : 52;
         for (let m = 1; m <= contrFreq; m++) {
-          amount += contributions * Math.pow((1 + r/n), n * (t - (m / contrFreq)));
+          amount += contributions * Math.pow(1 + r / n, n * (t - m / contrFreq));
         }
       }
-      
+
       breakdown.push({
         year,
         amount,
-        earnings: amount - initialAmount - (contributions * (contributionFrequency === 'monthly' ? year * 12 : year * 52))
+        earnings:
+          amount -
+          initialAmount -
+          contributions * (contributionFrequency === 'monthly' ? year * 12 : year * 52),
       });
     }
-    
+
     return breakdown;
   };
 
@@ -92,29 +101,29 @@ const CompoundingCalculator: React.FC = () => {
                   max="10000"
                   step="100"
                   value={initialAmount}
-                  onChange={(e) => setInitialAmount(Number(e.target.value))}
+                  onChange={e => setInitialAmount(Number(e.target.value))}
                   className="w-full"
                 />
                 <div className="flex gap-2 mt-2">
                   <input
                     type="number"
                     value={initialAmount}
-                    onChange={(e) => setInitialAmount(Number(e.target.value))}
+                    onChange={e => setInitialAmount(Number(e.target.value))}
                     className="flex-1 px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
                   />
-                  <button 
+                  <button
                     onClick={() => setInitialAmount(initialAmount + 100)}
                     className="px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg"
                   >
                     <Plus className="w-4 h-4" />
                   </button>
-                  <button 
+                  <button
                     onClick={() => setInitialAmount(Math.max(0, initialAmount - 100))}
                     className="px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg"
                   >
                     <Minus className="w-4 h-4" />
                   </button>
-                  <button 
+                  <button
                     onClick={() => setInitialAmount(1000)}
                     className="px-3 py-2 bg-slate-600 hover:bg-slate-500 text-white rounded-lg flex items-center gap-1"
                   >
@@ -136,7 +145,7 @@ const CompoundingCalculator: React.FC = () => {
                   max="200"
                   step="1"
                   value={apy}
-                  onChange={(e) => setApy(Number(e.target.value))}
+                  onChange={e => setApy(Number(e.target.value))}
                   className="w-full"
                 />
               </div>
@@ -145,7 +154,9 @@ const CompoundingCalculator: React.FC = () => {
               <div>
                 <div className="flex justify-between mb-2">
                   <label className="text-slate-400">Investment Period</label>
-                  <span className="text-white font-bold">{period} {period === 1 ? 'year' : 'years'}</span>
+                  <span className="text-white font-bold">
+                    {period} {period === 1 ? 'year' : 'years'}
+                  </span>
                 </div>
                 <input
                   type="range"
@@ -153,7 +164,7 @@ const CompoundingCalculator: React.FC = () => {
                   max="30"
                   step="1"
                   value={period}
-                  onChange={(e) => setPeriod(Number(e.target.value))}
+                  onChange={e => setPeriod(Number(e.target.value))}
                   className="w-full"
                 />
               </div>
@@ -162,13 +173,13 @@ const CompoundingCalculator: React.FC = () => {
               <div>
                 <label className="text-slate-400 block mb-2">Compounding Frequency</label>
                 <div className="grid grid-cols-3 gap-2">
-                  {['daily', 'weekly', 'monthly'].map((freq) => (
+                  {['daily', 'weekly', 'monthly'].map(freq => (
                     <button
                       key={freq}
                       onClick={() => setCompounding(freq as any)}
                       className={`py-2 rounded-lg capitalize transition-all ${
-                        compounding === freq 
-                          ? 'bg-purple-600 text-white' 
+                        compounding === freq
+                          ? 'bg-purple-600 text-white'
                           : 'bg-slate-700 text-slate-400 hover:bg-slate-600'
                       }`}
                     >
@@ -190,7 +201,7 @@ const CompoundingCalculator: React.FC = () => {
                   max="1000"
                   step="50"
                   value={contributions}
-                  onChange={(e) => setContributions(Number(e.target.value))}
+                  onChange={e => setContributions(Number(e.target.value))}
                   className="w-full"
                 />
                 {contributions > 0 && (
@@ -198,8 +209,8 @@ const CompoundingCalculator: React.FC = () => {
                     <button
                       onClick={() => setContributionFrequency('monthly')}
                       className={`py-2 rounded-lg transition-all ${
-                        contributionFrequency === 'monthly' 
-                          ? 'bg-purple-600 text-white' 
+                        contributionFrequency === 'monthly'
+                          ? 'bg-purple-600 text-white'
                           : 'bg-slate-700 text-slate-400 hover:bg-slate-600'
                       }`}
                     >
@@ -208,8 +219,8 @@ const CompoundingCalculator: React.FC = () => {
                     <button
                       onClick={() => setContributionFrequency('weekly')}
                       className={`py-2 rounded-lg transition-all ${
-                        contributionFrequency === 'weekly' 
-                          ? 'bg-purple-600 text-white' 
+                        contributionFrequency === 'weekly'
+                          ? 'bg-purple-600 text-white'
                           : 'bg-slate-700 text-slate-400 hover:bg-slate-600'
                       }`}
                     >
@@ -239,7 +250,9 @@ const CompoundingCalculator: React.FC = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="p-4 bg-slate-700/50 rounded-xl">
                     <p className="text-slate-400 mb-1">Initial Investment</p>
-                    <p className="text-2xl font-bold text-white">${initialAmount.toLocaleString()}</p>
+                    <p className="text-2xl font-bold text-white">
+                      ${initialAmount.toLocaleString()}
+                    </p>
                   </div>
                   <div className="p-4 bg-green-900/20 border border-green-800/50 rounded-xl">
                     <p className="text-slate-400 mb-1">Total Earnings</p>
@@ -250,10 +263,12 @@ const CompoundingCalculator: React.FC = () => {
                 <div className="p-4 bg-slate-700/50 rounded-xl">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-slate-400">ROI</span>
-                    <span className="text-green-400 font-bold text-xl">{((earnings / initialAmount) * 100).toFixed(1)}%</span>
+                    <span className="text-green-400 font-bold text-xl">
+                      {((earnings / initialAmount) * 100).toFixed(1)}%
+                    </span>
                   </div>
                   <div className="h-3 bg-slate-600 rounded-full overflow-hidden">
-                    <div 
+                    <div
                       className="h-full bg-gradient-to-r from-green-500 to-emerald-500 transition-all"
                       style={{ width: `${Math.min((earnings / initialAmount) * 100, 100)}%` }}
                     ></div>
@@ -278,8 +293,12 @@ const CompoundingCalculator: React.FC = () => {
                     {breakdown.map((row, i) => (
                       <tr key={i} className="border-b border-slate-700/50">
                         <td className="py-3 text-slate-300">{row.year}</td>
-                        <td className="py-3 text-right text-white font-medium">${row.amount.toFixed(2)}</td>
-                        <td className="py-3 text-right text-green-400">+${row.earnings.toFixed(2)}</td>
+                        <td className="py-3 text-right text-white font-medium">
+                          ${row.amount.toFixed(2)}
+                        </td>
+                        <td className="py-3 text-right text-green-400">
+                          +${row.earnings.toFixed(2)}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -295,8 +314,9 @@ const CompoundingCalculator: React.FC = () => {
           <div>
             <h4 className="text-white font-medium mb-1">The Power of Compounding</h4>
             <p className="text-slate-300 text-sm">
-              Compound interest is the eighth wonder of the world. The more frequently your earnings compound, 
-              the faster your wealth grows. Consider reinvesting your earnings for maximum returns.
+              Compound interest is the eighth wonder of the world. The more frequently your earnings
+              compound, the faster your wealth grows. Consider reinvesting your earnings for maximum
+              returns.
             </p>
           </div>
         </div>

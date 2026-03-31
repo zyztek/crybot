@@ -8,13 +8,15 @@ const newsItems = [
     category: 'Market',
     categoryZH: '市场',
     categoryColor: 'green',
-    content: 'Bitcoin has surged past $100,000 for the first time, marking a historic milestone. Analysts predict continued growth as institutional adoption accelerates.',
-    contentZH: '比特币首次突破10万美元，创下历史里程碑。分析师预测随着机构采用加速，价格将继续上涨。',
+    content:
+      'Bitcoin has surged past $100,000 for the first time, marking a historic milestone. Analysts predict continued growth as institutional adoption accelerates.',
+    contentZH:
+      '比特币首次突破10万美元，创下历史里程碑。分析师预测随着机构采用加速，价格将继续上涨。',
     source: 'CryptoNews',
     time: '2 hours ago',
     timeZH: '2小时前',
     trending: true,
-    image: '📈'
+    image: '📈',
   },
   {
     id: 2,
@@ -23,13 +25,14 @@ const newsItems = [
     category: 'Technology',
     categoryZH: '技术',
     categoryColor: 'blue',
-    content: 'Ethereum Foundation reveals plans for the next major network upgrade, promising significantly reduced gas fees and faster transactions.',
+    content:
+      'Ethereum Foundation reveals plans for the next major network upgrade, promising significantly reduced gas fees and faster transactions.',
     contentZH: '以太坊基金会公布下一次重大网络升级计划，承诺大幅降低Gas费用并加快交易速度。',
     source: 'ETH Daily',
     time: '4 hours ago',
     timeZH: '4小时前',
     trending: true,
-    image: '⚡'
+    image: '⚡',
   },
   {
     id: 3,
@@ -38,13 +41,14 @@ const newsItems = [
     category: 'Platform',
     categoryZH: '平台',
     categoryColor: 'purple',
-    content: 'We are excited to announce our new VIP membership tiers with exclusive benefits including multipliers, priority withdrawals, and premium faucets.',
+    content:
+      'We are excited to announce our new VIP membership tiers with exclusive benefits including multipliers, priority withdrawals, and premium faucets.',
     contentZH: '我们很高兴宣布新的VIP会员等级，提供独家福利包括乘数、优先提现和高级水龙头。',
     source: 'Official',
     time: '6 hours ago',
     timeZH: '6小时前',
     trending: false,
-    image: '🎉'
+    image: '🎉',
   },
   {
     id: 4,
@@ -53,13 +57,14 @@ const newsItems = [
     category: 'Market',
     categoryZH: '市场',
     categoryColor: 'green',
-    content: 'Solana has processed over 40 million transactions in a single day, showcasing its high-speed capabilities and growing ecosystem.',
+    content:
+      'Solana has processed over 40 million transactions in a single day, showcasing its high-speed capabilities and growing ecosystem.',
     contentZH: 'Solana在一天内处理了超过4000万笔交易，展示了其高速能力和不断增长的生态系统。',
     source: 'Solana News',
     time: '8 hours ago',
     timeZH: '8小时前',
     trending: true,
-    image: '🚀'
+    image: '🚀',
   },
   {
     id: 5,
@@ -68,13 +73,14 @@ const newsItems = [
     category: 'Update',
     categoryZH: '更新',
     categoryColor: 'yellow',
-    content: 'Our new Mega Yield staking pool offers up to 45% APY with a 90-day lock period. Start earning passive income today!',
+    content:
+      'Our new Mega Yield staking pool offers up to 45% APY with a 90-day lock period. Start earning passive income today!',
     contentZH: '我们新的Mega Yield质押池提供高达45%的APY，锁定期90天。今天就开始赚取被动收入！',
     source: 'Official',
     time: '12 hours ago',
     timeZH: '12小时前',
     trending: false,
-    image: '💎'
+    image: '💎',
   },
   {
     id: 6,
@@ -83,14 +89,15 @@ const newsItems = [
     category: 'Community',
     categoryZH: '社区',
     categoryColor: 'orange',
-    content: 'The Dogecoin community has reached 5 million active wallets, continuing its growth as one of the most beloved cryptocurrencies.',
+    content:
+      'The Dogecoin community has reached 5 million active wallets, continuing its growth as one of the most beloved cryptocurrencies.',
     contentZH: '狗狗币社区已达到500万活跃钱包，继续作为最受喜爱的加密货币之一增长。',
     source: 'DOGE Times',
     time: '1 day ago',
     timeZH: '1天前',
     trending: false,
-    image: '🐕'
-  }
+    image: '🐕',
+  },
 ];
 
 const quickStats = [
@@ -111,7 +118,8 @@ export default function News({ language }: { language: 'zh' | 'en' }) {
 
   const t = {
     title: language === 'zh' ? '加密新闻' : 'Crypto News',
-    subtitle: language === 'zh' ? '最新的加密货币和市场更新' : 'Latest cryptocurrency and market updates',
+    subtitle:
+      language === 'zh' ? '最新的加密货币和市场更新' : 'Latest cryptocurrency and market updates',
     trending: language === 'zh' ? '热门' : 'Trending',
     readMore: language === 'zh' ? '阅读更多' : 'Read More',
     allNews: language === 'zh' ? '所有新闻' : 'All News',
@@ -144,9 +152,11 @@ export default function News({ language }: { language: 'zh' | 'en' }) {
             <p className="text-gray-400 text-sm">{language === 'zh' ? stat.labelZH : stat.label}</p>
             <div className="flex items-center justify-between mt-2">
               <span className="text-xl font-bold text-white">{stat.value}</span>
-              <span className={`text-sm font-medium flex items-center gap-1 ${
-                stat.isUp ? 'text-green-400' : 'text-red-400'
-              }`}>
+              <span
+                className={`text-sm font-medium flex items-center gap-1 ${
+                  stat.isUp ? 'text-green-400' : 'text-red-400'
+                }`}
+              >
                 {stat.isUp ? '↑' : '↓'} {stat.change}
               </span>
             </div>
@@ -160,18 +170,23 @@ export default function News({ language }: { language: 'zh' | 'en' }) {
           {t.trending}
         </h2>
         <div className="grid lg:grid-cols-3 gap-4">
-          {trendingNews.map((item) => (
-            <div key={item.id} className="group p-5 bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-2xl border border-slate-700 hover:border-orange-500/50 transition-all duration-300 relative overflow-hidden">
+          {trendingNews.map(item => (
+            <div
+              key={item.id}
+              className="group p-5 bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-2xl border border-slate-700 hover:border-orange-500/50 transition-all duration-300 relative overflow-hidden"
+            >
               {item.trending && (
                 <div className="absolute top-4 right-4 w-8 h-8 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center">
                   <Zap className="w-4 h-4 text-white" />
                 </div>
               )}
-              
+
               <div className="text-5xl mb-4">{item.image}</div>
-              
+
               <div className="flex items-center gap-2 mb-3">
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${categoryColors[item.categoryColor]}`}>
+                <span
+                  className={`px-2 py-1 rounded-full text-xs font-medium ${categoryColors[item.categoryColor]}`}
+                >
                   {language === 'zh' ? item.categoryZH : item.category}
                 </span>
               </div>
@@ -179,7 +194,7 @@ export default function News({ language }: { language: 'zh' | 'en' }) {
               <h3 className="text-lg font-bold text-white mb-2 line-clamp-2">
                 {language === 'zh' ? item.titleZH : item.title}
               </h3>
-              
+
               <p className="text-gray-400 text-sm mb-4 line-clamp-2">
                 {language === 'zh' ? item.contentZH : item.content}
               </p>
@@ -205,18 +220,22 @@ export default function News({ language }: { language: 'zh' | 'en' }) {
           {t.latest}
         </h2>
         <div className="space-y-4">
-          {newsItems.slice(0, 4).map((item) => (
-            <div 
+          {newsItems.slice(0, 4).map(item => (
+            <div
               key={item.id}
               className="group p-4 bg-slate-800/50 rounded-xl border border-slate-700 hover:border-slate-500/50 transition-all duration-300 flex gap-4"
             >
-              <div className={`w-16 h-16 bg-gradient-to-br ${categoryColors[item.categoryColor].replace('/20', '/10')} rounded-xl flex items-center justify-center text-3xl shrink-0 group-hover:scale-110 transition-transform`}>
+              <div
+                className={`w-16 h-16 bg-gradient-to-br ${categoryColors[item.categoryColor].replace('/20', '/10')} rounded-xl flex items-center justify-center text-3xl shrink-0 group-hover:scale-110 transition-transform`}
+              >
                 {item.image}
               </div>
-              
+
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${categoryColors[item.categoryColor]}`}>
+                  <span
+                    className={`px-2 py-0.5 rounded-full text-xs font-medium ${categoryColors[item.categoryColor]}`}
+                  >
                     {language === 'zh' ? item.categoryZH : item.category}
                   </span>
                   {item.trending && (
@@ -230,7 +249,7 @@ export default function News({ language }: { language: 'zh' | 'en' }) {
                 <h3 className="text-md font-bold text-white mb-1 line-clamp-1">
                   {language === 'zh' ? item.titleZH : item.title}
                 </h3>
-                
+
                 <p className="text-gray-400 text-sm line-clamp-1 mb-2">
                   {language === 'zh' ? item.contentZH : item.content}
                 </p>

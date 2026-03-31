@@ -167,19 +167,27 @@ export default function Layer2Explorers() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'from-green-600/20 to-emerald-600/20 border-green-500/30';
-      case 'beta': return 'from-yellow-600/20 to-amber-600/20 border-yellow-500/30';
-      case 'coming': return 'from-gray-600/20 to-slate-600/20 border-gray-500/30';
-      default: return 'from-blue-600/20 to-cyan-600/20 border-blue-500/30';
+      case 'active':
+        return 'from-green-600/20 to-emerald-600/20 border-green-500/30';
+      case 'beta':
+        return 'from-yellow-600/20 to-amber-600/20 border-yellow-500/30';
+      case 'coming':
+        return 'from-gray-600/20 to-slate-600/20 border-gray-500/30';
+      default:
+        return 'from-blue-600/20 to-cyan-600/20 border-blue-500/30';
     }
   };
 
   const getStatusBadgeColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-green-600/20 text-green-400';
-      case 'beta': return 'bg-yellow-600/20 text-yellow-400';
-      case 'coming': return 'bg-gray-600/20 text-gray-400';
-      default: return 'bg-blue-600/20 text-blue-400';
+      case 'active':
+        return 'bg-green-600/20 text-green-400';
+      case 'beta':
+        return 'bg-yellow-600/20 text-yellow-400';
+      case 'coming':
+        return 'bg-gray-600/20 text-gray-400';
+      default:
+        return 'bg-blue-600/20 text-blue-400';
     }
   };
 
@@ -227,7 +235,9 @@ export default function Layer2Explorers() {
             <Activity className="w-6 h-6 text-blue-400" />
             <span className="text-gray-400 text-sm">Active Solutions</span>
           </div>
-          <div className="text-2xl font-bold text-white">{solutions.filter(s => s.status === 'active').length}</div>
+          <div className="text-2xl font-bold text-white">
+            {solutions.filter(s => s.status === 'active').length}
+          </div>
         </div>
 
         <div className="bg-gradient-to-br from-yellow-600/20 to-amber-600/20 border border-yellow-500/30 backdrop-blur-lg rounded-xl p-5">
@@ -241,7 +251,7 @@ export default function Layer2Explorers() {
 
       {/* Solutions Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {solutions.map((solution) => (
+        {solutions.map(solution => (
           <div
             key={solution.id}
             className={`bg-gradient-to-br ${getStatusColor(solution.status)} border backdrop-blur-lg rounded-xl p-5 cursor-pointer hover:scale-105 transition-transform`}
@@ -258,7 +268,9 @@ export default function Layer2Explorers() {
                   <span className="text-gray-400 text-xs">{solution.chain}</span>
                 </div>
               </div>
-              <span className={`px-2 py-1 text-xs rounded-full font-medium ${getStatusBadgeColor(solution.status)}`}>
+              <span
+                className={`px-2 py-1 text-xs rounded-full font-medium ${getStatusBadgeColor(solution.status)}`}
+              >
                 {text.status[solution.status]}
               </span>
             </div>
@@ -291,8 +303,11 @@ export default function Layer2Explorers() {
 
             {/* Features */}
             <div className="flex flex-wrap gap-1">
-              {solution.features.slice(0, 2).map((feature) => (
-                <span key={feature} className="text-xs bg-slate-600/50 text-gray-300 px-2 py-1 rounded">
+              {solution.features.slice(0, 2).map(feature => (
+                <span
+                  key={feature}
+                  className="text-xs bg-slate-600/50 text-gray-300 px-2 py-1 rounded"
+                >
                   {feature}
                 </span>
               ))}
@@ -317,7 +332,9 @@ export default function Layer2Explorers() {
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-white">{selectedSolution.name}</h2>
-                  <span className={`px-3 py-1 text-sm rounded-full font-medium ${getStatusBadgeColor(selectedSolution.status)}`}>
+                  <span
+                    className={`px-3 py-1 text-sm rounded-full font-medium ${getStatusBadgeColor(selectedSolution.status)}`}
+                  >
                     {text.status[selectedSolution.status]}
                   </span>
                 </div>
@@ -342,7 +359,9 @@ export default function Layer2Explorers() {
               </div>
               <div className="bg-slate-700/50 p-4 rounded-lg">
                 <span className="text-gray-400 text-sm">{text.tps}</span>
-                <div className="text-xl font-bold text-white">{selectedSolution.tps.toLocaleString()}</div>
+                <div className="text-xl font-bold text-white">
+                  {selectedSolution.tps.toLocaleString()}
+                </div>
               </div>
               <div className="bg-slate-700/50 p-4 rounded-lg">
                 <span className="text-gray-400 text-sm">{text.tvl}</span>
@@ -365,8 +384,11 @@ export default function Layer2Explorers() {
                 {text.features}
               </h3>
               <div className="grid grid-cols-2 gap-2">
-                {selectedSolution.features.map((feature) => (
-                  <div key={feature} className="flex items-center gap-2 bg-slate-700/50 p-3 rounded-lg">
+                {selectedSolution.features.map(feature => (
+                  <div
+                    key={feature}
+                    className="flex items-center gap-2 bg-slate-700/50 p-3 rounded-lg"
+                  >
                     <CheckCircle className="w-4 h-4 text-green-400" />
                     <span className="text-gray-300">{feature}</span>
                   </div>

@@ -53,7 +53,7 @@ export const texts = {
     login: 'Iniciar Sesión',
     register: 'Registrarse',
     viewMore: 'Ver Más',
-    connect: 'Conectar'
+    connect: 'Conectar',
   },
   en: {
     dashboard: 'Dashboard',
@@ -109,8 +109,8 @@ export const texts = {
     login: 'Login',
     register: 'Register',
     viewMore: 'View More',
-    connect: 'Connect'
-  }
-}
+    connect: 'Connect',
+  },
+};
 
-export type TranslationTexts = Partial<typeof texts['en']>
+export type TranslationTexts = Partial<(typeof texts)['en']>;

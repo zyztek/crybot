@@ -1,7 +1,7 @@
-import { create } from 'zustand'
-import type { StateCreator } from 'zustand'
-import type { User } from '@/types'
-import { texts } from '@/i18n/translations'
+import { create } from 'zustand';
+import type { StateCreator } from 'zustand';
+import type { User } from '@/types';
+import { texts } from '@/i18n/translations';
 
 export const INITIAL_USER: User = {
   username: 'CryptoUser123',
@@ -14,13 +14,13 @@ export const INITIAL_USER: User = {
   twoFactorEnabled: true,
   referralCode: 'CRYPTO2024',
   totalReferrals: 24,
-  referralEarnings: '0.00450 BTC'
-}
+  referralEarnings: '0.00450 BTC',
+};
 
 export interface UserState {
-  user: User
-  notifications: number
-  copyReferralCode: () => void
+  user: User;
+  notifications: number;
+  copyReferralCode: () => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -28,11 +28,11 @@ export const createUserStore: StateCreator<UserState> = (set: any, get: any, api
   user: INITIAL_USER,
   notifications: 3,
   copyReferralCode: () => {
-    const state = get()
-    navigator.clipboard.writeText(state.user.referralCode)
-    set({ notifications: state.notifications + 1 })
+    const state = get();
+    navigator.clipboard.writeText(state.user.referralCode);
+    set({ notifications: state.notifications + 1 });
   },
-})
+});
 
 // Re-export texts for convenience
-export { texts }
+export { texts };

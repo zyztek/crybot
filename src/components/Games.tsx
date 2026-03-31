@@ -1,5 +1,15 @@
 import { useState } from 'react';
-import { Gamepad2, Dice5, Ticket, Target, Trophy, Zap, RefreshCw, Star, ArrowRight } from 'lucide-react';
+import {
+  Gamepad2,
+  Dice5,
+  Ticket,
+  Target,
+  Trophy,
+  Zap,
+  RefreshCw,
+  Star,
+  ArrowRight,
+} from 'lucide-react';
 
 const games = [
   {
@@ -16,7 +26,7 @@ const games = [
     playsToday: 3,
     maxPlays: 5,
     hot: true,
-    category: 'luck'
+    category: 'luck',
   },
   {
     id: 2,
@@ -32,7 +42,7 @@ const games = [
     playsToday: 10,
     maxPlays: 10,
     hot: false,
-    category: 'strategy'
+    category: 'strategy',
   },
   {
     id: 3,
@@ -48,7 +58,7 @@ const games = [
     playsToday: 7,
     maxPlays: 10,
     hot: false,
-    category: 'luck'
+    category: 'luck',
   },
   {
     id: 4,
@@ -64,8 +74,8 @@ const games = [
     playsToday: 0,
     maxPlays: 1,
     hot: true,
-    category: 'skill'
-  }
+    category: 'skill',
+  },
 ];
 
 const recentWins = [
@@ -74,7 +84,15 @@ const recentWins = [
   { user: 'MoonWalker', amount: 0.002, game: 'Grid Hunter', time: '8 min ago' },
 ];
 
-export default function Games({ language, faucetBits, setFaucetBits }: { language: 'zh' | 'en', faucetBits: number, setFaucetBits: (value: number) => void }) {
+export default function Games({
+  language,
+  faucetBits,
+  setFaucetBits,
+}: {
+  language: 'zh' | 'en';
+  faucetBits: number;
+  setFaucetBits: (value: number) => void;
+}) {
   const [selectedGame, setSelectedGame] = useState<number | null>(null);
   const [showGame, setShowGame] = useState(false);
   const [spinResult, setSpinResult] = useState<number | null>(null);
@@ -109,14 +127,14 @@ export default function Games({ language, faucetBits, setFaucetBits }: { languag
     'from-purple-500 to-purple-600',
     'from-pink-500 to-pink-600',
     'from-orange-500 to-orange-600',
-    'from-red-500 to-red-600'
+    'from-red-500 to-red-600',
   ];
 
   const handleSpin = () => {
     if (faucetBits >= 10 && !isSpinning) {
       setFaucetBits(faucetBits - 10);
       setIsSpinning(true);
-      
+
       setTimeout(() => {
         const prizeIndex = Math.floor(Math.random() * 8);
         setSpinResult(prizeIndex);
@@ -130,7 +148,11 @@ export default function Games({ language, faucetBits, setFaucetBits }: { languag
       <div className="min-h-screen bg-slate-950 p-6">
         <div className="max-w-2xl mx-auto space-y-6">
           <button
-            onClick={() => { setShowGame(false); setSelectedGame(null); setSpinResult(null); }}
+            onClick={() => {
+              setShowGame(false);
+              setSelectedGame(null);
+              setSpinResult(null);
+            }}
             className="flex items-center gap-2 text-gray-400 hover:text-white"
           >
             <ArrowRight className="w-5 h-5 rotate-180" />
@@ -148,33 +170,41 @@ export default function Games({ language, faucetBits, setFaucetBits }: { languag
           <div className="flex justify-center">
             <div className="relative w-80 h-80">
               <div className="absolute inset-0 rounded-full border-8 border-slate-700" />
-              <div className="absolute in-0 w-4 h-4 bg-yellow-500 left-1/2 -translate-x-1/2 -translate-y-2" style={{ top: '-8px' }}>
+              <div
+                className="absolute in-0 w-4 h-4 bg-yellow-500 left-1/2 -translate-x-1/2 -translate-y-2"
+                style={{ top: '-8px' }}
+              >
                 <div className="w-0 h-0 border-l-8 border-r-8 border-t-16 border-l-transparent border-r-transparent border-t-yellow-500" />
               </div>
-              
-              <div 
+
+              <div
                 className={`w-full h-full rounded-full transition-transform duration-3000 ease-out flex items-center justify-center ${isSpinning ? 'animate-spin' : ''}`}
-                style={{ transform: spinResult !== null ? `rotate(-${spinResult * 45 + 180}deg)` : 'rotate(0deg)' }}
+                style={{
+                  transform:
+                    spinResult !== null ? `rotate(-${spinResult * 45 + 180}deg)` : 'rotate(0deg)',
+                }}
               >
                 {prizes.map((prize, idx) => {
-                  const angle = (idx * 45) - 22.5;
+                  const angle = idx * 45 - 22.5;
                   const radian = (angle * Math.PI) / 180;
                   const x = Math.sin(radian) * 90;
                   const y = -Math.cos(radian) * 90;
                   const textAngle = angle + 90;
-                  
+
                   return (
                     <div
                       key={idx}
                       className="absolute"
-                      style={{ 
-                        left: '50%', 
+                      style={{
+                        left: '50%',
                         top: '50%',
                         transform: `translate(${x + 60}px, ${y + 60}px) rotate(${textAngle}deg)`,
-                        transformOrigin: '0 0'
+                        transformOrigin: '0 0',
                       }}
                     >
-                      <div className={`w-16 h-28 bg-gradient-to-br ${prizeColors[idx]} rounded flex items-center justify-center text-white font-bold text-xs`}>
+                      <div
+                        className={`w-16 h-28 bg-gradient-to-br ${prizeColors[idx]} rounded flex items-center justify-center text-white font-bold text-xs`}
+                      >
                         {prize > 0 ? `${prize} BTC` : '0'}
                       </div>
                     </div>
@@ -186,7 +216,9 @@ export default function Games({ language, faucetBits, setFaucetBits }: { languag
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <div className="p-6 bg-green-500/90 rounded-2xl text-center animate-bounce">
                     <p className="text-2xl font-bold text-white">{t.congrats}</p>
-                    <p className="text-4xl font-bold text-yellow-400 mt-2">{prizes[spinResult]} BTC</p>
+                    <p className="text-4xl font-bold text-yellow-400 mt-2">
+                      {prizes[spinResult]} BTC
+                    </p>
                     <Zap className="w-12 h-12 text-yellow-400 mx-auto mt-2" />
                   </div>
                 </div>
@@ -221,7 +253,11 @@ export default function Games({ language, faucetBits, setFaucetBits }: { languag
           {spinResult !== null && (
             <div className="text-center">
               <button
-                onClick={() => { setShowGame(false); setSelectedGame(null); setSpinResult(null); }}
+                onClick={() => {
+                  setShowGame(false);
+                  setSelectedGame(null);
+                  setSpinResult(null);
+                }}
                 className="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl"
               >
                 {t.close}
@@ -247,7 +283,7 @@ export default function Games({ language, faucetBits, setFaucetBits }: { languag
         {games.map(game => {
           const Icon = game.icon;
           return (
-            <div 
+            <div
               key={game.id}
               className="group relative p-5 bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-2xl border border-slate-700 hover:border-slate-500/50 transition-all duration-300"
             >
@@ -258,17 +294,25 @@ export default function Games({ language, faucetBits, setFaucetBits }: { languag
                 </div>
               )}
 
-              <div className={`w-16 h-16 bg-gradient-to-br ${game.bgGradient} rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+              <div
+                className={`w-16 h-16 bg-gradient-to-br ${game.bgGradient} rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}
+              >
                 <Icon className={`w-8 h-8 ${game.iconColor}`} />
               </div>
 
-              <h3 className="text-xl font-bold text-white mb-2">{language === 'zh' ? game.nameZH : game.name}</h3>
-              <p className="text-gray-400 text-sm mb-4">{language === 'zh' ? game.descriptionZH : game.description}</p>
+              <h3 className="text-xl font-bold text-white mb-2">
+                {language === 'zh' ? game.nameZH : game.name}
+              </h3>
+              <p className="text-gray-400 text-sm mb-4">
+                {language === 'zh' ? game.descriptionZH : game.description}
+              </p>
 
               <div className="space-y-3 mb-4">
                 <div className="flex justify-between items-center text-sm">
                   <span className="text-gray-400">{t.cost}</span>
-                  <span className={`font-bold ${game.cost === 0 ? 'text-green-400' : 'text-yellow-400'}`}>
+                  <span
+                    className={`font-bold ${game.cost === 0 ? 'text-green-400' : 'text-yellow-400'}`}
+                  >
                     {game.cost === 0 ? t.free : `${game.cost} FaucetBits`}
                   </span>
                 </div>
@@ -278,32 +322,42 @@ export default function Games({ language, faucetBits, setFaucetBits }: { languag
                 </div>
                 <div className="flex justify-between items-center text-sm">
                   <span className="text-gray-400">{t.remaining}</span>
-                  <span className="font-bold text-white">{game.maxPlays - game.playsToday} / {game.maxPlays}</span>
+                  <span className="font-bold text-white">
+                    {game.maxPlays - game.playsToday} / {game.maxPlays}
+                  </span>
                 </div>
               </div>
 
               <div className="w-full h-2 bg-slate-700 rounded-full overflow-hidden mb-4">
-                <div 
+                <div
                   className="h-full bg-gradient-to-r from-blue-500 to-green-500"
                   style={{ width: `${((game.maxPlays - game.playsToday) / game.maxPlays) * 100}%` }}
                 />
               </div>
 
               <button
-                onClick={() => { setSelectedGame(game.id); setShowGame(true); }}
-                disabled={game.playsToday >= game.maxPlays || (game.cost > 0 && faucetBits < game.cost)}
+                onClick={() => {
+                  setSelectedGame(game.id);
+                  setShowGame(true);
+                }}
+                disabled={
+                  game.playsToday >= game.maxPlays || (game.cost > 0 && faucetBits < game.cost)
+                }
                 className={`w-full py-3 rounded-xl font-semibold transition-all ${
                   game.playsToday >= game.maxPlays || (game.cost > 0 && faucetBits < game.cost)
                     ? 'bg-slate-700 text-gray-500 cursor-not-allowed'
                     : 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 text-white'
                 }`}
               >
-                {game.playsToday >= game.maxPlays 
-                  ? (language === 'zh' ? '次数用完' : 'No plays left')
-                  : (game.cost > 0 && faucetBits < game.cost)
-                    ? (language === 'zh' ? '余额不足' : 'Insufficient balance')
-                    : t.play
-                }
+                {game.playsToday >= game.maxPlays
+                  ? language === 'zh'
+                    ? '次数用完'
+                    : 'No plays left'
+                  : game.cost > 0 && faucetBits < game.cost
+                    ? language === 'zh'
+                      ? '余额不足'
+                      : 'Insufficient balance'
+                    : t.play}
               </button>
             </div>
           );
@@ -317,7 +371,10 @@ export default function Games({ language, faucetBits, setFaucetBits }: { languag
         </h2>
         <div className="space-y-3">
           {recentWins.map((win, idx) => (
-            <div key={idx} className="flex items-center justify-between p-3 bg-slate-800/50 rounded-xl">
+            <div
+              key={idx}
+              className="flex items-center justify-between p-3 bg-slate-800/50 rounded-xl"
+            >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center">
                   <Trophy className="w-5 h-5 text-green-400" />

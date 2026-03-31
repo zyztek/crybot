@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { Radar, Search, RefreshCw, DollarSign, Clock, TrendingUp, Star, AlertCircle } from 'lucide-react';
+import {
+  Radar,
+  Search,
+  RefreshCw,
+  DollarSign,
+  Clock,
+  TrendingUp,
+  Star,
+  AlertCircle,
+} from 'lucide-react';
 
 interface Faucet {
   id: number;
@@ -22,23 +31,120 @@ const FaucetScanner: React.FC = () => {
   const [sortBy, setSortBy] = useState<'reward' | 'timer' | 'rating'>('reward');
 
   const faucets: Faucet[] = [
-    { id: 1, name: 'BigBTC Faucet', url: 'bigbtc.faucet', coin: 'BTC', reward: 0.00001234, timer: 60, rating: 4.8, status: 'paying', lastPaid: '2 min ago', dailyClaims: 15420, reliability: 98 },
-    { id: 2, name: 'ETH Rain', url: 'ethrain.io', coin: 'ETH', reward: 0.0001, timer: 45, rating: 4.5, status: 'paying', lastPaid: '5 min ago', dailyClaims: 8930, reliability: 95 },
-    { id: 3, name: 'DogeBits', url: 'dogebits.com', coin: 'DOGE', reward: 5.4, timer: 30, rating: 4.7, status: 'paying', lastPaid: '1 min ago', dailyClaims: 23450, reliability: 97 },
-    { id: 4, name: 'SolanaDrop', url: 'solanadrop.net', coin: 'SOL', reward: 0.005, timer: 90, rating: 4.2, status: 'problem', lastPaid: '2 hours ago', dailyClaims: 4520, reliability: 72 },
-    { id: 5, name: 'LiteFaucet', url: 'litefaucet.org', coin: 'LTC', reward: 0.0015, timer: 60, rating: 4.6, status: 'paying', lastPaid: '3 min ago', dailyClaims: 7230, reliability: 94 },
-    { id: 6, name: 'BNB Rewards', url: 'bnbrewards.io', coin: 'BNB', reward: 0.0008, timer: 120, rating: 4.4, status: 'paying', lastPaid: '10 min ago', dailyClaims: 3120, reliability: 91 },
-    { id: 7, name: 'CryptoGem', url: 'cryptogem.xyz', coin: 'BTC', reward: 0.000008, timer: 180, rating: 3.2, status: 'problem', lastPaid: '6 hours ago', dailyClaims: 890, reliability: 58 },
-    { id: 8, name: 'QuickETH', url: 'quicketh.com', coin: 'ETH', reward: 0.00005, timer: 15, rating: 4.9, status: 'paying', lastPaid: '1 min ago', dailyClaims: 45670, reliability: 99 },
+    {
+      id: 1,
+      name: 'BigBTC Faucet',
+      url: 'bigbtc.faucet',
+      coin: 'BTC',
+      reward: 0.00001234,
+      timer: 60,
+      rating: 4.8,
+      status: 'paying',
+      lastPaid: '2 min ago',
+      dailyClaims: 15420,
+      reliability: 98,
+    },
+    {
+      id: 2,
+      name: 'ETH Rain',
+      url: 'ethrain.io',
+      coin: 'ETH',
+      reward: 0.0001,
+      timer: 45,
+      rating: 4.5,
+      status: 'paying',
+      lastPaid: '5 min ago',
+      dailyClaims: 8930,
+      reliability: 95,
+    },
+    {
+      id: 3,
+      name: 'DogeBits',
+      url: 'dogebits.com',
+      coin: 'DOGE',
+      reward: 5.4,
+      timer: 30,
+      rating: 4.7,
+      status: 'paying',
+      lastPaid: '1 min ago',
+      dailyClaims: 23450,
+      reliability: 97,
+    },
+    {
+      id: 4,
+      name: 'SolanaDrop',
+      url: 'solanadrop.net',
+      coin: 'SOL',
+      reward: 0.005,
+      timer: 90,
+      rating: 4.2,
+      status: 'problem',
+      lastPaid: '2 hours ago',
+      dailyClaims: 4520,
+      reliability: 72,
+    },
+    {
+      id: 5,
+      name: 'LiteFaucet',
+      url: 'litefaucet.org',
+      coin: 'LTC',
+      reward: 0.0015,
+      timer: 60,
+      rating: 4.6,
+      status: 'paying',
+      lastPaid: '3 min ago',
+      dailyClaims: 7230,
+      reliability: 94,
+    },
+    {
+      id: 6,
+      name: 'BNB Rewards',
+      url: 'bnbrewards.io',
+      coin: 'BNB',
+      reward: 0.0008,
+      timer: 120,
+      rating: 4.4,
+      status: 'paying',
+      lastPaid: '10 min ago',
+      dailyClaims: 3120,
+      reliability: 91,
+    },
+    {
+      id: 7,
+      name: 'CryptoGem',
+      url: 'cryptogem.xyz',
+      coin: 'BTC',
+      reward: 0.000008,
+      timer: 180,
+      rating: 3.2,
+      status: 'problem',
+      lastPaid: '6 hours ago',
+      dailyClaims: 890,
+      reliability: 58,
+    },
+    {
+      id: 8,
+      name: 'QuickETH',
+      url: 'quicketh.com',
+      coin: 'ETH',
+      reward: 0.00005,
+      timer: 15,
+      rating: 4.9,
+      status: 'paying',
+      lastPaid: '1 min ago',
+      dailyClaims: 45670,
+      reliability: 99,
+    },
   ];
 
   const getFilteredFaucets = () => {
     let filtered = [...faucets];
 
     if (searchTerm) {
-      filtered = filtered.filter(f => 
-        f.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        f.coin.toLowerCase().includes(searchTerm.toLowerCase())
+      filtered = filtered.filter(
+        f =>
+          f.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          f.coin.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
@@ -62,19 +168,27 @@ const FaucetScanner: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'paying': return 'bg-green-500';
-      case 'problem': return 'bg-yellow-500';
-      case 'scam': return 'bg-red-500';
-      default: return 'bg-gray-500';
+      case 'paying':
+        return 'bg-green-500';
+      case 'problem':
+        return 'bg-yellow-500';
+      case 'scam':
+        return 'bg-red-500';
+      default:
+        return 'bg-gray-500';
     }
   };
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case 'paying': return 'Paying';
-      case 'problem': return 'Problem';
-      case 'scam': return 'Scam';
-      default: return 'Unknown';
+      case 'paying':
+        return 'Paying';
+      case 'problem':
+        return 'Problem';
+      case 'scam':
+        return 'Scam';
+      default:
+        return 'Unknown';
     }
   };
 
@@ -116,7 +230,9 @@ const FaucetScanner: React.FC = () => {
                 <DollarSign className="w-6 h-6 text-green-400" />
               </div>
               <div>
-                <p className="text-green-400 text-2xl font-bold">{faucets.filter(f => f.status === 'paying').length}</p>
+                <p className="text-green-400 text-2xl font-bold">
+                  {faucets.filter(f => f.status === 'paying').length}
+                </p>
                 <p className="text-slate-400 text-sm">Paying</p>
               </div>
             </div>
@@ -127,7 +243,9 @@ const FaucetScanner: React.FC = () => {
                 <AlertCircle className="w-6 h-6 text-yellow-400" />
               </div>
               <div>
-                <p className="text-yellow-400 text-2xl font-bold">{faucets.filter(f => f.status === 'problem').length}</p>
+                <p className="text-yellow-400 text-2xl font-bold">
+                  {faucets.filter(f => f.status === 'problem').length}
+                </p>
                 <p className="text-slate-400 text-sm">Problems</p>
               </div>
             </div>
@@ -138,7 +256,9 @@ const FaucetScanner: React.FC = () => {
                 <AlertCircle className="w-6 h-6 text-red-400" />
               </div>
               <div>
-                <p className="text-red-400 text-2xl font-bold">{faucets.filter(f => f.status === 'scam').length}</p>
+                <p className="text-red-400 text-2xl font-bold">
+                  {faucets.filter(f => f.status === 'scam').length}
+                </p>
                 <p className="text-slate-400 text-sm">Scams</p>
               </div>
             </div>
@@ -167,13 +287,13 @@ const FaucetScanner: React.FC = () => {
                 type="text"
                 placeholder="Search faucets..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={e => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-purple-500"
               />
             </div>
             <select
               value={filter}
-              onChange={(e) => setFilter(e.target.value as any)}
+              onChange={e => setFilter(e.target.value as any)}
               className="px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-purple-500"
             >
               <option value="all">All Status</option>
@@ -183,7 +303,7 @@ const FaucetScanner: React.FC = () => {
             </select>
             <select
               value={coinFilter}
-              onChange={(e) => setCoinFilter(e.target.value)}
+              onChange={e => setCoinFilter(e.target.value)}
               className="px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-purple-500"
             >
               <option value="all">All Coins</option>
@@ -196,7 +316,7 @@ const FaucetScanner: React.FC = () => {
             </select>
             <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
+              onChange={e => setSortBy(e.target.value as any)}
               className="px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-purple-500"
             >
               <option value="reward">Sort by Reward</option>
@@ -221,11 +341,16 @@ const FaucetScanner: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {getFilteredFaucets().map((faucet) => (
-                <tr key={faucet.id} className="border-b border-slate-700/50 hover:bg-slate-700/30 transition-all">
+              {getFilteredFaucets().map(faucet => (
+                <tr
+                  key={faucet.id}
+                  className="border-b border-slate-700/50 hover:bg-slate-700/30 transition-all"
+                >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${getCoinGradient(faucet.coin)} flex items-center justify-center text-white font-bold`}>
+                      <div
+                        className={`w-10 h-10 rounded-lg bg-gradient-to-br ${getCoinGradient(faucet.coin)} flex items-center justify-center text-white font-bold`}
+                      >
                         {faucet.coin[0]}
                       </div>
                       <div>
@@ -240,7 +365,9 @@ const FaucetScanner: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 text-right">
                     <p className="text-white font-medium">
-                      {faucet.reward < 1 ? faucet.reward.toFixed(6) : faucet.reward.toLocaleString()}
+                      {faucet.reward < 1
+                        ? faucet.reward.toFixed(6)
+                        : faucet.reward.toLocaleString()}
                     </p>
                     <p className="text-slate-400 text-xs">{faucet.coin}</p>
                   </td>
@@ -257,23 +384,31 @@ const FaucetScanner: React.FC = () => {
                     </div>
                   </td>
                   <td className="px-6 py-4 text-center">
-                    <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm text-white ${
-                      faucet.status === 'paying' ? 'bg-green-500/20 text-green-400' :
-                      faucet.status === 'problem' ? 'bg-yellow-500/20 text-yellow-400' :
-                      'bg-red-500/20 text-red-400'
-                    }`}>
-                      <span className={`w-2 h-2 rounded-full ${getStatusColor(faucet.status)}`}></span>
+                    <span
+                      className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm text-white ${
+                        faucet.status === 'paying'
+                          ? 'bg-green-500/20 text-green-400'
+                          : faucet.status === 'problem'
+                            ? 'bg-yellow-500/20 text-yellow-400'
+                            : 'bg-red-500/20 text-red-400'
+                      }`}
+                    >
+                      <span
+                        className={`w-2 h-2 rounded-full ${getStatusColor(faucet.status)}`}
+                      ></span>
                       {getStatusText(faucet.status)}
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center gap-2 justify-end">
                       <div className="w-20 bg-slate-700 rounded-full h-2">
-                        <div 
+                        <div
                           className={`h-2 rounded-full ${
-                            faucet.reliability >= 90 ? 'bg-green-500' :
-                            faucet.reliability >= 70 ? 'bg-yellow-500' :
-                            'bg-red-500'
+                            faucet.reliability >= 90
+                              ? 'bg-green-500'
+                              : faucet.reliability >= 70
+                                ? 'bg-yellow-500'
+                                : 'bg-red-500'
                           }`}
                           style={{ width: `${faucet.reliability}%` }}
                         ></div>

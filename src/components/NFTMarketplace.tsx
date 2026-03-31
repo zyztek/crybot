@@ -1,22 +1,34 @@
-import { useState } from 'react'
-import { ShoppingBag, Star, TrendingUp, Clock, DollarSign, ExternalLink, Filter, Search, Image as ImageIcon, Flame, Award } from 'lucide-react'
+import { useState } from 'react';
+import {
+  ShoppingBag,
+  Star,
+  TrendingUp,
+  Clock,
+  DollarSign,
+  ExternalLink,
+  Filter,
+  Search,
+  Image as ImageIcon,
+  Flame,
+  Award,
+} from 'lucide-react';
 
 interface NFTItem {
-  id: number
-  name: string
-  collection: string
-  price: number
-  currency: string
-  image: string
-  creator: string
-  owner: string
-  likes: number
-  views: number
-  bids: number
-  endTime: string
-  category: 'art' | 'music' | 'gaming' | 'collectibles' | 'utility'
-  rarity: 'common' | 'rare' | 'epic' | 'legendary'
-  status: 'live' | 'ending' | 'sold'
+  id: number;
+  name: string;
+  collection: string;
+  price: number;
+  currency: string;
+  image: string;
+  creator: string;
+  owner: string;
+  likes: number;
+  views: number;
+  bids: number;
+  endTime: string;
+  category: 'art' | 'music' | 'gaming' | 'collectibles' | 'utility';
+  rarity: 'common' | 'rare' | 'epic' | 'legendary';
+  status: 'live' | 'ending' | 'sold';
 }
 
 const nftItems: NFTItem[] = [
@@ -35,7 +47,7 @@ const nftItems: NFTItem[] = [
     endTime: '2h 45m',
     category: 'art',
     rarity: 'legendary',
-    status: 'live'
+    status: 'live',
   },
   {
     id: 2,
@@ -52,7 +64,7 @@ const nftItems: NFTItem[] = [
     endTime: '5h 30m',
     category: 'art',
     rarity: 'epic',
-    status: 'live'
+    status: 'live',
   },
   {
     id: 3,
@@ -69,7 +81,7 @@ const nftItems: NFTItem[] = [
     endTime: '1h 15m',
     category: 'gaming',
     rarity: 'rare',
-    status: 'ending'
+    status: 'ending',
   },
   {
     id: 4,
@@ -86,7 +98,7 @@ const nftItems: NFTItem[] = [
     endTime: '12h 00m',
     category: 'art',
     rarity: 'common',
-    status: 'live'
+    status: 'live',
   },
   {
     id: 5,
@@ -103,7 +115,7 @@ const nftItems: NFTItem[] = [
     endTime: '8h 20m',
     category: 'music',
     rarity: 'rare',
-    status: 'live'
+    status: 'live',
   },
   {
     id: 6,
@@ -120,7 +132,7 @@ const nftItems: NFTItem[] = [
     endTime: '24h 00m',
     category: 'utility',
     rarity: 'legendary',
-    status: 'live'
+    status: 'live',
   },
   {
     id: 7,
@@ -137,7 +149,7 @@ const nftItems: NFTItem[] = [
     endTime: '3h 45m',
     category: 'collectibles',
     rarity: 'epic',
-    status: 'live'
+    status: 'live',
   },
   {
     id: 8,
@@ -154,48 +166,49 @@ const nftItems: NFTItem[] = [
     endTime: '6h 10m',
     category: 'collectibles',
     rarity: 'rare',
-    status: 'live'
-  }
-]
+    status: 'live',
+  },
+];
 
 const collections = [
   { name: 'Cosmic Apes', items: 10000, floor: 0.8, volume: 12500, change: 12.5 },
   { name: 'Neon Dreams', items: 5000, floor: 0.25, volume: 3400, change: 8.3 },
   { name: 'Blockchain Heroes', items: 7777, floor: 0.45, volume: 8900, change: -2.1 },
-  { name: 'SoundWave NFT', items: 2000, floor: 0.08, volume: 1200, change: 5.7 }
-]
+  { name: 'SoundWave NFT', items: 2000, floor: 0.08, volume: 1200, change: 5.7 },
+];
 
 const NFTMarketplace = () => {
-  const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState<string>('all')
-  const [selectedRarity, setSelectedRarity] = useState<string>('all')
-  const [sortBy, setSortBy] = useState('recent')
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedRarity, setSelectedRarity] = useState<string>('all');
+  const [sortBy, setSortBy] = useState('recent');
 
-  const categories = ['all', 'art', 'music', 'gaming', 'collectibles', 'utility']
-  const rarities = ['all', 'common', 'rare', 'epic', 'legendary']
+  const categories = ['all', 'art', 'music', 'gaming', 'collectibles', 'utility'];
+  const rarities = ['all', 'common', 'rare', 'epic', 'legendary'];
 
   const filteredNFTs = nftItems.filter(nft => {
-    const matchesSearch = nft.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         nft.collection.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesCategory = selectedCategory === 'all' || nft.category === selectedCategory
-    const matchesRarity = selectedRarity === 'all' || nft.rarity === selectedRarity
-    return matchesSearch && matchesCategory && matchesRarity
-  })
+    const matchesSearch =
+      nft.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      nft.collection.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory === 'all' || nft.category === selectedCategory;
+    const matchesRarity = selectedRarity === 'all' || nft.rarity === selectedRarity;
+    return matchesSearch && matchesCategory && matchesRarity;
+  });
 
   const rarityColors = {
     common: 'bg-slate-500/20 text-slate-400 border-slate-400/30',
     rare: 'bg-blue-500/20 text-blue-400 border-blue-400/30',
     epic: 'bg-purple-500/20 text-purple-400 border-purple-400/30',
-    legendary: 'bg-yellow-500/20 text-yellow-400 border-yellow-400/30'
-  }
+    legendary: 'bg-yellow-500/20 text-yellow-400 border-yellow-400/30',
+  };
 
   const categoryEmojis: Record<string, string> = {
     art: '🎨',
     music: '🎵',
     gaming: '🎮',
     collectibles: '📦',
-    utility: '🔧'
-  }
+    utility: '🔧',
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 p-6">
@@ -222,7 +235,9 @@ const NFTMarketplace = () => {
               <DollarSign className="w-8 h-8 text-green-400" />
               <div>
                 <p className="text-sm text-slate-400">Total Value</p>
-                <p className="text-2xl font-bold text-white">{filteredNFTs.reduce((sum, n) => sum + n.price, 0).toFixed(2)} ETH</p>
+                <p className="text-2xl font-bold text-white">
+                  {filteredNFTs.reduce((sum, n) => sum + n.price, 0).toFixed(2)} ETH
+                </p>
               </div>
             </div>
           </div>
@@ -231,7 +246,9 @@ const NFTMarketplace = () => {
               <Flame className="w-8 h-8 text-orange-400" />
               <div>
                 <p className="text-sm text-slate-400">Hot Items</p>
-                <p className="text-2xl font-bold text-white">{nftItems.filter(n => n.status === 'ending').length}</p>
+                <p className="text-2xl font-bold text-white">
+                  {nftItems.filter(n => n.status === 'ending').length}
+                </p>
               </div>
             </div>
           </div>
@@ -251,10 +268,15 @@ const NFTMarketplace = () => {
           <h3 className="text-xl font-bold text-white mb-4">🔥 Top Collections</h3>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {collections.map((collection, index) => (
-              <div key={index} className="bg-slate-900/50 rounded-lg p-4 hover:bg-slate-900/80 transition-colors cursor-pointer">
+              <div
+                key={index}
+                className="bg-slate-900/50 rounded-lg p-4 hover:bg-slate-900/80 transition-colors cursor-pointer"
+              >
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-lg font-bold text-white">{collection.name}</span>
-                  <span className={`text-sm ${collection.change >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  <span
+                    className={`text-sm ${collection.change >= 0 ? 'text-green-400' : 'text-red-400'}`}
+                  >
                     {collection.change >= 0 ? '↑' : '↓'} {Math.abs(collection.change)}%
                   </span>
                 </div>
@@ -286,35 +308,39 @@ const NFTMarketplace = () => {
                 type="text"
                 placeholder="Search NFTs..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg pl-10 pr-4 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             </div>
             <select
               value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
+              onChange={e => setSelectedCategory(e.target.value)}
               className="bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               {categories.map(cat => (
                 <option key={cat} value={cat}>
-                  {cat === 'all' ? 'All Categories' : `${categoryEmojis[cat]} ${cat.charAt(0).toUpperCase() + cat.slice(1)}`}
+                  {cat === 'all'
+                    ? 'All Categories'
+                    : `${categoryEmojis[cat]} ${cat.charAt(0).toUpperCase() + cat.slice(1)}`}
                 </option>
               ))}
             </select>
             <select
               value={selectedRarity}
-              onChange={(e) => setSelectedRarity(e.target.value)}
+              onChange={e => setSelectedRarity(e.target.value)}
               className="bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               {rarities.map(rarity => (
                 <option key={rarity} value={rarity}>
-                  {rarity === 'all' ? 'All Rarities' : rarity.charAt(0).toUpperCase() + rarity.slice(1)}
+                  {rarity === 'all'
+                    ? 'All Rarities'
+                    : rarity.charAt(0).toUpperCase() + rarity.slice(1)}
                 </option>
               ))}
             </select>
             <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
+              onChange={e => setSortBy(e.target.value)}
               className="bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               <option value="recent">Recently Added</option>
@@ -353,7 +379,9 @@ const NFTMarketplace = () => {
                     <h3 className="text-lg font-bold text-white truncate">{nft.name}</h3>
                     <p className="text-sm text-slate-400">{nft.collection}</p>
                   </div>
-                  <span className={`px-2 py-1 rounded-full text-xs border ${rarityColors[nft.rarity]}`}>
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs border ${rarityColors[nft.rarity]}`}
+                  >
                     {nft.rarity.charAt(0).toUpperCase() + nft.rarity.slice(1)}
                   </span>
                 </div>
@@ -380,7 +408,9 @@ const NFTMarketplace = () => {
                       {nft.price} <span className="text-sm text-purple-400">{nft.currency}</span>
                     </p>
                   </div>
-                  <div className={`text-right px-3 py-1 bg-slate-900/50 rounded-lg ${nft.status === 'ending' ? 'animate-pulse' : ''}`}>
+                  <div
+                    className={`text-right px-3 py-1 bg-slate-900/50 rounded-lg ${nft.status === 'ending' ? 'animate-pulse' : ''}`}
+                  >
                     <div className="flex items-center gap-1 text-slate-400">
                       <Clock className="w-3 h-3" />
                       <span className="text-sm">{nft.endTime}</span>
@@ -410,7 +440,7 @@ const NFTMarketplace = () => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default NFTMarketplace
+export default NFTMarketplace;

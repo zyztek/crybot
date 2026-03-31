@@ -1,38 +1,46 @@
-import { useState } from 'react'
-import { TrendingUp, Shield, DollarSign, ArrowUpRight, ArrowDownRight, Clock, Percent } from 'lucide-react'
+import { useState } from 'react';
+import {
+  TrendingUp,
+  Shield,
+  DollarSign,
+  ArrowUpRight,
+  ArrowDownRight,
+  Clock,
+  Percent,
+} from 'lucide-react';
 
 interface SupplyPosition {
-  asset: string
-  supplied: number
-  apy: number
-  value: number
+  asset: string;
+  supplied: number;
+  apy: number;
+  value: number;
 }
 
 interface BorrowPosition {
-  asset: string
-  borrowed: number
-  apy: number
-  value: number
+  asset: string;
+  borrowed: number;
+  apy: number;
+  value: number;
 }
 
 export default function LendingProtocol() {
   const [supplyPositions] = useState<SupplyPosition[]>([
     { asset: 'USDC', supplied: 5000, apy: 4.5, value: 5000 },
-    { asset: 'ETH', supplied: 2.5, apy: 2.1, value: 4625.50 },
+    { asset: 'ETH', supplied: 2.5, apy: 2.1, value: 4625.5 },
     { asset: 'WBTC', supplied: 0.5, apy: 1.8, value: 22500 },
-  ])
+  ]);
 
   const [borrowPositions] = useState<BorrowPosition[]>([
     { asset: 'USDC', borrowed: 2500, apy: 5.2, value: 2500 },
     { asset: 'ETH', borrowed: 1, apy: 3.5, value: 1850 },
-  ])
+  ]);
 
-  const totalSupplied = supplyPositions.reduce((sum, p) => sum + p.value, 0)
-  const totalBorrowed = borrowPositions.reduce((sum, p) => sum + p.value, 0)
-  const healthFactor = 1.85
-  const borrowLimit = totalSupplied * 0.75
-  const availableToBorrow = borrowLimit - totalBorrowed
-  const utilizationRate = (totalBorrowed / borrowLimit * 100).toFixed(2)
+  const totalSupplied = supplyPositions.reduce((sum, p) => sum + p.value, 0);
+  const totalBorrowed = borrowPositions.reduce((sum, p) => sum + p.value, 0);
+  const healthFactor = 1.85;
+  const borrowLimit = totalSupplied * 0.75;
+  const availableToBorrow = borrowLimit - totalBorrowed;
+  const utilizationRate = ((totalBorrowed / borrowLimit) * 100).toFixed(2);
 
   const markets = [
     { asset: 'USDC', supplyApy: 4.5, borrowApy: 5.2, liquidity: '$45M', factor: 0.9 },
@@ -42,12 +50,12 @@ export default function LendingProtocol() {
     { asset: 'DAI', supplyApy: 2.9, borrowApy: 4.5, liquidity: '$28M', factor: 0.9 },
     { asset: 'LINK', supplyApy: 1.5, borrowApy: 4.1, liquidity: '$12M', factor: 0.75 },
     { asset: 'AAVE', supplyApy: 0.8, borrowApy: 2.8, liquidity: '$8M', factor: 0.7 },
-  ]
+  ];
 
-  const [activeTab, setActiveTab] = useState('dashboard')
-  const [supplyAmount, setSupplyAmount] = useState('')
-  const [borrowAmount, setBorrowAmount] = useState('')
-  const [selectedMarket, setSelectedMarket] = useState('USDC')
+  const [activeTab, setActiveTab] = useState('dashboard');
+  const [supplyAmount, setSupplyAmount] = useState('');
+  const [borrowAmount, setBorrowAmount] = useState('');
+  const [selectedMarket, setSelectedMarket] = useState('USDC');
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
@@ -106,7 +114,9 @@ export default function LendingProtocol() {
                 <span className="text-gray-400 font-medium">Total Supplied</span>
                 <ArrowUpRight className="w-5 h-5 text-green-400" />
               </div>
-              <div className="text-3xl font-bold text-white">${totalSupplied.toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
+              <div className="text-3xl font-bold text-white">
+                ${totalSupplied.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+              </div>
               <div className="text-green-400 text-sm mt-2">+$234.50 (24h)</div>
             </div>
 
@@ -115,7 +125,9 @@ export default function LendingProtocol() {
                 <span className="text-gray-400 font-medium">Total Borrowed</span>
                 <ArrowDownRight className="w-5 h-5 text-red-400" />
               </div>
-              <div className="text-3xl font-bold text-white">${totalBorrowed.toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
+              <div className="text-3xl font-bold text-white">
+                ${totalBorrowed.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+              </div>
               <div className="text-red-400 text-sm mt-2">-$89.20 (24h)</div>
             </div>
 
@@ -124,8 +136,12 @@ export default function LendingProtocol() {
                 <span className="text-gray-400 font-medium">Available to Borrow</span>
                 <DollarSign className="w-5 h-5 text-purple-400" />
               </div>
-              <div className="text-3xl font-bold text-white">${availableToBorrow.toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
-              <div className="text-purple-400 text-sm mt-2">${borrowLimit.toLocaleString('en-US', { minimumFractionDigits: 2 })} limit</div>
+              <div className="text-3xl font-bold text-white">
+                ${availableToBorrow.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+              </div>
+              <div className="text-purple-400 text-sm mt-2">
+                ${borrowLimit.toLocaleString('en-US', { minimumFractionDigits: 2 })} limit
+              </div>
             </div>
 
             <div className="bg-gradient-to-br from-blue-600/20 to-cyan-600/20 backdrop-blur-xl rounded-2xl border border-blue-500/30 p-6">
@@ -134,7 +150,9 @@ export default function LendingProtocol() {
                 <Shield className="w-5 h-5 text-blue-400" />
               </div>
               <div className="text-3xl font-bold text-white">{healthFactor.toFixed(2)}</div>
-              <div className={`text-sm mt-2 ${healthFactor > 1.5 ? 'text-green-400' : healthFactor > 1.2 ? 'text-yellow-400' : 'text-red-400'}`}>
+              <div
+                className={`text-sm mt-2 ${healthFactor > 1.5 ? 'text-green-400' : healthFactor > 1.2 ? 'text-yellow-400' : 'text-red-400'}`}
+              >
                 {healthFactor > 1.5 ? 'Safe' : healthFactor > 1.2 ? 'Caution' : 'Danger'}
               </div>
             </div>
@@ -149,11 +167,18 @@ export default function LendingProtocol() {
               </h2>
               <div className="space-y-3">
                 {supplyPositions.map((pos, idx) => (
-                  <div key={idx} className="bg-gray-800/50 rounded-xl p-4 border border-gray-700/50">
+                  <div
+                    key={idx}
+                    className="bg-gray-800/50 rounded-xl p-4 border border-gray-700/50"
+                  >
                     <div className="flex justify-between items-center">
                       <div>
-                        <div className="text-xl font-bold text-white">{pos.supplied.toLocaleString()} {pos.asset}</div>
-                        <div className="text-gray-400 text-sm">${pos.value.toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
+                        <div className="text-xl font-bold text-white">
+                          {pos.supplied.toLocaleString()} {pos.asset}
+                        </div>
+                        <div className="text-gray-400 text-sm">
+                          ${pos.value.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                        </div>
                       </div>
                       <div className="text-right">
                         <div className="text-green-400 font-bold text-lg">{pos.apy}% APY</div>
@@ -176,11 +201,18 @@ export default function LendingProtocol() {
               </h2>
               <div className="space-y-3">
                 {borrowPositions.map((pos, idx) => (
-                  <div key={idx} className="bg-gray-800/50 rounded-xl p-4 border border-gray-700/50">
+                  <div
+                    key={idx}
+                    className="bg-gray-800/50 rounded-xl p-4 border border-gray-700/50"
+                  >
                     <div className="flex justify-between items-center">
                       <div>
-                        <div className="text-xl font-bold text-white">{pos.borrowed.toLocaleString()} {pos.asset}</div>
-                        <div className="text-gray-400 text-sm">${pos.value.toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
+                        <div className="text-xl font-bold text-white">
+                          {pos.borrowed.toLocaleString()} {pos.asset}
+                        </div>
+                        <div className="text-gray-400 text-sm">
+                          ${pos.value.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                        </div>
                       </div>
                       <div className="text-right">
                         <div className="text-red-400 font-bold text-lg">{pos.apy}% APY</div>
@@ -207,11 +239,13 @@ export default function LendingProtocol() {
               <label className="text-gray-400 text-sm font-medium mb-2 block">Select Asset</label>
               <select
                 value={selectedMarket}
-                onChange={(e) => setSelectedMarket(e.target.value)}
+                onChange={e => setSelectedMarket(e.target.value)}
                 className="w-full bg-gray-800 border border-gray-700 rounded-xl p-4 text-white font-semibold outline-none focus:border-blue-500"
               >
                 {markets.map(m => (
-                  <option key={m.asset} value={m.asset}>{m.asset} - {m.supplyApy}% APY</option>
+                  <option key={m.asset} value={m.asset}>
+                    {m.asset} - {m.supplyApy}% APY
+                  </option>
                 ))}
               </select>
             </div>
@@ -222,7 +256,7 @@ export default function LendingProtocol() {
                 <input
                   type="number"
                   value={supplyAmount}
-                  onChange={(e) => setSupplyAmount(e.target.value)}
+                  onChange={e => setSupplyAmount(e.target.value)}
                   className="w-full bg-transparent text-xl text-white font-bold outline-none"
                   placeholder="0.00"
                 />
@@ -236,15 +270,21 @@ export default function LendingProtocol() {
             <div className="bg-gray-800/50 rounded-xl p-4 border border-gray-700/50 space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-400">Supply APY</span>
-                <span className="text-green-400 font-semibold">{markets.find(m => m.asset === selectedMarket)?.supplyApy}%</span>
+                <span className="text-green-400 font-semibold">
+                  {markets.find(m => m.asset === selectedMarket)?.supplyApy}%
+                </span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-gray-400">Collateral Factor</span>
-                <span className="text-white font-semibold">{markets.find(m => m.asset === selectedMarket)?.factor}</span>
+                <span className="text-white font-semibold">
+                  {markets.find(m => m.asset === selectedMarket)?.factor}
+                </span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-gray-400">Liquidity</span>
-                <span className="text-white font-semibold">{markets.find(m => m.asset === selectedMarket)?.liquidity}</span>
+                <span className="text-white font-semibold">
+                  {markets.find(m => m.asset === selectedMarket)?.liquidity}
+                </span>
               </div>
             </div>
 
@@ -264,11 +304,13 @@ export default function LendingProtocol() {
               <label className="text-gray-400 text-sm font-medium mb-2 block">Select Asset</label>
               <select
                 value={selectedMarket}
-                onChange={(e) => setSelectedMarket(e.target.value)}
+                onChange={e => setSelectedMarket(e.target.value)}
                 className="w-full bg-gray-800 border border-gray-700 rounded-xl p-4 text-white font-semibold outline-none focus:border-red-500"
               >
                 {markets.map(m => (
-                  <option key={m.asset} value={m.asset}>{m.asset} - {m.borrowApy}% APY</option>
+                  <option key={m.asset} value={m.asset}>
+                    {m.asset} - {m.borrowApy}% APY
+                  </option>
                 ))}
               </select>
             </div>
@@ -279,12 +321,18 @@ export default function LendingProtocol() {
                 <input
                   type="number"
                   value={borrowAmount}
-                  onChange={(e) => setBorrowAmount(e.target.value)}
+                  onChange={e => setBorrowAmount(e.target.value)}
                   className="w-full bg-transparent text-xl text-white font-bold outline-none"
                   placeholder="0.00"
                 />
                 <div className="flex justify-between mt-2 text-sm">
-                  <span className="text-gray-400">Avail: ${(parseFloat(borrowAmount) > 0 ? parseFloat(borrowAmount) * 1850 : availableToBorrow).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                  <span className="text-gray-400">
+                    Avail: $
+                    {(parseFloat(borrowAmount) > 0
+                      ? parseFloat(borrowAmount) * 1850
+                      : availableToBorrow
+                    ).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                  </span>
                   <span className="text-red-400 cursor-pointer hover:underline">MAX</span>
                 </div>
               </div>
@@ -293,15 +341,23 @@ export default function LendingProtocol() {
             <div className="bg-gray-800/50 rounded-xl p-4 border border-gray-700/50 space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-400">Borrow APY</span>
-                <span className="text-red-400 font-semibold">{markets.find(m => m.asset === selectedMarket)?.borrowApy}%</span>
+                <span className="text-red-400 font-semibold">
+                  {markets.find(m => m.asset === selectedMarket)?.borrowApy}%
+                </span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-gray-400">Collateral Factor</span>
-                <span className="text-white font-semibold">{markets.find(m => m.asset === selectedMarket)?.factor}</span>
+                <span className="text-white font-semibold">
+                  {markets.find(m => m.asset === selectedMarket)?.factor}
+                </span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-gray-400">Current Health</span>
-                <span className={`font-semibold ${healthFactor > 1.5 ? 'text-green-400' : 'text-yellow-400'}`}>{healthFactor.toFixed(2)}</span>
+                <span
+                  className={`font-semibold ${healthFactor > 1.5 ? 'text-green-400' : 'text-yellow-400'}`}
+                >
+                  {healthFactor.toFixed(2)}
+                </span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-gray-400">After Borrow</span>
@@ -324,8 +380,13 @@ export default function LendingProtocol() {
               <div key={idx} className="bg-gray-800/50 rounded-xl p-4 border border-gray-700/50">
                 <div className="flex justify-between items-center mb-4">
                   <div>
-                    <div className="text-lg font-bold text-white">Borrowed: {pos.borrowed.toLocaleString()} {pos.asset}</div>
-                    <div className="text-gray-400 text-sm">${pos.value.toLocaleString('en-US', { minimumFractionDigits: 2 })} @ {pos.apy}% APY</div>
+                    <div className="text-lg font-bold text-white">
+                      Borrowed: {pos.borrowed.toLocaleString()} {pos.asset}
+                    </div>
+                    <div className="text-gray-400 text-sm">
+                      ${pos.value.toLocaleString('en-US', { minimumFractionDigits: 2 })} @ {pos.apy}
+                      % APY
+                    </div>
                   </div>
                 </div>
                 <button className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold py-3 rounded-xl transition-all">
@@ -372,8 +433,12 @@ export default function LendingProtocol() {
                     </td>
                     <td className="py-4">
                       <div className="flex gap-2">
-                        <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all">Supply</button>
-                        <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all">Borrow</button>
+                        <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all">
+                          Supply
+                        </button>
+                        <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all">
+                          Borrow
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -384,5 +449,5 @@ export default function LendingProtocol() {
         </div>
       )}
     </div>
-  )
+  );
 }

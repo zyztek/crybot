@@ -1,5 +1,15 @@
 import { useState } from 'react';
-import { Zap, TrendingUp, TrendingDown, Clock, Activity, AlertCircle, CheckCircle, RefreshCw, Gauge } from 'lucide-react';
+import {
+  Zap,
+  TrendingUp,
+  TrendingDown,
+  Clock,
+  Activity,
+  AlertCircle,
+  CheckCircle,
+  RefreshCw,
+  Gauge,
+} from 'lucide-react';
 
 interface GasNetwork {
   name: string;
@@ -104,12 +114,48 @@ const GAS_NETWORKS: GasNetwork[] = [
 ];
 
 const ETHEREUM_TXS: GasTx[] = [
-  { type: 'Transfer', name: 'ETH Transfer', estimatedGas: '21000', estimatedTime: '~30s', priority: 'slow' },
-  { type: 'ERC20', name: 'Token Transfer', estimatedGas: '52000', estimatedTime: '~45s', priority: 'average' },
-  { type: 'Swap', name: 'DEX Swap', estimatedGas: '150000', estimatedTime: '~1m', priority: 'average' },
-  { type: 'Add LIQ', name: 'Add Liquidity', estimatedGas: '180000', estimatedTime: '~1m', priority: 'fast' },
-  { type: 'NFT Mint', name: 'NFT Mint', estimatedGas: '85000', estimatedTime: '~45s', priority: 'average' },
-  { type: 'Bridge', name: 'Cross-Chain Bridge', estimatedGas: '350000', estimatedTime: '~3m', priority: 'instant' },
+  {
+    type: 'Transfer',
+    name: 'ETH Transfer',
+    estimatedGas: '21000',
+    estimatedTime: '~30s',
+    priority: 'slow',
+  },
+  {
+    type: 'ERC20',
+    name: 'Token Transfer',
+    estimatedGas: '52000',
+    estimatedTime: '~45s',
+    priority: 'average',
+  },
+  {
+    type: 'Swap',
+    name: 'DEX Swap',
+    estimatedGas: '150000',
+    estimatedTime: '~1m',
+    priority: 'average',
+  },
+  {
+    type: 'Add LIQ',
+    name: 'Add Liquidity',
+    estimatedGas: '180000',
+    estimatedTime: '~1m',
+    priority: 'fast',
+  },
+  {
+    type: 'NFT Mint',
+    name: 'NFT Mint',
+    estimatedGas: '85000',
+    estimatedTime: '~45s',
+    priority: 'average',
+  },
+  {
+    type: 'Bridge',
+    name: 'Cross-Chain Bridge',
+    estimatedGas: '350000',
+    estimatedTime: '~3m',
+    priority: 'instant',
+  },
 ];
 
 export default function GasTracker() {
@@ -180,19 +226,24 @@ export default function GasTracker() {
 
   const t = texts[language];
   const selectedNetworkData = GAS_NETWORKS.find(n => n.name === selectedNetwork);
-  
+
   const handleRefresh = () => {
     setRefreshing(true);
     setTimeout(() => setRefreshing(false), 2000);
   };
 
   const getPriorityColor = (priority: string) => {
-    switch(priority) {
-      case 'slow': return 'from-gray-400 to-gray-500';
-      case 'average': return 'from-blue-400 to-blue-500';
-      case 'fast': return 'from-green-400 to-green-500';
-      case 'instant': return 'from-purple-400 to-purple-500';
-      default: return 'from-gray-400 to-gray-500';
+    switch (priority) {
+      case 'slow':
+        return 'from-gray-400 to-gray-500';
+      case 'average':
+        return 'from-blue-400 to-blue-500';
+      case 'fast':
+        return 'from-green-400 to-green-500';
+      case 'instant':
+        return 'from-purple-400 to-purple-500';
+      default:
+        return 'from-gray-400 to-gray-500';
     }
   };
 
@@ -233,25 +284,39 @@ export default function GasTracker() {
           <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl rounded-3xl p-8 border border-white/10 mb-6">
             <div className="flex flex-wrap items-center justify-between gap-6">
               <div className="flex items-center gap-4">
-                <div 
+                <div
                   className="w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl font-bold"
-                  style={{background: selectedNetworkData.color}}
+                  style={{ background: selectedNetworkData.color }}
                 >
                   {selectedNetworkData.symbol}
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold text-white">{selectedNetworkData.name}</h3>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className={`flex items-center gap-1 ${selectedNetworkData.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                      {selectedNetworkData.change24h >= 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
+                    <span
+                      className={`flex items-center gap-1 ${selectedNetworkData.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}
+                    >
+                      {selectedNetworkData.change24h >= 0 ? (
+                        <TrendingUp className="w-4 h-4" />
+                      ) : (
+                        <TrendingDown className="w-4 h-4" />
+                      )}
                       {Math.abs(selectedNetworkData.change24h).toFixed(1)}%
                     </span>
-                    <span className={`px-2 py-1 rounded-full text-sm font-medium ${
-                      selectedNetworkData.status === 'low' ? 'bg-green-500/20 text-green-400' :
-                      selectedNetworkData.status === 'medium' ? 'bg-yellow-500/20 text-yellow-400' :
-                      'bg-red-500/20 text-red-400'
-                    }`}>
-                      {selectedNetworkData.status === 'low' ? t.lowGas : selectedNetworkData.status === 'medium' ? t.mediumGas : t.highGas}
+                    <span
+                      className={`px-2 py-1 rounded-full text-sm font-medium ${
+                        selectedNetworkData.status === 'low'
+                          ? 'bg-green-500/20 text-green-400'
+                          : selectedNetworkData.status === 'medium'
+                            ? 'bg-yellow-500/20 text-yellow-400'
+                            : 'bg-red-500/20 text-red-400'
+                      }`}
+                    >
+                      {selectedNetworkData.status === 'low'
+                        ? t.lowGas
+                        : selectedNetworkData.status === 'medium'
+                          ? t.mediumGas
+                          : t.highGas}
                     </span>
                   </div>
                 </div>
@@ -266,7 +331,9 @@ export default function GasTracker() {
                 </div>
                 <div className="text-center">
                   <p className="text-gray-400 text-sm">Gwei</p>
-                  <p className="text-3xl font-bold text-white">{selectedNetworkData.gasPriceGwei}</p>
+                  <p className="text-3xl font-bold text-white">
+                    {selectedNetworkData.gasPriceGwei}
+                  </p>
                 </div>
                 <div className="text-center">
                   <p className="text-gray-400 text-sm">{t.tps}</p>
@@ -283,9 +350,9 @@ export default function GasTracker() {
                 <span>100</span>
               </div>
               <div className="relative h-4 bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 rounded-full overflow-hidden">
-                <div 
+                <div
                   className="absolute top-0 w-1 h-full bg-white shadow-lg"
-                  style={{left: `${selectedNetworkData.gasPriceGwei}%`}}
+                  style={{ left: `${selectedNetworkData.gasPriceGwei}%` }}
                 />
               </div>
             </div>
@@ -305,32 +372,44 @@ export default function GasTracker() {
                   key={idx}
                   onClick={() => setSelectedNetwork(network.name)}
                   className={`cursor-pointer bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl rounded-2xl p-5 border transition ${
-                    selectedNetwork === network.name ? 'border-orange-500/50' : 'border-white/10 hover:border-orange-500/30'
+                    selectedNetwork === network.name
+                      ? 'border-orange-500/50'
+                      : 'border-white/10 hover:border-orange-500/30'
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div 
+                      <div
                         className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm"
-                        style={{background: network.color}}
+                        style={{ background: network.color }}
                       >
                         {network.symbol}
                       </div>
                       <div>
                         <h4 className="font-bold text-white">{network.name}</h4>
-                        <div className={`flex items-center gap-1 text-sm ${network.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                          {network.change24h >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+                        <div
+                          className={`flex items-center gap-1 text-sm ${network.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}
+                        >
+                          {network.change24h >= 0 ? (
+                            <TrendingUp className="w-3 h-3" />
+                          ) : (
+                            <TrendingDown className="w-3 h-3" />
+                          )}
                           {Math.abs(network.change24h).toFixed(1)}%
                         </div>
                       </div>
                     </div>
                     <div className="text-right">
                       <p className="text-lg font-bold text-white">{network.gasPrice}</p>
-                      <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                        network.status === 'low' ? 'bg-green-500/20 text-green-400' :
-                        network.status === 'medium' ? 'bg-yellow-500/20 text-yellow-400' :
-                        'bg-red-500/20 text-red-400'
-                      }`}>
+                      <span
+                        className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                          network.status === 'low'
+                            ? 'bg-green-500/20 text-green-400'
+                            : network.status === 'medium'
+                              ? 'bg-yellow-500/20 text-yellow-400'
+                              : 'bg-red-500/20 text-red-400'
+                        }`}
+                      >
                         {network.status}
                       </span>
                     </div>
@@ -349,7 +428,10 @@ export default function GasTracker() {
             <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl rounded-2xl p-5 border border-white/10">
               <div className="space-y-3">
                 {ETHEREUM_TXS.map((tx, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                  <div
+                    key={idx}
+                    className="flex items-center justify-between p-3 bg-white/5 rounded-lg"
+                  >
                     <div>
                       <p className="text-white font-medium">{tx.name}</p>
                       <div className="flex items-center gap-2 text-sm text-gray-400">
@@ -359,7 +441,9 @@ export default function GasTracker() {
                     </div>
                     <div className="text-right">
                       <p className="text-white font-bold">{tx.estimatedGas}</p>
-                      <span className={`px-2 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r ${getPriorityColor(tx.priority)} text-white`}>
+                      <span
+                        className={`px-2 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r ${getPriorityColor(tx.priority)} text-white`}
+                      >
                         {t[tx.priority as keyof typeof t]}
                       </span>
                     </div>
@@ -380,7 +464,10 @@ export default function GasTracker() {
             </h3>
             <div className="space-y-3">
               {[1, 2, 3].map(i => (
-                <div key={i} className="flex items-start gap-3 p-3 bg-orange-500/10 rounded-lg border border-orange-500/30">
+                <div
+                  key={i}
+                  className="flex items-start gap-3 p-3 bg-orange-500/10 rounded-lg border border-orange-500/30"
+                >
                   <CheckCircle className="w-5 h-5 text-orange-400 mt-0.5 flex-shrink-0" />
                   <p className="text-gray-300 text-sm">{t[`tip${i}` as keyof typeof t]}</p>
                 </div>
@@ -396,7 +483,10 @@ export default function GasTracker() {
             </h3>
             <div className="space-y-3">
               {[1, 2, 3].map(i => (
-                <div key={i} className="flex items-start gap-3 p-3 bg-yellow-500/10 rounded-lg border border-yellow-500/30">
+                <div
+                  key={i}
+                  className="flex items-start gap-3 p-3 bg-yellow-500/10 rounded-lg border border-yellow-500/30"
+                >
                   <Activity className="w-5 h-5 text-yellow-400 mt-0.5 flex-shrink-0" />
                   <p className="text-gray-300 text-sm">{t[`alert${i}` as keyof typeof t]}</p>
                 </div>

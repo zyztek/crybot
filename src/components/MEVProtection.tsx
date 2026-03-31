@@ -63,7 +63,9 @@ export default function MEVProtection() {
   };
 
   const [isScanning, setIsScanning] = React.useState(false);
-  const [scanResult, setScanResult] = React.useState<{risk: string; issues: string[]} | null>(null);
+  const [scanResult, setScanResult] = React.useState<{ risk: string; issues: string[] } | null>(
+    null
+  );
 
   const runScan = () => {
     setIsScanning(true);
@@ -71,9 +73,15 @@ export default function MEVProtection() {
       setScanResult({
         risk: 'medium',
         issues: [
-          isSpanish ? 'Detected pending transaction with high MEV risk' : 'Transacción pendiente con alto riesgo MEV detectada',
-          isSpanish ? 'Liquidity pool has high sandwich attack probability' : 'Pool de liquidez con alta probabilidad de ataque sandwich',
-          isSpanish ? 'Consider using Flashbots for your next transaction' : 'Considera usar Flashbots para tu próxima transacción',
+          isSpanish
+            ? 'Detected pending transaction with high MEV risk'
+            : 'Transacción pendiente con alto riesgo MEV detectada',
+          isSpanish
+            ? 'Liquidity pool has high sandwich attack probability'
+            : 'Pool de liquidez con alta probabilidad de ataque sandwich',
+          isSpanish
+            ? 'Consider using Flashbots for your next transaction'
+            : 'Considera usar Flashbots para tu próxima transacción',
         ],
       });
       setIsScanning(false);
@@ -89,20 +97,28 @@ export default function MEVProtection() {
           {text.title}
         </h1>
         <p className="text-gray-400">
-          {isSpanish ? 'Protege tus transacciones de ataques MEV (Maximal Extractable Value)' : 'Protect your transactions from MEV (Maximal Extractable Value) attacks'}
+          {isSpanish
+            ? 'Protege tus transacciones de ataques MEV (Maximal Extractable Value)'
+            : 'Protect your transactions from MEV (Maximal Extractable Value) attacks'}
         </p>
       </div>
 
       {/* Protection Status */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div className={`bg-gradient-to-br ${
-          protectionActive ? 'from-green-600/20 to-emerald-600/20 border-green-500/30' : 'from-red-600/20 to-rose-600/20 border-red-500/30'
-        } border backdrop-blur-lg rounded-xl p-5`}>
+        <div
+          className={`bg-gradient-to-br ${
+            protectionActive
+              ? 'from-green-600/20 to-emerald-600/20 border-green-500/30'
+              : 'from-red-600/20 to-rose-600/20 border-red-500/30'
+          } border backdrop-blur-lg rounded-xl p-5`}
+        >
           <div className="flex items-center gap-3 mb-3">
             <Shield className={`w-6 h-6 ${protectionActive ? 'text-green-400' : 'text-red-400'}`} />
             <span className="text-gray-400 text-sm">{text.protection}</span>
           </div>
-          <div className={`text-2xl font-bold ${protectionActive ? 'text-green-400' : 'text-red-400'}`}>
+          <div
+            className={`text-2xl font-bold ${protectionActive ? 'text-green-400' : 'text-red-400'}`}
+          >
             {protectionActive ? text.protected : text.vulnerable}
           </div>
         </div>
@@ -144,7 +160,7 @@ export default function MEVProtection() {
             <input
               type="checkbox"
               checked={config.flashbots}
-              onChange={(e) => setConfig({ ...config, flashbots: e.target.checked })}
+              onChange={e => setConfig({ ...config, flashbots: e.target.checked })}
               className="w-5 h-5 rounded"
             />
             <div>
@@ -160,7 +176,7 @@ export default function MEVProtection() {
             <input
               type="checkbox"
               checked={config.privateMempool}
-              onChange={(e) => setConfig({ ...config, privateMempool: e.target.checked })}
+              onChange={e => setConfig({ ...config, privateMempool: e.target.checked })}
               className="w-5 h-5 rounded"
             />
             <div>
@@ -176,7 +192,7 @@ export default function MEVProtection() {
             <input
               type="checkbox"
               checked={config.slippageProtection}
-              onChange={(e) => setConfig({ ...config, slippageProtection: e.target.checked })}
+              onChange={e => setConfig({ ...config, slippageProtection: e.target.checked })}
               className="w-5 h-5 rounded"
             />
             <div>
@@ -197,7 +213,7 @@ export default function MEVProtection() {
                 max="5"
                 step="0.1"
                 value={config.maxSlippage}
-                onChange={(e) => setConfig({ ...config, maxSlippage: parseFloat(e.target.value) })}
+                onChange={e => setConfig({ ...config, maxSlippage: parseFloat(e.target.value) })}
                 className="flex-1"
               />
               <span className="text-yellow-400 font-mono">{config.maxSlippage}%</span>
@@ -239,15 +255,24 @@ export default function MEVProtection() {
           <div>
             <div className="flex items-center gap-3 mb-6">
               <span className="text-gray-400">{text.risk}:</span>
-              <span className={`px-4 py-1 rounded-full font-medium ${
-                scanResult.risk === 'low' ? 'bg-green-600/20 text-green-400' :
-                scanResult.risk === 'medium' ? 'bg-yellow-600/20 text-yellow-400' :
-                scanResult.risk === 'high' ? 'bg-red-600/20 text-red-400' :
-                'bg-red-600/20 text-red-400'
-              }`}>
-                {scanResult.risk === 'low' ? text.low :
-                 scanResult.risk === 'medium' ? text.medium :
-                 scanResult.risk === 'high' ? text.high : text.critical}
+              <span
+                className={`px-4 py-1 rounded-full font-medium ${
+                  scanResult.risk === 'low'
+                    ? 'bg-green-600/20 text-green-400'
+                    : scanResult.risk === 'medium'
+                      ? 'bg-yellow-600/20 text-yellow-400'
+                      : scanResult.risk === 'high'
+                        ? 'bg-red-600/20 text-red-400'
+                        : 'bg-red-600/20 text-red-400'
+                }`}
+              >
+                {scanResult.risk === 'low'
+                  ? text.low
+                  : scanResult.risk === 'medium'
+                    ? text.medium
+                    : scanResult.risk === 'high'
+                      ? text.high
+                      : text.critical}
               </span>
             </div>
 
@@ -278,18 +303,29 @@ export default function MEVProtection() {
         </h2>
 
         <div className="space-y-3">
-          {events.map((event) => (
-            <div key={event.id} className="flex items-center justify-between bg-slate-700/50 p-4 rounded-lg">
+          {events.map(event => (
+            <div
+              key={event.id}
+              className="flex items-center justify-between bg-slate-700/50 p-4 rounded-lg"
+            >
               <div className="flex items-center gap-3">
                 {event.type === 'blocked' && <Lock className="w-5 h-5 text-red-400" />}
                 {event.type === 'protected' && <Shield className="w-5 h-5 text-green-400" />}
                 {event.type === 'saved' && <Zap className="w-5 h-5 text-yellow-400" />}
-                <span className={`font-medium ${
-                  event.type === 'blocked' ? 'text-red-400' :
-                  event.type === 'protected' ? 'text-green-400' : 'text-yellow-400'
-                }`}>
-                  {event.type === 'blocked' ? 'Blocked' :
-                   event.type === 'protected' ? 'Protected' : 'Saved'}
+                <span
+                  className={`font-medium ${
+                    event.type === 'blocked'
+                      ? 'text-red-400'
+                      : event.type === 'protected'
+                        ? 'text-green-400'
+                        : 'text-yellow-400'
+                  }`}
+                >
+                  {event.type === 'blocked'
+                    ? 'Blocked'
+                    : event.type === 'protected'
+                      ? 'Protected'
+                      : 'Saved'}
                 </span>
                 <span className="text-gray-300">{event.amount}</span>
               </div>

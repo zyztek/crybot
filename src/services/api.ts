@@ -1,6 +1,6 @@
 /**
  * API Service - Connects frontend to backend
- * 
+ *
  * Handles all HTTP requests to the backend API
  */
 
@@ -27,12 +27,9 @@ const clearTokens = (): void => {
 };
 
 // Generic fetch wrapper
-const fetchApi = async <T>(
-  endpoint: string,
-  options: RequestInit = {}
-): Promise<T> => {
+const fetchApi = async <T>(endpoint: string, options: RequestInit = {}): Promise<T> => {
   const token = getAuthToken();
-  
+
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
     ...(token && { Authorization: `Bearer ${token}` }),
@@ -57,15 +54,15 @@ const fetchApi = async <T>(
           Authorization: `Bearer ${newToken}`,
         },
       });
-      
+
       if (!retryResponse.ok) {
         const error = await retryResponse.json();
         throw new Error(error.error || 'API request failed');
       }
-      
+
       return retryResponse.json();
     }
-    
+
     // Refresh failed, clear tokens
     clearTokens();
     window.location.reload();
@@ -160,7 +157,20 @@ export const authApi = {
     }
   },
 
-  getMe: async (): Promise<AuthResponse['user'] & { wallets: AuthResponse['wallets']; achievements: Array<{ id: string; name: string; description: string; icon: string; progress: number; completed: boolean; completedAt: string | null }> }> => {
+  getMe: async (): Promise<
+    AuthResponse['user'] & {
+      wallets: AuthResponse['wallets'];
+      achievements: Array<{
+        id: string;
+        name: string;
+        description: string;
+        icon: string;
+        progress: number;
+        completed: boolean;
+        completedAt: string | null;
+      }>;
+    }
+  > => {
     return fetchApi('/auth/me');
   },
 
@@ -175,7 +185,10 @@ export const authApi = {
     });
   },
 
-  resetPassword: async (token: string, newPassword: string): Promise<{ success: boolean; message: string }> => {
+  resetPassword: async (
+    token: string,
+    newPassword: string
+  ): Promise<{ success: boolean; message: string }> => {
     return fetchApi('/auth/reset-password', {
       method: 'POST',
       body: JSON.stringify({ token, password: newPassword }),
@@ -204,7 +217,10 @@ export const userApi = {
     return fetchApi('/user/profile');
   },
 
-  updateProfile: async (data: { username?: string; walletAddress?: string }): Promise<UserProfile> => {
+  updateProfile: async (data: {
+    username?: string;
+    walletAddress?: string;
+  }): Promise<UserProfile> => {
     return fetchApi('/user/profile', {
       method: 'PUT',
       body: JSON.stringify(data),
@@ -251,7 +267,11 @@ export const walletApi = {
     });
   },
 
-  withdraw: async (coin: string, amount: string, toAddress: string): Promise<{ id: string; coin: string; amount: string; status: string }> => {
+  withdraw: async (
+    coin: string,
+    amount: string,
+    toAddress: string
+  ): Promise<{ id: string; coin: string; amount: string; status: string }> => {
     return fetchApi('/wallet/withdraw', {
       method: 'POST',
       body: JSON.stringify({ coin, amount, toAddress }),
@@ -306,7 +326,13 @@ export const faucetApi = {
     });
   },
 
-  getHistory: async (page = 1, limit = 20): Promise<{ claims: FaucetClaim[]; pagination: { page: number; limit: number; total: number; totalPages: number } }> => {
+  getHistory: async (
+    page = 1,
+    limit = 20
+  ): Promise<{
+    claims: FaucetClaim[];
+    pagination: { page: number; limit: number; total: number; totalPages: number };
+  }> => {
     return fetchApi(`/faucet/history?page=${page}&limit=${limit}`);
   },
 
@@ -332,7 +358,15 @@ export interface Transaction {
 }
 
 export const transactionApi = {
-  getAll: async (page = 1, limit = 20, type?: string, coin?: string): Promise<{ transactions: Transaction[]; pagination: { page: number; limit: number; total: number; totalPages: number } }> => {
+  getAll: async (
+    page = 1,
+    limit = 20,
+    type?: string,
+    coin?: string
+  ): Promise<{
+    transactions: Transaction[];
+    pagination: { page: number; limit: number; total: number; totalPages: number };
+  }> => {
     let query = `?page=${page}&limit=${limit}`;
     if (type) query += `&type=${type}`;
     if (coin) query += `&coin=${coin}`;
@@ -375,7 +409,10 @@ export const achievementApi = {
     return fetchApi('/achievement');
   },
 
-  getUserAchievements: async (): Promise<{ achievements: Achievement[]; stats: { total: number; completed: number; inProgress: number } }> => {
+  getUserAchievements: async (): Promise<{
+    achievements: Achievement[];
+    stats: { total: number; completed: number; inProgress: number };
+  }> => {
     return fetchApi('/achievement/user');
   },
 
@@ -397,14 +434,18 @@ export const analyticsApi = {
     return fetchApi('/analytics/overview');
   },
 
-  getDaily: async (days = 7): Promise<Array<{
-    date: string;
-    totalClaims: number;
-    totalVolume: string;
-    newUsers: number;
-    activeUsers: number;
-    feesEarned: string;
-  }>> => {
+  getDaily: async (
+    days = 7
+  ): Promise<
+    Array<{
+      date: string;
+      totalClaims: number;
+      totalVolume: string;
+      newUsers: number;
+      activeUsers: number;
+      feesEarned: string;
+    }>
+  > => {
     return fetchApi(`/analytics/daily?days=${days}`);
   },
 
@@ -430,11 +471,16 @@ export interface LeaderboardEntry {
 }
 
 export const leaderboardApi = {
-  getLeaderboard: async (period = 'all_time', limit = 50): Promise<{ entries: LeaderboardEntry[]; userRank: LeaderboardEntry | null }> => {
+  getLeaderboard: async (
+    period = 'all_time',
+    limit = 50
+  ): Promise<{ entries: LeaderboardEntry[]; userRank: LeaderboardEntry | null }> => {
     return fetchApi(`/leaderboard?period=${period}&limit=${limit}`);
   },
 
-  getUserRanks: async (): Promise<Array<{ period: string; rank: number | null; score: string }>> => {
+  getUserRanks: async (): Promise<
+    Array<{ period: string; rank: number | null; score: string }>
+  > => {
     return fetchApi('/leaderboard/me');
   },
 };

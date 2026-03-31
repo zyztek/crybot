@@ -1,5 +1,18 @@
 import { useState } from 'react';
-import { Crown, Star, Check, Zap, ArrowUp, ArrowRight, TrendingUp, Gift, Award, Shield, Bell, Sparkles } from 'lucide-react';
+import {
+  Crown,
+  Star,
+  Check,
+  Zap,
+  ArrowUp,
+  ArrowRight,
+  TrendingUp,
+  Gift,
+  Award,
+  Shield,
+  Bell,
+  Sparkles,
+} from 'lucide-react';
 
 const vipTiers = [
   {
@@ -20,18 +33,8 @@ const vipTiers = [
     customUsername: false,
     exclusiveFaucets: false,
     noAds: false,
-    features: [
-      'Basic faucet access',
-      'Standard rewards',
-      'Community chat',
-      'Referral program'
-    ],
-    featuresZH: [
-      '基础水龙头访问',
-      '标准奖励',
-      '社区聊天',
-      '推荐计划'
-    ]
+    features: ['Basic faucet access', 'Standard rewards', 'Community chat', 'Referral program'],
+    featuresZH: ['基础水龙头访问', '标准奖励', '社区聊天', '推荐计划'],
   },
   {
     id: 'gold',
@@ -59,7 +62,7 @@ const vipTiers = [
       '3 exclusive faucets',
       'No advertisements',
       'Gold badge profile',
-      'Weekly bonus'
+      'Weekly bonus',
     ],
     featuresZH: [
       '1.5倍水龙头奖励',
@@ -69,9 +72,9 @@ const vipTiers = [
       '3个专属水龙头',
       '无广告',
       '金色徽章标识',
-      '每周奖励'
+      '每周奖励',
     ],
-    popular: true
+    popular: true,
   },
   {
     id: 'platinum',
@@ -101,7 +104,7 @@ const vipTiers = [
       'Platinum badge + glow',
       'Daily bonus rewards',
       'Early access features',
-      '4% referral bonus'
+      '4% referral bonus',
     ],
     featuresZH: [
       '2倍水龙头奖励',
@@ -113,8 +116,8 @@ const vipTiers = [
       '铂金徽章+光效',
       '每日额外奖励',
       '抢先体验新功能',
-      '4%推荐奖励'
-    ]
+      '4%推荐奖励',
+    ],
   },
   {
     id: 'diamond',
@@ -145,7 +148,7 @@ const vipTiers = [
       'Hourly bonus rewards',
       'Feature requests priority',
       '5% referral bonus',
-      'VIP events access'
+      'VIP events access',
     ],
     featuresZH: [
       '3倍水龙头奖励',
@@ -158,9 +161,9 @@ const vipTiers = [
       '每小时额外奖励',
       '功能请求优先权',
       '5%推荐奖励',
-      'VIP活动访问'
-    ]
-  }
+      'VIP活动访问',
+    ],
+  },
 ];
 
 const currentBenefits = [
@@ -168,7 +171,7 @@ const currentBenefits = [
   { icon: Zap, label: 'Priority Claims', labelZH: '优先领取', color: 'text-yellow-400' },
   { icon: Shield, label: 'No Daily Limits', labelZH: '无每日限制', color: 'text-blue-400' },
   { icon: Bell, label: 'Exclusive Faucets', labelZH: '专属水龙头', color: 'text-purple-400' },
-  { icon: Gift, label: 'Weekly Bonuses', labelZH: '每周奖励', color: 'text-pink-400' }
+  { icon: Gift, label: 'Weekly Bonuses', labelZH: '每周奖励', color: 'text-pink-400' },
 ];
 
 export default function VIP({ language }: { language: 'zh' | 'en' }) {
@@ -177,7 +180,8 @@ export default function VIP({ language }: { language: 'zh' | 'en' }) {
 
   const t = {
     title: language === 'zh' ? 'VIP会员' : 'VIP Membership',
-    subtitle: language === 'zh' ? '解锁专属特权和额外奖励' : 'Unlock exclusive privileges and earn more',
+    subtitle:
+      language === 'zh' ? '解锁专属特权和额外奖励' : 'Unlock exclusive privileges and earn more',
     currentPlan: language === 'zh' ? '当前方案' : 'Current Plan',
     upgradeTo: language === 'zh' ? '升级到' : 'Upgrade to',
     perMonth: language === 'zh' ? '/月' : '/month',
@@ -211,17 +215,24 @@ export default function VIP({ language }: { language: 'zh' | 'en' }) {
           {t.currentPlan}
         </h2>
         <div className="flex items-center gap-6 flex-wrap">
-          <div className={`w-16 h-16 bg-gradient-to-br ${currentPlan.bgColor} rounded-2xl flex items-center justify-center border ${currentPlan.borderColor}`}>
+          <div
+            className={`w-16 h-16 bg-gradient-to-br ${currentPlan.bgColor} rounded-2xl flex items-center justify-center border ${currentPlan.borderColor}`}
+          >
             <currentPlan.icon className={`w-8 h-8 ${currentPlan.iconColor}`} />
           </div>
           <div className="flex-1">
-            <h3 className="text-2xl font-bold text-white">{currentPlan.name} {language === 'zh' ? currentPlan.nameZH : ''}</h3>
+            <h3 className="text-2xl font-bold text-white">
+              {currentPlan.name} {language === 'zh' ? currentPlan.nameZH : ''}
+            </h3>
             <div className="flex items-center gap-4 mt-2">
               <span className="text-yellow-400 font-semibold">
                 {t.rewardsMultiplier}: {currentPlan.rewardsMultiplier}x
               </span>
               <span className="text-gray-400">
-                | {t.withdrawalLimit}: {currentPlan.withdrawalLimit === Infinity ? t.unlimited : `>${currentPlan.withdrawalLimit} BTC`}
+                | {t.withdrawalLimit}:{' '}
+                {currentPlan.withdrawalLimit === Infinity
+                  ? t.unlimited
+                  : `>${currentPlan.withdrawalLimit} BTC`}
               </span>
             </div>
           </div>
@@ -229,9 +240,14 @@ export default function VIP({ language }: { language: 'zh' | 'en' }) {
             {currentBenefits.map((benefit, idx) => {
               const Icon = benefit.icon;
               return (
-                <div key={idx} className="flex items-center gap-2 px-3 py-2 bg-slate-800/50 rounded-lg">
+                <div
+                  key={idx}
+                  className="flex items-center gap-2 px-3 py-2 bg-slate-800/50 rounded-lg"
+                >
                   <Icon className={`w-4 h-4 ${benefit.color}`} />
-                  <span className="text-white text-sm">{language === 'zh' ? benefit.labelZH : benefit.label}</span>
+                  <span className="text-white text-sm">
+                    {language === 'zh' ? benefit.labelZH : benefit.label}
+                  </span>
                 </div>
               );
             })}
@@ -245,13 +261,15 @@ export default function VIP({ language }: { language: 'zh' | 'en' }) {
           {t.upgradeTo}
         </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {vipTiers.map((tier) => {
+          {vipTiers.map(tier => {
             const Icon = tier.icon;
             const isCurrent = tier.id === currentTier;
-            const isUpgrade = vipTiers.findIndex(t => t.id === currentTier) < vipTiers.findIndex(t => t.id === tier.id);
+            const isUpgrade =
+              vipTiers.findIndex(t => t.id === currentTier) <
+              vipTiers.findIndex(t => t.id === tier.id);
 
             return (
-              <div 
+              <div
                 key={tier.id}
                 className={`relative p-5 rounded-2xl border transition-all duration-300 ${
                   isCurrent
@@ -273,7 +291,9 @@ export default function VIP({ language }: { language: 'zh' | 'en' }) {
                   </div>
                 )}
 
-                <div className={`w-16 h-16 bg-gradient-to-br ${tier.bgColor} rounded-2xl flex items-center justify-center border ${tier.borderColor} mb-4 ${!isUpgrade && !isCurrent ? 'grayscale' : ''}`}>
+                <div
+                  className={`w-16 h-16 bg-gradient-to-br ${tier.bgColor} rounded-2xl flex items-center justify-center border ${tier.borderColor} mb-4 ${!isUpgrade && !isCurrent ? 'grayscale' : ''}`}
+                >
                   <Icon className={`w-8 h-8 ${tier.iconColor}`} />
                 </div>
 
@@ -294,17 +314,23 @@ export default function VIP({ language }: { language: 'zh' | 'en' }) {
                 <div className="space-y-2 mb-4">
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-400">{t.rewardsMultiplier}</span>
-                    <span className={`font-semibold ${tier.rewardsMultiplier > 1 ? 'text-green-400' : 'text-white'}`}>
+                    <span
+                      className={`font-semibold ${tier.rewardsMultiplier > 1 ? 'text-green-400' : 'text-white'}`}
+                    >
                       {tier.rewardsMultiplier}x
                       {tier.rewardsMultiplier > currentPlan.rewardsMultiplier && (
-                        <span><ArrowUp className="w-3 h-3 inline ml-1" /></span>
+                        <span>
+                          <ArrowUp className="w-3 h-3 inline ml-1" />
+                        </span>
                       )}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-400">{t.withdrawalLimit}</span>
                     <span className="font-semibold text-white">
-                      {tier.withdrawalLimit === Infinity ? t.unlimited : `>${tier.withdrawalLimit} BTC`}
+                      {tier.withdrawalLimit === Infinity
+                        ? t.unlimited
+                        : `>${tier.withdrawalLimit} BTC`}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
@@ -320,7 +346,9 @@ export default function VIP({ language }: { language: 'zh' | 'en' }) {
                   <ul className="space-y-1">
                     {tier.features.slice(0, 4).map((feature, idx) => (
                       <li key={idx} className="text-xs text-gray-300 flex items-center gap-1">
-                        <Check className={`w-3 h-3 ${isCurrent || isUpgrade ? 'text-green-400' : 'text-gray-500'}`} />
+                        <Check
+                          className={`w-3 h-3 ${isCurrent || isUpgrade ? 'text-green-400' : 'text-gray-500'}`}
+                        />
                         {language === 'zh' ? tier.featuresZH[idx] : feature}
                       </li>
                     ))}
@@ -333,7 +361,7 @@ export default function VIP({ language }: { language: 'zh' | 'en' }) {
                     {t.currentActive}
                   </button>
                 ) : isUpgrade ? (
-                  <button 
+                  <button
                     onClick={() => setShowUpgrade(!showUpgrade)}
                     className="w-full py-3 bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-white font-semibold rounded-xl flex items-center justify-center gap-2"
                   >
@@ -359,7 +387,9 @@ export default function VIP({ language }: { language: 'zh' | 'en' }) {
               {language === 'zh' ? '年付优惠' : 'Annual Discount'}
             </h3>
             <p className="text-gray-400 text-sm">
-              {language === 'zh' ? '购买年度会员可享受20%折扣！' : 'Get 20% off when you buy annual membership!'}
+              {language === 'zh'
+                ? '购买年度会员可享受20%折扣！'
+                : 'Get 20% off when you buy annual membership!'}
             </p>
           </div>
           <button className="ml-auto px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-xl">

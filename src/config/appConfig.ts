@@ -1,6 +1,6 @@
 /**
  * App Configuration - Environment-based settings
- * 
+ *
  * Provides centralized access to environment variables with sensible defaults
  */
 
@@ -26,18 +26,20 @@ export const APP_CONFIG = {
   name: getEnv('VITE_APP_NAME', 'CryptoFaucet Hub'),
   version: getEnv('VITE_APP_VERSION', '1.0.0'),
   defaultNetwork: getEnv('VITE_DEFAULT_NETWORK', 'sepolia'),
-  supportedNetworks: getEnv('VITE_SUPPORTED_NETWORKS', 'sepolia,mainnet,arbitrum,optimism').split(','),
+  supportedNetworks: getEnv('VITE_SUPPORTED_NETWORKS', 'sepolia,mainnet,arbitrum,optimism').split(
+    ','
+  ),
 };
 
 // Network Configuration
 export const NETWORK_CONFIG = {
   defaultNetwork: APP_CONFIG.defaultNetwork,
   supportedNetworks: APP_CONFIG.supportedNetworks,
-  
+
   isSupported(network: string): boolean {
     return APP_CONFIG.supportedNetworks.includes(network);
   },
-  
+
   getRpcUrl(network: string): string {
     const rpcUrls: Record<string, string> = {
       sepolia: 'https://rpc.sepolia.org',

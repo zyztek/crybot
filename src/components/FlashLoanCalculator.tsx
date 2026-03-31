@@ -1,45 +1,57 @@
-import { useState } from 'react'
-import { Zap, DollarSign, AlertTriangle, Info, ArrowRight, CheckCircle } from 'lucide-react'
+import { useState } from 'react';
+import { Zap, DollarSign, AlertTriangle, Info, ArrowRight, CheckCircle } from 'lucide-react';
 
 interface FlashLoanOpportunity {
-  protocol: string
-  maxLoan: number
-  fee: number
-  feePercent: number
+  protocol: string;
+  maxLoan: number;
+  fee: number;
+  feePercent: number;
 }
 
 export default function FlashLoanCalculator() {
-  const [loanAmount, setLoanAmount] = useState('')
-  const [borrowToken, setBorrowToken] = useState('ETH')
+  const [loanAmount, setLoanAmount] = useState('');
+  const [borrowToken, setBorrowToken] = useState('ETH');
   // repayToken kept for future use when multi-token support is added
   // const [repayToken, setRepayToken] = useState('USDC')
-  const [arbitrageProfit, setArbitrageProfit] = useState('')
-  const [simulateStep, setSimulateStep] = useState(0)
+  const [arbitrageProfit, setArbitrageProfit] = useState('');
+  const [simulateStep, setSimulateStep] = useState(0);
 
   const opportunities: FlashLoanOpportunity[] = [
     { protocol: 'Aave', maxLoan: 1000000, fee: 9, feePercent: 0.09 },
     { protocol: 'dYdX', maxLoan: 5000000, fee: 0, feePercent: 0 },
     { protocol: 'Balancer', maxLoan: 2500000, fee: 5, feePercent: 0.05 },
     { protocol: 'Uniswap', maxLoan: 750000, fee: 3, feePercent: 0.03 },
-  ]
+  ];
 
-  const tokens = ['ETH', 'USDC', 'USDT', 'DAI', 'WBTC', 'LINK', 'UNI', 'LINK']
-  const ethPrice = 1850
-  const selectedProtocol = opportunities[0]
+  const tokens = ['ETH', 'USDC', 'USDT', 'DAI', 'WBTC', 'LINK', 'UNI', 'LINK'];
+  const ethPrice = 1850;
+  const selectedProtocol = opportunities[0];
 
-  const loanAmountNum = parseFloat(loanAmount) || 0
-  const totalFee = loanAmountNum * (selectedProtocol.feePercent / 100)
-  const totalRepay = loanAmountNum + totalFee
-  const profit = parseFloat(arbitrageProfit) || 0
-  const netProfit = profit - totalFee
-  const profitPercent = loanAmountNum > 0 ? (netProfit / loanAmountNum) * 100 : 0
+  const loanAmountNum = parseFloat(loanAmount) || 0;
+  const totalFee = loanAmountNum * (selectedProtocol.feePercent / 100);
+  const totalRepay = loanAmountNum + totalFee;
+  const profit = parseFloat(arbitrageProfit) || 0;
+  const netProfit = profit - totalFee;
+  const profitPercent = loanAmountNum > 0 ? (netProfit / loanAmountNum) * 100 : 0;
 
   const steps = [
-    { title: 'Borrow Flash Loan', desc: `Borrow ${loanAmountNum.toLocaleString()} ${borrowToken}`, icon: Zap },
+    {
+      title: 'Borrow Flash Loan',
+      desc: `Borrow ${loanAmountNum.toLocaleString()} ${borrowToken}`,
+      icon: Zap,
+    },
     { title: 'Execute Strategy', desc: `Execute arbitrage/trading strategy`, icon: DollarSign },
-    { title: 'Generate Profit', desc: `Generated $${profit.toLocaleString()} profit`, icon: ArrowRight },
-    { title: 'Repay + Fee', desc: `Repay $${totalRepay.toLocaleString()} including $${totalFee.toFixed(2)} fee`, icon: CheckCircle },
-  ]
+    {
+      title: 'Generate Profit',
+      desc: `Generated $${profit.toLocaleString()} profit`,
+      icon: ArrowRight,
+    },
+    {
+      title: 'Repay + Fee',
+      desc: `Repay $${totalRepay.toLocaleString()} including $${totalFee.toFixed(2)} fee`,
+      icon: CheckCircle,
+    },
+  ];
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
@@ -51,7 +63,9 @@ export default function FlashLoanCalculator() {
               <Zap className="w-8 h-8 text-yellow-400" />
               Flash Loan Calculator
             </h1>
-            <p className="text-gray-400">Calculate flash loan fees and potential arbitrage profits</p>
+            <p className="text-gray-400">
+              Calculate flash loan fees and potential arbitrage profits
+            </p>
           </div>
           <div className="flex gap-3">
             <div className="bg-yellow-500/20 border border-yellow-500/50 rounded-xl px-4 py-2 text-yellow-400 font-semibold flex items-center gap-2">
@@ -59,8 +73,7 @@ export default function FlashLoanCalculator() {
               Max Loan: $5M
             </div>
             <div className="bg-orange-500/20 border border-orange-500/50 rounded-xl px-4 py-2 text-orange-400 font-semibold flex items-center gap-2">
-              <Info className="w-5 h-5" />
-              4 Protocols
+              <Info className="w-5 h-5" />4 Protocols
             </div>
           </div>
         </div>
@@ -82,11 +95,15 @@ export default function FlashLoanCalculator() {
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-white font-semibold">{opp.protocol}</span>
-                    <span className={`text-sm ${opp.feePercent === 0 ? 'text-green-400' : 'text-yellow-400'}`}>
+                    <span
+                      className={`text-sm ${opp.feePercent === 0 ? 'text-green-400' : 'text-yellow-400'}`}
+                    >
                       {opp.feePercent === 0 ? 'FREE' : `${opp.feePercent}%`}
                     </span>
                   </div>
-                  <div className="text-gray-400 text-sm mt-1">Max: ${opp.maxLoan.toLocaleString()}</div>
+                  <div className="text-gray-400 text-sm mt-1">
+                    Max: ${opp.maxLoan.toLocaleString()}
+                  </div>
                 </button>
               ))}
             </div>
@@ -100,32 +117,39 @@ export default function FlashLoanCalculator() {
                 <input
                   type="number"
                   value={loanAmount}
-                  onChange={(e) => setLoanAmount(e.target.value)}
+                  onChange={e => setLoanAmount(e.target.value)}
                   className="bg-transparent text-2xl text-white font-bold outline-none flex-1"
                   placeholder="0.00"
                 />
                 <select
                   value={borrowToken}
-                  onChange={(e) => setBorrowToken(e.target.value)}
+                  onChange={e => setBorrowToken(e.target.value)}
                   className="bg-gray-700 text-white font-semibold px-4 py-2 rounded-lg outline-none ml-4"
                 >
                   {tokens.map(t => (
-                    <option key={t} value={t}>{t}</option>
+                    <option key={t} value={t}>
+                      {t}
+                    </option>
                   ))}
                 </select>
               </div>
-              <div className="text-gray-400 text-sm mt-2">~${(loanAmountNum * ethPrice).toLocaleString('en-US', { minimumFractionDigits: 2 })} USD</div>
+              <div className="text-gray-400 text-sm mt-2">
+                ~${(loanAmountNum * ethPrice).toLocaleString('en-US', { minimumFractionDigits: 2 })}{' '}
+                USD
+              </div>
             </div>
           </div>
 
           {/* Arbitrage Profit */}
           <div>
-            <label className="text-gray-400 text-sm font-medium mb-2 block">Expected Arbitrage Profit (USD)</label>
+            <label className="text-gray-400 text-sm font-medium mb-2 block">
+              Expected Arbitrage Profit (USD)
+            </label>
             <div className="bg-gradient-to-r from-green-600/20 to-teal-600/20 rounded-xl p-4 border border-green-500/30">
               <input
                 type="number"
                 value={arbitrageProfit}
-                onChange={(e) => setArbitrageProfit(e.target.value)}
+                onChange={e => setArbitrageProfit(e.target.value)}
                 className="w-full bg-transparent text-2xl text-green-400 font-bold outline-none"
                 placeholder="0.00"
               />
@@ -144,18 +168,25 @@ export default function FlashLoanCalculator() {
             </div>
             <div className="flex justify-between">
               <span className="text-gray-400">Total to Repay</span>
-              <span className="text-white font-bold text-lg">${totalRepay.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+              <span className="text-white font-bold text-lg">
+                ${totalRepay.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+              </span>
             </div>
           </div>
 
           {/* Profit Summary */}
-          <div className={`rounded-xl p-5 border ${(netProfit > 0 ? 'from-green-600/20 to-teal-600/20 border-green-500/30' : 'from-red-600/20 to-orange-600/20 border-red-500/30')} bg-gradient-to-r`}>
+          <div
+            className={`rounded-xl p-5 border ${netProfit > 0 ? 'from-green-600/20 to-teal-600/20 border-green-500/30' : 'from-red-600/20 to-orange-600/20 border-red-500/30'} bg-gradient-to-r`}
+          >
             <div className="text-gray-400 mb-1">Net Profit</div>
             <div className="text-3xl font-bold text-white mb-2">
               ${netProfit.toLocaleString('en-US', { minimumFractionDigits: 2 })}
             </div>
-            <div className={`text-lg font-semibold ${netProfit > 0 ? 'text-green-400' : 'text-red-400'}`}>
-              {profitPercent >= 0 ? '+' : ''}{profitPercent.toFixed(3)}% ROI
+            <div
+              className={`text-lg font-semibold ${netProfit > 0 ? 'text-green-400' : 'text-red-400'}`}
+            >
+              {profitPercent >= 0 ? '+' : ''}
+              {profitPercent.toFixed(3)}% ROI
             </div>
           </div>
 
@@ -165,7 +196,10 @@ export default function FlashLoanCalculator() {
               <AlertTriangle className="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0" />
               <div>
                 <div className="text-red-400 font-semibold mb-1">Warning: Unprofitable</div>
-                <div className="text-gray-300 text-sm">The flash loan fee exceeds your projected profit. This arbitrage opportunity is not profitable.</div>
+                <div className="text-gray-300 text-sm">
+                  The flash loan fee exceeds your projected profit. This arbitrage opportunity is
+                  not profitable.
+                </div>
               </div>
             </div>
           )}
@@ -186,10 +220,16 @@ export default function FlashLoanCalculator() {
             <div className="space-y-4">
               {steps.map((step, idx) => (
                 <div key={idx} className="flex items-start gap-4">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
-                    idx <= simulateStep ? 'bg-gradient-to-r from-yellow-600 to-orange-600' : 'bg-gray-700'
-                  }`}>
-                    <step.icon className={`w-5 h-5 ${idx <= simulateStep ? 'text-white' : 'text-gray-400'}`} />
+                  <div
+                    className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+                      idx <= simulateStep
+                        ? 'bg-gradient-to-r from-yellow-600 to-orange-600'
+                        : 'bg-gray-700'
+                    }`}
+                  >
+                    <step.icon
+                      className={`w-5 h-5 ${idx <= simulateStep ? 'text-white' : 'text-gray-400'}`}
+                    />
                   </div>
                   <div className="flex-1 pt-1">
                     <div className="text-white font-semibold">{step.title}</div>
@@ -223,20 +263,24 @@ export default function FlashLoanCalculator() {
               </div>
               <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700/50">
                 <div className="text-white font-semibold mb-1">Liquidation</div>
-                <div className="text-gray-400 text-sm">Liquidate under-collateralized positions</div>
+                <div className="text-gray-400 text-sm">
+                  Liquidate under-collateralized positions
+                </div>
               </div>
               <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700/50">
                 <div className="text-white font-semibold mb-1">Self-Liquidation</div>
-                <div className="text-gray-400 text-sm">Repay your own debt at liquidation penalty</div>
+                <div className="text-gray-400 text-sm">
+                  Repay your own debt at liquidation penalty
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 function VoteBarIcon(props: any) {
-  return <span className="w-6 h-6 flex items-center">→</span>
+  return <span className="w-6 h-6 flex items-center">→</span>;
 }

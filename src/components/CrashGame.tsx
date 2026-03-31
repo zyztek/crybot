@@ -9,14 +9,16 @@ interface CrashProps {
 
 const CrashGame: React.FC<CrashProps> = ({ userCoins, onWin, onLoss }) => {
   const [betAmount, setBetAmount] = useState(50);
-  const [multiplier, setMultiplier] = useState(1.00);
+  const [multiplier, setMultiplier] = useState(1.0);
   const [gameState, setGameState] = useState<'idle' | 'running' | 'crashed'>('idle');
-  const [autoCashout, setAutoCashout] = useState(2.00);
+  const [autoCashout, setAutoCashout] = useState(2.0);
   const [cashOutMultiplier, setCashOutMultiplier] = useState<number | null>(null);
-  const [crashHistory, setCrashHistory] = useState<number[]>([1.24, 2.56, 1.02, 4.89, 1.45, 3.21, 1.08, 2.11]);
+  const [crashHistory, setCrashHistory] = useState<number[]>([
+    1.24, 2.56, 1.02, 4.89, 1.45, 3.21, 1.08, 2.11,
+  ]);
   const [hasBetted, setHasBetted] = useState(false);
   const [currentBet, setCurrentBet] = useState(0);
-  
+
   const crashPoint = useRef(0);
   const gameInterval = useRef<NodeJS.Timeout | null>(null);
 
@@ -29,29 +31,29 @@ const CrashGame: React.FC<CrashProps> = ({ userCoins, onWin, onLoss }) => {
     if (random < 0.3) {
       // eslint-disable-next-line react-hooks/purity
       crashPoint.current = 1 + Math.random() * 0.5; // 30% chance of 1.00-1.50x
-    // eslint-disable-next-line react-hooks/purity
+      // eslint-disable-next-line react-hooks/purity
     } else if (random < 0.6) {
       // eslint-disable-next-line react-hooks/purity
       crashPoint.current = 1.5 + Math.random() * 1.5; // 30% chance of 1.50-3.00x
-    // eslint-disable-next-line react-hooks/purity
+      // eslint-disable-next-line react-hooks/purity
     } else if (random < 0.85) {
       // eslint-disable-next-line react-hooks/purity
       crashPoint.current = 3 + Math.random() * 4; // 25% chance of 3.00-7.00x
-    // eslint-disable-next-line react-hooks/purity
+      // eslint-disable-next-line react-hooks/purity
     } else {
       // eslint-disable-next-line react-hooks/purity
       crashPoint.current = 7 + Math.random() * 20; // 15% chance of 7.00-27.00x
-    // eslint-disable-next-line react-hooks/purity
+      // eslint-disable-next-line react-hooks/purity
     }
     crashPoint.current = Math.floor(crashPoint.current * 100) / 100;
 
     setGameState('running');
-    setMultiplier(1.00);
+    setMultiplier(1.0);
     setHasBetted(true);
     setCurrentBet(betAmount);
     setCashOutMultiplier(null);
 
-    let currentMultiplier = 1.00;
+    let currentMultiplier = 1.0;
     // eslint-disable-next-line react-hooks/purity
     const growthRate = 0.001 + Math.random() * 0.002;
 
@@ -95,7 +97,7 @@ const CrashGame: React.FC<CrashProps> = ({ userCoins, onWin, onLoss }) => {
 
   const resetGame = () => {
     setGameState('idle');
-    setMultiplier(1.00);
+    setMultiplier(1.0);
     setCashOutMultiplier(null);
     setHasBetted(false);
   };
@@ -121,7 +123,9 @@ const CrashGame: React.FC<CrashProps> = ({ userCoins, onWin, onLoss }) => {
         </div>
         <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-xl p-4">
           <div className="text-slate-400 text-sm">Multiplier</div>
-          <div className={`text-2xl font-bold ${gameState === 'running' ? 'text-green-400' : 'text-white'}`}>
+          <div
+            className={`text-2xl font-bold ${gameState === 'running' ? 'text-green-400' : 'text-white'}`}
+          >
             {multiplier.toFixed(2)}x
           </div>
         </div>
@@ -145,8 +149,8 @@ const CrashGame: React.FC<CrashProps> = ({ userCoins, onWin, onLoss }) => {
               gameState === 'idle'
                 ? 'bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700'
                 : gameState === 'running'
-                ? 'bg-gradient-to-br from-emerald-900 to-slate-900 border-emerald-600'
-                : 'bg-gradient-to-br from-red-900 to-slate-900 border-red-600'
+                  ? 'bg-gradient-to-br from-emerald-900 to-slate-900 border-emerald-600'
+                  : 'bg-gradient-to-br from-red-900 to-slate-900 border-red-600'
             }`}
           >
             {/* Multiplier Display */}
@@ -231,7 +235,7 @@ const CrashGame: React.FC<CrashProps> = ({ userCoins, onWin, onLoss }) => {
             <div className="mb-4">
               <label className="text-slate-400 text-sm block mb-2">Bet Amount</label>
               <div className="flex gap-2 flex-wrap">
-                {[10, 50, 100, 500, 1000].map((amount) => (
+                {[10, 50, 100, 500, 1000].map(amount => (
                   <button
                     key={amount}
                     onClick={() => setBetAmount(amount)}
@@ -248,7 +252,7 @@ const CrashGame: React.FC<CrashProps> = ({ userCoins, onWin, onLoss }) => {
               <input
                 type="number"
                 value={betAmount}
-                onChange={(e) => setBetAmount(parseInt(e.target.value) || 0)}
+                onChange={e => setBetAmount(parseInt(e.target.value) || 0)}
                 min="10"
                 max="10000"
                 className="w-full mt-3 px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white"
@@ -259,7 +263,7 @@ const CrashGame: React.FC<CrashProps> = ({ userCoins, onWin, onLoss }) => {
             <div>
               <label className="text-slate-400 text-sm block mb-2">Auto Cashout</label>
               <div className="flex gap-2 flex-wrap">
-                {[1.5, 2, 3, 5, 10].map((mult) => (
+                {[1.5, 2, 3, 5, 10].map(mult => (
                   <button
                     key={mult}
                     onClick={() => setAutoCashout(mult)}
@@ -276,7 +280,7 @@ const CrashGame: React.FC<CrashProps> = ({ userCoins, onWin, onLoss }) => {
               <input
                 type="number"
                 value={autoCashout}
-                onChange={(e) => setAutoCashout(parseFloat(e.target.value) || 1)}
+                onChange={e => setAutoCashout(parseFloat(e.target.value) || 1)}
                 step="0.1"
                 min="1.01"
                 max="100"
@@ -299,10 +303,10 @@ const CrashGame: React.FC<CrashProps> = ({ userCoins, onWin, onLoss }) => {
                     crash < 1.5
                       ? 'bg-red-500/20 text-red-400'
                       : crash < 3
-                      ? 'bg-orange-500/20 text-orange-400'
-                      : crash < 5
-                      ? 'bg-yellow-500/20 text-yellow-400'
-                      : 'bg-green-500/20 text-green-400'
+                        ? 'bg-orange-500/20 text-orange-400'
+                        : crash < 5
+                          ? 'bg-yellow-500/20 text-yellow-400'
+                          : 'bg-green-500/20 text-green-400'
                   }`}
                 >
                   {crash.toFixed(2)}x
@@ -318,8 +322,8 @@ const CrashGame: React.FC<CrashProps> = ({ userCoins, onWin, onLoss }) => {
               <div>
                 <div className="text-white font-bold mb-1">Game Info</div>
                 <div className="text-slate-400 text-sm">
-                  House edge is 4%. For every 1.00x you bet, the expected return is 0.96x.
-                  Play responsibly and set limits.
+                  House edge is 4%. For every 1.00x you bet, the expected return is 0.96x. Play
+                  responsibly and set limits.
                 </div>
               </div>
             </div>

@@ -29,7 +29,7 @@ const SpinWheel: React.FC<SpinProps> = ({ userCoins, onWin }) => {
 
   const spin = () => {
     if (spinning) return;
-    
+
     if (freeSpins > 0) {
       setFreeSpins(prev => prev - 1);
     } else if (userCoins < spinCost) {
@@ -54,7 +54,7 @@ const SpinWheel: React.FC<SpinProps> = ({ userCoins, onWin }) => {
     // Calculate rotation
     const prizeIndex = PRIZES.indexOf(selectedPrize);
     const segmentAngle = 360 / PRIZES.length;
-    const targetAngle = 360 - (prizeIndex * segmentAngle) - (segmentAngle / 2);
+    const targetAngle = 360 - prizeIndex * segmentAngle - segmentAngle / 2;
     const newRotation = rotation + 360 * 5 + targetAngle;
 
     setRotation(newRotation);
@@ -73,11 +73,11 @@ const SpinWheel: React.FC<SpinProps> = ({ userCoins, onWin }) => {
     const now = Date.now();
     const diff = nextFreeSpin - now;
     if (diff <= 0) return '00:00:00';
-    
+
     const hours = Math.floor(diff / 3600000);
     const minutes = Math.floor((diff % 3600000) / 60000);
     const seconds = Math.floor((diff % 60000) / 1000);
-    
+
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
@@ -87,9 +87,7 @@ const SpinWheel: React.FC<SpinProps> = ({ userCoins, onWin }) => {
         <div className="stats stats-vertical lg:stats-horizontal bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700">
           <div className="stat place-items-center">
             <div className="stat-title text-slate-400">Free Spins</div>
-            <div className="stat-value text-3xl">
-              {freeSpins}
-            </div>
+            <div className="stat-value text-3xl">{freeSpins}</div>
             <div className="stat-desc text-green-400 flex items-center gap-1">
               <Clock className="w-4 h-4" />
               Next in {getTimeUntilFree()}
@@ -97,9 +95,7 @@ const SpinWheel: React.FC<SpinProps> = ({ userCoins, onWin }) => {
           </div>
           <div className="stat place-items-center">
             <div className="stat-title text-slate-400">Cost Per Spin</div>
-            <div className="stat-value text-2xl text-yellow-400">
-              {spinCost}
-            </div>
+            <div className="stat-value text-2xl text-yellow-400">{spinCost}</div>
             <div className="stat-desc">Coins</div>
           </div>
         </div>
@@ -127,8 +123,16 @@ const SpinWheel: React.FC<SpinProps> = ({ userCoins, onWin }) => {
               style={{
                 transform: `rotate(${rotation}deg)`,
                 background: `conic-gradient(
-                  ${PRIZES.map((p, i) => `${p.color.split(' ').map(c => c.split('-')[1]).join(' ')} ${i * (100/PRIZES.length)}% ${(i+1) * (100/PRIZES.length)}%`).join(', ')}
-                )`
+                  ${PRIZES.map(
+                    (p, i) =>
+                      `${p.color
+                        .split(' ')
+                        .map(c => c.split('-')[1])
+                        .join(
+                          ' '
+                        )} ${i * (100 / PRIZES.length)}% ${(i + 1) * (100 / PRIZES.length)}%`
+                  ).join(', ')}
+                )`,
               }}
             >
               <div className="absolute inset-4 bg-gradient-to-br from-slate-800 to-slate-900 rounded-full flex items-center justify-center">
@@ -162,7 +166,9 @@ const SpinWheel: React.FC<SpinProps> = ({ userCoins, onWin }) => {
           </button>
 
           {lastWin !== null && (
-            <div className={`mt-4 px-6 py-2 rounded-lg font-bold ${lastWin > 0 ? 'bg-green-500' : 'bg-red-500'}`}>
+            <div
+              className={`mt-4 px-6 py-2 rounded-lg font-bold ${lastWin > 0 ? 'bg-green-500' : 'bg-red-500'}`}
+            >
               {lastWin > 0 ? `🎉 Won ${lastWin} coins!` : '😢 Better luck next time!'}
             </div>
           )}
@@ -174,7 +180,7 @@ const SpinWheel: React.FC<SpinProps> = ({ userCoins, onWin }) => {
           <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-xl p-4">
             <h3 className="text-lg font-bold text-white mb-3">Prize Legend</h3>
             <div className="grid grid-cols-2 gap-3 text-sm">
-              {PRIZES.map((prize) => (
+              {PRIZES.map(prize => (
                 <div key={prize.amount} className="flex items-center gap-2">
                   <div className={`w-4 h-4 rounded bg-gradient-to-br ${prize.color}`}></div>
                   <span className="text-slate-300">

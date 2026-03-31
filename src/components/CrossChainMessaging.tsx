@@ -142,10 +142,14 @@ export default function CrossChainMessaging() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'completed': return 'bg-green-600/20 text-green-400 border-green-500/30';
-      case 'pending': return 'bg-yellow-600/20 text-yellow-400 border-yellow-500/30';
-      case 'failed': return 'bg-red-600/20 text-red-400 border-red-500/30';
-      default: return 'bg-gray-600/20 text-gray-400';
+      case 'completed':
+        return 'bg-green-600/20 text-green-400 border-green-500/30';
+      case 'pending':
+        return 'bg-yellow-600/20 text-yellow-400 border-yellow-500/30';
+      case 'failed':
+        return 'bg-red-600/20 text-red-400 border-red-500/30';
+      default:
+        return 'bg-gray-600/20 text-gray-400';
     }
   };
 
@@ -216,14 +220,18 @@ export default function CrossChainMessaging() {
               <label className="text-gray-400 text-sm mb-2 block">{text.from}</label>
               <select
                 value={sourceChain}
-                onChange={(e) => {
+                onChange={e => {
                   setSourceChain(e.target.value);
-                  setEstimatedFee(`${Math.random() * 0.01} ${chains.find(c => c.id === e.target.value)?.icon}`);
+                  setEstimatedFee(
+                    `${Math.random() * 0.01} ${chains.find(c => c.id === e.target.value)?.icon}`
+                  );
                 }}
                 className="w-full bg-slate-700 text-white rounded-lg p-3"
               >
                 {chains.map(chain => (
-                  <option key={chain.id} value={chain.id}>{chain.icon} {chain.name}</option>
+                  <option key={chain.id} value={chain.id}>
+                    {chain.icon} {chain.name}
+                  </option>
                 ))}
               </select>
             </div>
@@ -236,12 +244,16 @@ export default function CrossChainMessaging() {
               <label className="text-gray-400 text-sm mb-2 block">{text.to}</label>
               <select
                 value={targetChain}
-                onChange={(e) => setTargetChain(e.target.value)}
+                onChange={e => setTargetChain(e.target.value)}
                 className="w-full bg-slate-700 text-white rounded-lg p-3"
               >
-                {chains.filter(c => c.id !== sourceChain).map(chain => (
-                  <option key={chain.id} value={chain.id}>{chain.icon} {chain.name}</option>
-                ))}
+                {chains
+                  .filter(c => c.id !== sourceChain)
+                  .map(chain => (
+                    <option key={chain.id} value={chain.id}>
+                      {chain.icon} {chain.name}
+                    </option>
+                  ))}
               </select>
             </div>
 
@@ -249,10 +261,12 @@ export default function CrossChainMessaging() {
               <label className="text-gray-400 text-sm mb-2 block">{text.message}</label>
               <textarea
                 value={message}
-                onChange={(e) => setMessage(e.target.value)}
+                onChange={e => setMessage(e.target.value)}
                 rows={4}
                 className="w-full bg-slate-700 text-white rounded-lg p-3 resize-none"
-                placeholder={isSpanish ? 'Escribe tu mensaje aquí...' : 'Write your message here...'}
+                placeholder={
+                  isSpanish ? 'Escribe tu mensaje aquí...' : 'Write your message here...'
+                }
               />
             </div>
 
@@ -289,13 +303,15 @@ export default function CrossChainMessaging() {
           </h2>
 
           <div className="space-y-3">
-            {messages.map((msg) => (
+            {messages.map(msg => (
               <div
                 key={msg.id}
                 className={`border backdrop-blur-lg rounded-xl p-4 ${getStatusColor(msg.status)}`}
               >
                 <div className="flex items-center justify-between mb-3">
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(msg.status)}`}>
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(msg.status)}`}
+                  >
                     {text.status[msg.status]}
                   </span>
                   <span className="text-gray-500 text-sm">{msg.timestamp}</span>
@@ -303,11 +319,13 @@ export default function CrossChainMessaging() {
 
                 <div className="flex items-center gap-2 mb-3">
                   <span className="text-white">
-                    {chains.find(c => c.id === msg.sourceChain)?.icon} {chains.find(c => c.id === msg.sourceChain)?.name}
+                    {chains.find(c => c.id === msg.sourceChain)?.icon}{' '}
+                    {chains.find(c => c.id === msg.sourceChain)?.name}
                   </span>
                   <ArrowRight className="w-4 h-4 text-gray-400" />
                   <span className="text-white">
-                    {chains.find(c => c.id === msg.targetChain)?.icon} {chains.find(c => c.id === msg.targetChain)?.name}
+                    {chains.find(c => c.id === msg.targetChain)?.icon}{' '}
+                    {chains.find(c => c.id === msg.targetChain)?.name}
                   </span>
                 </div>
 

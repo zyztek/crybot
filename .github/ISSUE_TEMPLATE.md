@@ -7,6 +7,7 @@ A clear description of what the bug is.
 
 **To Reproduce**
 Steps to reproduce the behavior:
+
 1. Go to '...'
 2. Click on '...'
 3. See error
@@ -18,6 +19,7 @@ What you expected to happen.
 If applicable, add screenshots to explain.
 
 **Environment:**
+
 - OS: [e.g., Windows, Mac, Linux]
 - Node version: [e.g., v20.0.0]
 - Browser: [e.g., Chrome, Firefox]

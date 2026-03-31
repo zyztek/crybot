@@ -1,5 +1,15 @@
 import { useState } from 'react';
-import { ShoppingCart, Crown, Star, Gift, Coins, Zap, Shield, Ticket, Sparkles } from 'lucide-react';
+import {
+  ShoppingCart,
+  Crown,
+  Star,
+  Gift,
+  Coins,
+  Zap,
+  Shield,
+  Ticket,
+  Sparkles,
+} from 'lucide-react';
 
 const shopItems = [
   {
@@ -13,7 +23,7 @@ const shopItems = [
     category: 'premium',
     description: 'Unlock exclusive perks, higher rewards, and priority support',
     benefits: ['2x faucet rewards', 'Priority withdrawals', 'Exclusive faucets', 'No ads'],
-    popular: true
+    popular: true,
   },
   {
     id: 2,
@@ -26,7 +36,7 @@ const shopItems = [
     category: 'service',
     description: 'Skip the queue and get your crypto instantly',
     benefits: ['Instant processing', 'No waiting time', 'Any amount'],
-    popular: false
+    popular: false,
   },
   {
     id: 3,
@@ -39,7 +49,7 @@ const shopItems = [
     category: 'game',
     description: 'Try your luck and win up to 0.01 BTC!',
     benefits: ['Prizes up to 0.01 BTC', 'Daily special rewards'],
-    popular: false
+    popular: false,
   },
   {
     id: 4,
@@ -52,7 +62,7 @@ const shopItems = [
     category: 'boost',
     description: 'Multiply your next claim by 5x',
     benefits: ['5x reward boost', 'Works once', 'Stackable'],
-    popular: false
+    popular: false,
   },
   {
     id: 5,
@@ -65,7 +75,7 @@ const shopItems = [
     category: 'boost',
     description: 'Gain 3x XP on all actions for 24 hours',
     benefits: ['3x XP gain', '24 hour duration', 'Level up faster'],
-    popular: false
+    popular: false,
   },
   {
     id: 6,
@@ -78,7 +88,7 @@ const shopItems = [
     category: 'boost',
     description: 'Get +5% APY on any staking plan',
     benefits: ['Extra +5% APY', 'One time use', 'Unlimited plans'],
-    popular: false
+    popular: false,
   },
   {
     id: 7,
@@ -91,7 +101,7 @@ const shopItems = [
     category: 'pass',
     description: 'Complete weekly challenges and earn exclusive rewards',
     benefits: ['10 premium challenges', 'Exclusive rewards', 'Bonus faucet access'],
-    popular: false
+    popular: false,
   },
   {
     id: 8,
@@ -104,11 +114,19 @@ const shopItems = [
     category: 'game',
     description: 'Open a mystery box with random prizes',
     benefits: ['Random crypto rewards', 'Special items', 'Jackpot chance'],
-    popular: false
-  }
+    popular: false,
+  },
 ];
 
-export default function Shop({ language, faucetBits, setFaucetBits }: { language: 'zh' | 'en', faucetBits: number, setFaucetBits: (value: number) => void }) {
+export default function Shop({
+  language,
+  faucetBits,
+  setFaucetBits,
+}: {
+  language: 'zh' | 'en';
+  faucetBits: number;
+  setFaucetBits: (value: number) => void;
+}) {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [cart, setCart] = useState<number[]>([]);
   const [showCart, setShowCart] = useState(false);
@@ -119,12 +137,15 @@ export default function Shop({ language, faucetBits, setFaucetBits }: { language
     { id: 'boost', nameEN: 'Boosts', nameZH: '加速' },
     { id: 'game', nameEN: 'Games', nameZH: '游戏' },
     { id: 'service', nameEN: 'Services', nameZH: '服务' },
-    { id: 'pass', nameEN: 'Battle Pass', nameZH: '通行证' }
+    { id: 'pass', nameEN: 'Battle Pass', nameZH: '通行证' },
   ];
 
   const t = {
     title: language === 'zh' ? '商城' : 'Shop',
-    subtitle: language === 'zh' ? '用 FaucetBits 赎取独家福利和升级' : 'Redeem exclusive benefits and upgrades with FaucetBits',
+    subtitle:
+      language === 'zh'
+        ? '用 FaucetBits 赎取独家福利和升级'
+        : 'Redeem exclusive benefits and upgrades with FaucetBits',
     balance: language === 'zh' ? '可用余额' : 'Your Balance',
     popular: language === 'zh' ? '热门' : 'Popular',
     buy: language === 'zh' ? '购买' : 'Buy Now',
@@ -137,9 +158,10 @@ export default function Shop({ language, faucetBits, setFaucetBits }: { language
     insufficientBalance: language === 'zh' ? '余额不足' : 'Insufficient Balance',
   };
 
-  const filteredItems = selectedCategory === 'all' 
-    ? shopItems 
-    : shopItems.filter(item => item.category === selectedCategory);
+  const filteredItems =
+    selectedCategory === 'all'
+      ? shopItems
+      : shopItems.filter(item => item.category === selectedCategory);
 
   const addToCart = (itemId: number) => {
     if (!cart.includes(itemId)) {
@@ -174,7 +196,9 @@ export default function Shop({ language, faucetBits, setFaucetBits }: { language
           <Coins className="w-8 h-8 text-yellow-400" />
           <div>
             <p className="text-gray-400 text-sm">{t.balance}</p>
-            <p className="text-2xl font-bold text-yellow-400">{faucetBits.toLocaleString()} FaucetBits</p>
+            <p className="text-2xl font-bold text-yellow-400">
+              {faucetBits.toLocaleString()} FaucetBits
+            </p>
           </div>
         </div>
 
@@ -211,14 +235,19 @@ export default function Shop({ language, faucetBits, setFaucetBits }: { language
         {filteredItems.map(item => {
           const Icon = item.icon;
           return (
-            <div key={item.id} className="group p-5 bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-2xl border border-slate-700 hover:border-slate-500/50 transition-all duration-300">
+            <div
+              key={item.id}
+              className="group p-5 bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-2xl border border-slate-700 hover:border-slate-500/50 transition-all duration-300"
+            >
               {item.popular && (
                 <div className="absolute top-3 right-3 px-2 py-1 bg-gradient-to-r from-yellow-500 to-amber-500 rounded-full text-xs font-bold text-white">
                   {t.popular}
                 </div>
               )}
 
-              <div className={`w-14 h-14 bg-gradient-to-br ${item.bgGradient} rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+              <div
+                className={`w-14 h-14 bg-gradient-to-br ${item.bgGradient} rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}
+              >
                 <Icon className={`w-7 h-7 ${item.iconColor}`} />
               </div>
 
@@ -238,7 +267,9 @@ export default function Shop({ language, faucetBits, setFaucetBits }: { language
               <div className="pt-4 border-t border-slate-700">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xl font-bold text-yellow-400">{item.price} {item.priceType}</p>
+                    <p className="text-xl font-bold text-yellow-400">
+                      {item.price} {item.priceType}
+                    </p>
                   </div>
                   <button
                     onClick={() => addToCart(item.id)}
@@ -285,13 +316,20 @@ export default function Shop({ language, faucetBits, setFaucetBits }: { language
                 {cartItems.map(item => {
                   const Icon = item.icon;
                   return (
-                    <div key={item.id} className="flex items-center gap-3 p-3 bg-slate-700/50 rounded-xl">
-                      <div className={`w-10 h-10 bg-gradient-to-br ${item.bgGradient} rounded-xl flex items-center justify-center`}>
+                    <div
+                      key={item.id}
+                      className="flex items-center gap-3 p-3 bg-slate-700/50 rounded-xl"
+                    >
+                      <div
+                        className={`w-10 h-10 bg-gradient-to-br ${item.bgGradient} rounded-xl flex items-center justify-center`}
+                      >
                         <Icon className={`w-5 h-5 ${item.iconColor}`} />
                       </div>
                       <div className="flex-1">
                         <p className="font-medium text-white">{item.name}</p>
-                        <p className="text-sm text-yellow-400">{item.price} {item.priceType}</p>
+                        <p className="text-sm text-yellow-400">
+                          {item.price} {item.priceType}
+                        </p>
                       </div>
                       <button
                         onClick={() => removeFromCart(item.id)}
@@ -306,7 +344,9 @@ export default function Shop({ language, faucetBits, setFaucetBits }: { language
                 <div className="pt-4 border-t border-slate-600">
                   <div className="flex justify-between items-center mb-4">
                     <span className="text-gray-400">{t.total}</span>
-                    <span className="text-2xl font-bold text-yellow-400">{cartTotal.toLocaleString()} FaucetBits</span>
+                    <span className="text-2xl font-bold text-yellow-400">
+                      {cartTotal.toLocaleString()} FaucetBits
+                    </span>
                   </div>
 
                   {cartTotal > faucetBits && (

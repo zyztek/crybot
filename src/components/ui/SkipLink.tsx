@@ -1,6 +1,6 @@
 interface SkipLinkProps {
-  targetId: string
-  children: React.ReactNode
+  targetId: string;
+  children: React.ReactNode;
 }
 
 export default function SkipLink({ targetId, children }: SkipLinkProps) {
@@ -11,5 +11,5 @@ export default function SkipLink({ targetId, children }: SkipLinkProps) {
     >
       {children}
     </a>
-  )
+  );
 }

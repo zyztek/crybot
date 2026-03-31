@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { TrendingUp, TrendingDown, Brain, Zap, Activity, Heart, MessageSquare, BarChart3 } from 'lucide-react';
+import {
+  TrendingUp,
+  TrendingDown,
+  Brain,
+  Zap,
+  Activity,
+  Heart,
+  MessageSquare,
+  BarChart3,
+} from 'lucide-react';
 
 interface SentimentData {
   asset: string;
@@ -14,30 +23,131 @@ interface SentimentData {
 }
 
 const sentimentData: SentimentData[] = [
-  { asset: 'BTC', overall: 75, twitter: 72, reddit: 78, news: 80, technical: 70, onChain: 76, trend: 'bullish', change24h: 5 },
-  { asset: 'ETH', overall: 68, twitter: 65, reddit: 70, news: 68, technical: 72, onChain: 65, trend: 'bullish', change24h: 3 },
-  { asset: 'SOL', overall: 82, twitter: 85, reddit: 80, news: 78, technical: 85, onChain: 80, trend: 'bullish', change24h: 8 },
-  { asset: 'DOGE', overall: 45, twitter: 55, reddit: 40, news: 35, technical: 42, onChain: 48, trend: 'neutral', change24h: -2 },
-  { asset: 'XRP', overall: 52, twitter: 48, reddit: 55, news: 50, technical: 56, onChain: 50, trend: 'neutral', change24h: 1 },
-  { asset: 'ADA', overall: 38, twitter: 35, reddit: 40, news: 38, technical: 35, onChain: 42, trend: 'bearish', change24h: -4 }
+  {
+    asset: 'BTC',
+    overall: 75,
+    twitter: 72,
+    reddit: 78,
+    news: 80,
+    technical: 70,
+    onChain: 76,
+    trend: 'bullish',
+    change24h: 5,
+  },
+  {
+    asset: 'ETH',
+    overall: 68,
+    twitter: 65,
+    reddit: 70,
+    news: 68,
+    technical: 72,
+    onChain: 65,
+    trend: 'bullish',
+    change24h: 3,
+  },
+  {
+    asset: 'SOL',
+    overall: 82,
+    twitter: 85,
+    reddit: 80,
+    news: 78,
+    technical: 85,
+    onChain: 80,
+    trend: 'bullish',
+    change24h: 8,
+  },
+  {
+    asset: 'DOGE',
+    overall: 45,
+    twitter: 55,
+    reddit: 40,
+    news: 35,
+    technical: 42,
+    onChain: 48,
+    trend: 'neutral',
+    change24h: -2,
+  },
+  {
+    asset: 'XRP',
+    overall: 52,
+    twitter: 48,
+    reddit: 55,
+    news: 50,
+    technical: 56,
+    onChain: 50,
+    trend: 'neutral',
+    change24h: 1,
+  },
+  {
+    asset: 'ADA',
+    overall: 38,
+    twitter: 35,
+    reddit: 40,
+    news: 38,
+    technical: 35,
+    onChain: 42,
+    trend: 'bearish',
+    change24h: -4,
+  },
 ];
 
 const recentPosts = [
-  { platform: 'twitter', user: '@cryptoanalyst', content: 'Bitcoin breaking resistance! 🚀 Target: $75K next week.', sentiment: 'positive', time: '2h ago', likes: 1234 },
-  { platform: 'twitter', user: '@trademaster', content: 'Altseason is finally here. SOL leading the pack!', sentiment: 'positive', time: '1h ago', likes: 892 },
-  { platform: 'reddit', user: 'u/DiamondHands', content: 'Bearish divergence forming on 4H chart. Be careful out there.', sentiment: 'negative', time: '3h ago', likes: 456 },
-  { platform: 'reddit', user: 'u/CryptoDaily', content: 'Institutional inflows at record highs. Bull run confirmed.', sentiment: 'positive', time: '4h ago', likes: 2341 },
-  { platform: 'news', user: 'CoinDesk', content: 'ETF approval imminent according to SEC sources.', sentiment: 'positive', time: '5h ago', likes: 0 },
-  { platform: 'news', user: 'Bloomberg', content: 'Crypto regulations tighten in major markets.', sentiment: 'negative', time: '6h ago', likes: 0 }
+  {
+    platform: 'twitter',
+    user: '@cryptoanalyst',
+    content: 'Bitcoin breaking resistance! 🚀 Target: $75K next week.',
+    sentiment: 'positive',
+    time: '2h ago',
+    likes: 1234,
+  },
+  {
+    platform: 'twitter',
+    user: '@trademaster',
+    content: 'Altseason is finally here. SOL leading the pack!',
+    sentiment: 'positive',
+    time: '1h ago',
+    likes: 892,
+  },
+  {
+    platform: 'reddit',
+    user: 'u/DiamondHands',
+    content: 'Bearish divergence forming on 4H chart. Be careful out there.',
+    sentiment: 'negative',
+    time: '3h ago',
+    likes: 456,
+  },
+  {
+    platform: 'reddit',
+    user: 'u/CryptoDaily',
+    content: 'Institutional inflows at record highs. Bull run confirmed.',
+    sentiment: 'positive',
+    time: '4h ago',
+    likes: 2341,
+  },
+  {
+    platform: 'news',
+    user: 'CoinDesk',
+    content: 'ETF approval imminent according to SEC sources.',
+    sentiment: 'positive',
+    time: '5h ago',
+    likes: 0,
+  },
+  {
+    platform: 'news',
+    user: 'Bloomberg',
+    content: 'Crypto regulations tighten in major markets.',
+    sentiment: 'negative',
+    time: '6h ago',
+    likes: 0,
+  },
 ];
 
 export const SentimentAnalyzer: React.FC = () => {
   const [selectedAsset, setSelectedAsset] = useState<SentimentData>(sentimentData[0]);
   const [filter, setFilter] = useState<'all' | 'positive' | 'negative' | 'neutral'>('all');
 
-  const filteredPosts = filter === 'all' 
-    ? recentPosts 
-    : recentPosts.filter(post => post.sentiment === filter);
+  const filteredPosts =
+    filter === 'all' ? recentPosts : recentPosts.filter(post => post.sentiment === filter);
 
   const getSentimentColor = (score: number) => {
     if (score >= 70) return 'bg-green-500';
@@ -47,25 +157,38 @@ export const SentimentAnalyzer: React.FC = () => {
 
   const getTrendColor = (trend: string) => {
     switch (trend) {
-      case 'bullish': return 'text-green-400 bg-green-500/20';
-      case 'bearish': return 'text-red-400 bg-red-500/20';
-      case 'neutral': return 'text-yellow-400 bg-yellow-500/20';
+      case 'bullish':
+        return 'text-green-400 bg-green-500/20';
+      case 'bearish':
+        return 'text-red-400 bg-red-500/20';
+      case 'neutral':
+        return 'text-yellow-400 bg-yellow-500/20';
     }
   };
 
   const getPlatformIcon = (platform: string) => {
     switch (platform) {
-      case 'twitter': return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>;
-      case 'reddit': return <MessageSquare className="w-4 h-4" />;
-      case 'news': return <Zap className="w-4 h-4" />;
+      case 'twitter':
+        return (
+          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+          </svg>
+        );
+      case 'reddit':
+        return <MessageSquare className="w-4 h-4" />;
+      case 'news':
+        return <Zap className="w-4 h-4" />;
     }
   };
 
   const getPlatformColor = (platform: string) => {
     switch (platform) {
-      case 'twitter': return 'bg-blue-500/20 text-blue-400';
-      case 'reddit': return 'bg-orange-500/20 text-orange-400';
-      case 'news': return 'bg-purple-500/20 text-purple-400';
+      case 'twitter':
+        return 'bg-blue-500/20 text-blue-400';
+      case 'reddit':
+        return 'bg-orange-500/20 text-orange-400';
+      case 'news':
+        return 'bg-purple-500/20 text-purple-400';
     }
   };
 
@@ -80,14 +203,16 @@ export const SentimentAnalyzer: React.FC = () => {
               Sentiment Analyzer
             </h1>
           </div>
-          <p className="text-slate-400">Analiza el sentimiento del mercado en tiempo real usando AI</p>
+          <p className="text-slate-400">
+            Analiza el sentimiento del mercado en tiempo real usando AI
+          </p>
         </div>
 
         {/* Asset Selector */}
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50 mb-6">
           <h2 className="text-lg font-semibold text-white mb-4">Seleccionar Activo</h2>
           <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
-            {sentimentData.map((asset) => (
+            {sentimentData.map(asset => (
               <button
                 key={asset.asset}
                 onClick={() => setSelectedAsset(asset)}
@@ -119,20 +244,50 @@ export const SentimentAnalyzer: React.FC = () => {
               <h2 className="text-xl font-semibold text-white">
                 Sentimiento {selectedAsset.asset}
               </h2>
-              <span className={`px-4 py-2 rounded-full text-sm font-medium ${getTrendColor(selectedAsset.trend)}`}>
+              <span
+                className={`px-4 py-2 rounded-full text-sm font-medium ${getTrendColor(selectedAsset.trend)}`}
+              >
                 {selectedAsset.trend.toUpperCase()}
               </span>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8">
               {[
-                { label: 'Twitter', value: selectedAsset.twitter, icon: <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> },
-                { label: 'Reddit', value: selectedAsset.reddit, icon: <MessageSquare className="w-5 h-5 text-orange-400" /> },
-                { label: 'News', value: selectedAsset.news, icon: <Zap className="w-5 h-5 text-purple-400" /> },
-                { label: 'Technical', value: selectedAsset.technical, icon: <BarChart3 className="w-5 h-5 text-green-400" /> },
-                { label: 'On-Chain', value: selectedAsset.onChain, icon: <Activity className="w-5 h-5 text-cyan-400" /> },
-                { label: 'Overall', value: selectedAsset.overall, icon: <Brain className="w-5 h-5 text-purple-400" /> }
-              ].map((item) => (
+                {
+                  label: 'Twitter',
+                  value: selectedAsset.twitter,
+                  icon: (
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                  ),
+                },
+                {
+                  label: 'Reddit',
+                  value: selectedAsset.reddit,
+                  icon: <MessageSquare className="w-5 h-5 text-orange-400" />,
+                },
+                {
+                  label: 'News',
+                  value: selectedAsset.news,
+                  icon: <Zap className="w-5 h-5 text-purple-400" />,
+                },
+                {
+                  label: 'Technical',
+                  value: selectedAsset.technical,
+                  icon: <BarChart3 className="w-5 h-5 text-green-400" />,
+                },
+                {
+                  label: 'On-Chain',
+                  value: selectedAsset.onChain,
+                  icon: <Activity className="w-5 h-5 text-cyan-400" />,
+                },
+                {
+                  label: 'Overall',
+                  value: selectedAsset.overall,
+                  icon: <Brain className="w-5 h-5 text-purple-400" />,
+                },
+              ].map(item => (
                 <div key={item.label} className="bg-slate-700/50 rounded-lg p-4">
                   <div className="flex items-center gap-2 mb-3">
                     {item.icon}
@@ -141,8 +296,14 @@ export const SentimentAnalyzer: React.FC = () => {
                   <div className="flex items-end justify-between">
                     <span className="text-3xl font-bold text-white">{item.value}</span>
                     {item.label === 'Overall' && (
-                      <span className={`text-sm flex items-center gap-1 ${selectedAsset.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                        {selectedAsset.change24h >= 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
+                      <span
+                        className={`text-sm flex items-center gap-1 ${selectedAsset.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}
+                      >
+                        {selectedAsset.change24h >= 0 ? (
+                          <TrendingUp className="w-4 h-4" />
+                        ) : (
+                          <TrendingDown className="w-4 h-4" />
+                        )}
                         {Math.abs(selectedAsset.change24h)}%
                       </span>
                     )}
@@ -164,11 +325,19 @@ export const SentimentAnalyzer: React.FC = () => {
                 <h3 className="text-lg font-semibold text-white">AI Analysis</h3>
               </div>
               <p className="text-slate-300 text-sm leading-relaxed">
-                Basado en el análisis de {selectedAsset.overall > 60 ? 'múltiples indicadores positivos,' : 'indicadores mixtos,'} 
-                el sentimiento del mercado para {selectedAsset.asset} es {selectedAsset.trend}. 
-                La actividad en redes sociales muestra {selectedAsset.twitter > 60 ? 'alto engagement' : 'engagement moderado'}, 
-                mientras que el análisis técnico indica {selectedAsset.technical > 60 ? 'momentum alcista' : 'consolidación'}. 
-                {selectedAsset.onChain > 60 ? 'Los datos on-chain respaldan la tendencia positiva' : 'Los datos on-chain muestran precaución'}.
+                Basado en el análisis de{' '}
+                {selectedAsset.overall > 60
+                  ? 'múltiples indicadores positivos,'
+                  : 'indicadores mixtos,'}
+                el sentimiento del mercado para {selectedAsset.asset} es {selectedAsset.trend}. La
+                actividad en redes sociales muestra{' '}
+                {selectedAsset.twitter > 60 ? 'alto engagement' : 'engagement moderado'}, mientras
+                que el análisis técnico indica{' '}
+                {selectedAsset.technical > 60 ? 'momentum alcista' : 'consolidación'}.
+                {selectedAsset.onChain > 60
+                  ? 'Los datos on-chain respaldan la tendencia positiva'
+                  : 'Los datos on-chain muestran precaución'}
+                .
               </p>
             </div>
           </div>
@@ -197,16 +366,22 @@ export const SentimentAnalyzer: React.FC = () => {
                 </defs>
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-4xl font-bold text-white">{selectedAsset.overall}</span>                      <span className="text-sm text-slate-400">/ 100</span>
+                <span className="text-4xl font-bold text-white">{selectedAsset.overall}</span>{' '}
+                <span className="text-sm text-slate-400">/ 100</span>
               </div>
             </div>
             <div className="text-center">
               <p className="text-xl font-semibold text-green-400 mb-2">Greed</p>
               <p className="text-sm text-slate-400">
-                {selectedAsset.overall > 75 ? 'Extremadamente optimista' : 
-                 selectedAsset.overall > 60 ? 'Optimista' : 
-                 selectedAsset.overall > 40 ? 'Neutral' : 
-                 selectedAsset.overall > 25 ? 'Miedo' : 'Miedo extremo'}
+                {selectedAsset.overall > 75
+                  ? 'Extremadamente optimista'
+                  : selectedAsset.overall > 60
+                    ? 'Optimista'
+                    : selectedAsset.overall > 40
+                      ? 'Neutral'
+                      : selectedAsset.overall > 25
+                        ? 'Miedo'
+                        : 'Miedo extremo'}
               </p>
             </div>
 
@@ -239,8 +414,11 @@ export const SentimentAnalyzer: React.FC = () => {
                   <TrendingUp className="w-4 h-4 text-purple-400" />
                   <span className="text-sm text-slate-400">Price Trend</span>
                 </div>
-                <span className={`${selectedAsset.change24h >= 0 ? 'text-green-400' : 'text-red-400'} font-semibold`}>
-                  {selectedAsset.change24h >= 0 ? '+' : ''}{selectedAsset.change24h}%
+                <span
+                  className={`${selectedAsset.change24h >= 0 ? 'text-green-400' : 'text-red-400'} font-semibold`}
+                >
+                  {selectedAsset.change24h >= 0 ? '+' : ''}
+                  {selectedAsset.change24h}%
                 </span>
               </div>
             </div>
@@ -256,7 +434,9 @@ export const SentimentAnalyzer: React.FC = () => {
                 <button
                   onClick={() => setFilter('all')}
                   className={`px-3 py-1 rounded-lg text-sm font-medium transition-all ${
-                    filter === 'all' ? 'bg-purple-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                    filter === 'all'
+                      ? 'bg-purple-600 text-white'
+                      : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
                   }`}
                 >
                   Todos
@@ -264,7 +444,9 @@ export const SentimentAnalyzer: React.FC = () => {
                 <button
                   onClick={() => setFilter('positive')}
                   className={`px-3 py-1 rounded-lg text-sm font-medium transition-all ${
-                    filter === 'positive' ? 'bg-green-600/30 text-green-400' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                    filter === 'positive'
+                      ? 'bg-green-600/30 text-green-400'
+                      : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
                   }`}
                 >
                   <TrendingUp className="w-4 h-4 inline mr-1" />
@@ -273,7 +455,9 @@ export const SentimentAnalyzer: React.FC = () => {
                 <button
                   onClick={() => setFilter('negative')}
                   className={`px-3 py-1 rounded-lg text-sm font-medium transition-all ${
-                    filter === 'negative' ? 'bg-red-600/30 text-red-400' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                    filter === 'negative'
+                      ? 'bg-red-600/30 text-red-400'
+                      : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
                   }`}
                 >
                   <TrendingDown className="w-4 h-4 inline mr-1" />
@@ -282,7 +466,9 @@ export const SentimentAnalyzer: React.FC = () => {
                 <button
                   onClick={() => setFilter('neutral')}
                   className={`px-3 py-1 rounded-lg text-sm font-medium transition-all ${
-                    filter === 'neutral' ? 'bg-yellow-600/30 text-yellow-400' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                    filter === 'neutral'
+                      ? 'bg-yellow-600/30 text-yellow-400'
+                      : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
                   }`}
                 >
                   Neutral
@@ -294,17 +480,23 @@ export const SentimentAnalyzer: React.FC = () => {
             {filteredPosts.map((post, idx) => (
               <div key={idx} className="p-4 hover:bg-slate-700/30 transition-colors">
                 <div className="flex items-start gap-3">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${getPlatformColor(post.platform)}`}>
+                  <div
+                    className={`w-10 h-10 rounded-full flex items-center justify-center ${getPlatformColor(post.platform)}`}
+                  >
                     {getPlatformIcon(post.platform)}
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="font-medium text-white">{post.user}</span>
-                      <span className={`px-2 py-0.5 rounded-full text-xs ${
-                        post.sentiment === 'positive' ? 'bg-green-500/20 text-green-400' :
-                        post.sentiment === 'negative' ? 'bg-red-500/20 text-red-400' :
-                        'bg-yellow-500/20 text-yellow-400'
-                      }`}>
+                      <span
+                        className={`px-2 py-0.5 rounded-full text-xs ${
+                          post.sentiment === 'positive'
+                            ? 'bg-green-500/20 text-green-400'
+                            : post.sentiment === 'negative'
+                              ? 'bg-red-500/20 text-red-400'
+                              : 'bg-yellow-500/20 text-yellow-400'
+                        }`}
+                      >
                         {post.sentiment}
                       </span>
                       <span className="text-xs text-slate-500">{post.time}</span>

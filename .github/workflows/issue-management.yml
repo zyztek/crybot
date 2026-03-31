@@ -15,7 +15,7 @@ jobs:
         with:
           project-url: https://github.com/users/zyztek/projects/1
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          
+
       - name: Add triage label
         if: github.event_name == 'issues'
         uses: actions/labeler@v5

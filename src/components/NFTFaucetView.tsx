@@ -1,28 +1,28 @@
-import { useState, useMemo } from 'react'
-import { Gem, Droplet, Filter, X, Gift, TrendingUp, Sparkles } from 'lucide-react'
-import type { TranslationTexts } from '@/i18n/translations'
-import NFTFaucetCard from './NFTFaucetCard'
+import { useState, useMemo } from 'react';
+import { Gem, Droplet, Filter, X, Gift, TrendingUp, Sparkles } from 'lucide-react';
+import type { TranslationTexts } from '@/i18n/translations';
+import NFTFaucetCard from './NFTFaucetCard';
 
 /**
  * NFT Faucet data structure
  * @interface NFTFaucet
  */
 interface NFTFaucet {
-  id: string
-  name: string
-  collection: string
-  image: string
-  description: string
-  rarity: 'common' | 'rare' | 'epic' | 'legendary'
-  chain: string
-  price: number
-  currency: string
-  nextClaim: string
-  difficulty: string
-  status: 'available' | 'cooldown' | 'locked'
-  claimed: boolean
-  totalClaimed: number
-  category: string
+  id: string;
+  name: string;
+  collection: string;
+  image: string;
+  description: string;
+  rarity: 'common' | 'rare' | 'epic' | 'legendary';
+  chain: string;
+  price: number;
+  currency: string;
+  nextClaim: string;
+  difficulty: string;
+  status: 'available' | 'cooldown' | 'locked';
+  claimed: boolean;
+  totalClaimed: number;
+  category: string;
 }
 
 /**
@@ -30,8 +30,8 @@ interface NFTFaucet {
  * @interface NFTFaucetViewProps
  */
 interface NFTFaucetViewProps {
-  language: 'es' | 'en'
-  t: TranslationTexts
+  language: 'es' | 'en';
+  t: TranslationTexts;
 }
 
 const mockNFTFaucets: NFTFaucet[] = [
@@ -40,7 +40,8 @@ const mockNFTFaucets: NFTFaucet[] = [
     name: 'Cosmic Ape #0001',
     collection: 'Cosmic Apes',
     image: '🦍',
-    description: 'A rare cosmic ape from the galaxy far, far away. Contains unique traits that make it one of a kind.',
+    description:
+      'A rare cosmic ape from the galaxy far, far away. Contains unique traits that make it one of a kind.',
     rarity: 'legendary',
     chain: 'Ethereum',
     price: 2.5,
@@ -50,7 +51,7 @@ const mockNFTFaucets: NFTFaucet[] = [
     status: 'available',
     claimed: false,
     totalClaimed: 1245,
-    category: 'hot'
+    category: 'hot',
   },
   {
     id: '2',
@@ -67,7 +68,7 @@ const mockNFTFaucets: NFTFaucet[] = [
     status: 'available',
     claimed: false,
     totalClaimed: 3421,
-    category: 'hot'
+    category: 'hot',
   },
   {
     id: '3',
@@ -84,7 +85,7 @@ const mockNFTFaucets: NFTFaucet[] = [
     status: 'available',
     claimed: false,
     totalClaimed: 8923,
-    category: 'new'
+    category: 'new',
   },
   {
     id: '4',
@@ -101,7 +102,7 @@ const mockNFTFaucets: NFTFaucet[] = [
     status: 'cooldown',
     claimed: false,
     totalClaimed: 5642,
-    category: 'stable'
+    category: 'stable',
   },
   {
     id: '5',
@@ -118,7 +119,7 @@ const mockNFTFaucets: NFTFaucet[] = [
     status: 'available',
     claimed: false,
     totalClaimed: 15678,
-    category: 'new'
+    category: 'new',
   },
   {
     id: '6',
@@ -135,7 +136,7 @@ const mockNFTFaucets: NFTFaucet[] = [
     status: 'locked',
     claimed: false,
     totalClaimed: 89,
-    category: 'premium'
+    category: 'premium',
   },
   {
     id: '7',
@@ -152,7 +153,7 @@ const mockNFTFaucets: NFTFaucet[] = [
     status: 'available',
     claimed: true,
     totalClaimed: 7834,
-    category: 'stable'
+    category: 'stable',
   },
   {
     id: '8',
@@ -169,9 +170,9 @@ const mockNFTFaucets: NFTFaucet[] = [
     status: 'available',
     claimed: false,
     totalClaimed: 2156,
-    category: 'hot'
+    category: 'hot',
   },
-]
+];
 
 /**
  * NFTFaucetView - Main view for displaying and filtering NFT faucets
@@ -180,90 +181,93 @@ const mockNFTFaucets: NFTFaucet[] = [
  * @returns Grid display of NFT faucet cards with filtering capabilities
  */
 export default function NFTFaucetView({ language, t }: NFTFaucetViewProps) {
-  const [rarityFilter, setRarityFilter] = useState<string>('all')
-  const [chainFilter, setChainFilter] = useState<string>('all')
-  const [categoryFilter, setCategoryFilter] = useState<string>('all')
-  const [showFilters, setShowFilters] = useState(false)
+  const [rarityFilter, setRarityFilter] = useState<string>('all');
+  const [chainFilter, setChainFilter] = useState<string>('all');
+  const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [showFilters, setShowFilters] = useState(false);
 
   const filteredFaucets = useMemo(() => {
-    let result = mockNFTFaucets
+    let result = mockNFTFaucets;
 
     if (rarityFilter !== 'all') {
-      result = result.filter(f => f.rarity === rarityFilter)
+      result = result.filter(f => f.rarity === rarityFilter);
     }
     if (chainFilter !== 'all') {
-      result = result.filter(f => f.chain === chainFilter)
+      result = result.filter(f => f.chain === chainFilter);
     }
     if (categoryFilter !== 'all') {
-      result = result.filter(f => f.category === categoryFilter)
+      result = result.filter(f => f.category === categoryFilter);
     }
 
-    return result
-  }, [rarityFilter, chainFilter, categoryFilter])
+    return result;
+  }, [rarityFilter, chainFilter, categoryFilter]);
 
   const stats = useMemo(() => {
-    const totalValue = mockNFTFaucets.reduce((sum, f) => sum + f.price, 0)
-    const available = mockNFTFaucets.filter(f => f.status === 'available').length
-    const claimed = mockNFTFaucets.filter(f => f.claimed).length
-    const totalClaimedAll = mockNFTFaucets.reduce((sum, f) => sum + f.totalClaimed, 0)
-    return { totalValue, available, claimed, totalClaimedAll }
-  }, [])
+    const totalValue = mockNFTFaucets.reduce((sum, f) => sum + f.price, 0);
+    const available = mockNFTFaucets.filter(f => f.status === 'available').length;
+    const claimed = mockNFTFaucets.filter(f => f.claimed).length;
+    const totalClaimedAll = mockNFTFaucets.reduce((sum, f) => sum + f.totalClaimed, 0);
+    return { totalValue, available, claimed, totalClaimedAll };
+  }, []);
 
   const activeFiltersCount = [
     rarityFilter !== 'all',
     chainFilter !== 'all',
     categoryFilter !== 'all',
-  ].filter(Boolean).length
+  ].filter(Boolean).length;
 
   const clearAllFilters = () => {
-    setRarityFilter('all')
-    setChainFilter('all')
-    setCategoryFilter('all')
-  }
+    setRarityFilter('all');
+    setChainFilter('all');
+    setCategoryFilter('all');
+  };
 
-  const text = language === 'es' ? {
-    title: 'Faucets NFT',
-    subtitle: 'Reclama NFTs gratuitos de varias colecciones',
-    totalValue: 'Valor Total',
-    available: 'Disponibles',
-    claimed: 'Reclamados',
-    totalClaimedAll: 'Total Reclamados',
-    rarity: 'Rareza',
-    chain: 'Cadena',
-    category: 'Categoría',
-    filters: 'Filtros',
-    clearAll: 'Limpiar',
-    all: 'Todos',
-    hot: '🔥 Popular',
-    new: '🆕 Nuevo',
-    stable: '💎 Estable',
-    premium: '👑 Premium',
-    legendary: 'Legendario',
-    epic: 'Épico',
-    rare: 'Raro',
-    common: 'Común',
-  } : {
-    title: 'NFT Faucets',
-    subtitle: 'Claim free NFTs from various collections',
-    totalValue: 'Total Value',
-    available: 'Available',
-    claimed: 'Claimed',
-    totalClaimedAll: 'Total Claimed',
-    rarity: 'Rarity',
-    chain: 'Chain',
-    category: 'Category',
-    filters: 'Filters',
-    clearAll: 'Clear',
-    all: 'All',
-    hot: '🔥 Hot',
-    new: '🆕 New',
-    stable: '💎 Stable',
-    premium: '👑 Premium',
-    legendary: 'Legendary',
-    epic: 'Epic',
-    rare: 'Rare',
-    common: 'Common',
-  }
+  const text =
+    language === 'es'
+      ? {
+          title: 'Faucets NFT',
+          subtitle: 'Reclama NFTs gratuitos de varias colecciones',
+          totalValue: 'Valor Total',
+          available: 'Disponibles',
+          claimed: 'Reclamados',
+          totalClaimedAll: 'Total Reclamados',
+          rarity: 'Rareza',
+          chain: 'Cadena',
+          category: 'Categoría',
+          filters: 'Filtros',
+          clearAll: 'Limpiar',
+          all: 'Todos',
+          hot: '🔥 Popular',
+          new: '🆕 Nuevo',
+          stable: '💎 Estable',
+          premium: '👑 Premium',
+          legendary: 'Legendario',
+          epic: 'Épico',
+          rare: 'Raro',
+          common: 'Común',
+        }
+      : {
+          title: 'NFT Faucets',
+          subtitle: 'Claim free NFTs from various collections',
+          totalValue: 'Total Value',
+          available: 'Available',
+          claimed: 'Claimed',
+          totalClaimedAll: 'Total Claimed',
+          rarity: 'Rarity',
+          chain: 'Chain',
+          category: 'Category',
+          filters: 'Filters',
+          clearAll: 'Clear',
+          all: 'All',
+          hot: '🔥 Hot',
+          new: '🆕 New',
+          stable: '💎 Stable',
+          premium: '👑 Premium',
+          legendary: 'Legendary',
+          epic: 'Epic',
+          rare: 'Rare',
+          common: 'Common',
+        };
 
   return (
     <div>
@@ -320,7 +324,9 @@ export default function NFTFaucetView({ language, t }: NFTFaucetViewProps) {
             </div>
             <div>
               <p className="text-sm text-slate-400">{text.totalClaimedAll}</p>
-              <p className="text-lg font-bold text-white">{stats.totalClaimedAll.toLocaleString()}</p>
+              <p className="text-lg font-bold text-white">
+                {stats.totalClaimedAll.toLocaleString()}
+              </p>
             </div>
           </div>
         </div>
@@ -346,7 +352,9 @@ export default function NFTFaucetView({ language, t }: NFTFaucetViewProps) {
         <button
           onClick={() => setShowFilters(!showFilters)}
           className={`ml-auto px-3 py-1.5 rounded-lg font-medium transition-all text-sm flex items-center gap-2 ${
-            showFilters || activeFiltersCount > 0 ? 'bg-purple-600 text-white' : 'bg-slate-800 text-purple-300 hover:bg-slate-700'
+            showFilters || activeFiltersCount > 0
+              ? 'bg-purple-600 text-white'
+              : 'bg-slate-800 text-purple-300 hover:bg-slate-700'
           }`}
         >
           <Filter className="w-4 h-4" />
@@ -374,14 +382,14 @@ export default function NFTFaucetView({ language, t }: NFTFaucetViewProps) {
               </button>
             )}
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Rarity Filter */}
             <div>
               <label className="text-purple-300 text-sm mb-2 block">{text.rarity}</label>
               <select
                 value={rarityFilter}
-                onChange={(e) => setRarityFilter(e.target.value)}
+                onChange={e => setRarityFilter(e.target.value)}
                 className="w-full px-3 py-2 bg-slate-900/50 border border-purple-500/20 rounded-lg text-white text-sm"
               >
                 <option value="all">{text.all}</option>
@@ -391,13 +399,13 @@ export default function NFTFaucetView({ language, t }: NFTFaucetViewProps) {
                 <option value="common">{text.common}</option>
               </select>
             </div>
-            
+
             {/* Chain Filter */}
             <div>
               <label className="text-purple-300 text-sm mb-2 block">{text.chain}</label>
               <select
                 value={chainFilter}
-                onChange={(e) => setChainFilter(e.target.value)}
+                onChange={e => setChainFilter(e.target.value)}
                 className="w-full px-3 py-2 bg-slate-900/50 border border-purple-500/20 rounded-lg text-white text-sm"
               >
                 <option value="all">{text.all}</option>
@@ -415,12 +423,8 @@ export default function NFTFaucetView({ language, t }: NFTFaucetViewProps) {
 
       {/* NFT Faucet Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {filteredFaucets.map((faucet) => (
-          <NFTFaucetCard
-            key={faucet.id}
-            {...faucet}
-            language={language}
-          />
+        {filteredFaucets.map(faucet => (
+          <NFTFaucetCard key={faucet.id} {...faucet} language={language} />
         ))}
       </div>
 
@@ -432,5 +436,5 @@ export default function NFTFaucetView({ language, t }: NFTFaucetViewProps) {
         </div>
       )}
     </div>
-  )
+  );
 }

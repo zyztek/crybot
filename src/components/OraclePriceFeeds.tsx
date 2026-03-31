@@ -1,5 +1,15 @@
 import { useState } from 'react';
-import { RefreshCw, TrendingUp, TrendingDown, Activity, Zap, CheckCircle, AlertTriangle, Clock, Database } from 'lucide-react';
+import {
+  RefreshCw,
+  TrendingUp,
+  TrendingDown,
+  Activity,
+  Zap,
+  CheckCircle,
+  AlertTriangle,
+  Clock,
+  Database,
+} from 'lucide-react';
 
 interface PriceFeed {
   asset: string;
@@ -24,22 +34,145 @@ interface OracleNetwork {
 }
 
 const PRICE_FEEDS: PriceFeed[] = [
-  { asset: 'BTC', name: 'Bitcoin', price: 67500, change24h: 3.2, change1h: 0.5, volume24h: 45200000000, marketCap: 1325000000000, lastUpdate: '2s ago', source: 'Chainlink', status: 'live' },
-  { asset: 'ETH', name: 'Ethereum', price: 3520, change24h: -1.8, change1h: 0.3, volume24h: 18200000000, marketCap: 423000000000, lastUpdate: '3s ago', source: 'Chainlink', status: 'live' },
-  { asset: 'SOL', name: 'Solana', price: 175, change24h: 8.5, change1h: 2.1, volume24h: 5200000000, marketCap: 78000000000, lastUpdate: '1s ago', source: 'Pyth', status: 'live' },
-  { asset: 'DOGE', name: 'Dogecoin', price: 0.15, change24h: -2.4, change1h: -0.8, volume24h: 1200000000, marketCap: 22000000000, lastUpdate: '4s ago', source: 'Band', status: 'live' },
-  { asset: 'AVAX', name: 'Avalanche', price: 42.5, change24h: 5.6, change1h: 1.2, volume24h: 890000000, marketCap: 16000000000, lastUpdate: '2s ago', source: 'Chainlink', status: 'live' },
-  { asset: 'LINK', name: 'Chainlink', price: 18.75, change24h: 4.3, change1h: 0.9, volume24h: 560000000, marketCap: 11000000000, lastUpdate: '3s ago', source: 'Chainlink', status: 'live' },
-  { asset: 'MATIC', name: 'Polygon', price: 0.72, change24h: 7.1, change1h: 1.8, volume24h: 780000000, marketCap: 7000000000, lastUpdate: '3s ago', source: 'Pyth', status: 'live' },
-  { asset: 'ARB', name: 'Arbitrum', price: 1.45, change24h: 6.8, change1h: 1.5, volume24h: 420000000, marketCap: 1900000000, lastUpdate: '2s ago', source: 'Pyth', status: 'live' },
+  {
+    asset: 'BTC',
+    name: 'Bitcoin',
+    price: 67500,
+    change24h: 3.2,
+    change1h: 0.5,
+    volume24h: 45200000000,
+    marketCap: 1325000000000,
+    lastUpdate: '2s ago',
+    source: 'Chainlink',
+    status: 'live',
+  },
+  {
+    asset: 'ETH',
+    name: 'Ethereum',
+    price: 3520,
+    change24h: -1.8,
+    change1h: 0.3,
+    volume24h: 18200000000,
+    marketCap: 423000000000,
+    lastUpdate: '3s ago',
+    source: 'Chainlink',
+    status: 'live',
+  },
+  {
+    asset: 'SOL',
+    name: 'Solana',
+    price: 175,
+    change24h: 8.5,
+    change1h: 2.1,
+    volume24h: 5200000000,
+    marketCap: 78000000000,
+    lastUpdate: '1s ago',
+    source: 'Pyth',
+    status: 'live',
+  },
+  {
+    asset: 'DOGE',
+    name: 'Dogecoin',
+    price: 0.15,
+    change24h: -2.4,
+    change1h: -0.8,
+    volume24h: 1200000000,
+    marketCap: 22000000000,
+    lastUpdate: '4s ago',
+    source: 'Band',
+    status: 'live',
+  },
+  {
+    asset: 'AVAX',
+    name: 'Avalanche',
+    price: 42.5,
+    change24h: 5.6,
+    change1h: 1.2,
+    volume24h: 890000000,
+    marketCap: 16000000000,
+    lastUpdate: '2s ago',
+    source: 'Chainlink',
+    status: 'live',
+  },
+  {
+    asset: 'LINK',
+    name: 'Chainlink',
+    price: 18.75,
+    change24h: 4.3,
+    change1h: 0.9,
+    volume24h: 560000000,
+    marketCap: 11000000000,
+    lastUpdate: '3s ago',
+    source: 'Chainlink',
+    status: 'live',
+  },
+  {
+    asset: 'MATIC',
+    name: 'Polygon',
+    price: 0.72,
+    change24h: 7.1,
+    change1h: 1.8,
+    volume24h: 780000000,
+    marketCap: 7000000000,
+    lastUpdate: '3s ago',
+    source: 'Pyth',
+    status: 'live',
+  },
+  {
+    asset: 'ARB',
+    name: 'Arbitrum',
+    price: 1.45,
+    change24h: 6.8,
+    change1h: 1.5,
+    volume24h: 420000000,
+    marketCap: 1900000000,
+    lastUpdate: '2s ago',
+    source: 'Pyth',
+    status: 'live',
+  },
 ];
 
 const ORACLE_NETWORKS: OracleNetwork[] = [
-  { name: 'Chainlink', status: 'operational', uptime: '99.99%', feeds: 850, latency: '<1s', accuracy: '99.999%' },
-  { name: 'Pyth Network', status: 'operational', uptime: '99.98%', feeds: 340, latency: '<400ms', accuracy: '99.995%' },
-  { name: 'Band Protocol', status: 'operational', uptime: '99.95%', feeds: 180, latency: '<2s', accuracy: '99.99%' },
-  { name: 'UMA Oracle', status: 'degraded', uptime: '99.90%', feeds: 65, latency: '<3s', accuracy: '99.98%' },
-  { name: 'Tellor', status: 'operational', uptime: '99.92%', feeds: 120, latency: '<2s', accuracy: '99.99%' },
+  {
+    name: 'Chainlink',
+    status: 'operational',
+    uptime: '99.99%',
+    feeds: 850,
+    latency: '<1s',
+    accuracy: '99.999%',
+  },
+  {
+    name: 'Pyth Network',
+    status: 'operational',
+    uptime: '99.98%',
+    feeds: 340,
+    latency: '<400ms',
+    accuracy: '99.995%',
+  },
+  {
+    name: 'Band Protocol',
+    status: 'operational',
+    uptime: '99.95%',
+    feeds: 180,
+    latency: '<2s',
+    accuracy: '99.99%',
+  },
+  {
+    name: 'UMA Oracle',
+    status: 'degraded',
+    uptime: '99.90%',
+    feeds: 65,
+    latency: '<3s',
+    accuracy: '99.98%',
+  },
+  {
+    name: 'Tellor',
+    status: 'operational',
+    uptime: '99.92%',
+    feeds: 120,
+    latency: '<2s',
+    accuracy: '99.99%',
+  },
 ];
 
 export default function OraclePriceFeeds() {
@@ -155,17 +288,23 @@ export default function OraclePriceFeeds() {
             <div
               key={idx}
               className={`bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl rounded-2xl p-4 border ${
-                network.status === 'operational' ? 'border-green-500/30' :
-                network.status === 'degraded' ? 'border-yellow-500/30' :
-                'border-red-500/30'
+                network.status === 'operational'
+                  ? 'border-green-500/30'
+                  : network.status === 'degraded'
+                    ? 'border-yellow-500/30'
+                    : 'border-red-500/30'
               }`}
             >
               <div className="flex items-center gap-2 mb-3">
-                <div className={`w-2 h-2 rounded-full ${
-                  network.status === 'operational' ? 'bg-green-400' :
-                  network.status === 'degraded' ? 'bg-yellow-400' :
-                  'bg-red-400 animate-pulse'
-                }`} />
+                <div
+                  className={`w-2 h-2 rounded-full ${
+                    network.status === 'operational'
+                      ? 'bg-green-400'
+                      : network.status === 'degraded'
+                        ? 'bg-yellow-400'
+                        : 'bg-red-400 animate-pulse'
+                  }`}
+                />
                 <h4 className="text-white font-bold">{network.name}</h4>
               </div>
               <div className="space-y-1 text-sm">
@@ -220,7 +359,7 @@ export default function OraclePriceFeeds() {
                     <td className="py-4 px-4">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-yellow-400 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                          {feed.asset.slice(0,2)}
+                          {feed.asset.slice(0, 2)}
                         </div>
                         <div>
                           <p className="text-white font-bold">{feed.asset}</p>
@@ -230,17 +369,27 @@ export default function OraclePriceFeeds() {
                     </td>
                     <td className="text-right py-4 px-4">
                       <span className="text-white font-bold text-lg">
-                        {feed.price < 1 ? `$${feed.price.toFixed(4)}` : `$${feed.price.toLocaleString()}`}
+                        {feed.price < 1
+                          ? `$${feed.price.toFixed(4)}`
+                          : `$${feed.price.toLocaleString()}`}
                       </span>
                     </td>
                     <td className="text-right py-4 px-4">
-                      <div className={`flex items-center justify-end gap-1 ${feed.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                        {feed.change24h >= 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
+                      <div
+                        className={`flex items-center justify-end gap-1 ${feed.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}
+                      >
+                        {feed.change24h >= 0 ? (
+                          <TrendingUp className="w-4 h-4" />
+                        ) : (
+                          <TrendingDown className="w-4 h-4" />
+                        )}
                         {Math.abs(feed.change24h).toFixed(2)}%
                       </div>
                     </td>
                     <td className="text-right py-4 px-4">
-                      <div className={`flex items-center justify-end gap-1 ${feed.change1h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                      <div
+                        className={`flex items-center justify-end gap-1 ${feed.change1h >= 0 ? 'text-green-400' : 'text-red-400'}`}
+                      >
                         {Math.abs(feed.change1h).toFixed(2)}%
                       </div>
                     </td>
@@ -256,17 +405,23 @@ export default function OraclePriceFeeds() {
                       </span>
                     </td>
                     <td className="text-center py-4 px-4">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        feed.status === 'live' ? 'bg-green-500/20 text-green-400' :
-                        feed.status === 'delayed' ? 'bg-yellow-500/20 text-yellow-400' :
-                        'bg-red-500/20 text-red-400'
-                      }`}>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          feed.status === 'live'
+                            ? 'bg-green-500/20 text-green-400'
+                            : feed.status === 'delayed'
+                              ? 'bg-yellow-500/20 text-yellow-400'
+                              : 'bg-red-500/20 text-red-400'
+                        }`}
+                      >
                         {t[feed.status]}
                       </span>
                     </td>
                     <td className="text-center py-4 px-4">
                       <button
-                        onClick={() => setSelectedFeed(selectedFeed?.asset === feed.asset ? null : feed)}
+                        onClick={() =>
+                          setSelectedFeed(selectedFeed?.asset === feed.asset ? null : feed)
+                        }
                         className="text-blue-400 hover:text-blue-300 text-sm"
                       >
                         {selectedFeed?.asset === feed.asset ? t.hideDetails : t.viewDetails}
@@ -294,8 +449,11 @@ export default function OraclePriceFeeds() {
                 <Zap className="w-5 h-5 text-yellow-400" />
                 <div>
                   <p className="text-gray-400 text-sm">{t.change1h}</p>
-                  <p className={`font-bold ${selectedFeed.change1h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                    {selectedFeed.change1h >= 0 ? '+' : ''}{selectedFeed.change1h.toFixed(2)}%
+                  <p
+                    className={`font-bold ${selectedFeed.change1h >= 0 ? 'text-green-400' : 'text-red-400'}`}
+                  >
+                    {selectedFeed.change1h >= 0 ? '+' : ''}
+                    {selectedFeed.change1h.toFixed(2)}%
                   </p>
                 </div>
               </div>
@@ -303,8 +461,11 @@ export default function OraclePriceFeeds() {
                 <Activity className="w-5 h-5 text-blue-400" />
                 <div>
                   <p className="text-gray-400 text-sm">{t.change24h}</p>
-                  <p className={`font-bold ${selectedFeed.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                    {selectedFeed.change24h >= 0 ? '+' : ''}{selectedFeed.change24h.toFixed(2)}%
+                  <p
+                    className={`font-bold ${selectedFeed.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}
+                  >
+                    {selectedFeed.change24h >= 0 ? '+' : ''}
+                    {selectedFeed.change24h.toFixed(2)}%
                   </p>
                 </div>
               </div>

@@ -1,20 +1,22 @@
-import { useState } from 'react'
-import { Play, RotateCcw, History, ArrowRight } from 'lucide-react'
+import { useState } from 'react';
+import { Play, RotateCcw, History, ArrowRight } from 'lucide-react';
 
 export default function ReplayTransaction() {
-  const [isSpanish, setIsSpanish] = useState(true)
+  const [isSpanish, setIsSpanish] = useState(true);
 
-  const text = isSpanish ? {
-    title: 'Replay de Transacción',
-    txHash: 'Hash de Transacción',
-    replay: 'Replay',
-    history: 'Historial',
-  } : {
-    title: 'Transaction Replay',
-    txHash: 'Transaction Hash',
-    replay: 'Replay',
-    history: 'History',
-  }
+  const text = isSpanish
+    ? {
+        title: 'Replay de Transacción',
+        txHash: 'Hash de Transacción',
+        replay: 'Replay',
+        history: 'Historial',
+      }
+    : {
+        title: 'Transaction Replay',
+        txHash: 'Transaction Hash',
+        replay: 'Replay',
+        history: 'History',
+      };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4 md:p-8">
@@ -24,7 +26,10 @@ export default function ReplayTransaction() {
             <History className="w-8 h-8 text-purple-400" />
             {text.title}
           </h1>
-          <button onClick={() => setIsSpanish(!isSpanish)} className="bg-slate-700 hover:bg-slate-600 text-white px-3 py-2 rounded-lg">
+          <button
+            onClick={() => setIsSpanish(!isSpanish)}
+            className="bg-slate-700 hover:bg-slate-600 text-white px-3 py-2 rounded-lg"
+          >
             {isSpanish ? 'EN' : 'ES'}
           </button>
         </div>
@@ -32,7 +37,10 @@ export default function ReplayTransaction() {
         <div className="bg-slate-800/50 backdrop-blur rounded-xl p-6 border border-purple-500/20 space-y-4">
           <div>
             <label className="text-slate-400 text-sm mb-1 block">{text.txHash}</label>
-            <input defaultValue="0x7f3a...2b8c" className="w-full bg-slate-700 rounded-lg px-4 py-2 text-white" />
+            <input
+              defaultValue="0x7f3a...2b8c"
+              className="w-full bg-slate-700 rounded-lg px-4 py-2 text-white"
+            />
           </div>
           <div className="flex gap-3">
             <button className="flex-1 bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg flex items-center justify-center gap-2">
@@ -48,5 +56,5 @@ export default function ReplayTransaction() {
         </div>
       </div>
     </div>
-  )
+  );
 }

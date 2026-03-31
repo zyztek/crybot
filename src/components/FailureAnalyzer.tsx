@@ -1,30 +1,50 @@
-import { useState } from 'react'
-import { AlertTriangle, XCircle, Search } from 'lucide-react'
+import { useState } from 'react';
+import { AlertTriangle, XCircle, Search } from 'lucide-react';
 
 export default function FailureAnalyzer() {
-  const [isSpanish, setIsSpanish] = useState(true)
+  const [isSpanish, setIsSpanish] = useState(true);
 
   const failures = [
-    { id: 1, type: 'Out of Gas', txHash: '0x7f3a...2b8c', timestamp: '2025-01-15 10:23:45', reason: 'Gas limit too low' },
-    { id: 2, type: 'Revert', txHash: '0x9c4d...3e7b', timestamp: '2025-01-15 09:12:33', reason: 'Condition not met' },
-    { id: 3, type: 'Nonce Mismatch', txHash: '0x2e5f...1a9c', timestamp: '2025-01-14 18:45:22', reason: 'Invalid nonce' },
-  ]
+    {
+      id: 1,
+      type: 'Out of Gas',
+      txHash: '0x7f3a...2b8c',
+      timestamp: '2025-01-15 10:23:45',
+      reason: 'Gas limit too low',
+    },
+    {
+      id: 2,
+      type: 'Revert',
+      txHash: '0x9c4d...3e7b',
+      timestamp: '2025-01-15 09:12:33',
+      reason: 'Condition not met',
+    },
+    {
+      id: 3,
+      type: 'Nonce Mismatch',
+      txHash: '0x2e5f...1a9c',
+      timestamp: '2025-01-14 18:45:22',
+      reason: 'Invalid nonce',
+    },
+  ];
 
-  const text = isSpanish ? {
-    title: 'Analizador de Fallos',
-    search: 'Buscar transacción',
-    failures: 'Fallos Detectados',
-    type: 'Tipo',
-    reason: 'Razón',
-    analyze: 'Analizar',
-  } : {
-    title: 'Failure Analyzer',
-    search: 'Search transaction',
-    failures: 'Detected Failures',
-    type: 'Type',
-    reason: 'Reason',
-    analyze: 'Analyze',
-  }
+  const text = isSpanish
+    ? {
+        title: 'Analizador de Fallos',
+        search: 'Buscar transacción',
+        failures: 'Fallos Detectados',
+        type: 'Tipo',
+        reason: 'Razón',
+        analyze: 'Analizar',
+      }
+    : {
+        title: 'Failure Analyzer',
+        search: 'Search transaction',
+        failures: 'Detected Failures',
+        type: 'Type',
+        reason: 'Reason',
+        analyze: 'Analyze',
+      };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4 md:p-8">
@@ -34,14 +54,20 @@ export default function FailureAnalyzer() {
             <AlertTriangle className="w-8 h-8 text-purple-400" />
             {text.title}
           </h1>
-          <button onClick={() => setIsSpanish(!isSpanish)} className="bg-slate-700 hover:bg-slate-600 text-white px-3 py-2 rounded-lg">
+          <button
+            onClick={() => setIsSpanish(!isSpanish)}
+            className="bg-slate-700 hover:bg-slate-600 text-white px-3 py-2 rounded-lg"
+          >
             {isSpanish ? 'EN' : 'ES'}
           </button>
         </div>
 
         <div className="bg-slate-800/50 backdrop-blur rounded-xl p-6 border border-purple-500/20 mb-6">
           <div className="flex gap-3">
-            <input placeholder={text.search} className="flex-1 bg-slate-700 rounded-lg px-4 py-2 text-white" />
+            <input
+              placeholder={text.search}
+              className="flex-1 bg-slate-700 rounded-lg px-4 py-2 text-white"
+            />
             <button className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg flex items-center gap-2">
               <Search className="w-4 h-4" />
               {text.analyze}
@@ -72,5 +98,5 @@ export default function FailureAnalyzer() {
         </div>
       </div>
     </div>
-  )
+  );
 }

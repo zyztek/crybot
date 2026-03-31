@@ -29,7 +29,7 @@ export default function Missions() {
       target: 5,
       reward: 200,
       difficulty: 'easy' as const,
-      icon: Target
+      icon: Target,
     },
     {
       id: 2,
@@ -39,7 +39,7 @@ export default function Missions() {
       target: 1,
       reward: 50,
       difficulty: 'easy' as const,
-      icon: Gift
+      icon: Gift,
     },
     {
       id: 3,
@@ -49,7 +49,7 @@ export default function Missions() {
       target: 7,
       reward: 500,
       difficulty: 'medium' as const,
-      icon: Clock
+      icon: Clock,
     },
     {
       id: 4,
@@ -59,7 +59,7 @@ export default function Missions() {
       target: 1,
       reward: 1000,
       difficulty: 'medium' as const,
-      icon: Users
+      icon: Users,
     },
     {
       id: 5,
@@ -69,7 +69,7 @@ export default function Missions() {
       target: 10000,
       reward: 1500,
       difficulty: 'hard' as const,
-      icon: TrendingUp
+      icon: TrendingUp,
     },
     {
       id: 6,
@@ -79,7 +79,7 @@ export default function Missions() {
       target: 10,
       reward: 400,
       difficulty: 'easy' as const,
-      icon: Zap
+      icon: Zap,
     },
     {
       id: 7,
@@ -89,7 +89,7 @@ export default function Missions() {
       target: 1,
       reward: 2000,
       difficulty: 'medium' as const,
-      icon: Target
+      icon: Target,
     },
     {
       id: 8,
@@ -99,8 +99,8 @@ export default function Missions() {
       target: 5000,
       reward: 3000,
       difficulty: 'hard' as const,
-      icon: TrendingUp
-    }
+      icon: TrendingUp,
+    },
   ];
 
   const totalReward = missions.reduce((sum, m) => sum + m.reward, 0);
@@ -113,13 +113,13 @@ export default function Missions() {
   const difficultyColor = {
     easy: 'from-green-500 to-emerald-500',
     medium: 'from-yellow-500 to-orange-500',
-    hard: 'from-red-500 to-pink-500'
+    hard: 'from-red-500 to-pink-500',
   };
 
   const difficultyBorder = {
     easy: 'border-green-500/30',
     medium: 'border-yellow-500/30',
-    hard: 'border-red-500/30'
+    hard: 'border-red-500/30',
   };
 
   return (
@@ -127,8 +127,12 @@ export default function Missions() {
       {/* Stats Overview */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
-          <div className="text-gray-400 mb-2">{completedMissions}/{missions.length} {t('missions.title')}</div>
-          <div className="text-3xl font-bold text-white">{Math.round((completedMissions / missions.length) * 100)}%</div>
+          <div className="text-gray-400 mb-2">
+            {completedMissions}/{missions.length} {t('missions.title')}
+          </div>
+          <div className="text-3xl font-bold text-white">
+            {Math.round((completedMissions / missions.length) * 100)}%
+          </div>
           <div className="w-full bg-white/10 rounded-full h-2 mt-3">
             <div
               className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all"
@@ -152,7 +156,8 @@ export default function Missions() {
             <Clock className="text-purple-400" />
           </div>
           <div className="text-3xl font-bold text-white">
-            {String(timeLeft.hours).padStart(2, '0')}:{String(timeLeft.minutes).padStart(2, '0')}:{String(timeLeft.seconds).padStart(2, '0')}
+            {String(timeLeft.hours).padStart(2, '0')}:{String(timeLeft.minutes).padStart(2, '0')}:
+            {String(timeLeft.seconds).padStart(2, '0')}
           </div>
         </div>
       </div>
@@ -163,7 +168,7 @@ export default function Missions() {
         <p className="text-gray-400 mb-6">{t('missions.description')}</p>
 
         <div className="space-y-4">
-          {missions.map((mission) => {
+          {missions.map(mission => {
             const Icon = mission.icon;
             const isCompleted = mission.progress >= mission.target;
             const isClaimed = claimedMissions.includes(mission.id);
@@ -176,7 +181,9 @@ export default function Missions() {
                 } rounded-xl p-5 transition-all hover:scale-[1.01]`}
               >
                 <div className="flex items-start gap-4">
-                  <div className={`bg-gradient-to-br ${difficultyColor[mission.difficulty]} p-3 rounded-xl`}>
+                  <div
+                    className={`bg-gradient-to-br ${difficultyColor[mission.difficulty]} p-3 rounded-xl`}
+                  >
                     <Icon className="text-white" />
                   </div>
 
@@ -192,16 +199,22 @@ export default function Missions() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
                         <div className="text-sm text-gray-400">
-                          {t('missions.progress')}: 
-                          <span className={`font-bold ml-1 ${isCompleted ? 'text-green-400' : 'text-white'}`}>
+                          {t('missions.progress')}:
+                          <span
+                            className={`font-bold ml-1 ${isCompleted ? 'text-green-400' : 'text-white'}`}
+                          >
                             {mission.progress}/{mission.target}
                           </span>
                         </div>
-                        <span className={`px-2 py-1 rounded-full text-xs font-bold ${
-                          mission.difficulty === 'easy' ? 'bg-green-500/20 text-green-400' :
-                          mission.difficulty === 'medium' ? 'bg-yellow-500/20 text-yellow-400' :
-                          'bg-red-500/20 text-red-400'
-                        }`}>
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-bold ${
+                            mission.difficulty === 'easy'
+                              ? 'bg-green-500/20 text-green-400'
+                              : mission.difficulty === 'medium'
+                                ? 'bg-yellow-500/20 text-yellow-400'
+                                : 'bg-red-500/20 text-red-400'
+                          }`}
+                        >
                           {t(`missions.${mission.difficulty}`)}
                         </span>
                       </div>
@@ -215,7 +228,9 @@ export default function Missions() {
                     <div className="w-full bg-white/10 rounded-full h-3 mt-4 overflow-hidden">
                       <div
                         className={`h-3 rounded-full transition-all ${
-                          isCompleted ? 'bg-gradient-to-r from-green-500 to-emerald-500' : `bg-gradient-to-r ${difficultyColor[mission.difficulty]}`
+                          isCompleted
+                            ? 'bg-gradient-to-r from-green-500 to-emerald-500'
+                            : `bg-gradient-to-r ${difficultyColor[mission.difficulty]}`
                         }`}
                         style={{ width: `${progressPercent(mission)}%` }}
                       />

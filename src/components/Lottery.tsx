@@ -36,7 +36,7 @@ const Lottery: React.FC = () => {
       numbers: [...selectedNumbers],
       date: new Date().toLocaleDateString(),
       isWinner: false,
-      prize: 0
+      prize: 0,
     };
 
     setMyTickets([...myTickets, newTicket]);
@@ -101,16 +101,18 @@ const Lottery: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-7 gap-2 mb-6">
-                {Array.from({ length: numberRange }, (_, i) => i + 1).map((num) => (
+                {Array.from({ length: numberRange }, (_, i) => i + 1).map(num => (
                   <button
                     key={num}
                     onClick={() => toggleNumber(num)}
-                    disabled={!selectedNumbers.includes(num) && selectedNumbers.length >= maxNumbers}
+                    disabled={
+                      !selectedNumbers.includes(num) && selectedNumbers.length >= maxNumbers
+                    }
                     className={`w-10 h-10 rounded-lg font-bold text-sm transition-all ${
                       selectedNumbers.includes(num)
                         ? 'bg-gradient-to-br from-yellow-400 to-amber-500 text-white transform scale-110 shadow-lg'
                         : 'bg-slate-700 text-slate-300 hover:bg-slate-600 hover:scale-105'
-                    } ${(!selectedNumbers.includes(num) && selectedNumbers.length >= maxNumbers) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    } ${!selectedNumbers.includes(num) && selectedNumbers.length >= maxNumbers ? 'opacity-50 cursor-not-allowed' : ''}`}
                   >
                     {num}
                   </button>
@@ -139,11 +141,16 @@ const Lottery: React.FC = () => {
                 <div className="mt-4 p-4 bg-slate-700/50 rounded-lg">
                   <p className="text-slate-400 mb-2">Selected Numbers:</p>
                   <div className="flex flex-wrap gap-2">
-                    {selectedNumbers.sort((a, b) => a - b).map((num) => (
-                      <span key={num} className="w-8 h-8 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                        {num}
-                      </span>
-                    ))}
+                    {selectedNumbers
+                      .sort((a, b) => a - b)
+                      .map(num => (
+                        <span
+                          key={num}
+                          className="w-8 h-8 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-full flex items-center justify-center text-white font-bold text-sm"
+                        >
+                          {num}
+                        </span>
+                      ))}
                   </div>
                 </div>
               )}
@@ -152,14 +159,19 @@ const Lottery: React.FC = () => {
             {/* My Tickets */}
             {myTickets.length > 0 && (
               <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
-                <h2 className="text-xl font-semibold text-white mb-4">My Tickets ({myTickets.length})</h2>
+                <h2 className="text-xl font-semibold text-white mb-4">
+                  My Tickets ({myTickets.length})
+                </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {myTickets.map((ticket) => (
-                    <div key={ticket.id} className={`p-4 rounded-xl border ${
-                      ticket.isWinner 
-                        ? 'bg-green-900/30 border-green-500/50' 
-                        : 'bg-slate-700/50 border-slate-600'
-                    }`}>
+                  {myTickets.map(ticket => (
+                    <div
+                      key={ticket.id}
+                      className={`p-4 rounded-xl border ${
+                        ticket.isWinner
+                          ? 'bg-green-900/30 border-green-500/50'
+                          : 'bg-slate-700/50 border-slate-600'
+                      }`}
+                    >
                       <div className="flex justify-between items-start mb-2">
                         <div className="flex items-center gap-2">
                           {ticket.isWinner ? (
@@ -176,8 +188,11 @@ const Lottery: React.FC = () => {
                         )}
                       </div>
                       <div className="flex flex-wrap gap-1 mb-2">
-                        {ticket.numbers.map((num) => (
-                          <span key={num} className="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                        {ticket.numbers.map(num => (
+                          <span
+                            key={num}
+                            className="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center text-white text-xs font-bold"
+                          >
                             {num}
                           </span>
                         ))}
@@ -197,14 +212,39 @@ const Lottery: React.FC = () => {
               <h3 className="text-lg font-semibold text-white mb-4">Prize Tiers</h3>
               <div className="space-y-3">
                 {[
-                  { match: 6, prize: 'Jackpot', amount: '$50,000', color: 'from-yellow-400 to-amber-500' },
-                  { match: 5, prize: '2nd Prize', amount: '$5,000', color: 'from-slate-300 to-slate-400' },
-                  { match: 4, prize: '3rd Prize', amount: '$500', color: 'from-amber-600 to-amber-700' },
-                  { match: 3, prize: 'Consolation', amount: '$50', color: 'from-orange-600 to-orange-700' },
-                ].map((tier) => (
-                  <div key={tier.match} className="flex items-center justify-between p-3 bg-slate-700/50 rounded-lg">
+                  {
+                    match: 6,
+                    prize: 'Jackpot',
+                    amount: '$50,000',
+                    color: 'from-yellow-400 to-amber-500',
+                  },
+                  {
+                    match: 5,
+                    prize: '2nd Prize',
+                    amount: '$5,000',
+                    color: 'from-slate-300 to-slate-400',
+                  },
+                  {
+                    match: 4,
+                    prize: '3rd Prize',
+                    amount: '$500',
+                    color: 'from-amber-600 to-amber-700',
+                  },
+                  {
+                    match: 3,
+                    prize: 'Consolation',
+                    amount: '$50',
+                    color: 'from-orange-600 to-orange-700',
+                  },
+                ].map(tier => (
+                  <div
+                    key={tier.match}
+                    className="flex items-center justify-between p-3 bg-slate-700/50 rounded-lg"
+                  >
                     <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${tier.color} flex items-center justify-center text-white font-bold`}>
+                      <div
+                        className={`w-10 h-10 rounded-full bg-gradient-to-br ${tier.color} flex items-center justify-center text-white font-bold`}
+                      >
                         {tier.match}
                       </div>
                       <div>
@@ -212,7 +252,9 @@ const Lottery: React.FC = () => {
                         <p className="text-slate-400 text-sm">{tier.match} numbers</p>
                       </div>
                     </div>
-                    <span className={`font-bold ${tier.match === 6 ? 'text-2xl text-yellow-400' : 'text-white'}`}>
+                    <span
+                      className={`font-bold ${tier.match === 6 ? 'text-2xl text-yellow-400' : 'text-white'}`}
+                    >
                       {tier.amount}
                     </span>
                   </div>
@@ -233,14 +275,18 @@ const Lottery: React.FC = () => {
                   { user: 'bitcoin_babe', amount: '$500', numbers: [3, 11, 27, 36, 44, 49] },
                 ].map((winner, i) => (
                   <div key={i} className="flex items-center gap-3 p-2 bg-slate-700/30 rounded-lg">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${
-                      i === 0 ? 'bg-yellow-500' : i === 1 ? 'bg-slate-400' : 'bg-amber-700'
-                    }`}>
+                    <div
+                      className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${
+                        i === 0 ? 'bg-yellow-500' : i === 1 ? 'bg-slate-400' : 'bg-amber-700'
+                      }`}
+                    >
                       {i + 1}
                     </div>
                     <div className="flex-1">
                       <p className="text-white font-medium">{winner.user}</p>
-                      <p className="text-slate-400 text-xs">Matched {winner.numbers.length} numbers</p>
+                      <p className="text-slate-400 text-xs">
+                        Matched {winner.numbers.length} numbers
+                      </p>
                     </div>
                     <span className="text-green-400 font-bold text-sm">{winner.amount}</span>
                   </div>

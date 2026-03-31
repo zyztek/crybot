@@ -1,36 +1,36 @@
-import { vi } from 'vitest'
+import { vi } from 'vitest';
 
 // Import store initial data from correct stores
-import { INITIAL_USER } from '../store/slices/userStore'
-import { INITIAL_WALLET_BALANCE } from '../store/slices/walletStore'
+import { INITIAL_USER } from '../store/slices/userStore';
+import { INITIAL_WALLET_BALANCE } from '../store/slices/walletStore';
 
-import { INITIAL_FAUCETS, INITIAL_HISTORY } from '../store/slices/faucetStore'
-import { INITIAL_ACHIEVEMENTS, LEADERBOARD } from '../store/slices/achievementsStore'
+import { INITIAL_FAUCETS, INITIAL_HISTORY } from '../store/slices/faucetStore';
+import { INITIAL_ACHIEVEMENTS, LEADERBOARD } from '../store/slices/achievementsStore';
 
 // Re-export store fixtures
-export { INITIAL_USER }
-export { INITIAL_WALLET_BALANCE } from '../store/slices/walletStore'
-export { INITIAL_ACHIEVEMENTS, LEADERBOARD } from '../store/slices/achievementsStore'
-export { INITIAL_FAUCETS, INITIAL_HISTORY } from '../store/slices/faucetStore'
+export { INITIAL_USER };
+export { INITIAL_WALLET_BALANCE } from '../store/slices/walletStore';
+export { INITIAL_ACHIEVEMENTS, LEADERBOARD } from '../store/slices/achievementsStore';
+export { INITIAL_FAUCETS, INITIAL_HISTORY } from '../store/slices/faucetStore';
 
 // Add mockAchievements (re-export from achievements)
-export const mockAchievements = INITIAL_ACHIEVEMENTS
+export const mockAchievements = INITIAL_ACHIEVEMENTS;
 
 // Component-specific fixtures - use store initial data
-export const mockUser = INITIAL_USER
+export const mockUser = INITIAL_USER;
 
-export const mockWalletBalance = INITIAL_WALLET_BALANCE
+export const mockWalletBalance = INITIAL_WALLET_BALANCE;
 
-export const mockHistory = INITIAL_HISTORY
+export const mockHistory = INITIAL_HISTORY;
 
-export const mockFaucets = INITIAL_FAUCETS
+export const mockFaucets = INITIAL_FAUCETS;
 
 // Game component props fixtures
 export const gameMockProps = {
   userCoins: 1000,
   onWin: vi.fn(),
   onLoss: vi.fn(),
-}
+};
 
 export const mockTranslations = {
   login: 'Iniciar Sesión',
@@ -97,4 +97,4 @@ export const mockTranslations = {
   cancel: 'Cancelar',
   edit: 'Editar',
   delete: 'Eliminar',
-}
+};

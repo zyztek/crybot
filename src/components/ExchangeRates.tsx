@@ -1,19 +1,29 @@
-import { useState } from 'react'
-import { TrendingUp, TrendingDown, RefreshCw, Search, Star, ArrowUpRight, BarChart3, Globe, AlertCircle } from 'lucide-react'
+import { useState } from 'react';
+import {
+  TrendingUp,
+  TrendingDown,
+  RefreshCw,
+  Search,
+  Star,
+  ArrowUpRight,
+  BarChart3,
+  Globe,
+  AlertCircle,
+} from 'lucide-react';
 
 interface ExchangeRate {
-  id: string
-  symbol: string
-  name: string
-  price: number
-  change24h: number
-  change7d: number
-  volume24h: number
-  marketCap: number
-  icon: string
-  exchanges: number
-  isFavorite: boolean
-  lastUpdate: string
+  id: string;
+  symbol: string;
+  name: string;
+  price: number;
+  change24h: number;
+  change7d: number;
+  volume24h: number;
+  marketCap: number;
+  icon: string;
+  exchanges: number;
+  isFavorite: boolean;
+  lastUpdate: string;
 }
 
 const exchangeRates: ExchangeRate[] = [
@@ -21,7 +31,7 @@ const exchangeRates: ExchangeRate[] = [
     id: 'btc',
     symbol: 'BTC',
     name: 'Bitcoin',
-    price: 67842.50,
+    price: 67842.5,
     change24h: 2.34,
     change7d: 5.67,
     volume24h: 28500000000,
@@ -29,7 +39,7 @@ const exchangeRates: ExchangeRate[] = [
     icon: '₿',
     exchanges: 156,
     isFavorite: true,
-    lastUpdate: '2024-03-15 14:32:05 UTC'
+    lastUpdate: '2024-03-15 14:32:05 UTC',
   },
   {
     id: 'eth',
@@ -43,7 +53,7 @@ const exchangeRates: ExchangeRate[] = [
     icon: 'Ξ',
     exchanges: 142,
     isFavorite: true,
-    lastUpdate: '2024-03-15 14:31:58 UTC'
+    lastUpdate: '2024-03-15 14:31:58 UTC',
   },
   {
     id: 'bnb',
@@ -57,7 +67,7 @@ const exchangeRates: ExchangeRate[] = [
     icon: '◆',
     exchanges: 98,
     isFavorite: false,
-    lastUpdate: '2024-03-15 14:32:01 UTC'
+    lastUpdate: '2024-03-15 14:32:01 UTC',
   },
   {
     id: 'sol',
@@ -71,7 +81,7 @@ const exchangeRates: ExchangeRate[] = [
     icon: '◎',
     exchanges: 87,
     isFavorite: true,
-    lastUpdate: '2024-03-15 14:31:55 UTC'
+    lastUpdate: '2024-03-15 14:31:55 UTC',
   },
   {
     id: 'xrp',
@@ -85,7 +95,7 @@ const exchangeRates: ExchangeRate[] = [
     icon: '✕',
     exchanges: 112,
     isFavorite: false,
-    lastUpdate: '2024-03-15 14:32:03 UTC'
+    lastUpdate: '2024-03-15 14:32:03 UTC',
   },
   {
     id: 'ada',
@@ -99,7 +109,7 @@ const exchangeRates: ExchangeRate[] = [
     icon: '₳',
     exchanges: 95,
     isFavorite: false,
-    lastUpdate: '2024-03-15 14:31:50 UTC'
+    lastUpdate: '2024-03-15 14:31:50 UTC',
   },
   {
     id: 'doge',
@@ -107,13 +117,13 @@ const exchangeRates: ExchangeRate[] = [
     name: 'Dogecoin',
     price: 0.1547,
     change24h: 3.21,
-    change7d: 8.90,
+    change7d: 8.9,
     volume24h: 890000000,
     marketCap: 22000000000,
     icon: 'Ð',
     exchanges: 134,
     isFavorite: false,
-    lastUpdate: '2024-03-15 14:32:07 UTC'
+    lastUpdate: '2024-03-15 14:32:07 UTC',
   },
   {
     id: 'dot',
@@ -127,7 +137,7 @@ const exchangeRates: ExchangeRate[] = [
     icon: '●',
     exchanges: 78,
     isFavorite: false,
-    lastUpdate: '2024-03-15 14:31:52 UTC'
+    lastUpdate: '2024-03-15 14:31:52 UTC',
   },
   {
     id: 'ltc',
@@ -141,7 +151,7 @@ const exchangeRates: ExchangeRate[] = [
     icon: 'Ł',
     exchanges: 102,
     isFavorite: false,
-    lastUpdate: '2024-03-15 14:31:48 UTC'
+    lastUpdate: '2024-03-15 14:31:48 UTC',
   },
   {
     id: 'avax',
@@ -155,65 +165,67 @@ const exchangeRates: ExchangeRate[] = [
     icon: '▲',
     exchanges: 72,
     isFavorite: false,
-    lastUpdate: '2024-03-15 14:32:06 UTC'
-  }
-]
+    lastUpdate: '2024-03-15 14:32:06 UTC',
+  },
+];
 
 const ExchangeRates = () => {
-  const [searchQuery, setSearchQuery] = useState('')
-  const [selectedSort, setSelectedSort] = useState('marketCap')
-  const [favorites, setFavorites] = useState<Set<string>>(new Set(['btc', 'eth', 'sol']))
-  const [showFavorites, setShowFavorites] = useState(false)
-  const [lastUpdate, setLastUpdate] = useState(new Date())
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedSort, setSelectedSort] = useState('marketCap');
+  const [favorites, setFavorites] = useState<Set<string>>(new Set(['btc', 'eth', 'sol']));
+  const [showFavorites, setShowFavorites] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState(new Date());
 
   const formatNumber = (num: number): string => {
-    if (num >= 1e12) return `$${(num / 1e12).toFixed(2)}T`
-    if (num >= 1e9) return `$${(num / 1e9).toFixed(2)}B`
-    if (num >= 1e6) return `$${(num / 1e6).toFixed(2)}M`
-    if (num >= 1e3) return `$${(num / 1e3).toFixed(2)}K`
-    return `$${num.toFixed(2)}`
-  }
+    if (num >= 1e12) return `$${(num / 1e12).toFixed(2)}T`;
+    if (num >= 1e9) return `$${(num / 1e9).toFixed(2)}B`;
+    if (num >= 1e6) return `$${(num / 1e6).toFixed(2)}M`;
+    if (num >= 1e3) return `$${(num / 1e3).toFixed(2)}K`;
+    return `$${num.toFixed(2)}`;
+  };
 
   const formatPrice = (price: number): string => {
-    if (price >= 1) return `$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-    return `$${price.toFixed(4)}`
-  }
+    if (price >= 1)
+      return `$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    return `$${price.toFixed(4)}`;
+  };
 
   const toggleFavorite = (id: string) => {
-    const newFavorites = new Set(favorites)
+    const newFavorites = new Set(favorites);
     if (newFavorites.has(id)) {
-      newFavorites.delete(id)
+      newFavorites.delete(id);
     } else {
-      newFavorites.add(id)
+      newFavorites.add(id);
     }
-    setFavorites(newFavorites)
-  }
+    setFavorites(newFavorites);
+  };
 
   const refreshRates = () => {
-    setLastUpdate(new Date())
-  }
+    setLastUpdate(new Date());
+  };
 
   const sortedRates = [...exchangeRates]
     .filter(rate => {
-      const matchesSearch = rate.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           rate.symbol.toLowerCase().includes(searchQuery.toLowerCase())
-      const matchesFavorites = !showFavorites || favorites.has(rate.id)
-      return matchesSearch && matchesFavorites
+      const matchesSearch =
+        rate.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        rate.symbol.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesFavorites = !showFavorites || favorites.has(rate.id);
+      return matchesSearch && matchesFavorites;
     })
     .sort((a, b) => {
-      if (selectedSort === 'marketCap') return b.marketCap - a.marketCap
-      if (selectedSort === 'change24h') return b.change24h - a.change24h
-      if (selectedSort === 'change7d') return b.change7d - a.change7d
-      if (selectedSort === 'volume') return b.volume24h - a.volume24h
-      if (selectedSort === 'price') return b.price - a.price
-      if (selectedSort === 'exchanges') return b.exchanges - a.exchanges
-      return 0
-    })
+      if (selectedSort === 'marketCap') return b.marketCap - a.marketCap;
+      if (selectedSort === 'change24h') return b.change24h - a.change24h;
+      if (selectedSort === 'change7d') return b.change7d - a.change7d;
+      if (selectedSort === 'volume') return b.volume24h - a.volume24h;
+      if (selectedSort === 'price') return b.price - a.price;
+      if (selectedSort === 'exchanges') return b.exchanges - a.exchanges;
+      return 0;
+    });
 
-  const totalMarketCap = exchangeRates.reduce((sum, r) => sum + r.marketCap, 0)
-  const totalVolume24h = exchangeRates.reduce((sum, r) => sum + r.volume24h, 0)
-  const gainers24h = exchangeRates.filter(r => r.change24h > 0).length
-  const losers24h = exchangeRates.filter(r => r.change24h < 0).length
+  const totalMarketCap = exchangeRates.reduce((sum, r) => sum + r.marketCap, 0);
+  const totalVolume24h = exchangeRates.reduce((sum, r) => sum + r.volume24h, 0);
+  const gainers24h = exchangeRates.filter(r => r.change24h > 0).length;
+  const losers24h = exchangeRates.filter(r => r.change24h < 0).length;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 p-6">
@@ -282,13 +294,13 @@ const ExchangeRates = () => {
                 type="text"
                 placeholder="Search coins..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg pl-10 pr-4 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             </div>
             <select
               value={selectedSort}
-              onChange={(e) => setSelectedSort(e.target.value)}
+              onChange={e => setSelectedSort(e.target.value)}
               className="bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               <option value="marketCap">Sort: Market Cap</option>
@@ -301,8 +313,8 @@ const ExchangeRates = () => {
             <button
               onClick={() => setShowFavorites(!showFavorites)}
               className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-                showFavorites 
-                  ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-400/30' 
+                showFavorites
+                  ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-400/30'
                   : 'bg-slate-700/50 text-slate-300 border border-slate-600/50'
               }`}
             >
@@ -324,12 +336,24 @@ const ExchangeRates = () => {
                 <tr className="border-b border-slate-700/50">
                   <th className="px-6 py-4 text-left text-sm font-medium text-slate-400">Coin</th>
                   <th className="px-6 py-4 text-right text-sm font-medium text-slate-400">Price</th>
-                  <th className="px-6 py-4 text-right text-sm font-medium text-slate-400">24h Change</th>
-                  <th className="px-6 py-4 text-right text-sm font-medium text-slate-400">7d Change</th>
-                  <th className="px-6 py-4 text-right text-sm font-medium text-slate-400">24h Volume</th>
-                  <th className="px-6 py-4 text-right text-sm font-medium text-slate-400">Market Cap</th>
-                  <th className="px-6 py-4 text-center text-sm font-medium text-slate-400">Exchanges</th>
-                  <th className="px-6 py-4 text-center text-sm font-medium text-slate-400">Actions</th>
+                  <th className="px-6 py-4 text-right text-sm font-medium text-slate-400">
+                    24h Change
+                  </th>
+                  <th className="px-6 py-4 text-right text-sm font-medium text-slate-400">
+                    7d Change
+                  </th>
+                  <th className="px-6 py-4 text-right text-sm font-medium text-slate-400">
+                    24h Volume
+                  </th>
+                  <th className="px-6 py-4 text-right text-sm font-medium text-slate-400">
+                    Market Cap
+                  </th>
+                  <th className="px-6 py-4 text-center text-sm font-medium text-slate-400">
+                    Exchanges
+                  </th>
+                  <th className="px-6 py-4 text-center text-sm font-medium text-slate-400">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -348,7 +372,9 @@ const ExchangeRates = () => {
                         <div>
                           <div className="flex items-center gap-2">
                             <span className="font-semibold text-white">{rate.name}</span>
-                            {favorites.has(rate.id) && <Star className="w-4 h-4 text-yellow-400 fill-current" />}
+                            {favorites.has(rate.id) && (
+                              <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                            )}
                           </div>
                           <span className="text-sm text-slate-400">{rate.symbol}</span>
                         </div>
@@ -358,33 +384,59 @@ const ExchangeRates = () => {
                       <span className="text-white font-semibold">{formatPrice(rate.price)}</span>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <div className={`flex items-center justify-end gap-1 ${rate.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                        {rate.change24h >= 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
-                        <span className="font-semibold">{rate.change24h >= 0 ? '+' : ''}{rate.change24h.toFixed(2)}%</span>
+                      <div
+                        className={`flex items-center justify-end gap-1 ${rate.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}
+                      >
+                        {rate.change24h >= 0 ? (
+                          <TrendingUp className="w-4 h-4" />
+                        ) : (
+                          <TrendingDown className="w-4 h-4" />
+                        )}
+                        <span className="font-semibold">
+                          {rate.change24h >= 0 ? '+' : ''}
+                          {rate.change24h.toFixed(2)}%
+                        </span>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <div className={`flex items-center justify-end gap-1 ${rate.change7d >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                        {rate.change7d >= 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
-                        <span className="font-semibold">{rate.change7d >= 0 ? '+' : ''}{rate.change7d.toFixed(2)}%</span>
+                      <div
+                        className={`flex items-center justify-end gap-1 ${rate.change7d >= 0 ? 'text-green-400' : 'text-red-400'}`}
+                      >
+                        {rate.change7d >= 0 ? (
+                          <TrendingUp className="w-4 h-4" />
+                        ) : (
+                          <TrendingDown className="w-4 h-4" />
+                        )}
+                        <span className="font-semibold">
+                          {rate.change7d >= 0 ? '+' : ''}
+                          {rate.change7d.toFixed(2)}%
+                        </span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-right text-slate-300">{formatNumber(rate.volume24h)}</td>
-                    <td className="px-6 py-4 text-right text-slate-300">{formatNumber(rate.marketCap)}</td>
+                    <td className="px-6 py-4 text-right text-slate-300">
+                      {formatNumber(rate.volume24h)}
+                    </td>
+                    <td className="px-6 py-4 text-right text-slate-300">
+                      {formatNumber(rate.marketCap)}
+                    </td>
                     <td className="px-6 py-4 text-center">
-                      <span className="px-2 py-1 bg-purple-500/20 text-purple-300 text-sm rounded-full">{rate.exchanges}</span>
+                      <span className="px-2 py-1 bg-purple-500/20 text-purple-300 text-sm rounded-full">
+                        {rate.exchanges}
+                      </span>
                     </td>
                     <td className="px-6 py-4 text-center">
                       <div className="flex items-center justify-center gap-2">
                         <button
                           onClick={() => toggleFavorite(rate.id)}
                           className={`p-2 rounded-lg transition-colors ${
-                            favorites.has(rate.id) 
-                              ? 'bg-yellow-500/20 text-yellow-400' 
+                            favorites.has(rate.id)
+                              ? 'bg-yellow-500/20 text-yellow-400'
                               : 'bg-slate-700/50 text-slate-400 hover:bg-slate-700'
                           }`}
                         >
-                          <Star className={`w-5 h-5 ${favorites.has(rate.id) ? 'fill-current' : ''}`} />
+                          <Star
+                            className={`w-5 h-5 ${favorites.has(rate.id) ? 'fill-current' : ''}`}
+                          />
                         </button>
                         <button className="p-2 rounded-lg bg-slate-700/50 text-slate-400 hover:bg-green-500/20 hover:text-green-400 transition-colors">
                           <ArrowUpRight className="w-5 h-5" />
@@ -425,7 +477,9 @@ const ExchangeRates = () => {
                         <span className="text-slate-400 text-sm ml-2">{rate.name}</span>
                       </div>
                     </div>
-                    <span className="text-green-400 font-semibold">+{rate.change24h.toFixed(2)}%</span>
+                    <span className="text-green-400 font-semibold">
+                      +{rate.change24h.toFixed(2)}%
+                    </span>
                   </div>
                 ))}
             </div>
@@ -457,7 +511,7 @@ const ExchangeRates = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ExchangeRates
+export default ExchangeRates;

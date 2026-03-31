@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-import { Sprout, TrendingUp, DollarSign, Clock, Lock, Unlock, PieChart, ArrowUpRight, AlertCircle } from 'lucide-react';
+import {
+  Sprout,
+  TrendingUp,
+  DollarSign,
+  Clock,
+  Lock,
+  Unlock,
+  PieChart,
+  ArrowUpRight,
+  AlertCircle,
+} from 'lucide-react';
 
 interface Pool {
   id: number;
@@ -15,11 +25,61 @@ interface Pool {
 
 const YieldFarming: React.FC = () => {
   const [pools] = useState<Pool[]>([
-    { id: 1, name: 'BTC-USDT LP', pair: 'BTC/USDT', apy: 45.5, tvl: 12500000, staked: 0, earned: 0.12543, lockPeriod: 0, status: 'active' },
-    { id: 2, name: 'ETH-BNB LP', pair: 'ETH/BNB', apy: 62.3, tvl: 8750000, staked: 500, earned: 2.45321, lockPeriod: 30, status: 'active' },
-    { id: 3, name: 'SOL-USDC LP', pair: 'SOL/USDC', apy: 38.7, tvl: 5420000, staked: 0, earned: 0, lockPeriod: 0, status: 'active' },
-    { id: 4, name: 'DOGE-SHIB LP', pair: 'DOGE/SHIB', apy: 125.0, tvl: 2340000, staked: 10000, earned: 156.78, lockPeriod: 7, status: 'active' },
-    { id: 5, name: 'BNB-CAKE LP', pair: 'BNB/CAKE', apy: 89.2, tvl: 4230000, staked: 0, earned: 0.02345, lockPeriod: 0, status: 'filled' },
+    {
+      id: 1,
+      name: 'BTC-USDT LP',
+      pair: 'BTC/USDT',
+      apy: 45.5,
+      tvl: 12500000,
+      staked: 0,
+      earned: 0.12543,
+      lockPeriod: 0,
+      status: 'active',
+    },
+    {
+      id: 2,
+      name: 'ETH-BNB LP',
+      pair: 'ETH/BNB',
+      apy: 62.3,
+      tvl: 8750000,
+      staked: 500,
+      earned: 2.45321,
+      lockPeriod: 30,
+      status: 'active',
+    },
+    {
+      id: 3,
+      name: 'SOL-USDC LP',
+      pair: 'SOL/USDC',
+      apy: 38.7,
+      tvl: 5420000,
+      staked: 0,
+      earned: 0,
+      lockPeriod: 0,
+      status: 'active',
+    },
+    {
+      id: 4,
+      name: 'DOGE-SHIB LP',
+      pair: 'DOGE/SHIB',
+      apy: 125.0,
+      tvl: 2340000,
+      staked: 10000,
+      earned: 156.78,
+      lockPeriod: 7,
+      status: 'active',
+    },
+    {
+      id: 5,
+      name: 'BNB-CAKE LP',
+      pair: 'BNB/CAKE',
+      apy: 89.2,
+      tvl: 4230000,
+      staked: 0,
+      earned: 0.02345,
+      lockPeriod: 0,
+      status: 'filled',
+    },
   ]);
 
   const totalStaked = pools.reduce((sum, p) => sum + p.staked, 0);
@@ -83,7 +143,9 @@ const YieldFarming: React.FC = () => {
               </div>
               <div>
                 <p className="text-slate-400 text-sm">Active Pools</p>
-                <p className="text-2xl font-bold text-blue-400">{pools.filter(p => p.status === 'active').length}</p>
+                <p className="text-2xl font-bold text-blue-400">
+                  {pools.filter(p => p.status === 'active').length}
+                </p>
               </div>
             </div>
           </div>
@@ -108,48 +170,50 @@ const YieldFarming: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {pools.filter(p => p.staked > 0).map((pool) => (
-                    <tr key={pool.id} className="border-t border-slate-700/50">
-                      <td className="py-4">
-                        <div>
-                          <p className="font-semibold text-white">{pool.name}</p>
-                          <p className="text-sm text-slate-400">{pool.pair}</p>
-                        </div>
-                      </td>
-                      <td className="text-right py-4">
-                        <p className="text-white font-medium">${pool.staked.toLocaleString()}</p>
-                      </td>
-                      <td className="text-right py-4">
-                        <p className="text-green-400 font-medium">{pool.apy}% APY</p>
-                      </td>
-                      <td className="text-right py-4">
-                        <p className="text-green-400 font-medium">${pool.earned.toFixed(4)}</p>
-                      </td>
-                      <td className="py-4 text-center">
-                        {pool.lockPeriod > 0 ? (
-                          <div className="flex items-center gap-1 justify-center text-yellow-400">
-                            <Lock className="w-4 h-4" />
-                            <span className="text-sm">{pool.lockPeriod}d</span>
+                  {pools
+                    .filter(p => p.staked > 0)
+                    .map(pool => (
+                      <tr key={pool.id} className="border-t border-slate-700/50">
+                        <td className="py-4">
+                          <div>
+                            <p className="font-semibold text-white">{pool.name}</p>
+                            <p className="text-sm text-slate-400">{pool.pair}</p>
                           </div>
-                        ) : (
-                          <div className="flex items-center gap-1 justify-center text-green-400">
-                            <Unlock className="w-4 h-4" />
-                            <span className="text-sm">No Lock</span>
+                        </td>
+                        <td className="text-right py-4">
+                          <p className="text-white font-medium">${pool.staked.toLocaleString()}</p>
+                        </td>
+                        <td className="text-right py-4">
+                          <p className="text-green-400 font-medium">{pool.apy}% APY</p>
+                        </td>
+                        <td className="text-right py-4">
+                          <p className="text-green-400 font-medium">${pool.earned.toFixed(4)}</p>
+                        </td>
+                        <td className="py-4 text-center">
+                          {pool.lockPeriod > 0 ? (
+                            <div className="flex items-center gap-1 justify-center text-yellow-400">
+                              <Lock className="w-4 h-4" />
+                              <span className="text-sm">{pool.lockPeriod}d</span>
+                            </div>
+                          ) : (
+                            <div className="flex items-center gap-1 justify-center text-green-400">
+                              <Unlock className="w-4 h-4" />
+                              <span className="text-sm">No Lock</span>
+                            </div>
+                          )}
+                        </td>
+                        <td className="text-right py-4">
+                          <div className="flex gap-2 justify-end">
+                            <button className="px-3 py-1 bg-green-600 hover:bg-green-700 text-white text-sm rounded">
+                              Harvest
+                            </button>
+                            <button className="px-3 py-1 bg-slate-600 hover:bg-slate-500 text-white text-sm rounded">
+                              Unstake
+                            </button>
                           </div>
-                        )}
-                      </td>
-                      <td className="text-right py-4">
-                        <div className="flex gap-2 justify-end">
-                          <button className="px-3 py-1 bg-green-600 hover:bg-green-700 text-white text-sm rounded">
-                            Harvest
-                          </button>
-                          <button className="px-3 py-1 bg-slate-600 hover:bg-slate-500 text-white text-sm rounded">
-                            Unstake
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
@@ -161,28 +225,41 @@ const YieldFarming: React.FC = () => {
           <div className="p-5 border-b border-slate-700 flex justify-between items-center">
             <h2 className="text-xl font-semibold text-white">Available Pools</h2>
             <div className="flex gap-2">
-              <span className="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-sm">Active: {pools.filter(p => p.status === 'active').length}</span>
-              <span className="px-3 py-1 bg-yellow-500/20 text-yellow-400 rounded-full text-sm">Filled: {pools.filter(p => p.status === 'filled').length}</span>
+              <span className="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-sm">
+                Active: {pools.filter(p => p.status === 'active').length}
+              </span>
+              <span className="px-3 py-1 bg-yellow-500/20 text-yellow-400 rounded-full text-sm">
+                Filled: {pools.filter(p => p.status === 'filled').length}
+              </span>
             </div>
           </div>
           <div className="p-5">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {pools.map((pool) => (
-                <div key={pool.id} className={`bg-slate-700/50 rounded-xl p-5 border ${
-                  pool.status === 'active' ? 'border-green-500/30 hover:border-green-500/60' :
-                  pool.status === 'filled' ? 'border-yellow-500/30' :
-                  'border-red-500/30'
-                } transition-all cursor-pointer hover:transform hover:scale-105`}>
+              {pools.map(pool => (
+                <div
+                  key={pool.id}
+                  className={`bg-slate-700/50 rounded-xl p-5 border ${
+                    pool.status === 'active'
+                      ? 'border-green-500/30 hover:border-green-500/60'
+                      : pool.status === 'filled'
+                        ? 'border-yellow-500/30'
+                        : 'border-red-500/30'
+                  } transition-all cursor-pointer hover:transform hover:scale-105`}
+                >
                   <div className="flex justify-between items-start mb-4">
                     <div>
                       <h3 className="text-lg font-bold text-white">{pool.name}</h3>
                       <p className="text-slate-400 text-sm">{pool.pair}</p>
                     </div>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      pool.status === 'active' ? 'bg-green-500 text-white' :
-                      pool.status === 'filled' ? 'bg-yellow-500 text-white' :
-                      'bg-red-500 text-white'
-                    }`}>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        pool.status === 'active'
+                          ? 'bg-green-500 text-white'
+                          : pool.status === 'filled'
+                            ? 'bg-yellow-500 text-white'
+                            : 'bg-red-500 text-white'
+                      }`}
+                    >
                       {pool.status.toUpperCase()}
                     </span>
                   </div>
@@ -194,7 +271,9 @@ const YieldFarming: React.FC = () => {
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-slate-400">TVL</span>
-                      <span className="text-white font-medium">${(pool.tvl / 1000000).toFixed(1)}M</span>
+                      <span className="text-white font-medium">
+                        ${(pool.tvl / 1000000).toFixed(1)}M
+                      </span>
                     </div>
                     {pool.lockPeriod > 0 && (
                       <div className="flex justify-between items-center">
@@ -237,8 +316,8 @@ const YieldFarming: React.FC = () => {
           <div>
             <h4 className="text-white font-medium mb-1">Farming Tips</h4>
             <p className="text-slate-300 text-sm">
-              Higher APY pools often come with higher risk. Always DYOR (Do Your Own Research) before staking. 
-              Consider impermanent loss risks when providing liquidity to LP pools.
+              Higher APY pools often come with higher risk. Always DYOR (Do Your Own Research)
+              before staking. Consider impermanent loss risks when providing liquidity to LP pools.
             </p>
           </div>
         </div>

@@ -6,12 +6,12 @@ on:
   pull_request:
     branches: [main, develop]
   schedule:
-    - cron: '0 0 * * 0'  # Weekly
+    - cron: '0 0 * * 0' # Weekly
 
 jobs:
   snyk:
     runs-on: ubuntu-latest
-    if: false  # Disabled - requires SNYK_TOKEN secret to be configured
+    if: false # Disabled - requires SNYK_TOKEN secret to be configured
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

@@ -1,6 +1,6 @@
 /**
  * Environment Utility Tests
- * 
+ *
  * Unit tests for src/utils/env.ts
  */
 
@@ -24,7 +24,7 @@ describe('getEnvBool', () => {
     const result = getEnvBool('NON_EXISTENT_TEST_BOOL_XYZ', true);
     expect(result).toBe(true);
   });
-  
+
   it('should have default false for non-existent vars', async () => {
     const { getEnvBool } = await import('./env');
     const result = getEnvBool('NON_EXISTENT_TEST_BOOL_XYZ', false);
@@ -53,14 +53,14 @@ describe('Environment mode checks', () => {
     const { isTest } = await import('./env');
     expect(isTest()).toBe(true);
   });
-  
+
   it('isProduction returns false in vitest environment', async () => {
     const { isProduction } = await import('./env');
     expect(isProduction()).toBe(false);
   });
-  
+
   it('isDevelopment returns false in vitest environment', async () => {
     const { isDevelopment } = await import('./env');
     expect(isDevelopment()).toBe(false);
   });
-});
+});

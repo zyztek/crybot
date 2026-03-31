@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Area,
+  AreaChart,
+} from 'recharts';
 import { TrendingUp, TrendingDown, Activity, Signal, Clock, Target } from 'lucide-react';
 
 interface TradingSignal {
@@ -104,17 +114,22 @@ const TradingSignals = () => {
 
   const [filter, setFilter] = useState<'all' | 'long' | 'short' | 'active'>('all');
 
-  const filteredSignals = signals.filter(s => 
+  const filteredSignals = signals.filter(s =>
     filter === 'all' ? true : filter === 'active' ? s.status === 'active' : s.type === filter
   );
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-blue-500';
-      case 'hit': return 'bg-green-500';
-      case 'stopped': return 'bg-red-500';
-      case 'pending': return 'bg-yellow-500';
-      default: return 'bg-gray-500';
+      case 'active':
+        return 'bg-blue-500';
+      case 'hit':
+        return 'bg-green-500';
+      case 'stopped':
+        return 'bg-red-500';
+      case 'pending':
+        return 'bg-yellow-500';
+      default:
+        return 'bg-gray-500';
     }
   };
 
@@ -155,7 +170,10 @@ const TradingSignals = () => {
       {/* Price Charts */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {priceHistory.map(({ coin, data }) => (
-          <div key={coin} className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-xl p-4">
+          <div
+            key={coin}
+            className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-xl p-4"
+          >
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-bold text-white">{coin}</h3>
               <span className="text-green-400 text-sm flex items-center">
@@ -167,18 +185,23 @@ const TradingSignals = () => {
               <AreaChart data={data}>
                 <defs>
                   <linearGradient id={`gradient-${coin}`} x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
                 <XAxis dataKey="time" tick={{ fill: '#94a3b8', fontSize: 10 }} />
                 <YAxis tick={{ fill: '#94a3b8', fontSize: 10 }} />
-                <Tooltip 
+                <Tooltip
                   contentStyle={{ backgroundColor: '#1e293b', border: '#334155' }}
                   itemStyle={{ color: '#fff' }}
                 />
-                <Area type="monotone" dataKey="price" stroke="#10b981" fill={`url(#gradient-${coin})`} />
+                <Area
+                  type="monotone"
+                  dataKey="price"
+                  stroke="#10b981"
+                  fill={`url(#gradient-${coin})`}
+                />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -215,20 +238,21 @@ const TradingSignals = () => {
         </div>
 
         <div className="space-y-4">
-          {filteredSignals.map((signal) => {
-            const pnlPercent = signal.type === 'long' 
-              ? ((signal.currentPrice - signal.entry) / signal.entry) * 100
-              : ((signal.entry - signal.currentPrice) / signal.entry) * 100;
-            
+          {filteredSignals.map(signal => {
+            const pnlPercent =
+              signal.type === 'long'
+                ? ((signal.currentPrice - signal.entry) / signal.entry) * 100
+                : ((signal.entry - signal.currentPrice) / signal.entry) * 100;
+
             return (
               <div
                 key={signal.id}
                 className={`p-4 rounded-xl border ${
-                  signal.status === 'hit' 
+                  signal.status === 'hit'
                     ? 'bg-green-500/10 border-green-500/30'
                     : signal.status === 'stopped'
-                    ? 'bg-red-500/10 border-red-500/30'
-                    : 'bg-slate-700/50 border-slate-600'
+                      ? 'bg-red-500/10 border-red-500/30'
+                      : 'bg-slate-700/50 border-slate-600'
                 }`}
               >
                 <div className="flex flex-wrap items-start justify-between gap-4">
@@ -236,12 +260,18 @@ const TradingSignals = () => {
                   <div className="flex-1 min-w-[200px]">
                     <div className="flex items-center gap-3 mb-2">
                       <h3 className="text-lg font-bold text-white">{signal.coin}</h3>
-                      <span className={`px-2 py-1 rounded text-xs font-bold ${
-                        signal.type === 'long' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
-                      }`}>
+                      <span
+                        className={`px-2 py-1 rounded text-xs font-bold ${
+                          signal.type === 'long'
+                            ? 'bg-green-500/20 text-green-400'
+                            : 'bg-red-500/20 text-red-400'
+                        }`}
+                      >
                         {signal.type.toUpperCase()}
                       </span>
-                      <span className={`px-2 py-1 rounded text-xs font-bold ${getStatusColor(signal.status)} text-white`}>
+                      <span
+                        className={`px-2 py-1 rounded text-xs font-bold ${getStatusColor(signal.status)} text-white`}
+                      >
                         {signal.status.toUpperCase()}
                       </span>
                     </div>
@@ -252,7 +282,9 @@ const TradingSignals = () => {
                       </div>
                       <div>
                         <span className="text-slate-400">Target:</span>
-                        <span className={`ml-1 ${pnlPercent > 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        <span
+                          className={`ml-1 ${pnlPercent > 0 ? 'text-green-400' : 'text-red-400'}`}
+                        >
                           {signal.target}
                         </span>
                       </div>
@@ -266,8 +298,11 @@ const TradingSignals = () => {
                   {/* Middle Section - PnL & Progress */}
                   <div className="flex-1 min-w-[200px]">
                     <div className="flex items-center gap-4 mb-2">
-                      <span className={`text-2xl font-bold ${pnlPercent >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                        {pnlPercent >= 0 ? '+' : ''}{pnlPercent.toFixed(2)}%
+                      <span
+                        className={`text-2xl font-bold ${pnlPercent >= 0 ? 'text-green-400' : 'text-red-400'}`}
+                      >
+                        {pnlPercent >= 0 ? '+' : ''}
+                        {pnlPercent.toFixed(2)}%
                       </span>
                       <div className="flex items-center gap-1 text-slate-400 text-sm">
                         <Clock className="w-4 h-4" />
@@ -288,15 +323,19 @@ const TradingSignals = () => {
                   {/* Right Section - Confidence */}
                   <div className="text-center min-w-[100px]">
                     <div className="text-xs text-slate-400 mb-1">Confidence</div>
-                    <div className={`text-3xl font-bold ${
-                      signal.confidence >= 85 ? 'text-green-400' 
-                      : signal.confidence >= 70 ? 'text-yellow-400'
-                      : 'text-red-400'
-                    }`}>
+                    <div
+                      className={`text-3xl font-bold ${
+                        signal.confidence >= 85
+                          ? 'text-green-400'
+                          : signal.confidence >= 70
+                            ? 'text-yellow-400'
+                            : 'text-red-400'
+                      }`}
+                    >
                       {signal.confidence}%
                     </div>
                     <div className="flex justify-center mt-1">
-                      {[1, 2, 3, 4, 5].map((star) => (
+                      {[1, 2, 3, 4, 5].map(star => (
                         <span
                           key={star}
                           className={`text-lg ${star <= Math.ceil(signal.confidence / 20) ? 'text-yellow-400' : 'text-slate-600'}`}
@@ -332,7 +371,8 @@ const TradingSignals = () => {
           <h3 className="text-xl font-bold text-white">Unlock Premium Signals</h3>
         </div>
         <p className="text-white/80 mb-4">
-          Get access to expert-curated signals with 85%+ success rate. AI-powered analysis updated every 15 minutes.
+          Get access to expert-curated signals with 85%+ success rate. AI-powered analysis updated
+          every 15 minutes.
         </p>
         <button className="px-6 py-3 bg-white text-yellow-600 font-bold rounded-lg hover:bg-yellow-50 transition-colors">
           Upgrade to Premium

@@ -1,5 +1,14 @@
 import { useState } from 'react';
-import { PieChart as PieChartIcon, BarChart2, TrendingUp, Users, Lock, Wallet, RefreshCw, Percent } from 'lucide-react';
+import {
+  PieChart as PieChartIcon,
+  BarChart2,
+  TrendingUp,
+  Users,
+  Lock,
+  Wallet,
+  RefreshCw,
+  Percent,
+} from 'lucide-react';
 
 interface TokenData {
   name: string;
@@ -32,7 +41,12 @@ const TOKEN_DATA: TokenData = {
 
 const DISTRIBUTION: Distribution[] = [
   { category: 'Team', percentage: 15, holders: '5 wallets', vesting: 'Linear over 4 years' },
-  { category: 'Investors', percentage: 20, holders: '32 wallets', vesting: '1 year cliff, 3 year linear' },
+  {
+    category: 'Investors',
+    percentage: 20,
+    holders: '32 wallets',
+    vesting: '1 year cliff, 3 year linear',
+  },
   { category: 'Community', percentage: 35, holders: '125,000+ wallets' },
   { category: 'Ecosystem', percentage: 20, holders: '78 wallets' },
   { category: 'DAO', percentage: 10, holders: 'Treasury' },
@@ -74,7 +88,7 @@ export default function TokenomicsAnalyzer() {
       burned: 'Quemado',
       locked: 'Bloqueado',
       staked: 'Staked',
- Dao: 'DAO',
+      Dao: 'DAO',
     },
     en: {
       title: 'Tokenomics Analyzer',
@@ -105,7 +119,9 @@ export default function TokenomicsAnalyzer() {
   };
 
   const t = texts[language];
-  const circulatingPercent = ((TOKEN_DATA.circulatingSupply / TOKEN_DATA.maxSupply) * 100).toFixed(2);
+  const circulatingPercent = ((TOKEN_DATA.circulatingSupply / TOKEN_DATA.maxSupply) * 100).toFixed(
+    2
+  );
 
   const formatNumber = (num: number) => {
     if (num >= 1e12) return `${(num / 1e12).toFixed(2)}T`;
@@ -153,7 +169,9 @@ export default function TokenomicsAnalyzer() {
             </div>
             <div className="flex items-center gap-2">
               <TrendingUp className="w-5 h-5 text-green-400" />
-              <span className="text-2xl font-bold text-white">${TOKEN_DATA.price.toLocaleString()}</span>
+              <span className="text-2xl font-bold text-white">
+                ${TOKEN_DATA.price.toLocaleString()}
+              </span>
             </div>
           </div>
         </div>
@@ -170,19 +188,27 @@ export default function TokenomicsAnalyzer() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="bg-white/5 rounded-xl p-4">
                   <p className="text-gray-400 text-sm mb-1">{t.marketCap}</p>
-                  <p className="text-xl font-bold text-white">${formatNumber(TOKEN_DATA.marketCap)}</p>
+                  <p className="text-xl font-bold text-white">
+                    ${formatNumber(TOKEN_DATA.marketCap)}
+                  </p>
                 </div>
                 <div className="bg-white/5 rounded-xl p-4">
                   <p className="text-gray-400 text-sm mb-1">{t.circulatingSupply}</p>
-                  <p className="text-xl font-bold text-white">{formatNumber(TOKEN_DATA.circulatingSupply)} {TOKEN_DATA.symbol}</p>
+                  <p className="text-xl font-bold text-white">
+                    {formatNumber(TOKEN_DATA.circulatingSupply)} {TOKEN_DATA.symbol}
+                  </p>
                 </div>
                 <div className="bg-white/5 rounded-xl p-4">
                   <p className="text-gray-400 text-sm mb-1">{t.maxSupply}</p>
-                  <p className="text-xl font-bold text-white">{formatNumber(TOKEN_DATA.maxSupply)} {TOKEN_DATA.symbol}</p>
+                  <p className="text-xl font-bold text-white">
+                    {formatNumber(TOKEN_DATA.maxSupply)} {TOKEN_DATA.symbol}
+                  </p>
                 </div>
                 <div className="bg-white/5 rounded-xl p-4">
                   <p className="text-gray-400 text-sm mb-1">{t.volume24h}</p>
-                  <p className="text-xl font-bold text-white">${formatNumber(TOKEN_DATA.volume24h)}</p>
+                  <p className="text-xl font-bold text-white">
+                    ${formatNumber(TOKEN_DATA.volume24h)}
+                  </p>
                 </div>
               </div>
             </div>
@@ -193,7 +219,7 @@ export default function TokenomicsAnalyzer() {
                 <PieChartIcon className="w-5 h-5 text-pink-400" />
                 {t.distribution}
               </h3>
-              
+
               {/* Simple Bar Representation */}
               <div className="mb-6">
                 {DISTRIBUTION.map((item, idx) => (
@@ -203,7 +229,7 @@ export default function TokenomicsAnalyzer() {
                       <span className="text-gray-400">{item.percentage}%</span>
                     </div>
                     <div className="h-6 bg-slate-700/50 rounded-full overflow-hidden">
-                      <div 
+                      <div
                         className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"
                         style={{ width: `${item.percentage}%` }}
                       />
@@ -228,14 +254,18 @@ export default function TokenomicsAnalyzer() {
                   <RefreshCw className="w-8 h-8 text-orange-400" />
                   <div>
                     <p className="text-gray-400 text-sm">{t.currentInflation}</p>
-                    <p className="text-xl font-bold text-white">{INFLATION_METRICS.currentInflation}</p>
+                    <p className="text-xl font-bold text-white">
+                      {INFLATION_METRICS.currentInflation}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4 bg-white/5 rounded-xl p-4">
                   <Wallet className="w-8 h-8 text-blue-400" />
                   <div>
                     <p className="text-gray-400 text-sm">{t.annualEmissions}</p>
-                    <p className="text-xl font-bold text-white">{INFLATION_METRICS.annualEmissions}</p>
+                    <p className="text-xl font-bold text-white">
+                      {INFLATION_METRICS.annualEmissions}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4 bg-white/5 rounded-xl p-4">
@@ -267,12 +297,12 @@ export default function TokenomicsAnalyzer() {
                   <span className="text-white font-bold">{circulatingPercent}%</span>
                 </div>
                 <div className="h-3 bg-slate-700/50 rounded-full overflow-hidden">
-                  <div 
+                  <div
                     className="h-full bg-gradient-to-r from-green-500 to-emerald-500"
                     style={{ width: `${circulatingPercent}%` }}
                   />
                 </div>
-                
+
                 <div className="flex justify-between items-center">
                   <span className="text-gray-400">{t.locked}</span>
                   <span className="text-orange-400 font-bold">5.2M</span>

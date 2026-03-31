@@ -1,6 +1,6 @@
 /**
  * Vitest Global Setup
- * 
+ *
  * Provides global mocks for common browser APIs used by libraries like recharts
  */
 

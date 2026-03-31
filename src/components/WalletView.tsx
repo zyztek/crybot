@@ -1,16 +1,40 @@
-import { Wallet, Send, CheckCircle, Clock, ArrowUpRight, QrCode, Key, Eye, EyeOff, Copy } from 'lucide-react'
-import type { WalletBalance } from '@/types'
-import type { TranslationTexts } from '@/i18n/translations'
+import {
+  Wallet,
+  Send,
+  CheckCircle,
+  Clock,
+  ArrowUpRight,
+  QrCode,
+  Key,
+  Eye,
+  EyeOff,
+  Copy,
+} from 'lucide-react';
+import type { WalletBalance } from '@/types';
+import type { TranslationTexts } from '@/i18n/translations';
 
 interface WalletViewProps {
-  walletBalance: WalletBalance
-  withdrawalHistory: { id: number; coin: string; amount: string; address: string; status: string; date: string }[]
-  showAddress: boolean
-  onToggleAddress: () => void
-  t: TranslationTexts
+  walletBalance: WalletBalance;
+  withdrawalHistory: {
+    id: number;
+    coin: string;
+    amount: string;
+    address: string;
+    status: string;
+    date: string;
+  }[];
+  showAddress: boolean;
+  onToggleAddress: () => void;
+  t: TranslationTexts;
 }
 
-export default function WalletView({ walletBalance, withdrawalHistory, showAddress, onToggleAddress, t }: WalletViewProps) {
+export default function WalletView({
+  walletBalance,
+  withdrawalHistory,
+  showAddress,
+  onToggleAddress,
+  t,
+}: WalletViewProps) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div className="lg:col-span-2">
@@ -21,16 +45,51 @@ export default function WalletView({ walletBalance, withdrawalHistory, showAddre
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {[
-              { coin: 'BTC', icon: '₿', balance: walletBalance.btc, color: 'from-yellow-400 to-orange-500' },
-              { coin: 'ETH', icon: 'Ξ', balance: walletBalance.eth, color: 'from-blue-400 to-purple-500' },
-              { coin: 'DOGE', icon: 'Ð', balance: walletBalance.doge, color: 'from-yellow-300 to-yellow-500' },
-              { coin: 'SOL', icon: '◎', balance: walletBalance.sol, color: 'from-purple-400 to-pink-500' },
-              { coin: 'LTC', icon: 'Ł', balance: walletBalance.ltc, color: 'from-gray-400 to-gray-500' },
-              { coin: 'BNB', icon: '⬡', balance: walletBalance.bnb, color: 'from-yellow-400 to-yellow-600' },
-            ].map((item) => (
-              <div key={item.coin} className="bg-slate-900/50 rounded-lg p-4 border border-purple-500/10">
+              {
+                coin: 'BTC',
+                icon: '₿',
+                balance: walletBalance.btc,
+                color: 'from-yellow-400 to-orange-500',
+              },
+              {
+                coin: 'ETH',
+                icon: 'Ξ',
+                balance: walletBalance.eth,
+                color: 'from-blue-400 to-purple-500',
+              },
+              {
+                coin: 'DOGE',
+                icon: 'Ð',
+                balance: walletBalance.doge,
+                color: 'from-yellow-300 to-yellow-500',
+              },
+              {
+                coin: 'SOL',
+                icon: '◎',
+                balance: walletBalance.sol,
+                color: 'from-purple-400 to-pink-500',
+              },
+              {
+                coin: 'LTC',
+                icon: 'Ł',
+                balance: walletBalance.ltc,
+                color: 'from-gray-400 to-gray-500',
+              },
+              {
+                coin: 'BNB',
+                icon: '⬡',
+                balance: walletBalance.bnb,
+                color: 'from-yellow-400 to-yellow-600',
+              },
+            ].map(item => (
+              <div
+                key={item.coin}
+                className="bg-slate-900/50 rounded-lg p-4 border border-purple-500/10"
+              >
                 <div className="flex items-center gap-2 mb-2">
-                  <div className={`w-8 h-8 bg-gradient-to-r ${item.color} rounded-lg flex items-center justify-center font-bold text-white text-sm`}>
+                  <div
+                    className={`w-8 h-8 bg-gradient-to-r ${item.color} rounded-lg flex items-center justify-center font-bold text-white text-sm`}
+                  >
                     {item.icon}
                   </div>
                   <span className="text-white font-bold">{item.coin}</span>
@@ -47,12 +106,17 @@ export default function WalletView({ walletBalance, withdrawalHistory, showAddre
             {t.recentWithdrawals}
           </h3>
           <div className="space-y-2">
-            {withdrawalHistory.map((item) => (
-              <div key={item.id} className="flex items-center justify-between bg-slate-900/50 rounded-lg p-3 border border-purple-500/10">
+            {withdrawalHistory.map(item => (
+              <div
+                key={item.id}
+                className="flex items-center justify-between bg-slate-900/50 rounded-lg p-3 border border-purple-500/10"
+              >
                 <div className="flex items-center gap-3">
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                    item.status === 'completed' ? 'bg-green-500/20' : 'bg-yellow-500/20'
-                  }`}>
+                  <div
+                    className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                      item.status === 'completed' ? 'bg-green-500/20' : 'bg-yellow-500/20'
+                    }`}
+                  >
                     {item.status === 'completed' ? (
                       <CheckCircle className="w-4 h-4 text-green-400" />
                     ) : (
@@ -60,14 +124,18 @@ export default function WalletView({ walletBalance, withdrawalHistory, showAddre
                     )}
                   </div>
                   <div>
-                    <p className="text-white font-medium text-sm">{item.amount} {item.coin}</p>
+                    <p className="text-white font-medium text-sm">
+                      {item.amount} {item.coin}
+                    </p>
                     <p className="text-purple-300 text-xs">{item.date}</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className={`text-xs font-medium ${
-                    item.status === 'completed' ? 'text-green-400' : 'text-yellow-400'
-                  }`}>
+                  <p
+                    className={`text-xs font-medium ${
+                      item.status === 'completed' ? 'text-green-400' : 'text-yellow-400'
+                    }`}
+                  >
                     {item.status === 'completed' ? 'Completado' : 'Pendiente'}
                   </p>
                   <p className="text-purple-300 text-xs">{item.address}</p>
@@ -104,9 +172,11 @@ export default function WalletView({ walletBalance, withdrawalHistory, showAddre
           <div className="bg-slate-900/50 rounded-lg p-3 mb-3">
             <div className="flex items-center gap-2">
               <div className="flex-1 text-purple-300 text-sm font-mono truncate">
-                {showAddress ? 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh' : '••••••••••••••••••••••••••••'}
+                {showAddress
+                  ? 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh'
+                  : '••••••••••••••••••••••••••••'}
               </div>
-              <button 
+              <button
                 onClick={onToggleAddress}
                 className="text-purple-400 hover:text-white transition-colors"
               >
@@ -121,5 +191,5 @@ export default function WalletView({ walletBalance, withdrawalHistory, showAddre
         </div>
       </div>
     </div>
-  )
+  );
 }

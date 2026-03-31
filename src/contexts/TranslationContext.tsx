@@ -21,7 +21,7 @@ const translations: Record<Language, Translations> = {
       store: 'Store',
       missions: 'Missions',
       news: 'News',
-      vip: 'VIP'
+      vip: 'VIP',
     },
     faucet: {
       title: 'Crypto Faucets',
@@ -33,7 +33,7 @@ const translations: Record<Language, Translations> = {
       difficulty: 'Difficulty',
       easy: 'Easy',
       medium: 'Medium',
-      hard: 'Hard'
+      hard: 'Hard',
     },
     dashboard: {
       title: 'Dashboard',
@@ -51,7 +51,7 @@ const translations: Record<Language, Translations> = {
       sat: 'Sat',
       sun: 'Sun',
       security: 'Security Tips',
-      tips: 'Pro Tips'
+      tips: 'Pro Tips',
     },
     wallet: {
       title: 'My Wallet',
@@ -59,14 +59,14 @@ const translations: Record<Language, Translations> = {
       scanQR: 'Scan QR',
       address: 'Wallet Address',
       balance: 'Balance',
-      withdrawHistory: 'Withdrawal History'
+      withdrawHistory: 'Withdrawal History',
     },
     achievements: {
       title: 'Achievements',
       unlocked: 'Unlocked',
       locked: 'Locked',
       progress: 'Progress',
-      reward: 'Reward'
+      reward: 'Reward',
     },
     referrals: {
       title: 'Referral Program',
@@ -77,7 +77,7 @@ const translations: Record<Language, Translations> = {
       total: 'Total Claimed',
       copy: 'Copy',
       copied: 'Copied!',
-      latest: 'Latest Referrals'
+      latest: 'Latest Referrals',
     },
     leaderboard: {
       title: 'Leaderboard',
@@ -86,7 +86,7 @@ const translations: Record<Language, Translations> = {
       totalClaims: 'Total Claims',
       position: 'Your Position',
       demoUser: 'Demo User',
-      view: 'View Full Leaderboard'
+      view: 'View Full Leaderboard',
     },
     settings: {
       title: 'Settings',
@@ -100,7 +100,7 @@ const translations: Record<Language, Translations> = {
       twoFactor: 'Two-Factor Authentication',
       twoFactorEnabled: 'Enabled',
       email: 'Email',
-      username: 'Username'
+      username: 'Username',
     },
     auth: {
       welcome: 'Welcome Back!',
@@ -114,7 +114,7 @@ const translations: Record<Language, Translations> = {
       metamask: 'MetaMask',
       noAccount: "Don't have an account?",
       haveAccount: 'Already have an account?',
-      signUp: 'Sign Up'
+      signUp: 'Sign Up',
     },
     staking: {
       title: 'Staking',
@@ -138,7 +138,7 @@ const translations: Record<Language, Translations> = {
       status: 'Status',
       stakeAmount: 'Amount to Stake',
       cancel: 'Cancel',
-      confirm: 'Confirm'
+      confirm: 'Confirm',
     },
     store: {
       title: 'Rewards Store',
@@ -155,7 +155,7 @@ const translations: Record<Language, Translations> = {
       buy: 'Buy Now',
       outOfStock: 'Out of Stock',
       owned: 'Owned',
-      success: 'Purchase successful!'
+      success: 'Purchase successful!',
     },
     missions: {
       title: 'Daily Missions',
@@ -167,7 +167,7 @@ const translations: Record<Language, Translations> = {
       reward: 'Reward',
       easy: 'Easy',
       medium: 'Medium',
-      hard: 'Hard'
+      hard: 'Hard',
     },
     news: {
       title: 'Crypto News',
@@ -177,7 +177,7 @@ const translations: Record<Language, Translations> = {
       crypto: 'Crypto',
       defi: 'DeFi',
       nft: 'NFT',
-      metaverse: 'Metaverse'
+      metaverse: 'Metaverse',
     },
     vip: {
       title: 'VIP Club',
@@ -196,8 +196,8 @@ const translations: Record<Language, Translations> = {
       bonusClaims: 'Bonus Claims',
       exclusiveFaucets: 'Exclusive Faucets',
       prioritySupport: 'Priority Support',
-      badge: 'VIP Badge'
-    }
+      badge: 'VIP Badge',
+    },
   },
   es: {
     header: {
@@ -213,7 +213,7 @@ const translations: Record<Language, Translations> = {
       store: 'Tienda',
       missions: 'Misiones',
       news: 'Noticias',
-      vip: 'VIP'
+      vip: 'VIP',
     },
     faucet: {
       title: 'Grifos de Cripto',
@@ -225,7 +225,7 @@ const translations: Record<Language, Translations> = {
       difficulty: 'Dificultad',
       easy: 'Facil',
       medium: 'Medio',
-      hard: 'Dificil'
+      hard: 'Dificil',
     },
     dashboard: {
       title: 'Panel',
@@ -243,7 +243,7 @@ const translations: Record<Language, Translations> = {
       sat: 'Sab',
       sun: 'Dom',
       security: 'Consejos de Seguridad',
-      tips: 'Consejos Pro'
+      tips: 'Consejos Pro',
     },
     wallet: {
       title: 'Mi Billetera',
@@ -251,14 +251,14 @@ const translations: Record<Language, Translations> = {
       scanQR: 'Escanear QR',
       address: 'Direccion Wallet',
       balance: 'Balance',
-      withdrawHistory: 'Historial de Retiros'
+      withdrawHistory: 'Historial de Retiros',
     },
     achievements: {
       title: 'Logros',
       unlocked: 'Desbloqueados',
       locked: 'Bloqueados',
       progress: 'Progreso',
-      reward: 'Recompensa'
+      reward: 'Recompensa',
     },
     referrals: {
       title: 'Programa de Referidos',
@@ -269,7 +269,7 @@ const translations: Record<Language, Translations> = {
       total: 'Total Reclamado',
       copy: 'Copiar',
       copied: '¡Copiado!',
-      latest: 'Ultimos Referidos'
+      latest: 'Ultimos Referidos',
     },
     leaderboard: {
       title: 'Tabla de Lideres',
@@ -278,7 +278,7 @@ const translations: Record<Language, Translations> = {
       totalClaims: 'Total Reclamos',
       position: 'Tu Posicion',
       demoUser: 'Usuario Demo',
-      view: 'Ver Tabla Completa'
+      view: 'Ver Tabla Completa',
     },
     settings: {
       title: 'Ajustes',
@@ -292,7 +292,7 @@ const translations: Record<Language, Translations> = {
       twoFactor: 'Autenticacion 2FA',
       twoFactorEnabled: 'Activado',
       email: 'Correo',
-      username: 'Usuario'
+      username: 'Usuario',
     },
     auth: {
       welcome: '¡Bienvenido de nuevo!',
@@ -306,7 +306,7 @@ const translations: Record<Language, Translations> = {
       metamask: 'MetaMask',
       noAccount: '¿No tienes cuenta?',
       haveAccount: '¿Ya tienes cuenta?',
-      signUp: 'Registrarse'
+      signUp: 'Registrarse',
     },
     staking: {
       title: 'Staking',
@@ -330,7 +330,7 @@ const translations: Record<Language, Translations> = {
       status: 'Estado',
       stakeAmount: 'Cantidad a Staking',
       cancel: 'Cancelar',
-      confirm: 'Confirmar'
+      confirm: 'Confirmar',
     },
     store: {
       title: 'Tienda de Recompensas',
@@ -347,7 +347,7 @@ const translations: Record<Language, Translations> = {
       buy: 'Comprar',
       outOfStock: 'Agotado',
       owned: 'Adquirido',
-      success: '¡Compra exitosa!'
+      success: '¡Compra exitosa!',
     },
     missions: {
       title: 'Misiones Diarias',
@@ -359,7 +359,7 @@ const translations: Record<Language, Translations> = {
       reward: 'Recompensa',
       easy: 'Facil',
       medium: 'Medio',
-      hard: 'Dificil'
+      hard: 'Dificil',
     },
     news: {
       title: 'Noticias Crypto',
@@ -369,7 +369,7 @@ const translations: Record<Language, Translations> = {
       crypto: 'Cripto',
       defi: 'DeFi',
       nft: 'NFT',
-      metaverse: 'Metaverso'
+      metaverse: 'Metaverso',
     },
     vip: {
       title: 'Club VIP',
@@ -388,9 +388,9 @@ const translations: Record<Language, Translations> = {
       bonusClaims: 'Bonus Reclamos',
       exclusiveFaucets: 'Grifos Exclusivos',
       prioritySupport: 'Soporte Prioritario',
-      badge: 'Badge VIP'
-    }
-  }
+      badge: 'Badge VIP',
+    },
+  },
 };
 
 const TranslationContext = createContext<{
@@ -400,7 +400,7 @@ const TranslationContext = createContext<{
 }>({
   language: 'en',
   setLanguage: () => {},
-  t: () => ''
+  t: () => '',
 });
 
 export function TranslationProvider({ children }: { children: ReactNode }) {
@@ -409,7 +409,7 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
   const t = (key: string): string => {
     const keys = key.split('.');
     let value: any = translations[language];
-    
+
     for (const k of keys) {
       if (value && typeof value === 'object') {
         value = value[k];
@@ -417,7 +417,7 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
         return key;
       }
     }
-    
+
     return typeof value === 'string' ? value : key;
   };
 

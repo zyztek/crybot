@@ -33,8 +33,8 @@ const CryptoChart: React.FC<CryptoChartProps> = ({ symbol, height = 300 }) => {
 
   return (
     <div className="relative" style={{ height }}>
-      <svg 
-        viewBox="0 0 100 100" 
+      <svg
+        viewBox="0 0 100 100"
         preserveAspectRatio="none"
         className="w-full h-full"
         onMouseLeave={() => setHoveredPoint(null)}
@@ -55,16 +55,8 @@ const CryptoChart: React.FC<CryptoChartProps> = ({ symbol, height = 300 }) => {
         {/* Gradient fill */}
         <defs>
           <linearGradient id={`gradient-${symbol}`} x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop
-              offset="0%"
-              stopColor={change >= 0 ? '#10B981' : '#EF4444'}
-              stopOpacity="0.3"
-            />
-            <stop
-              offset="100%"
-              stopColor={change >= 0 ? '#10B981' : '#EF4444'}
-              stopOpacity="0"
-            />
+            <stop offset="0%" stopColor={change >= 0 ? '#10B981' : '#EF4444'} stopOpacity="0.3" />
+            <stop offset="100%" stopColor={change >= 0 ? '#10B981' : '#EF4444'} stopOpacity="0" />
           </linearGradient>
         </defs>
 
@@ -114,11 +106,12 @@ const CryptoChart: React.FC<CryptoChartProps> = ({ symbol, height = 300 }) => {
 
       {/* Tooltip */}
       {hoveredPoint !== null && (
-        <div className="absolute bg-slate-900 border border-slate-700 rounded-lg p-2 shadow-xl pointer-events-none"
+        <div
+          className="absolute bg-slate-900 border border-slate-700 rounded-lg p-2 shadow-xl pointer-events-none"
           style={{
             left: `${getX(hoveredPoint)}%`,
             top: `${getY(chartData[hoveredPoint]) - 20}%`,
-            transform: 'translate(-50%, -100%)'
+            transform: 'translate(-50%, -100%)',
           }}
         >
           <p className="text-white text-sm font-semibold">${chartData[hoveredPoint].toFixed(2)}</p>

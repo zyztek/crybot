@@ -15,7 +15,9 @@ const DiceGame: React.FC<DiceProps> = ({ userCoins, onWin, onLoss }) => {
   const [rolling, setRolling] = useState(false);
   const [dice, setDice] = useState<number[]>([1, 1]);
   const [lastResult, setLastResult] = useState<{ won: boolean; amount: number } | null>(null);
-  const [rollHistory, setRollHistory] = useState<{ dice: number[]; won: boolean; amount: number }[]>([
+  const [rollHistory, setRollHistory] = useState<
+    { dice: number[]; won: boolean; amount: number }[]
+  >([
     { dice: [3, 2], won: true, amount: 50 },
     { dice: [5, 6], won: false, amount: -50 },
     { dice: [2, 3], won: true, amount: 50 },
@@ -38,10 +40,7 @@ const DiceGame: React.FC<DiceProps> = ({ userCoins, onWin, onLoss }) => {
     // Animate dice
     let rollCount = 0;
     const rollInterval = setInterval(() => {
-      setDice([
-        Math.floor(Math.random() * 6) + 1,
-        Math.floor(Math.random() * 6) + 1,
-      ]);
+      setDice([Math.floor(Math.random() * 6) + 1, Math.floor(Math.random() * 6) + 1]);
       rollCount++;
       if (rollCount > 15) {
         clearInterval(rollInterval);
@@ -51,7 +50,10 @@ const DiceGame: React.FC<DiceProps> = ({ userCoins, onWin, onLoss }) => {
   };
 
   const finishRoll = () => {
-    const result = [Math.floor(Math.random() * 6) + 1, Math.floor(Math.random() * 6) + 1] as [number, number];
+    const result = [Math.floor(Math.random() * 6) + 1, Math.floor(Math.random() * 6) + 1] as [
+      number,
+      number,
+    ];
     setDice(result);
 
     const sum = result[0] + result[1];
@@ -133,7 +135,7 @@ const DiceGame: React.FC<DiceProps> = ({ userCoins, onWin, onLoss }) => {
           <div className="mb-6">
             <label className="text-slate-400 text-sm block mb-2">Select Target Side</label>
             <div className="grid grid-cols-6 gap-2">
-              {[1, 2, 3, 4, 5, 6].map((side) => {
+              {[1, 2, 3, 4, 5, 6].map(side => {
                 const DiceIcon = DICE_ICONS[side - 1];
                 const isSelected = selectedSide === side;
                 return (
@@ -158,7 +160,7 @@ const DiceGame: React.FC<DiceProps> = ({ userCoins, onWin, onLoss }) => {
           <div className="mb-6">
             <label className="text-slate-400 text-sm block mb-2">Bet Amount</label>
             <div className="flex gap-2">
-              {[10, 50, 100, 500, 1000].map((amount) => (
+              {[10, 50, 100, 500, 1000].map(amount => (
                 <button
                   key={amount}
                   onClick={() => setBetAmount(amount)}
@@ -177,7 +179,7 @@ const DiceGame: React.FC<DiceProps> = ({ userCoins, onWin, onLoss }) => {
               min="10"
               max="1000"
               value={betAmount}
-              onChange={(e) => setBetAmount(parseInt(e.target.value))}
+              onChange={e => setBetAmount(parseInt(e.target.value))}
               className="w-full mt-3 accent-purple-500"
             />
           </div>
@@ -204,10 +206,14 @@ const DiceGame: React.FC<DiceProps> = ({ userCoins, onWin, onLoss }) => {
 
           {/* Result */}
           {lastResult && (
-            <div className={`mt-4 text-center p-4 rounded-lg ${
-              lastResult.won ? 'bg-green-500/20' : 'bg-red-500/20'
-            }`}>
-              <div className={`text-2xl font-bold ${lastResult.won ? 'text-green-400' : 'text-red-400'}`}>
+            <div
+              className={`mt-4 text-center p-4 rounded-lg ${
+                lastResult.won ? 'bg-green-500/20' : 'bg-red-500/20'
+              }`}
+            >
+              <div
+                className={`text-2xl font-bold ${lastResult.won ? 'text-green-400' : 'text-red-400'}`}
+              >
                 {lastResult.won ? '🎉 You Won!' : '😢 You Lost'}
               </div>
               <div className={`text-lg ${lastResult.won ? 'text-green-300' : 'text-red-300'}`}>
@@ -239,7 +245,9 @@ const DiceGame: React.FC<DiceProps> = ({ userCoins, onWin, onLoss }) => {
                       = {roll.dice.reduce((a, b) => a + b, 0)}
                     </span>
                   </div>
-                  <span className={`font-bold ${roll.amount > 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  <span
+                    className={`font-bold ${roll.amount > 0 ? 'text-green-400' : 'text-red-400'}`}
+                  >
                     {roll.amount > 0 ? `+${roll.amount}` : roll.amount}
                   </span>
                 </div>

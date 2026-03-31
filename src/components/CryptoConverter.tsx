@@ -1,5 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
-import { ArrowLeftRight, RefreshCw, Bitcoin, DollarSign, TrendingUp, Calculator } from 'lucide-react';
+import {
+  ArrowLeftRight,
+  RefreshCw,
+  Bitcoin,
+  DollarSign,
+  TrendingUp,
+  Calculator,
+} from 'lucide-react';
 
 interface ConversionData {
   from: string;
@@ -100,14 +107,32 @@ export default function CryptoConverter() {
           calculatedResult = amount * calculatedRate;
         } else {
           // Crypto to Fiat
-          const fiatRates: Record<string, number> = { USD: 1, EUR: 0.92, GBP: 0.79, JPY: 149.5, CNY: 7.24, INR: 83.3, BRL: 5.0, MXN: 17.1 };
+          const fiatRates: Record<string, number> = {
+            USD: 1,
+            EUR: 0.92,
+            GBP: 0.79,
+            JPY: 149.5,
+            CNY: 7.24,
+            INR: 83.3,
+            BRL: 5.0,
+            MXN: 17.1,
+          };
           const usdToFiat = fiatRates[toCurrency] || 1;
           calculatedRate = cryptoUSD * usdToFiat;
           calculatedResult = amount * calculatedRate;
         }
       } else {
         // Fiat to Crypto
-        const fiatRates: Record<string, number> = { USD: 1, EUR: 0.92, GBP: 0.79, JPY: 149.5, CNY: 7.24, INR: 83.3, BRL: 5.0, MXN: 17.1 };
+        const fiatRates: Record<string, number> = {
+          USD: 1,
+          EUR: 0.92,
+          GBP: 0.79,
+          JPY: 149.5,
+          CNY: 7.24,
+          INR: 83.3,
+          BRL: 5.0,
+          MXN: 17.1,
+        };
         const usdToFiat = fiatRates[fromCurrency] || 1;
         const fiatUSD = amount / usdToFiat;
         if (crypto2) {
@@ -119,13 +144,18 @@ export default function CryptoConverter() {
       setRate(calculatedRate);
       setResult(calculatedResult);
 
-      setConversionHistory(prev => [{
-        from: fromCurrency,
-        to: toCurrency,
-        amount,
-        result: calculatedResult,
-        rate: calculatedRate,
-      }, ...prev].slice(0, 10));
+      setConversionHistory(prev =>
+        [
+          {
+            from: fromCurrency,
+            to: toCurrency,
+            amount,
+            result: calculatedResult,
+            rate: calculatedRate,
+          },
+          ...prev,
+        ].slice(0, 10)
+      );
 
       setIsCalculating(false);
     }, 300);
@@ -175,7 +205,9 @@ export default function CryptoConverter() {
                 <button
                   onClick={() => setIsCrypto(true)}
                   className={`px-4 py-2 rounded-lg transition ${
-                    isCrypto ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white' : 'bg-white/10 text-gray-300'
+                    isCrypto
+                      ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white'
+                      : 'bg-white/10 text-gray-300'
                   }`}
                 >
                   {t.cryptoToFiat}
@@ -183,7 +215,9 @@ export default function CryptoConverter() {
                 <button
                   onClick={() => setIsCrypto(false)}
                   className={`px-4 py-2 rounded-lg transition ${
-                    !isCrypto ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white' : 'bg-white/10 text-gray-300'
+                    !isCrypto
+                      ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white'
+                      : 'bg-white/10 text-gray-300'
                   }`}
                 >
                   {t.fiatToCrypto}
@@ -198,17 +232,19 @@ export default function CryptoConverter() {
                 <div className="flex gap-4">
                   <select
                     value={fromCurrency}
-                    onChange={(e) => setFromCurrency(e.target.value)}
+                    onChange={e => setFromCurrency(e.target.value)}
                     className="flex-1 bg-slate-700/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition"
                   >
                     {allCurrencies.map(curr => (
-                      <option key={curr.symbol} value={curr.symbol}>{curr.symbol} - {curr.name}</option>
+                      <option key={curr.symbol} value={curr.symbol}>
+                        {curr.symbol} - {curr.name}
+                      </option>
                     ))}
                   </select>
                   <input
                     type="number"
                     value={amount}
-                    onChange={(e) => setAmount(Number(e.target.value) || 0)}
+                    onChange={e => setAmount(Number(e.target.value) || 0)}
                     className="w-48 bg-slate-700/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition"
                     placeholder={t.amount}
                   />
@@ -231,11 +267,13 @@ export default function CryptoConverter() {
                 <div className="bg-slate-700/50 border border-white/10 rounded-xl px-4 py-3">
                   <select
                     value={toCurrency}
-                    onChange={(e) => setToCurrency(e.target.value)}
+                    onChange={e => setToCurrency(e.target.value)}
                     className="w-full bg-transparent text-white focus:outline-none"
                   >
                     {toCurrencies.map(curr => (
-                      <option key={curr.symbol} value={curr.symbol}>{curr.symbol} - {curr.name}</option>
+                      <option key={curr.symbol} value={curr.symbol}>
+                        {curr.symbol} - {curr.name}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -287,7 +325,10 @@ export default function CryptoConverter() {
               </h3>
               <div className="space-y-3">
                 {CRYPTO_CURRENCIES.slice(0, 6).map(crypto => (
-                  <div key={crypto.symbol} className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                  <div
+                    key={crypto.symbol}
+                    className="flex items-center justify-between p-3 bg-white/5 rounded-lg"
+                  >
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-yellow-400 rounded-full flex items-center justify-center text-xs font-bold text-white">
                         {crypto.symbol.slice(0, 2)}
@@ -297,7 +338,8 @@ export default function CryptoConverter() {
                     <div className="text-right">
                       <div className="text-white font-bold">${crypto.price.toLocaleString()}</div>
                       <div className="text-green-400 text-sm flex items-center gap-1">
-                        +{(Math.random() * 10).toFixed(2)}% {/* eslint-disable-line react-hooks/purity */}
+                        +{(Math.random() * 10).toFixed(2)}%{' '}
+                        {/* eslint-disable-line react-hooks/purity */}
                       </div>
                     </div>
                   </div>
@@ -313,7 +355,10 @@ export default function CryptoConverter() {
               </h3>
               <div className="space-y-2 max-h-60 overflow-y-auto">
                 {conversionHistory.map((conv, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-2 bg-white/5 rounded-lg text-sm">
+                  <div
+                    key={idx}
+                    className="flex items-center justify-between p-2 bg-white/5 rounded-lg text-sm"
+                  >
                     <span className="text-gray-300">
                       {conv.amount} {conv.from}
                     </span>

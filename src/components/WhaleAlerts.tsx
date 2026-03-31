@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { Fish, AlertTriangle, TrendingUp, DollarSign, Activity, Bell, Clock, Filter as FilterIcon } from 'lucide-react';
+import {
+  Fish,
+  AlertTriangle,
+  TrendingUp,
+  DollarSign,
+  Activity,
+  Bell,
+  Clock,
+  Filter as FilterIcon,
+} from 'lucide-react';
 
 interface WhaleAlert {
   id: string;
@@ -14,7 +23,6 @@ interface WhaleAlert {
 }
 
 const WhaleAlerts = () => {
-  
   const [alerts] = useState<WhaleAlert[]>([
     {
       id: '1',
@@ -109,43 +117,60 @@ const WhaleAlerts = () => {
   const [alertThreshold, setAlertThreshold] = useState(1000000);
 
   const filteredAlerts = alerts.filter(alert => {
-    const typeMatch = filter === 'all' 
-      ? true 
-      : filter === 'exchange'
-      ? alert.type.includes('exchange')
-      : alert.type === filter;
+    const typeMatch =
+      filter === 'all'
+        ? true
+        : filter === 'exchange'
+          ? alert.type.includes('exchange')
+          : alert.type === filter;
     const valueMatch = alert.valueUSD >= alertThreshold;
     return typeMatch && valueMatch;
   });
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case 'buy': return <TrendingUp className="w-5 h-5 text-green-400" />;
-      case 'sell': return <TrendingUp className="w-5 h-5 text-red-400 rotate-180" />;
-      case 'transfer': return <Activity className="w-5 h-5 text-blue-400" />;
-      case 'exchange_deposit': return <Bell className="w-5 h-5 text-yellow-400" />;
-      case 'exchange_withdrawal': return <Bell className="w-5 h-5 text-purple-400" />;
-      default: return <AlertTriangle className="w-5 h-5 text-gray-400" />;
+      case 'buy':
+        return <TrendingUp className="w-5 h-5 text-green-400" />;
+      case 'sell':
+        return <TrendingUp className="w-5 h-5 text-red-400 rotate-180" />;
+      case 'transfer':
+        return <Activity className="w-5 h-5 text-blue-400" />;
+      case 'exchange_deposit':
+        return <Bell className="w-5 h-5 text-yellow-400" />;
+      case 'exchange_withdrawal':
+        return <Bell className="w-5 h-5 text-purple-400" />;
+      default:
+        return <AlertTriangle className="w-5 h-5 text-gray-400" />;
     }
   };
 
   const getTypeLabel = (type: string) => {
     switch (type) {
-      case 'buy': return 'Whale Buy';
-      case 'sell': return 'Whale Sell';
-      case 'transfer': return 'Large Transfer';
-      case 'exchange_deposit': return 'Exchange Deposit';
-      case 'exchange_withdrawal': return 'Exchange Withdrawal';
-      default: return 'Unknown';
+      case 'buy':
+        return 'Whale Buy';
+      case 'sell':
+        return 'Whale Sell';
+      case 'transfer':
+        return 'Large Transfer';
+      case 'exchange_deposit':
+        return 'Exchange Deposit';
+      case 'exchange_withdrawal':
+        return 'Exchange Withdrawal';
+      default:
+        return 'Unknown';
     }
   };
 
   const getImpactColor = (impact: string) => {
     switch (impact) {
-      case 'high': return 'border-red-500 bg-red-500/10';
-      case 'medium': return 'border-yellow-500 bg-yellow-500/10';
-      case 'low': return 'border-blue-500 bg-blue-500/10';
-      default: return 'border-gray-500 bg-gray-500/10';
+      case 'high':
+        return 'border-red-500 bg-red-500/10';
+      case 'medium':
+        return 'border-yellow-500 bg-yellow-500/10';
+      case 'low':
+        return 'border-blue-500 bg-blue-500/10';
+      default:
+        return 'border-gray-500 bg-gray-500/10';
     }
   };
 
@@ -190,21 +215,27 @@ const WhaleAlerts = () => {
             <DollarSign className="w-4 h-4" />
             Total Volume
           </div>
-          <div className="text-3xl font-bold text-white">${(totalVolumeToday / 1000000).toFixed(1)}M</div>
+          <div className="text-3xl font-bold text-white">
+            ${(totalVolumeToday / 1000000).toFixed(1)}M
+          </div>
         </div>
         <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-xl p-4">
           <div className="flex items-center gap-2 text-slate-400 text-sm mb-1">
             <TrendingUp className="w-4 h-4 text-green-400" />
             Buy Volume
           </div>
-          <div className="text-3xl font-bold text-green-400">${(buyVolume / 1000000).toFixed(1)}M</div>
+          <div className="text-3xl font-bold text-green-400">
+            ${(buyVolume / 1000000).toFixed(1)}M
+          </div>
         </div>
         <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-xl p-4">
           <div className="flex items-center gap-2 text-slate-400 text-sm mb-1">
             <TrendingUp className="w-4 h-4 text-red-400 rotate-180" />
             Sell Volume
           </div>
-          <div className="text-3xl font-bold text-red-400">${(sellVolume / 1000000).toFixed(1)}M</div>
+          <div className="text-3xl font-bold text-red-400">
+            ${(sellVolume / 1000000).toFixed(1)}M
+          </div>
         </div>
       </div>
 
@@ -215,7 +246,7 @@ const WhaleAlerts = () => {
             <FilterIcon className="w-5 h-5 text-slate-400" />
             <span className="text-white font-medium">Filter:</span>
           </div>
-          {[ 
+          {[
             { key: 'all', label: 'All' },
             { key: 'buy', label: 'Buys' },
             { key: 'sell', label: 'Sells' },
@@ -237,16 +268,18 @@ const WhaleAlerts = () => {
 
           <div className="ml-auto flex items-center gap-2">
             <DollarSign className="w-5 h-5 text-slate-400" />
-            <span className="text-white text-sm">Min: ${alertThreshold > 1000000 ? 
-              `${(alertThreshold / 1000000).toFixed(0)}M` : 
-              `${(alertThreshold / 1000).toFixed(0)}K`
-            }</span>
+            <span className="text-white text-sm">
+              Min: $
+              {alertThreshold > 1000000
+                ? `${(alertThreshold / 1000000).toFixed(0)}M`
+                : `${(alertThreshold / 1000).toFixed(0)}K`}
+            </span>
             <input
               type="range"
               min="100000"
               max="10000000"
               value={alertThreshold}
-              onChange={(e) => setAlertThreshold(parseInt(e.target.value))}
+              onChange={e => setAlertThreshold(parseInt(e.target.value))}
               className="w-32 accent-purple-500"
             />
           </div>
@@ -255,31 +288,38 @@ const WhaleAlerts = () => {
 
       {/* Alerts List */}
       <div className="space-y-3">
-        {filteredAlerts.map((alert) => (
-          <div
-            key={alert.id}
-            className={`rounded-xl border-2 p-4 ${getImpactColor(alert.impact)}`}
-          >
+        {filteredAlerts.map(alert => (
+          <div key={alert.id} className={`rounded-xl border-2 p-4 ${getImpactColor(alert.impact)}`}>
             <div className="flex flex-wrap items-start justify-between gap-4">
               {/* Left - Type & Coin */}
               <div className="flex items-center gap-4">
-                <div className={`p-3 rounded-lg ${
-                  alert.type === 'buy' ? 'bg-green-500/20' :
-                  alert.type === 'sell' ? 'bg-red-500/20' :
-                  alert.type === 'transfer' ? 'bg-blue-500/20' :
-                  alert.type === 'exchange_deposit' ? 'bg-yellow-500/20' :
-                  'bg-purple-500/20'
-                }`}>
+                <div
+                  className={`p-3 rounded-lg ${
+                    alert.type === 'buy'
+                      ? 'bg-green-500/20'
+                      : alert.type === 'sell'
+                        ? 'bg-red-500/20'
+                        : alert.type === 'transfer'
+                          ? 'bg-blue-500/20'
+                          : alert.type === 'exchange_deposit'
+                            ? 'bg-yellow-500/20'
+                            : 'bg-purple-500/20'
+                  }`}
+                >
                   {getTypeIcon(alert.type)}
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
                     <h3 className="text-lg font-bold text-white">{getTypeLabel(alert.type)}</h3>
-                    <span className={`px-2 py-0.5 rounded text-xs font-bold ${
-                      alert.impact === 'high' ? 'bg-red-500 text-white' :
-                      alert.impact === 'medium' ? 'bg-yellow-500 text-black' :
-                      'bg-blue-500 text-white'
-                    }`}>
+                    <span
+                      className={`px-2 py-0.5 rounded text-xs font-bold ${
+                        alert.impact === 'high'
+                          ? 'bg-red-500 text-white'
+                          : alert.impact === 'medium'
+                            ? 'bg-yellow-500 text-black'
+                            : 'bg-blue-500 text-white'
+                      }`}
+                    >
                       {alert.impact.toUpperCase()}
                     </span>
                   </div>
@@ -287,9 +327,7 @@ const WhaleAlerts = () => {
                     {alert.type.includes('exchange') && alert.exchange && (
                       <span className="mr-2">{alert.exchange}</span>
                     )}
-                    {alert.walletAddress && (
-                      <span className="mr-2">{alert.walletAddress}</span>
-                    )}
+                    {alert.walletAddress && <span className="mr-2">{alert.walletAddress}</span>}
                     <span className="flex items-center gap-1">
                       <Clock className="w-4 h-4" />
                       {getTimeAgo(alert.timestamp)}
@@ -309,7 +347,9 @@ const WhaleAlerts = () => {
               {/* Right - USD Value */}
               <div className="text-center">
                 <div className="text-slate-400 text-sm">USD Value</div>
-                <div className="text-2xl font-bold text-yellow-400">{formatValue(alert.valueUSD)}</div>
+                <div className="text-2xl font-bold text-yellow-400">
+                  {formatValue(alert.valueUSD)}
+                </div>
               </div>
             </div>
 
@@ -317,9 +357,7 @@ const WhaleAlerts = () => {
             {alert.impact === 'high' && (
               <div className="mt-3 pt-3 border-t border-slate-600 md:border-slate-700/50 flex items-center gap-2 text-sm">
                 <AlertTriangle className="w-4 h-4 text-yellow-400" />
-                <span className="text-yellow-400">
-                  High Impact - Market movement expected
-                </span>
+                <span className="text-yellow-400">High Impact - Market movement expected</span>
               </div>
             )}
           </div>
@@ -333,7 +371,8 @@ const WhaleAlerts = () => {
           <div>
             <h3 className="text-lg font-bold text-white mb-2">What are Whale Alerts?</h3>
             <p className="text-white/80 text-sm mb-3">
-              Whale alerts notify you when large cryptocurrency transactions occur. These trades can significantly influence market prices and provide insights for your trading strategy.
+              Whale alerts notify you when large cryptocurrency transactions occur. These trades can
+              significantly influence market prices and provide insights for your trading strategy.
             </p>
             <div className="flex flex-wrap gap-4 text-sm">
               <div>

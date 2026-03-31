@@ -1,12 +1,12 @@
-import { describe, it, expect } from 'vitest'
-import { render, screen } from '@testing-library/react'
-import StatsBar from './StatsBar'
-import { mockTranslations, mockWalletBalance, mockHistory, mockFaucets } from '@/test/fixtures'
-import type { WalletBalance } from '@/types'
+import { describe, it, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import StatsBar from './StatsBar';
+import { mockTranslations, mockWalletBalance, mockHistory, mockFaucets } from '@/test/fixtures';
+import type { WalletBalance } from '@/types';
 
 const renderComponent = (component: React.ReactElement) => {
-  return render(component)
-}
+  return render(component);
+};
 
 describe('StatsBar', () => {
   it('renders total claimed with BTC value', () => {
@@ -17,11 +17,11 @@ describe('StatsBar', () => {
         faucets={mockFaucets}
         t={mockTranslations}
       />
-    )
+    );
 
-    expect(screen.getByText('Total Reclamado')).toBeInTheDocument()
-    expect(screen.getByText('0.00023045 BTC')).toBeInTheDocument()
-  })
+    expect(screen.getByText('Total Reclamado')).toBeInTheDocument();
+    expect(screen.getByText('0.00023045 BTC')).toBeInTheDocument();
+  });
 
   it('renders today claims count from history', () => {
     renderComponent(
@@ -31,12 +31,12 @@ describe('StatsBar', () => {
         faucets={mockFaucets}
         t={mockTranslations}
       />
-    )
+    );
 
-    expect(screen.getByText('Claims Hoy')).toBeInTheDocument()
+    expect(screen.getByText('Claims Hoy')).toBeInTheDocument();
     // Check that the value text exists somewhere in the document
-    expect(screen.getByText(/0\.00023045 BTC/)).toBeInTheDocument()
-  })
+    expect(screen.getByText(/0\.00023045 BTC/)).toBeInTheDocument();
+  });
 
   it('renders active faucets count', () => {
     renderComponent(
@@ -46,10 +46,10 @@ describe('StatsBar', () => {
         faucets={mockFaucets}
         t={mockTranslations}
       />
-    )
+    );
 
-    expect(screen.getByText('Faucets Activos')).toBeInTheDocument()
-  })
+    expect(screen.getByText('Faucets Activos')).toBeInTheDocument();
+  });
 
   it('renders available coins count', () => {
     renderComponent(
@@ -59,12 +59,12 @@ describe('StatsBar', () => {
         faucets={mockFaucets}
         t={mockTranslations}
       />
-    )
+    );
 
-    expect(screen.getByText('Monedas Disponibles')).toBeInTheDocument()
+    expect(screen.getByText('Monedas Disponibles')).toBeInTheDocument();
     // All 6 coins have values > 0
-    expect(screen.getAllByText('6')[0]).toBeInTheDocument()
-  })
+    expect(screen.getAllByText('6')[0]).toBeInTheDocument();
+  });
 
   it('renders all four stat cards', () => {
     renderComponent(
@@ -74,14 +74,14 @@ describe('StatsBar', () => {
         faucets={mockFaucets}
         t={mockTranslations}
       />
-    )
+    );
 
     // All titles should be present
-    expect(screen.getByText('Total Reclamado')).toBeInTheDocument()
-    expect(screen.getByText('Claims Hoy')).toBeInTheDocument()
-    expect(screen.getByText('Faucets Activos')).toBeInTheDocument()
-    expect(screen.getByText('Monedas Disponibles')).toBeInTheDocument()
-  })
+    expect(screen.getByText('Total Reclamado')).toBeInTheDocument();
+    expect(screen.getByText('Claims Hoy')).toBeInTheDocument();
+    expect(screen.getByText('Faucets Activos')).toBeInTheDocument();
+    expect(screen.getByText('Monedas Disponibles')).toBeInTheDocument();
+  });
 
   it('filters out zero-value coins from available coins count', () => {
     const zeroBalanceWallet: WalletBalance = {
@@ -90,8 +90,8 @@ describe('StatsBar', () => {
       doge: '45.6789',
       sol: '0',
       ltc: '0.5678',
-      bnb: '0'
-    }
+      bnb: '0',
+    };
 
     renderComponent(
       <StatsBar
@@ -100,9 +100,9 @@ describe('StatsBar', () => {
         faucets={mockFaucets}
         t={mockTranslations}
       />
-    )
+    );
 
     // Should only count 3 coins with value > 0
-    expect(screen.getAllByText('3')[0]).toBeInTheDocument()
-  })
-})
+    expect(screen.getAllByText('3')[0]).toBeInTheDocument();
+  });
+});

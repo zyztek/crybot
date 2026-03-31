@@ -15,7 +15,7 @@ const missions = [
     target: 5,
     reward: 50,
     rewardType: 'FAUCBITS',
-    completed: false
+    completed: false,
   },
   {
     id: 2,
@@ -30,7 +30,7 @@ const missions = [
     target: 3,
     reward: 100,
     rewardType: 'FAUCBITS',
-    completed: true
+    completed: true,
   },
   {
     id: 3,
@@ -45,7 +45,7 @@ const missions = [
     target: 1,
     reward: 200,
     rewardType: 'FAUCBITS',
-    completed: false
+    completed: false,
   },
   {
     id: 4,
@@ -60,7 +60,7 @@ const missions = [
     target: 1,
     reward: 75,
     rewardType: 'FAUCBITS',
-    completed: false
+    completed: false,
   },
   {
     id: 5,
@@ -75,7 +75,7 @@ const missions = [
     target: 7,
     reward: 150,
     rewardType: 'FAUCBITS',
-    completed: false
+    completed: false,
   },
   {
     id: 6,
@@ -90,8 +90,8 @@ const missions = [
     target: 5,
     reward: 500,
     rewardType: 'FAUCBITS',
-    completed: false
-  }
+    completed: false,
+  },
 ];
 
 export default function DailyMissions({ language }: { language: 'zh' | 'en' }) {
@@ -103,7 +103,10 @@ export default function DailyMissions({ language }: { language: 'zh' | 'en' }) {
 
   const t = {
     title: language === 'zh' ? '每日任务' : 'Daily Missions',
-    subtitle: language === 'zh' ? '完成任务赚取 FaucetBits 并提升等级' : 'Complete tasks to earn FaucetBits and level up',
+    subtitle:
+      language === 'zh'
+        ? '完成任务赚取 FaucetBits 并提升等级'
+        : 'Complete tasks to earn FaucetBits and level up',
     progress: language === 'zh' ? '今日进度' : "Today's Progress",
     completed: language === 'zh' ? '已完成' : 'Completed',
     resetIn: language === 'zh' ? '重置倒计时' : 'Resets in',
@@ -134,15 +137,19 @@ export default function DailyMissions({ language }: { language: 'zh' | 'en' }) {
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="text-xl font-bold text-white">{t.progress}</h2>
-            <p className="text-gray-400 text-sm mt-1">{completedCount} / {missions.length} {t.completed}</p>
+            <p className="text-gray-400 text-sm mt-1">
+              {completedCount} / {missions.length} {t.completed}
+            </p>
           </div>
           <div className="text-right">
             <p className="text-gray-400 text-sm">{language === 'zh' ? '总奖励' : 'Total Earned'}</p>
-            <p className="text-2xl font-bold text-yellow-400">{totalReward.toLocaleString()} FaucetBits</p>
+            <p className="text-2xl font-bold text-yellow-400">
+              {totalReward.toLocaleString()} FaucetBits
+            </p>
           </div>
         </div>
         <div className="w-full h-4 bg-slate-700 rounded-full overflow-hidden">
-          <div 
+          <div
             className="h-full bg-gradient-to-r from-green-500 to-emerald-400 transition-all duration-500 rounded-full"
             style={{ width: `${progressPercent}%` }}
           />
@@ -154,18 +161,20 @@ export default function DailyMissions({ language }: { language: 'zh' | 'en' }) {
         {missions.map(mission => {
           const Icon = mission.icon;
           const progressPercent = (mission.progress / mission.target) * 100;
-          
+
           return (
-            <div 
-              key={mission.id} 
+            <div
+              key={mission.id}
               className={`p-5 rounded-2xl border transition-all duration-300 ${
-                mission.completed 
-                  ? 'bg-gradient-to-br from-green-500/10 to-emerald-500/10 border-green-500/30' 
+                mission.completed
+                  ? 'bg-gradient-to-br from-green-500/10 to-emerald-500/10 border-green-500/30'
                   : 'bg-gradient-to-br from-slate-800/50 to-slate-900/50 border-slate-700 hover:border-slate-500/50'
               }`}
             >
               <div className="flex items-start gap-4">
-                <div className={`w-14 h-14 bg-gradient-to-br ${mission.bgGradient} rounded-2xl flex items-center justify-center shrink-0`}>
+                <div
+                  className={`w-14 h-14 bg-gradient-to-br ${mission.bgGradient} rounded-2xl flex items-center justify-center shrink-0`}
+                >
                   {mission.completed ? (
                     <CheckCircle2 className="w-7 h-7 text-green-400" />
                   ) : (
@@ -185,10 +194,12 @@ export default function DailyMissions({ language }: { language: 'zh' | 'en' }) {
                     <div className="mb-4">
                       <div className="flex items-center justify-between text-sm mb-2">
                         <span className="text-gray-400">{t.inProgress}</span>
-                        <span className="text-white">{mission.progress} / {mission.target}</span>
+                        <span className="text-white">
+                          {mission.progress} / {mission.target}
+                        </span>
                       </div>
                       <div className="w-full h-2 bg-slate-700 rounded-full overflow-hidden">
-                        <div 
+                        <div
                           className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-300"
                           style={{ width: `${progressPercent}%` }}
                         />
@@ -198,7 +209,9 @@ export default function DailyMissions({ language }: { language: 'zh' | 'en' }) {
 
                   <div className="flex items-center justify-between pt-4 border-t border-slate-700">
                     <div className="flex items-center gap-2">
-                      <span className="w-6 h-6 bg-yellow-500/20 rounded-full flex items-center justify-center">🪙</span>
+                      <span className="w-6 h-6 bg-yellow-500/20 rounded-full flex items-center justify-center">
+                        🪙
+                      </span>
                       <span className="font-bold text-yellow-400">{mission.reward} FaucetBits</span>
                     </div>
                     {mission.completed ? (
@@ -208,7 +221,11 @@ export default function DailyMissions({ language }: { language: 'zh' | 'en' }) {
                       </span>
                     ) : (
                       <button className="px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-400 hover:to-cyan-400 text-white text-sm font-semibold rounded-xl transition-all">
-                        {mission.progress > 0 ? language === 'zh' ? '继续' : 'Continue' : t.startMission}
+                        {mission.progress > 0
+                          ? language === 'zh'
+                            ? '继续'
+                            : 'Continue'
+                          : t.startMission}
                       </button>
                     )}
                   </div>

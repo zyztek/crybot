@@ -6,5 +6,5 @@ export default function LoadingSpinner() {
         <p className="text-purple-300 text-lg font-medium">Loading...</p>
       </div>
     </div>
-  )
+  );
 }

@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-import { Calculator, FileText, Download, Plus, Trash2, PieChart, ArrowRight, TrendingUp, AlertCircle } from 'lucide-react';
+import {
+  Calculator,
+  FileText,
+  Download,
+  Plus,
+  Trash2,
+  PieChart,
+  ArrowRight,
+  TrendingUp,
+  AlertCircle,
+} from 'lucide-react';
 
 interface Transaction {
   id: number;
@@ -13,11 +23,35 @@ interface Transaction {
 
 export const CryptoTaxCalculator: React.FC = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([
-    { id: 1, date: '2024-01-15', type: 'buy', coin: 'BTC', amount: 0.1, priceUsd: 42000, feeUsd: 10 },
-    { id: 2, date: '2024-01-20', type: 'sell', coin: 'BTC', amount: 0.05, priceUsd: 43000, feeUsd: 5 },
+    {
+      id: 1,
+      date: '2024-01-15',
+      type: 'buy',
+      coin: 'BTC',
+      amount: 0.1,
+      priceUsd: 42000,
+      feeUsd: 10,
+    },
+    {
+      id: 2,
+      date: '2024-01-20',
+      type: 'sell',
+      coin: 'BTC',
+      amount: 0.05,
+      priceUsd: 43000,
+      feeUsd: 5,
+    },
     { id: 3, date: '2024-02-01', type: 'buy', coin: 'ETH', amount: 2, priceUsd: 2300, feeUsd: 8 },
-    { id: 4, date: '2024-02-10', type: 'staking', coin: 'ETH', amount: 0.1, priceUsd: 2400, feeUsd: 2 },
-    { id: 5, date: '2024-02-15', type: 'sell', coin: 'ETH', amount: 1, priceUsd: 2500, feeUsd: 6 }
+    {
+      id: 4,
+      date: '2024-02-10',
+      type: 'staking',
+      coin: 'ETH',
+      amount: 0.1,
+      priceUsd: 2400,
+      feeUsd: 2,
+    },
+    { id: 5, date: '2024-02-15', type: 'sell', coin: 'ETH', amount: 1, priceUsd: 2500, feeUsd: 6 },
   ]);
 
   const [taxRate, setTaxRate] = useState(23);
@@ -27,7 +61,7 @@ export const CryptoTaxCalculator: React.FC = () => {
     coin: 'BTC',
     amount: 0,
     priceUsd: 0,
-    feeUsd: 0
+    feeUsd: 0,
   });
 
   const calculateTax = () => {
@@ -56,7 +90,7 @@ export const CryptoTaxCalculator: React.FC = () => {
       netGain,
       taxLiability,
       totalVolume: transactions.reduce((sum, tx) => sum + tx.amount * tx.priceUsd, 0),
-      totalFees: transactions.reduce((sum, tx) => sum + tx.feeUsd, 0)
+      totalFees: transactions.reduce((sum, tx) => sum + tx.feeUsd, 0),
     };
   };
 
@@ -64,17 +98,20 @@ export const CryptoTaxCalculator: React.FC = () => {
 
   const addTransaction = () => {
     if (newTransaction.amount > 0 && newTransaction.priceUsd > 0) {
-      setTransactions([...transactions, {
-        id: Date.now(),
-        ...newTransaction
-      }]);
+      setTransactions([
+        ...transactions,
+        {
+          id: Date.now(),
+          ...newTransaction,
+        },
+      ]);
       setNewTransaction({
         date: new Date().toISOString().split('T')[0],
         type: 'buy',
         coin: 'BTC',
         amount: 0,
         priceUsd: 0,
-        feeUsd: 0
+        feeUsd: 0,
       });
     }
   };
@@ -85,10 +122,14 @@ export const CryptoTaxCalculator: React.FC = () => {
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'buy': return 'bg-green-500/20 text-green-400';
-      case 'sell': return 'bg-red-500/20 text-red-400';
-      case 'transfer': return 'bg-blue-500/20 text-blue-400';
-      case 'staking': return 'bg-purple-500/20 text-purple-400';
+      case 'buy':
+        return 'bg-green-500/20 text-green-400';
+      case 'sell':
+        return 'bg-red-500/20 text-red-400';
+      case 'transfer':
+        return 'bg-blue-500/20 text-blue-400';
+      case 'staking':
+        return 'bg-purple-500/20 text-purple-400';
     }
   };
 
@@ -103,7 +144,9 @@ export const CryptoTaxCalculator: React.FC = () => {
               Crypto Tax Calculator
             </h1>
           </div>
-          <p className="text-slate-400">Calcula tus impuestos sobre criptomonedas automáticamente</p>
+          <p className="text-slate-400">
+            Calcula tus impuestos sobre criptomonedas automáticamente
+          </p>
         </div>
 
         {/* Tax Summary */}
@@ -113,14 +156,18 @@ export const CryptoTaxCalculator: React.FC = () => {
               <span className="text-green-400 text-sm">Ganancias Realizadas</span>
               <TrendingUp className="w-5 h-5 text-green-400" />
             </div>
-            <p className="text-2xl font-bold text-white">${taxData.totalRealizedGains.toFixed(2)}</p>
+            <p className="text-2xl font-bold text-white">
+              ${taxData.totalRealizedGains.toFixed(2)}
+            </p>
           </div>
           <div className="bg-gradient-to-br from-red-500/10 to-red-600/10 backdrop-blur-sm rounded-xl p-5 border border-red-500/30">
             <div className="flex items-center justify-between mb-2">
               <span className="text-red-400 text-sm">Pérdidas Realizadas</span>
               <TrendingUp className="w-5 h-5 text-red-400" />
             </div>
-            <p className="text-2xl font-bold text-white">${taxData.totalRealizedLosses.toFixed(2)}</p>
+            <p className="text-2xl font-bold text-white">
+              ${taxData.totalRealizedLosses.toFixed(2)}
+            </p>
           </div>
           <div className="bg-gradient-to-br from-purple-500/10 to-purple-600/10 backdrop-blur-sm rounded-xl p-5 border border-purple-500/30">
             <div className="flex items-center justify-between mb-2">
@@ -134,7 +181,9 @@ export const CryptoTaxCalculator: React.FC = () => {
               <span className="text-blue-400 text-sm">Ganancia Neta</span>
               <ArrowRight className="w-5 h-5 text-blue-400" />
             </div>
-            <p className={`text-2xl font-bold ${taxData.netGain >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+            <p
+              className={`text-2xl font-bold ${taxData.netGain >= 0 ? 'text-green-400' : 'text-red-400'}`}
+            >
               ${taxData.netGain.toFixed(2)}
             </p>
           </div>
@@ -152,7 +201,7 @@ export const CryptoTaxCalculator: React.FC = () => {
                   min="0"
                   max="50"
                   value={taxRate}
-                  onChange={(e) => setTaxRate(Number(e.target.value))}
+                  onChange={e => setTaxRate(Number(e.target.value))}
                   className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer"
                 />
                 <span className="text-lg font-bold text-white w-12">{taxRate}%</span>
@@ -178,7 +227,7 @@ export const CryptoTaxCalculator: React.FC = () => {
               <input
                 type="date"
                 value={newTransaction.date}
-                onChange={(e) => setNewTransaction({ ...newTransaction, date: e.target.value })}
+                onChange={e => setNewTransaction({ ...newTransaction, date: e.target.value })}
                 className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             </div>
@@ -186,7 +235,9 @@ export const CryptoTaxCalculator: React.FC = () => {
               <label className="text-sm text-slate-400 mb-1 block">Tipo</label>
               <select
                 value={newTransaction.type}
-                onChange={(e) => setNewTransaction({ ...newTransaction, type: e.target.value as any })}
+                onChange={e =>
+                  setNewTransaction({ ...newTransaction, type: e.target.value as any })
+                }
                 className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
               >
                 <option value="buy">Compra</option>
@@ -199,7 +250,7 @@ export const CryptoTaxCalculator: React.FC = () => {
               <label className="text-sm text-slate-400 mb-1 block">Moneda</label>
               <select
                 value={newTransaction.coin}
-                onChange={(e) => setNewTransaction({ ...newTransaction, coin: e.target.value })}
+                onChange={e => setNewTransaction({ ...newTransaction, coin: e.target.value })}
                 className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
               >
                 <option value="BTC">BTC</option>
@@ -214,7 +265,9 @@ export const CryptoTaxCalculator: React.FC = () => {
                 type="number"
                 step="any"
                 value={newTransaction.amount}
-                onChange={(e) => setNewTransaction({ ...newTransaction, amount: Number(e.target.value) })}
+                onChange={e =>
+                  setNewTransaction({ ...newTransaction, amount: Number(e.target.value) })
+                }
                 placeholder="0.00"
                 className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
@@ -225,7 +278,9 @@ export const CryptoTaxCalculator: React.FC = () => {
                 type="number"
                 step="any"
                 value={newTransaction.priceUsd}
-                onChange={(e) => setNewTransaction({ ...newTransaction, priceUsd: Number(e.target.value) })}
+                onChange={e =>
+                  setNewTransaction({ ...newTransaction, priceUsd: Number(e.target.value) })
+                }
                 placeholder="0.00"
                 className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
@@ -236,7 +291,9 @@ export const CryptoTaxCalculator: React.FC = () => {
                 type="number"
                 step="any"
                 value={newTransaction.feeUsd}
-                onChange={(e) => setNewTransaction({ ...newTransaction, feeUsd: Number(e.target.value) })}
+                onChange={e =>
+                  setNewTransaction({ ...newTransaction, feeUsd: Number(e.target.value) })
+                }
                 placeholder="0.00"
                 className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
@@ -274,31 +331,57 @@ export const CryptoTaxCalculator: React.FC = () => {
             <table className="w-full">
               <thead className="bg-slate-700/50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Fecha</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Tipo</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Moneda</th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">Cantidad</th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">Precio</th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">Fee</th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">Total</th>
-                  <th className="px-6 py-3 text-center text-xs font-medium text-slate-400 uppercase tracking-wider">Acciones</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
+                    Fecha
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
+                    Tipo
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
+                    Moneda
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">
+                    Cantidad
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">
+                    Precio
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">
+                    Fee
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">
+                    Total
+                  </th>
+                  <th className="px-6 py-3 text-center text-xs font-medium text-slate-400 uppercase tracking-wider">
+                    Acciones
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-700/50">
-                {transactions.map((tx) => (
+                {transactions.map(tx => (
                   <tr key={tx.id} className="hover:bg-slate-700/30 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
                       {new Date(tx.date).toLocaleDateString('es-ES')}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getTypeColor(tx.type)}`}>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${getTypeColor(tx.type)}`}
+                      >
                         {tx.type.toUpperCase()}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-white font-medium">{tx.coin}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-white">{tx.amount}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-white">${tx.priceUsd.toLocaleString()}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-slate-400">${tx.feeUsd}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-white font-medium">
+                      {tx.coin}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-white">
+                      {tx.amount}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-white">
+                      ${tx.priceUsd.toLocaleString()}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-slate-400">
+                      ${tx.feeUsd}
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-white">
                       ${(tx.amount * tx.priceUsd).toLocaleString()}
                     </td>
@@ -324,8 +407,9 @@ export const CryptoTaxCalculator: React.FC = () => {
             <div>
               <p className="text-sm text-amber-300 font-semibold mb-1">Aviso Importante</p>
               <p className="text-xs text-amber-200/80">
-                Este calculador proporciona estimaciones basadas en la información ingresada. No sustituye asesoramiento fiscal profesional. 
-                Consulta con un especialista en impuestos cripto para garantizar el cumplimiento de las regulaciones locales.
+                Este calculador proporciona estimaciones basadas en la información ingresada. No
+                sustituye asesoramiento fiscal profesional. Consulta con un especialista en
+                impuestos cripto para garantizar el cumplimiento de las regulaciones locales.
               </p>
             </div>
           </div>

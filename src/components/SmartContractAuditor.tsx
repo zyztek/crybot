@@ -1,5 +1,16 @@
 import { useState } from 'react';
-import { ShieldCheck, AlertTriangle, CheckCircle, XCircle, Search, RefreshCw, Bug, Lock, Eye, ExternalLink } from 'lucide-react';
+import {
+  ShieldCheck,
+  AlertTriangle,
+  CheckCircle,
+  XCircle,
+  Search,
+  RefreshCw,
+  Bug,
+  Lock,
+  Eye,
+  ExternalLink,
+} from 'lucide-react';
 
 interface AuditResult {
   category: string;
@@ -25,21 +36,21 @@ const AUDIT_RESULTS: AuditResult[] = [
     severity: 'critical',
     finding: 'Reentrancy Vulnerability',
     description: 'External calls made before state changes in withdraw() function',
-    recommendation: 'Implement checks-effects-interactions pattern'
+    recommendation: 'Implement checks-effects-interactions pattern',
   },
   {
     category: 'Gas Optimization',
     severity: 'medium',
     finding: 'Unnecessary Storage Operations',
     description: 'Multiple storage reads can be combined into a single reading',
-    recommendation: 'Use memory variables for caching'
+    recommendation: 'Use memory variables for caching',
   },
   {
     category: 'Access Control',
     severity: 'high',
     finding: 'Inconsistent Admin Privileges',
     description: 'Some admin functions lack proper access control checks',
-    recommendation: 'Add onlyOwner modifiers to all privileged functions'
+    recommendation: 'Add onlyOwner modifiers to all privileged functions',
   },
 ];
 
@@ -51,7 +62,7 @@ const CONTRACTS: ContractAudit[] = [
     auditor: 'Certik',
     status: 'completed',
     score: 92,
-    findings: AUDIT_RESULTS
+    findings: AUDIT_RESULTS,
   },
 ];
 
@@ -128,21 +139,31 @@ export default function SmartContractAuditor() {
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'critical': return 'from-red-500 to-red-600';
-      case 'high': return 'from-orange-500 to-orange-600';
-      case 'medium': return 'from-yellow-500 to-yellow-600';
-      case 'low': return 'from-blue-500 to-blue-600';
-      default: return 'from-gray-500 to-gray-600';
+      case 'critical':
+        return 'from-red-500 to-red-600';
+      case 'high':
+        return 'from-orange-500 to-orange-600';
+      case 'medium':
+        return 'from-yellow-500 to-yellow-600';
+      case 'low':
+        return 'from-blue-500 to-blue-600';
+      default:
+        return 'from-gray-500 to-gray-600';
     }
   };
 
   const getSeverityIcon = (severity: string) => {
     switch (severity) {
-      case 'critical': return <XCircle className="w-5 h-5" />;
-      case 'high': return <AlertTriangle className="w-5 h-5" />;
-      case 'medium': return <Eye className="w-5 h-5" />;
-      case 'low': return <Eye className="w-5 h-5" />;
-      default: return <CheckCircle className="w-5 h-5" />;
+      case 'critical':
+        return <XCircle className="w-5 h-5" />;
+      case 'high':
+        return <AlertTriangle className="w-5 h-5" />;
+      case 'medium':
+        return <Eye className="w-5 h-5" />;
+      case 'low':
+        return <Eye className="w-5 h-5" />;
+      default:
+        return <CheckCircle className="w-5 h-5" />;
     }
   };
 
@@ -178,7 +199,7 @@ export default function SmartContractAuditor() {
               <input
                 type="text"
                 value={contractAddress}
-                onChange={(e) => setContractAddress(e.target.value)}
+                onChange={e => setContractAddress(e.target.value)}
                 placeholder={t.enterAddress}
                 className="w-full bg-slate-700/50 border border-white/10 rounded-xl pl-12 pr-4 py-4 text-white font-mono focus:outline-none focus:border-red-500 transition"
               />
@@ -188,7 +209,11 @@ export default function SmartContractAuditor() {
               disabled={analyzing || !contractAddress}
               className="px-8 py-4 bg-gradient-to-r from-red-400 to-purple-500 text-white font-bold rounded-xl hover:scale-[1.02] transition transform disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
             >
-              {analyzing ? <RefreshCw className="w-5 h-5 animate-spin" /> : <ShieldCheck className="w-5 h-5" />}
+              {analyzing ? (
+                <RefreshCw className="w-5 h-5 animate-spin" />
+              ) : (
+                <ShieldCheck className="w-5 h-5" />
+              )}
               {analyzing ? 'Scanning...' : t.scan}
             </button>
           </div>
@@ -196,7 +221,10 @@ export default function SmartContractAuditor() {
 
         {/* Audit Results */}
         {CONTRACTS.map((contract, idx) => (
-          <div key={idx} className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl rounded-3xl p-8 border border-white/10 mb-6">
+          <div
+            key={idx}
+            className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl rounded-3xl p-8 border border-white/10 mb-6"
+          >
             {/* Contract Info */}
             <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
               <div>
@@ -214,7 +242,9 @@ export default function SmartContractAuditor() {
                 </div>
                 <div className="text-center">
                   <p className="text-gray-400 text-sm">{t.score}</p>
-                  <div className={`flex items-center gap-2 ${contract.score >= 90 ? 'text-green-400' : contract.score >= 70 ? 'text-yellow-400' : 'text-red-400'}`}>
+                  <div
+                    className={`flex items-center gap-2 ${contract.score >= 90 ? 'text-green-400' : contract.score >= 70 ? 'text-yellow-400' : 'text-red-400'}`}
+                  >
                     <ShieldCheck className="w-5 h-5" />
                     <span className="text-2xl font-bold">{contract.score}/100</span>
                   </div>
@@ -224,10 +254,15 @@ export default function SmartContractAuditor() {
 
             {/* Score Visual */}
             <div className="bg-gradient-to-r from-green-500/20 via-yellow-500/20 to-red-500/20 rounded-2xl p-4 mb-6 relative overflow-hidden">
-              <div className="absolute top-0 bottom-0 w-1 bg-white" style={{ left: `${contract.score}%` }} />
+              <div
+                className="absolute top-0 bottom-0 w-1 bg-white"
+                style={{ left: `${contract.score}%` }}
+              />
               <div className="flex justify-between text-sm text-gray-300">
                 <span>0</span>
-                <span className="font-bold">{t.overallScore}: {contract.score}</span>
+                <span className="font-bold">
+                  {t.overallScore}: {contract.score}
+                </span>
                 <span>100</span>
               </div>
             </div>
@@ -246,17 +281,23 @@ export default function SmartContractAuditor() {
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <div className={`p-2 bg-gradient-to-br ${getSeverityColor(finding.severity)} rounded-lg`}>
+                      <div
+                        className={`p-2 bg-gradient-to-br ${getSeverityColor(finding.severity)} rounded-lg`}
+                      >
                         {getSeverityIcon(finding.severity)}
                       </div>
                       <div>
                         <h4 className="text-white font-bold">{finding.finding}</h4>
-                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r ${getSeverityColor(finding.severity)} text-white`}>
+                        <span
+                          className={`px-2 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r ${getSeverityColor(finding.severity)} text-white`}
+                        >
                           {t[finding.severity as keyof typeof t]}
                         </span>
                       </div>
                     </div>
-                    <span className="px-3 py-1 bg-white/10 rounded-full text-gray-300 text-sm">{finding.category}</span>
+                    <span className="px-3 py-1 bg-white/10 rounded-full text-gray-300 text-sm">
+                      {finding.category}
+                    </span>
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-4">

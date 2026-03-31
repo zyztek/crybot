@@ -1,5 +1,15 @@
 import { useState } from 'react';
-import { Search, Blocks, Activity, Clock, ArrowUpRight, ExternalLink, Hash, RefreshCw, FileText } from 'lucide-react';
+import {
+  Search,
+  Blocks,
+  Activity,
+  Clock,
+  ArrowUpRight,
+  ExternalLink,
+  Hash,
+  RefreshCw,
+  FileText,
+} from 'lucide-react';
 
 interface BlockData {
   number: number;
@@ -24,16 +34,79 @@ interface TransactionData {
 }
 
 const BLOCKS: BlockData[] = [
-  { number: 19234567, hash: '0x8f7a2b1c3d4e5f6...9a0b1c2d3e4f5a6b', timestamp: Date.now() - 12000, txCount: 156, miner: '0x7a8b...3c4d', gasUsed: '15.2M', gasLimit: '30M', size: '95KB' },
-  { number: 19234566, hash: '0x3d2e5f1a4b6c7d8...0f1e2a3b4c5d6e7f', timestamp: Date.now() - 24000, txCount: 142, miner: '0x9c1d...2e3f', gasUsed: '14.8M', gasLimit: '30M', size: '87KB' },
-  { number: 19234565, hash: '0x6a7c8d9e0f1a2b3...4c5d6e7f8a9b0c1', timestamp: Date.now() - 36000, txCount: 189, miner: '0x4b5c...6d7e', gasUsed: '18.5M', gasLimit: '30M', size: '102KB' },
-  { number: 19234564, hash: '0x1e2f3a4b5c6d7e8...9f0a1b2c3d4e5f6', timestamp: Date.now() - 48000, txCount: 168, miner: '0x8d9e...0f1a', gasUsed: '16.3M', gasLimit: '30M', size: '91KB' },
+  {
+    number: 19234567,
+    hash: '0x8f7a2b1c3d4e5f6...9a0b1c2d3e4f5a6b',
+    timestamp: Date.now() - 12000,
+    txCount: 156,
+    miner: '0x7a8b...3c4d',
+    gasUsed: '15.2M',
+    gasLimit: '30M',
+    size: '95KB',
+  },
+  {
+    number: 19234566,
+    hash: '0x3d2e5f1a4b6c7d8...0f1e2a3b4c5d6e7f',
+    timestamp: Date.now() - 24000,
+    txCount: 142,
+    miner: '0x9c1d...2e3f',
+    gasUsed: '14.8M',
+    gasLimit: '30M',
+    size: '87KB',
+  },
+  {
+    number: 19234565,
+    hash: '0x6a7c8d9e0f1a2b3...4c5d6e7f8a9b0c1',
+    timestamp: Date.now() - 36000,
+    txCount: 189,
+    miner: '0x4b5c...6d7e',
+    gasUsed: '18.5M',
+    gasLimit: '30M',
+    size: '102KB',
+  },
+  {
+    number: 19234564,
+    hash: '0x1e2f3a4b5c6d7e8...9f0a1b2c3d4e5f6',
+    timestamp: Date.now() - 48000,
+    txCount: 168,
+    miner: '0x8d9e...0f1a',
+    gasUsed: '16.3M',
+    gasLimit: '30M',
+    size: '91KB',
+  },
 ];
 
 const TRANSACTIONS: TransactionData[] = [
-  { hash: '0x7a8b9c0d1e2f3a4...5b6c7d8e9f0a1b2', block: 19234567, from: '0x1a2b...3c4d', to: '0x5e6f...7a8b', value: '2.45 ETH', gasPrice: '25 gwei', status: 'success', timestamp: Date.now() - 5000 },
-  { hash: '0x9c0d1e2f3a4b5c6...7d8e9f0a1b2c3d4', block: 19234567, from: '0x2c3d...4e5f', to: '0x6a7b...8c9d', value: '0.87 ETH', gasPrice: '22 gwei', status: 'success', timestamp: Date.now() - 8000 },
-  { hash: '0x3a4b5c6d7e8f9a0...1b2c3d4e5f6a7b8', block: 19234567, from: '0x3d4e...5f6a', to: '0x7b8c...9d0e', value: '15.2 ETH', gasPrice: '28 gwei', status: 'pending', timestamp: Date.now() - 10000 },
+  {
+    hash: '0x7a8b9c0d1e2f3a4...5b6c7d8e9f0a1b2',
+    block: 19234567,
+    from: '0x1a2b...3c4d',
+    to: '0x5e6f...7a8b',
+    value: '2.45 ETH',
+    gasPrice: '25 gwei',
+    status: 'success',
+    timestamp: Date.now() - 5000,
+  },
+  {
+    hash: '0x9c0d1e2f3a4b5c6...7d8e9f0a1b2c3d4',
+    block: 19234567,
+    from: '0x2c3d...4e5f',
+    to: '0x6a7b...8c9d',
+    value: '0.87 ETH',
+    gasPrice: '22 gwei',
+    status: 'success',
+    timestamp: Date.now() - 8000,
+  },
+  {
+    hash: '0x3a4b5c6d7e8f9a0...1b2c3d4e5f6a7b8',
+    block: 19234567,
+    from: '0x3d4e...5f6a',
+    to: '0x7b8c...9d0e',
+    value: '15.2 ETH',
+    gasPrice: '28 gwei',
+    status: 'pending',
+    timestamp: Date.now() - 10000,
+  },
 ];
 
 export default function BlockchainExplorer() {
@@ -166,7 +239,7 @@ export default function BlockchainExplorer() {
               <input
                 type="text"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 placeholder={t.searchTx}
                 className="w-full bg-slate-700/50 border border-white/10 rounded-xl pl-12 pr-4 py-4 text-white focus:outline-none focus:border-purple-500 transition"
               />
@@ -226,7 +299,9 @@ export default function BlockchainExplorer() {
             <button
               onClick={() => setViewMode('blocks')}
               className={`px-6 py-2 rounded-lg transition ${
-                viewMode === 'blocks' ? 'bg-gradient-to-r from-blue-400 to-purple-500 text-white' : 'text-gray-400'
+                viewMode === 'blocks'
+                  ? 'bg-gradient-to-r from-blue-400 to-purple-500 text-white'
+                  : 'text-gray-400'
               }`}
             >
               {t.blocks}
@@ -234,7 +309,9 @@ export default function BlockchainExplorer() {
             <button
               onClick={() => setViewMode('txs')}
               className={`px-6 py-2 rounded-lg transition ${
-                viewMode === 'txs' ? 'bg-gradient-to-r from-blue-400 to-purple-500 text-white' : 'text-gray-400'
+                viewMode === 'txs'
+                  ? 'bg-gradient-to-r from-blue-400 to-purple-500 text-white'
+                  : 'text-gray-400'
               }`}
             >
               {t.transactions}
@@ -256,7 +333,9 @@ export default function BlockchainExplorer() {
                       {block.number.toString().slice(-2)}
                     </div>
                     <div>
-                      <p className="text-white font-bold text-lg">{t.blockNumber} {block.number.toLocaleString()}</p>
+                      <p className="text-white font-bold text-lg">
+                        {t.blockNumber} {block.number.toLocaleString()}
+                      </p>
                       <div className="flex items-center gap-2 text-sm text-gray-400">
                         <Hash className="w-4 h-4" />
                         <span className="font-mono">{block.hash}</span>
@@ -317,9 +396,7 @@ export default function BlockchainExplorer() {
                         {tx.hash}
                       </div>
                     </td>
-                    <td className="py-4 px-4 text-white font-bold">
-                      #{tx.block}
-                    </td>
+                    <td className="py-4 px-4 text-white font-bold">#{tx.block}</td>
                     <td className="py-4 px-4">
                       <span className="text-white font-mono text-sm">{tx.from}</span>
                     </td>
@@ -329,18 +406,18 @@ export default function BlockchainExplorer() {
                     <td className="py-4 px-4">
                       <span className="text-white font-mono text-sm">{tx.to}</span>
                     </td>
-                    <td className="text-right py-4 px-4 text-white font-bold">
-                      {tx.value}
-                    </td>
-                    <td className="text-right py-4 px-4 text-gray-400">
-                      {tx.gasPrice}
-                    </td>
+                    <td className="text-right py-4 px-4 text-white font-bold">{tx.value}</td>
+                    <td className="text-right py-4 px-4 text-gray-400">{tx.gasPrice}</td>
                     <td className="text-center py-4 px-4">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        tx.status === 'success' ? 'bg-green-500/20 text-green-400' :
-                        tx.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
-                        'bg-red-500/20 text-red-400'
-                      }`}>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          tx.status === 'success'
+                            ? 'bg-green-500/20 text-green-400'
+                            : tx.status === 'pending'
+                              ? 'bg-yellow-500/20 text-yellow-400'
+                              : 'bg-red-500/20 text-red-400'
+                        }`}
+                      >
                         {t[tx.status]}
                       </span>
                     </td>

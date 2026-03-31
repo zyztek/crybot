@@ -1,18 +1,43 @@
-import { useState } from 'react'
-import { Calendar, Clock, MapPin, ExternalLink, TrendingUp, Flame, Globe, Zap, Trophy, Users, BarChart3, DollarSign, Bitcoin, Search, Gift } from 'lucide-react'
+import { useState } from 'react';
+import {
+  Calendar,
+  Clock,
+  MapPin,
+  ExternalLink,
+  TrendingUp,
+  Flame,
+  Globe,
+  Zap,
+  Trophy,
+  Users,
+  BarChart3,
+  DollarSign,
+  Bitcoin,
+  Search,
+  Gift,
+} from 'lucide-react';
 
 interface CryptoEvent {
-  id: number
-  title: string
-  date: string
-  time: string
-  type: 'conference' | 'airdrop' | 'listing' | 'burn' | 'upgrade' | 'partnership' | 'hackathon' | 'earnings' | 'farming'
-  status: 'upcoming' | 'live' | 'completed'
-  impact: 'high' | 'medium' | 'low'
-  description: string
-  project?: string
-  location?: string
-  link?: string
+  id: number;
+  title: string;
+  date: string;
+  time: string;
+  type:
+    | 'conference'
+    | 'airdrop'
+    | 'listing'
+    | 'burn'
+    | 'upgrade'
+    | 'partnership'
+    | 'hackathon'
+    | 'earnings'
+    | 'farming';
+  status: 'upcoming' | 'live' | 'completed';
+  impact: 'high' | 'medium' | 'low';
+  description: string;
+  project?: string;
+  location?: string;
+  link?: string;
 }
 
 const events: CryptoEvent[] = [
@@ -26,7 +51,7 @@ const events: CryptoEvent[] = [
     impact: 'high',
     description: 'Major network upgrade introducing EIP-4844 for improved L2 scalability',
     project: 'Ethereum',
-    link: '#'
+    link: '#',
   },
   {
     id: 2,
@@ -38,7 +63,7 @@ const events: CryptoEvent[] = [
     impact: 'high',
     description: ' Bitcoin block reward halves from 6.25 BTC to 3.125 BTC',
     project: 'Bitcoin',
-    link: '#'
+    link: '#',
   },
   {
     id: 3,
@@ -51,7 +76,7 @@ const events: CryptoEvent[] = [
     description: 'Annual blockchain conference featuring industry leaders',
     project: 'Binance',
     location: 'Dubai',
-    link: '#'
+    link: '#',
   },
   {
     id: 4,
@@ -63,7 +88,7 @@ const events: CryptoEvent[] = [
     impact: 'high',
     description: 'First airdrop season distributing tokens to active users',
     project: 'Solana',
-    link: '#'
+    link: '#',
   },
   {
     id: 5,
@@ -75,7 +100,7 @@ const events: CryptoEvent[] = [
     impact: 'medium',
     description: 'Monthly token burn reducing circulating supply',
     project: 'Ethereum',
-    link: '#'
+    link: '#',
   },
   {
     id: 6,
@@ -87,7 +112,7 @@ const events: CryptoEvent[] = [
     impact: 'low',
     description: 'Security audit competition with $100k prize pool',
     location: 'Online',
-    link: '#'
+    link: '#',
   },
   {
     id: 7,
@@ -99,7 +124,7 @@ const events: CryptoEvent[] = [
     impact: 'high',
     description: 'Major exchange listing for popular DeFi token',
     project: 'Coinbase',
-    link: '#'
+    link: '#',
   },
   {
     id: 8,
@@ -111,7 +136,7 @@ const events: CryptoEvent[] = [
     impact: 'high',
     description: 'Strategic partnership announcement for cross-chain solutions',
     project: 'Solana',
-    link: '#'
+    link: '#',
   },
   {
     id: 9,
@@ -123,7 +148,7 @@ const events: CryptoEvent[] = [
     impact: 'medium',
     description: 'APY adjustment based on network participation',
     project: 'Ethereum',
-    link: '#'
+    link: '#',
   },
   {
     id: 10,
@@ -135,9 +160,9 @@ const events: CryptoEvent[] = [
     impact: 'medium',
     description: 'New yield farming program with 20% APY',
     project: 'Aave',
-    link: '#'
-  }
-]
+    link: '#',
+  },
+];
 
 const typeLabels: Record<CryptoEvent['type'], string> = {
   conference: 'Conferencia',
@@ -148,20 +173,20 @@ const typeLabels: Record<CryptoEvent['type'], string> = {
   partnership: 'Partnership',
   hackathon: 'Hackathon',
   earnings: 'Earnings',
-  farming: 'Yield Farming'
-}
+  farming: 'Yield Farming',
+};
 
 const statusLabels: Record<CryptoEvent['status'], string> = {
   upcoming: 'Próximo',
   live: 'En vivo',
-  completed: 'Completado'
-}
+  completed: 'Completado',
+};
 
 const impactColors: Record<CryptoEvent['impact'], string> = {
   high: 'text-red-400 bg-red-400/10 border-red-400/30',
   medium: 'text-yellow-400 bg-yellow-400/10 border-yellow-400/30',
-  low: 'text-green-400 bg-green-400/10 border-green-400/30'
-}
+  low: 'text-green-400 bg-green-400/10 border-green-400/30',
+};
 
 const typeIcons: Record<CryptoEvent['type'], any> = {
   conference: Users,
@@ -172,28 +197,29 @@ const typeIcons: Record<CryptoEvent['type'], any> = {
   partnership: Globe,
   hackathon: Trophy,
   earnings: DollarSign,
-  farming: BarChart3
-}
+  farming: BarChart3,
+};
 
 const EventCalendar = () => {
-  const [selectedType, setSelectedType] = useState<string>('all')
-  const [selectedStatus, setSelectedStatus] = useState<string>('all')
-  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedType, setSelectedType] = useState<string>('all');
+  const [selectedStatus, setSelectedStatus] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const filteredEvents = events.filter(event => {
-    const matchesType = selectedType === 'all' || event.type === selectedType
-    const matchesStatus = selectedStatus === 'all' || event.status === selectedStatus
-    const matchesSearch = event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         event.description.toLowerCase().includes(searchQuery.toLowerCase())
-    return matchesType && matchesStatus && matchesSearch
-  })
+    const matchesType = selectedType === 'all' || event.type === selectedType;
+    const matchesStatus = selectedStatus === 'all' || event.status === selectedStatus;
+    const matchesSearch =
+      event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event.description.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesType && matchesStatus && matchesSearch;
+  });
 
   const stats = {
     total: events.length,
     upcoming: events.filter(e => e.status === 'upcoming').length,
     live: events.filter(e => e.status === 'live').length,
-    highImpact: events.filter(e => e.impact === 'high').length
-  }
+    highImpact: events.filter(e => e.impact === 'high').length,
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 p-6">
@@ -201,7 +227,9 @@ const EventCalendar = () => {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-white mb-2">📅 Crypto Event Calendar</h1>
-          <p className="text-slate-400">Follow important crypto events that could impact the market</p>
+          <p className="text-slate-400">
+            Follow important crypto events that could impact the market
+          </p>
         </div>
 
         {/* Stats */}
@@ -253,28 +281,32 @@ const EventCalendar = () => {
                 type="text"
                 placeholder="Buscar eventos..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="w-full bg-slate-700/50 border border-slate-600/50 rounded-lg pl-10 pr-4 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             </div>
             <select
               value={selectedType}
-              onChange={(e) => setSelectedType(e.target.value)}
+              onChange={e => setSelectedType(e.target.value)}
               className="bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               <option value="all">Todos los Tipos</option>
               {Object.entries(typeLabels).map(([key, label]) => (
-                <option key={key} value={key}>{label}</option>
+                <option key={key} value={key}>
+                  {label}
+                </option>
               ))}
             </select>
             <select
               value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value)}
+              onChange={e => setSelectedStatus(e.target.value)}
               className="bg-slate-700/50 border border-slate-600/50 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               <option value="all">Todos los Estados</option>
               {Object.entries(statusLabels).map(([key, label]) => (
-                <option key={key} value={key}>{label}</option>
+                <option key={key} value={key}>
+                  {label}
+                </option>
               ))}
             </select>
           </div>
@@ -282,8 +314,8 @@ const EventCalendar = () => {
 
         {/* Events List */}
         <div className="space-y-4">
-          {filteredEvents.map((event) => {
-            const TypeIcon = typeIcons[event.type]
+          {filteredEvents.map(event => {
+            const TypeIcon = typeIcons[event.type];
             return (
               <div
                 key={event.id}
@@ -332,17 +364,26 @@ const EventCalendar = () => {
                       <span className="px-3 py-1 bg-purple-500/20 text-purple-300 text-sm rounded-full">
                         {typeLabels[event.type]}
                       </span>
-                      <span className={`px-3 py-1 text-sm rounded-full border ${
-                        event.status === 'live' 
-                          ? 'bg-red-500/20 text-red-400 border-red-400/30'
-                          : event.status === 'upcoming'
-                          ? 'bg-blue-500/20 text-blue-400 border-blue-400/30'
-                          : 'bg-green-500/20 text-green-400 border-green-400/30'
-                      }`}>
+                      <span
+                        className={`px-3 py-1 text-sm rounded-full border ${
+                          event.status === 'live'
+                            ? 'bg-red-500/20 text-red-400 border-red-400/30'
+                            : event.status === 'upcoming'
+                              ? 'bg-blue-500/20 text-blue-400 border-blue-400/30'
+                              : 'bg-green-500/20 text-green-400 border-green-400/30'
+                        }`}
+                      >
                         {statusLabels[event.status]}
                       </span>
-                      <span className={`px-3 py-1 text-sm rounded-full border ${impactColors[event.impact]}`}>
-                        Impacto: {event.impact === 'high' ? 'Alto' : event.impact === 'medium' ? 'Medio' : 'Bajo'}
+                      <span
+                        className={`px-3 py-1 text-sm rounded-full border ${impactColors[event.impact]}`}
+                      >
+                        Impacto:{' '}
+                        {event.impact === 'high'
+                          ? 'Alto'
+                          : event.impact === 'medium'
+                            ? 'Medio'
+                            : 'Bajo'}
                       </span>
                     </div>
                   </div>
@@ -360,19 +401,21 @@ const EventCalendar = () => {
                   )}
                 </div>
               </div>
-            )
+            );
           })}
         </div>
 
         {filteredEvents.length === 0 && (
           <div className="text-center py-12">
             <Calendar className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-            <p className="text-slate-400 text-lg">No se encontraron eventos con los filtros seleccionados</p>
+            <p className="text-slate-400 text-lg">
+              No se encontraron eventos con los filtros seleccionados
+            </p>
           </div>
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default EventCalendar
+export default EventCalendar;
