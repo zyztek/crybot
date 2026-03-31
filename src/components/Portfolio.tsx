@@ -47,6 +47,9 @@ const Portfolio: React.FC = () => {
     Solana: <Flame className="w-5 h-5 text-purple-400" />,
     BNB: <Coins className="w-5 h-5 text-yellow-400" />,
     Litecoin: <Coins className="w-5 h-5 text-slate-400" />,
+    XRP: <Coins className="w-5 h-5 text-blue-400" />,
+    Cardano: <Coins className="w-5 h-5 text-blue-300" />,
+    Avalanche: <Flame className="w-5 h-5 text-red-400" />,
   };
 
   const assets: Asset[] = [
@@ -121,6 +124,42 @@ const Portfolio: React.FC = () => {
       chain: 'BNB',
       chainIcon: ChainIcons.BNB,
       chainColor: 'from-yellow-500 to-amber-600',
+    },
+    {
+      symbol: 'XRP',
+      name: 'Ripple',
+      amount: 125.5,
+      value: 112.95,
+      change24h: 1.5,
+      change7d: 4.2,
+      allocation: 2,
+      chain: 'XRP',
+      chainIcon: ChainIcons.XRP,
+      chainColor: 'from-blue-500 to-indigo-600',
+    },
+    {
+      symbol: 'ADA',
+      name: 'Cardano',
+      amount: 85.2,
+      value: 76.68,
+      change24h: -0.8,
+      change7d: 2.1,
+      allocation: 1,
+      chain: 'Cardano',
+      chainIcon: ChainIcons.Cardano,
+      chainColor: 'from-blue-400 to-blue-600',
+    },
+    {
+      symbol: 'AVAX',
+      name: 'Avalanche',
+      amount: 5.75,
+      value: 172.5,
+      change24h: 3.5,
+      change7d: 8.7,
+      allocation: 2,
+      chain: 'Avalanche',
+      chainIcon: ChainIcons.Avalanche,
+      chainColor: 'from-red-500 to-orange-600',
     },
   ];
 
@@ -585,6 +624,9 @@ const Portfolio: React.FC = () => {
                     Solana: '#6366F1',
                     BNB: '#F59E0B',
                     Litecoin: '#6B7280',
+                    XRP: '#3B82F6',
+                    Cardano: '#0EA5E9',
+                    Avalanche: '#EF4444',
                   };
 
                   // Precompute segments immutably to avoid ESLint error
@@ -637,6 +679,9 @@ const Portfolio: React.FC = () => {
                   Solana: 'bg-indigo-500',
                   BNB: 'bg-amber-500',
                   Litecoin: 'bg-slate-500',
+                  XRP: 'bg-blue-500',
+                  Cardano: 'bg-blue-400',
+                  Avalanche: 'bg-red-500',
                 };
                 const percentage = Math.round((chainData.totalValue / totalValue) * 100);
                 return (
