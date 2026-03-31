@@ -6,7 +6,7 @@
  */
 
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { graphqlQuery, graphqlMutation, GraphQLResponse, GraphQLVariables } from '../services/graphql';
+import { graphqlQuery, graphqlMutation, GraphQLResponse, GraphQLVariables, QUERIES_EXTENDED, MUTATIONS_EXTENDED } from '../services/graphql';
 
 interface UseGraphQLState<T> {
   data: T | null;
