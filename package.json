@@ -16,8 +16,8 @@
     "setup:auto": "npm run setup:auto:win || npm run setup:auto:mac",
     "setup:auto:win": "scripts\\auto-setup.bat",
     "setup:auto:mac": "bash scripts/auto-setup.sh",
-    "lint": "eslint src --ext ts,tsx",
-    "lint:fix": "eslint src --ext ts,tsx --fix",
+    "lint": "eslint src --ext ts,tsx --max-warnings=1000",
+    "lint:fix": "eslint src --ext ts,tsx --fix --max-warnings=1000",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
