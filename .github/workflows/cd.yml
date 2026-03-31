@@ -32,6 +32,9 @@ jobs:
 
       - name: Build frontend
         run: npm run build
+      
+      - name: Check formatting (optional)
+        run: npx prettier --check . || true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
