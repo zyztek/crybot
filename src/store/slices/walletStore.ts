@@ -9,6 +9,9 @@ export const INITIAL_WALLET_BALANCE: WalletBalance = {
   sol: '2.4567',
   ltc: '0.5678',
   bnb: '0.1234',
+  xrp: '125.50',
+  ada: '85.20',
+  avax: '5.75',
 };
 
 export interface WalletState {

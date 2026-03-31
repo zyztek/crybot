@@ -43,6 +43,9 @@ export interface WalletBalance {
   sol: string;
   ltc: string;
   bnb: string;
+  xrp: string;
+  ada: string;
+  avax: string;
 }
 
 /**
