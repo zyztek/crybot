@@ -50,3 +50,4 @@ server/prisma/*.db
 
 # Build
 .cache/
+test-results/
