@@ -15,9 +15,6 @@ jobs:
           node-version: '20'
           cache: 'npm'
       
-      - name: Install dependencies
-        run: npm install --prefer-offline
-      
       - name: Cache node_modules
         uses: actions/cache@v4
         with:
@@ -25,6 +22,9 @@ jobs:
           key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-modules-
+
+      - name: Install dependencies
+        run: npm install --prefer-offline || npm install
 
       - name: Run ESLint
         run: npm run lint

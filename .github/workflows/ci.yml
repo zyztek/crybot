@@ -18,9 +18,17 @@ jobs:
           node-version: '20'
           cache: 'npm'
       
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
       - name: Install dependencies
-        run: npm install --prefer-offline
-      
+        run: npm install --prefer-offline || npm install
+
       - name: Run linter
         run: npm run lint
       
@@ -57,11 +65,19 @@ jobs:
           cache: 'npm'
           cache-dependency-path: server/package-lock.json
       
+      - name: Cache server node_modules
+        uses: actions/cache@v4
+        with:
+          path: server/node_modules
+          key: ${{ runner.os }}-server-node-modules-${{ hashFiles('server/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-server-node-modules-
+
       - name: Install dependencies
         run: |
           cd server
-          npm install --prefer-offline
-      
+          npm install --prefer-offline || npm install
+
       - name: Generate Prisma
         run: |
           cd server
