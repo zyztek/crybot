@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Coins, Bell, Flame, Star, Users, Sun, Moon, Search, X } from 'lucide-react';
+import { Coins, Bell, Flame, Star, Users, Sun, Moon, Search, X, ChevronDown, Globe } from 'lucide-react';
 import type { User } from '@/types';
 
 interface HeaderProps {

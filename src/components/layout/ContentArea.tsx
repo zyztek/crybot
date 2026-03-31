@@ -30,6 +30,7 @@ const createLazyComponent = (importFunc: () => Promise<any>) => {
 const MiniGames = createLazyComponent(() => import('../MiniGames'));
 const TradingSignals = createLazyComponent(() => import('../TradingSignals'));
 const WhaleAlerts = createLazyComponent(() => import('../WhaleAlerts'));
+const PriceAlerts = createLazyComponent(() => import('../PriceAlerts'));
 const AdvancedAnalytics = createLazyComponent(() => import('../AdvancedAnalytics'));
 const Portfolio = createLazyComponent(() => import('../Portfolio'));
 const Lottery = createLazyComponent(() => import('../Lottery'));
@@ -193,6 +194,8 @@ export default function ContentArea({
       return renderLazy(TradingSignals);
     case 'whale alerts':
       return renderLazy(WhaleAlerts);
+    case 'price alerts':
+      return renderLazy(PriceAlerts);
     case 'games':
       return renderLazy(MiniGames);
     case 'portfolio':

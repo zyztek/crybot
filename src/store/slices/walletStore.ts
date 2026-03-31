@@ -12,6 +12,11 @@ export const INITIAL_WALLET_BALANCE: WalletBalance = {
   xrp: '125.50',
   ada: '85.20',
   avax: '5.75',
+  dot: '15.50',
+  matic: '50.25',
+  link: '8.75',
+  atom: '12.30',
+  uni: '5.20',
 };
 
 export interface WalletState {

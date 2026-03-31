@@ -22,6 +22,7 @@
     "lint": "eslint src --ext .ts"
   },
   "dependencies": {
+    "@graphql-tools/schema": "^10.0.31",
     "@prisma/client": "^7.6.0",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
@@ -30,6 +31,8 @@
     "express": "^5.2.1",
     "express-rate-limit": "^8.3.2",
     "express-validator": "^7.2.0",
+    "graphql": "^16.13.2",
+    "graphql-yoga": "^5.18.1",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",

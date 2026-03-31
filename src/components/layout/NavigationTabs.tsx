@@ -124,6 +124,13 @@ export default function NavigationTabs({
         Whale Alerts
       </NavTab>
       <NavTab
+        active={activeTab === 'price alerts'}
+        onClick={() => onTabChange('price alerts')}
+        icon={<Activity className="w-4 h-4" />}
+      >
+        Price Alerts
+      </NavTab>
+      <NavTab
         active={activeTab === 'games'}
         onClick={() => onTabChange('games')}
         icon={<Gamepad2 className="w-4 h-4" />}

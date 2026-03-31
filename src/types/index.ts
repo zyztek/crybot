@@ -46,6 +46,11 @@ export interface WalletBalance {
   xrp: string;
   ada: string;
   avax: string;
+  dot: string;
+  matic: string;
+  link: string;
+  atom: string;
+  uni: string;
 }
 
 /**
@@ -112,6 +117,7 @@ export type TabType =
   | 'analytics'
   | 'signals'
   | 'whale alerts'
+  | 'price alerts'
   | 'missions'
   | 'shop'
   | 'vip'

@@ -30,6 +30,9 @@ import testnetOpsRoutes from './routes/testnetOps.js';
 // WebSocket handler
 import { setupWebSocket } from './websocket/index.js';
 
+// GraphQL handler
+import { graphqlHandler } from './graphql/index.js';
+
 // Config
 import { serverConfig, corsConfig, rateLimitConfig } from './config/index.js';
 
@@ -166,6 +169,10 @@ app.use('/api/achievement', achievementRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
 app.use('/api/testnet', testnetOpsRoutes);
+
+// ============== GRAPHQL ==============
+
+app.use(graphqlHandler);
 
 // ============== ERROR HANDLING ==============
 

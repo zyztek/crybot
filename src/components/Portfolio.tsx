@@ -50,6 +50,11 @@ const Portfolio: React.FC = () => {
     XRP: <Coins className="w-5 h-5 text-blue-400" />,
     Cardano: <Coins className="w-5 h-5 text-blue-300" />,
     Avalanche: <Flame className="w-5 h-5 text-red-400" />,
+    Polkadot: <Coins className="w-5 h-5 text-pink-400" />,
+    Polygon: <Coins className="w-5 h-5 text-purple-400" />,
+    Chainlink: <Coins className="w-5 h-5 text-blue-500" />,
+    Cosmos: <Box className="w-5 h-5 text-teal-400" />,
+    Uniswap: <Coins className="w-5 h-5 text-pink-300" />,
   };
 
   const assets: Asset[] = [
@@ -160,6 +165,66 @@ const Portfolio: React.FC = () => {
       chain: 'Avalanche',
       chainIcon: ChainIcons.Avalanche,
       chainColor: 'from-red-500 to-orange-600',
+    },
+    {
+      symbol: 'DOT',
+      name: 'Polkadot',
+      amount: 15.5,
+      value: 93.0,
+      change24h: 2.1,
+      change7d: 5.8,
+      allocation: 1,
+      chain: 'Polkadot',
+      chainIcon: ChainIcons.Polkadot,
+      chainColor: 'from-pink-500 to-rose-600',
+    },
+    {
+      symbol: 'MATIC',
+      name: 'Polygon',
+      amount: 50.25,
+      value: 45.22,
+      change24h: -0.5,
+      change7d: 3.2,
+      allocation: 1,
+      chain: 'Polygon',
+      chainIcon: ChainIcons.Polygon,
+      chainColor: 'from-purple-500 to-violet-600',
+    },
+    {
+      symbol: 'LINK',
+      name: 'Chainlink',
+      amount: 8.75,
+      value: 87.5,
+      change24h: 1.8,
+      change7d: 6.5,
+      allocation: 1,
+      chain: 'Chainlink',
+      chainIcon: ChainIcons.Chainlink,
+      chainColor: 'from-blue-500 to-cyan-600',
+    },
+    {
+      symbol: 'ATOM',
+      name: 'Cosmos',
+      amount: 12.3,
+      value: 110.7,
+      change24h: 2.8,
+      change7d: 7.2,
+      allocation: 1,
+      chain: 'Cosmos',
+      chainIcon: ChainIcons.Cosmos,
+      chainColor: 'from-teal-500 to-cyan-600',
+    },
+    {
+      symbol: 'UNI',
+      name: 'Uniswap',
+      amount: 5.2,
+      value: 52.0,
+      change24h: -1.2,
+      change7d: 4.1,
+      allocation: 1,
+      chain: 'Uniswap',
+      chainIcon: ChainIcons.Uniswap,
+      chainColor: 'from-pink-400 to-rose-500',
     },
   ];
 
@@ -627,6 +692,11 @@ const Portfolio: React.FC = () => {
                     XRP: '#3B82F6',
                     Cardano: '#0EA5E9',
                     Avalanche: '#EF4444',
+                    Polkadot: '#E11D48',
+                    Polygon: '#8B5CF6',
+                    Chainlink: '#0EA5E9',
+                    Cosmos: '#14B8A6',
+                    Uniswap: '#F472B6',
                   };
 
                   // Precompute segments immutably to avoid ESLint error
@@ -682,6 +752,11 @@ const Portfolio: React.FC = () => {
                   XRP: 'bg-blue-500',
                   Cardano: 'bg-blue-400',
                   Avalanche: 'bg-red-500',
+                  Polkadot: 'bg-rose-600',
+                  Polygon: 'bg-violet-500',
+                  Chainlink: 'bg-cyan-500',
+                  Cosmos: 'bg-teal-500',
+                  Uniswap: 'bg-pink-400',
                 };
                 const percentage = Math.round((chainData.totalValue / totalValue) * 100);
                 return (

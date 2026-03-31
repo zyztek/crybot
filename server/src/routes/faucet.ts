@@ -9,6 +9,7 @@ import { prisma } from '../lib/prisma.js';
 import { asyncHandler } from '../middleware/errorHandler.js';
 import { authenticate, AuthRequest } from '../middleware/auth.js';
 import faucetService from '../services/faucetService.js';
+import { wsEvents, WS_EVENTS } from '../websocket/index.js';
 
 const router = Router();
 
@@ -266,6 +267,16 @@ router.post(
         claimedAt: claim.claimedAt,
       },
       message: `Successfully claimed ${amount} ${coin}`,
+    });
+
+    // Emit WebSocket event for real-time updates
+    wsEvents.emit(WS_EVENTS.FAUCET_CLAIMED, {
+      userId: req.user!.id,
+      coin,
+      amount,
+      txHash,
+      status: claimStatus,
+      timestamp: claim.claimedAt,
     });
   })
 );

@@ -8,10 +8,12 @@ import { WebSocketServer, WebSocket } from 'ws';
 import jwt from 'jsonwebtoken';
 import { prisma } from '../lib/prisma.js';
 import { jwtConfig } from '../config/index.js';
+import { wsEvents, WS_EVENTS } from './events.js';
 
 interface AuthenticatedWebSocket extends WebSocket {
   userId?: string;
   isAlive?: boolean;
+  subscriptions?: Set<string>;
 }
 
 interface WSMessage {
@@ -20,6 +22,9 @@ interface WSMessage {
 }
 
 export function setupWebSocket(wss: WebSocketServer) {
+  // Register WebSocket server with event emitter
+  wsEvents.setServer(wss);
+
   // Heartbeat interval
   const heartbeatInterval = setInterval(() => {
     wss.clients.forEach(ws => {
@@ -34,6 +39,7 @@ export function setupWebSocket(wss: WebSocketServer) {
 
   wss.on('connection', async (ws: AuthenticatedWebSocket, req) => {
     ws.isAlive = true;
+    ws.subscriptions = new Set();
 
     // Authenticate WebSocket connection
     const token = new URL(req.url || '', `http://${req.headers.host}`).searchParams.get('token');
@@ -66,7 +72,21 @@ export function setupWebSocket(wss: WebSocketServer) {
 
           case 'subscribe':
             // Handle subscription to specific events
-            console.log(`User ${ws.userId} subscribed to: ${parsed.data}`);
+            const eventType = parsed.data as string;
+            ws.subscriptions?.add(eventType);
+            ws.send(JSON.stringify({ 
+              type: 'subscribed', 
+              data: { eventType } 
+            }));
+            break;
+
+          case 'unsubscribe':
+            const unsubEventType = parsed.data as string;
+            ws.subscriptions?.delete(unsubEventType);
+            ws.send(JSON.stringify({ 
+              type: 'unsubscribed', 
+              data: { eventType: unsubEventType } 
+            }));
             break;
 
           default:
@@ -82,13 +102,14 @@ export function setupWebSocket(wss: WebSocketServer) {
       console.log(`WebSocket disconnected: User ${ws.userId || 'anonymous'}`);
     });
 
-    // Send welcome message
+    // Send welcome message with available events
     ws.send(
       JSON.stringify({
         type: 'connected',
         data: {
           timestamp: Date.now(),
           userId: ws.userId || null,
+          availableEvents: Object.values(WS_EVENTS),
         },
       })
     );
@@ -118,4 +139,5 @@ export function sendToUser(wss: WebSocketServer, userId: string, message: WSMess
   });
 }
 
+export { wsEvents, WS_EVENTS };
 export default { setupWebSocket, broadcast, sendToUser };

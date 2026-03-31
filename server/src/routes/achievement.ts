@@ -6,6 +6,7 @@ import { Router } from 'express';
 import { prisma } from '../lib/prisma.js';
 import { asyncHandler } from '../middleware/errorHandler.js';
 import { authenticate, AuthRequest } from '../middleware/auth.js';
+import { wsEvents, WS_EVENTS } from '../websocket/index.js';
 
 const router = Router();
 
@@ -176,6 +177,15 @@ router.post(
       data: {
         amount: achievement.reward,
       },
+    });
+
+    // Emit WebSocket event for real-time updates
+    wsEvents.emit(WS_EVENTS.ACHIEVEMENT_CLAIMED, {
+      userId: req.user!.id,
+      achievementId: id,
+      achievementName: achievement.name,
+      reward: achievement.reward,
+      timestamp: new Date().toISOString(),
     });
   })
 );
