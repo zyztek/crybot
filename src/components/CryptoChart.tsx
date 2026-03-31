@@ -10,7 +10,7 @@ const CryptoChart: React.FC<CryptoChartProps> = ({ symbol, height = 300 }) => {
   const [hoveredPoint, setHoveredPoint] = useState<number | null>(null);
 
   // Generate mock chart data
-  // eslint-disable-next-line react-hooks/purity
+   
   const generateData = (): number[] => {
     const data: number[] = [];
     let value = 100;

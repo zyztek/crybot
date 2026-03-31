@@ -112,7 +112,7 @@ export interface AchievementsState {
   unlockAchievement: (id: number) => void;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 export const createAchievementsStore: StateCreator<AchievementsState> = (
   set: any,
   get: any,

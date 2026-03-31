@@ -19,7 +19,7 @@ export default function ParticleBackground() {
   const [particles, setParticles] = useState<Particle[]>([]);
   const [prefersReducedMotion] = useState(getInitialReducedMotion);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
+   
   const [, setTick] = useState(0);
 
   useEffect(() => {

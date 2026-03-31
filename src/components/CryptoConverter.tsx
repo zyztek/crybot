@@ -339,7 +339,7 @@ export default function CryptoConverter() {
                       <div className="text-white font-bold">${crypto.price.toLocaleString()}</div>
                       <div className="text-green-400 text-sm flex items-center gap-1">
                         +{(Math.random() * 10).toFixed(2)}%{' '}
-                        {/* eslint-disable-line react-hooks/purity */}
+                        { }
                       </div>
                     </div>
                   </div>
