@@ -17,7 +17,7 @@ jobs:
   # to avoid duplicate runs
   sonarcloud:
     runs-on: ubuntu-latest
-    if: false  # Disabled - requires SONAR_TOKEN
+    if: false # Disabled - requires SONAR_TOKEN
     steps:
       - uses: actions/checkout@v4
         with:
@@ -61,7 +61,7 @@ jobs:
       actions: read
       contents: read
 
-    if: false  # Disabled - requires OSSF scorecard setup
+    if: false # Disabled - requires OSSF scorecard setup
     steps:
       - uses: actions/checkout@v4
 

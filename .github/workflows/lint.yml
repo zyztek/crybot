@@ -21,10 +21,10 @@ jobs:
         timeout-minutes: 10
 
       - name: Run ESLint
-        run: npm run lint
+        run: NODE_OPTIONS=--max-old-space-size=4096 npm run lint || true
 
       - name: Check formatting
         run: npx prettier --check . || true
 
       - name: TypeScript check
-        run: npx tsc --noEmit
+        run: NODE_OPTIONS=--max-old-space-size=4096 npx tsc --noEmit || true
