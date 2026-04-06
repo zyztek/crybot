@@ -47,7 +47,7 @@
     "eslint": "10.1.0",
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "7.0.1",
-    "freebuff": "0.0.26",
+    "freebuff": "0.0.27",
     "jsdom": "29.0.1",
     "postcss": "^8.4.49",
     "tailwindcss": "^4.2.2",
