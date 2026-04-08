@@ -38,7 +38,7 @@ router.get(
     res.json({
       success: true,
       data: {
-        achievements: achievements.map(a => ({
+        achievements: achievements.map((a: any) => ({
           id: a.id,
           name: a.name,
           description: a.description,
@@ -82,7 +82,7 @@ router.get(
     res.json({
       success: true,
       data: {
-        achievements: achievements.map(a => ({
+        achievements: achievements.map((a: any) => ({
           id: a.achievement.id,
           name: a.achievement.name,
           description: a.achievement.description,
