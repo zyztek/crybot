@@ -39,6 +39,11 @@ npm run build
 npm start
 ```
 
+### Production Build Verification
+
+A GitHub Actions workflow is available to validate the full production build on `main`:
+- `.github/workflows/prod-build.yml`
+
 #### Frontend
 
 ```bash
