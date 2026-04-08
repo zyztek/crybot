@@ -809,6 +809,64 @@ export const QUERIES_EXTENDED = {
     }
   `,
 
+  // Token info queries (alias)
+  GET_TOKEN_INFO: `
+    query GetTokenInfo($contractAddress: String!, $network: String!) {
+      tokenInfo(contractAddress: $contractAddress, network: $network) {
+        name
+        symbol
+        decimals
+        totalSupply
+        price
+        marketCap
+        holders
+        transfers24h
+      }
+    }
+  `,
+
+  // Historical gas queries
+  GET_HISTORICAL_GAS: `
+    query GetHistoricalGas($network: String, $days: Int) {
+      historicalGas(network: $network, days: $days) {
+        date
+        averageGas
+        fastGas
+        slowestGas
+      }
+    }
+  `,
+
+  // DEX queries
+  GET_DEX_QUOTE: `
+    query GetDEXQuote($fromToken: String!, $toToken: String!, $amount: Float!) {
+      dexQuote(fromToken: $fromToken, toToken: $toToken, amount: $amount) {
+        fromToken
+        toToken
+        fromAmount
+        toAmount
+        priceImpact
+        route
+        liquiditySources
+      }
+    }
+  `,
+
+  GET_POOL_INFO: `
+    query GetPoolInfo($tokenA: String!, $tokenB: String!) {
+      poolInfo(tokenA: $tokenA, tokenB: $tokenB) {
+        tokenA
+        tokenB
+        reserveA
+        reserveB
+        totalLiquidity
+        dailyVolumeA
+        dailyVolumeB
+        apr
+      }
+    }
+  `,
+
   // Token analysis queries
   GET_TOKEN_ANALYSIS: `
     query GetTokenAnalysis($contractAddress: String!, $network: String!) {
@@ -1008,6 +1066,468 @@ export const QUERIES_EXTENDED = {
         reward
         status
         createdAt
+      }
+    }
+  `,
+
+  GET_REFERRED_USERS: `
+    query GetReferredUsers($limit: Int, $offset: Int) {
+      referredUsers(limit: $limit, offset: $offset) {
+        id
+        username
+        email
+        createdAt
+        totalEarned
+      }
+    }
+  `,
+
+  // Notification queries
+  GET_NOTIFICATIONS: `
+    query GetNotifications($unreadOnly: Boolean, $limit: Int, $offset: Int) {
+      notifications(unreadOnly: $unreadOnly, limit: $limit, offset: $offset) {
+        id
+        type
+        title
+        message
+        isRead
+        createdAt
+        data
+      }
+    }
+  `,
+
+  GET_UNREAD_NOTIFICATION_COUNT: `
+    query GetUnreadNotificationCount {
+      unreadNotificationCount
+    }
+  `,
+
+  // Wallet extended queries
+  GET_WALLET_BALANCE: `
+    query GetWalletBalance($coin: String!) {
+      walletBalance(coin: $coin) {
+        coin
+        available
+        pending
+        total
+        lastUpdated
+      }
+    }
+  `,
+
+  GET_ALL_WALLET_BALANCES: `
+    query GetAllWalletBalances {
+      allWalletBalances {
+        coin
+        available
+        pending
+        total
+        lastUpdated
+      }
+    }
+  `,
+
+  GET_WALLET_ADDRESS: `
+    query GetWalletAddress($coin: String!) {
+      walletAddress(coin: $coin) {
+        coin
+        address
+        isCustodial
+        qrCode
+      }
+    }
+  `,
+
+  // Transaction extended queries
+  GET_TRANSACTION_DETAILS: `
+    query GetTransactionDetails($id: ID!) {
+      transaction(id: $id) {
+        id
+        type
+        coin
+        amount
+        fee
+        txHash
+        fromAddress
+        toAddress
+        status
+        confirmations
+        createdAt
+        completedAt
+      }
+    }
+  `,
+
+  GET_PENDING_TRANSACTIONS: `
+    query GetPendingTransactions($coin: String) {
+      pendingTransactions(coin: $coin) {
+        id
+        type
+        coin
+        amount
+        txHash
+        status
+        createdAt
+      }
+    }
+  `,
+
+  // Faucet extended queries
+  GET_FAUCET_STATUS: `
+    query GetFaucetStatus($coin: String!) {
+      faucetStatus(coin: $coin) {
+        coin
+        canClaim
+        nextClaimTime
+        cooldownHours
+        lastClaimAmount
+      }
+    }
+  `,
+
+  GET_FAUCET_HISTORY: `
+    query GetFaucetHistory($coin: String, $limit: Int, $offset: Int) {
+      faucetHistory(coin: $coin, limit: $limit, offset: $offset) {
+        id
+        coin
+        amount
+        txHash
+        status
+        claimedAt
+      }
+    }
+  `,
+
+  GET_FAUCET_STATS: `
+    query GetFaucetStats($coin: String) {
+      faucetStats(coin: $coin) {
+        totalClaimed
+        totalClaims
+        uniqueClaimers
+        averageClaim
+      }
+    }
+  `,
+
+  // Achievement extended queries
+  GET_ACHIEVEMENT_DETAILS: `
+    query GetAchievementDetails($id: ID!) {
+      achievement(id: $id) {
+        id
+        name
+        description
+        icon
+        coin
+        target
+        reward
+        type
+        steps
+      }
+    }
+  `,
+
+  GET_COMPLETED_ACHIEVEMENTS_DETAIL: `
+    query GetCompletedAchievementsDetail {
+      completedAchievementsDetail {
+        id
+        achievementId
+        progress
+        completed
+        completedAt
+        claimedAt
+        achievement {
+          id
+          name
+          description
+          icon
+          coin
+          target
+          reward
+        }
+      }
+    }
+  `,
+
+  // Leaderboard extended queries
+  GET_TOP_REFERRERS: `
+    query GetTopReferrers($limit: Int) {
+      topReferrers(limit: $limit) {
+        rank
+        userId
+        username
+        referralCount
+        totalEarnings
+      }
+    }
+  `,
+
+  GET_TOP_CLAIMERS: `
+    query GetTopClaimers($coin: String, $limit: Int) {
+      topClaimers(coin: $coin, limit: $limit) {
+        rank
+        userId
+        username
+        totalClaims
+        totalVolume
+      }
+    }
+  `,
+
+  GET_MY_RANK: `
+    query GetMyRank($type: String!) {
+      myRank(type: $type) {
+        rank
+        userId
+        username
+        score
+        referrals
+      }
+    }
+  `,
+
+  // Achievement queries
+  GET_ALL_ACHIEVEMENTS: `
+    query GetAllAchievements {
+      achievements {
+        id
+        title
+        description
+        icon
+        reward
+        progress
+        maxProgress
+        isCompleted
+        completedAt
+      }
+    }
+  `,
+
+  GET_COMPLETED_ACHIEVEMENTS_V2: `
+    query GetCompletedAchievementsV2 {
+      completedAchievements {
+        id
+        title
+        description
+        icon
+        reward
+        completedAt
+      }
+    }
+  `,
+
+  // Support queries
+  GET_SUPPORT_TICKETS: `
+    query GetSupportTickets($status: String, $limit: Int, $offset: Int) {
+      supportTickets(status: $status, limit: $limit, offset: $offset) {
+        id
+        subject
+        status
+        priority
+        createdAt
+        lastUpdated
+      }
+    }
+  `,
+
+  // Platform queries
+  GET_COIN_STATS: `
+    query GetCoinStats {
+      coinStats {
+        coin
+        totalClaims
+        totalVolume
+        activeUsers
+        avgClaimAmount
+      }
+    }
+  `,
+
+  // Settings queries
+  GET_USER_SETTINGS: `
+    query GetUserSettings {
+      userSettings {
+        emailNotifications
+        pushNotifications
+        telegram
+        language
+        theme
+        currency
+        timezone
+      }
+    }
+  `,
+
+  GET_SECURITY_SETTINGS: `
+    query GetSecuritySettings {
+      securitySettings {
+        twoFactorEnabled
+        sessionTimeout
+        allowedIPs
+        loginAlerts
+      }
+    }
+  `,
+
+  // Activity log queries
+  GET_ACTIVITY_LOG: `
+    query GetActivityLog($limit: Int, $offset: Int) {
+      activityLog(limit: $limit, offset: $offset) {
+        id
+        action
+        description
+        ipAddress
+        userAgent
+        createdAt
+      }
+    }
+  `,
+
+  // Bitcoin ETF Flow queries
+  GET_BTC_ETF_FLOWS: `
+    query GetBTCEtfFlows($period: String, $limit: Int) {
+      btcEtfFlows(period: $period, limit: $limit) {
+        symbol
+        name
+        flow
+        flowChange24h
+        price
+        priceChange24h
+        totalHoldings
+        avgDailyInflow
+        lastUpdate
+        inflowHistory {
+          date
+          inflow
+        }
+      }
+    }
+  `,
+
+  GET_BTC_ETF_SUMMARY: `
+    query GetBTCEtfSummary {
+      btcEtfSummary {
+        totalInflow
+        totalOutflow
+        netFlow
+        btcPrice
+        btcPriceImpact
+        period
+        updatedAt
+      }
+    }
+  `,
+
+  // Coinbase Premium Gap queries
+  GET_COINBASE_PREMIUM: `
+    query GetCoinbasePremium($period: String) {
+      coinbasePremium(period: $period) {
+        currentPremium
+        avgPremium
+        maxPremium
+        minPremium
+        coinbasePrice
+        otherExchangesAvg
+        priceDifference
+        volume
+        updatedAt
+        history {
+          timestamp
+          coinbasePrice
+          otherExchangesAvg
+          premium
+          volume
+        }
+      }
+    }
+  `,
+
+  // Platform stats queries
+  GET_PLATFORM_STATS: `
+    query GetPlatformStats {
+      platformStats {
+        totalUsers
+        activeUsers24h
+        totalClaims
+        totalVolume
+        totalWithdrawals
+        faucetPayouts
+        averageClaimTime
+      }
+    }
+  `,
+
+  GET_COIN_STATS_BY_COIN: `
+    query GetCoinStats($coin: String) {
+      coinStats(coin: $coin) {
+        coin
+        totalClaims
+        totalVolume
+        averageClaim
+        currentReward
+        difficulty
+      }
+    }
+  `,
+
+  // Session queries
+  GET_ACTIVE_SESSIONS: `
+    query GetActiveSessions {
+      activeSessions {
+        id
+        device
+        ipAddress
+        lastActive
+        createdAt
+      }
+    }
+  `,
+
+  // API Key queries
+  GET_API_KEYS: `
+    query GetAPIKeys {
+      apiKeys {
+        id
+        name
+        key
+        permissions
+        createdAt
+        expiresAt
+        lastUsed
+      }
+    }
+  `,
+
+  // Webhook queries
+  GET_WEBHOOKS: `
+    query GetWebhooks {
+      webhooks {
+        id
+        url
+        events
+        isActive
+        createdAt
+      }
+    }
+  `,
+
+  // Subscription/Real-time queries
+  GET_WALLET_UPDATES: `
+    query GetWalletUpdates {
+      walletUpdates {
+        coin
+        balance
+        lastUpdated
+      }
+    }
+  `,
+
+  GET_CLAIM_COOLDOWN: `
+    query GetClaimCooldown($coin: String!) {
+      claimCooldown(coin: $coin) {
+        canClaim
+        remainingTime
+        nextClaimAt
       }
     }
   `,
@@ -1233,6 +1753,48 @@ export const MUTATIONS_EXTENDED = {
   `,
 
   // Swap/DEX mutations
+  SWAP_TOKENS: `
+    mutation SwapTokens($fromToken: String!, $toToken: String!, $amount: Float!, $slippage: Float) {
+      swapTokens(fromToken: $fromToken, toToken: $toToken, amount: $amount, slippage: $slippage) {
+        id
+        fromToken
+        toToken
+        fromAmount
+        toAmount
+        priceImpact
+        route
+        txHash
+      }
+    }
+  `,
+
+  ADD_LIQUIDITY: `
+    mutation AddLiquidity($tokenA: String!, $tokenB: String!, $amountA: Float!, $amountB: Float!) {
+      addLiquidity(tokenA: $tokenA, tokenB: $tokenB, amountA: $amountA, amountB: $amountB) {
+        id
+        tokenA
+        tokenB
+        amountA
+        amountB
+        lpTokensReceived
+        txHash
+      }
+    }
+  `,
+
+  REMOVE_LIQUIDITY: `
+    mutation RemoveLiquidity($lpTokenId: ID!, $amount: Float!) {
+      removeLiquidity(lpTokenId: $lpTokenId, amount: $amount) {
+        id
+        tokenA
+        tokenB
+        amountA
+        amountB
+        txHash
+      }
+    }
+  `,
+
   EXECUTE_SWAP: `
     mutation ExecuteSwap($fromToken: String!, $toToken: String!, $amount: Float!, $slippage: Float) {
       executeSwap(fromToken: $fromToken, toToken: $toToken, amount: $amount, slippage: $slippage) {
@@ -1249,6 +1811,17 @@ export const MUTATIONS_EXTENDED = {
   `,
 
   // NFT mutations
+  LIST_NFT: `
+    mutation ListNFT($nftId: ID!, $price: Float!, $currency: String) {
+      listNFT(nftId: $nftId, price: $price, currency: $currency) {
+        id
+        price
+        currency
+        txHash
+      }
+    }
+  `,
+
   MINT_NFT: `
     mutation MintNFT($collectionId: ID!) {
       mintNFT(collectionId: $collectionId) {
@@ -1325,6 +1898,17 @@ export const MUTATIONS_EXTENDED = {
   `,
 
   // Airdrop mutations
+  VERIFY_AIRDROP: `
+    mutation VerifyAirdrop($airdropId: ID!, $walletAddress: String!) {
+      verifyAirdrop(airdropId: $airdropId, walletAddress: $walletAddress) {
+        eligible
+        amount
+        requirementsMet
+        message
+      }
+    }
+  `,
+
   CLAIM_AIRDROP: `
     mutation ClaimAirdrop($airdropId: ID!) {
       claimAirdrop(airdropId: $airdropId) {
@@ -1367,6 +1951,31 @@ export const MUTATIONS_EXTENDED = {
   `,
 
   // Trading Signal mutations
+  CREATE_TRADING_SIGNAL: `
+    mutation CreateTradingSignal($coin: String!, $signal: String!, $entryPrice: Float!, $takeProfit: Float!, $stopLoss: Float!, $timeframe: String!) {
+      createTradingSignal(coin: $coin, signal: $signal, entryPrice: $entryPrice, takeProfit: $takeProfit, stopLoss: $stopLoss, timeframe: $timeframe) {
+        id
+        coin
+        signal
+        entryPrice
+        takeProfit
+        stopLoss
+        timeframe
+        createdAt
+      }
+    }
+  `,
+
+  FOLLOW_TRADING_SIGNAL: `
+    mutation FollowTradingSignal($signalId: ID!) {
+      followTradingSignal(signalId: $signalId) {
+        id
+        signalId
+        followedAt
+      }
+    }
+  `,
+
   SUBSCRIBE_SIGNAL: `
     mutation SubscribeSignal($signalId: ID!) {
       subscribeSignal(signalId: $signalId) {
@@ -1420,6 +2029,52 @@ export const MUTATIONS_EXTENDED = {
     }
   `,
 
+  // Achievement mutations
+  CLAIM_ACHIEVEMENT_REWARD: `
+    mutation ClaimAchievementReward($achievementId: ID!) {
+      claimAchievementReward(achievementId: $achievementId) {
+        id
+        achievementId
+        reward
+        rewardCoin
+        txHash
+      }
+    }
+  `,
+
+  // Support mutations
+  UPDATE_SUPPORT_TICKET: `
+    mutation UpdateSupportTicket($ticketId: ID!, $status: String!, $priority: String) {
+      updateSupportTicket(ticketId: $ticketId, status: $status, priority: $priority) {
+        id
+        status
+        priority
+        lastUpdated
+      }
+    }
+  `,
+
+  ADD_TICKET_COMMENT: `
+    mutation AddTicketComment($ticketId: ID!, $comment: String!) {
+      addTicketComment(ticketId: $ticketId, comment: $comment) {
+        id
+        ticketId
+        comment
+        createdAt
+      }
+    }
+  `,
+
+  CLOSE_SUPPORT_TICKET: `
+    mutation CloseSupportTicket($ticketId: ID!) {
+      closeSupportTicket(ticketId: $ticketId) {
+        id
+        status
+        closedAt
+      }
+    }
+  `,
+
   // Token analysis mutations
   ADD_TOKEN_TO_WATCHLIST: `
     mutation AddTokenToWatchlist($contractAddress: String!, $network: String!) {
@@ -1439,6 +2094,18 @@ export const MUTATIONS_EXTENDED = {
   `,
 
   // Validator mutations
+  REDELEGATE: `
+    mutation Redelegate($fromValidatorId: ID!, $toValidatorId: ID!, $amount: Float!) {
+      redelegate(fromValidatorId: $fromValidatorId, toValidatorId: $toValidatorId, amount: $amount) {
+        id
+        fromValidatorId
+        toValidatorId
+        amount
+        txHash
+      }
+    }
+  `,
+
   DELEGATE_TO_VALIDATOR: `
     mutation DelegateToValidator($validatorId: ID!, $amount: Float!) {
       delegateToValidator(validatorId: $validatorId, amount: $amount) {
@@ -1507,6 +2174,17 @@ export const MUTATIONS_EXTENDED = {
   `,
 
   // Bridge mutations
+  CANCEL_BRIDGE: `
+    mutation CancelBridge($bridgeId: ID!) {
+      cancelBridge(bridgeId: $bridgeId) {
+        id
+        status
+        refundedAmount
+        txHash
+      }
+    }
+  `,
+
   INITIATE_BRIDGE: `
     mutation InitiateBridge($fromNetwork: String!, $toNetwork: String!, $token: String!, $amount: Float!) {
       initiateBridge(fromNetwork: $fromNetwork, toNetwork: $toNetwork, token: $token, amount: $amount) {
@@ -1601,6 +2279,43 @@ export const MUTATIONS_EXTENDED = {
     }
   `,
 
+  // Multi-sig wallet queries
+  GET_MULTISIG_WALLETS: `
+    query GetMultisigWallets {
+      multisigWallets {
+        id
+        name
+        address
+        threshold
+        signers {
+          address
+          name
+          status
+        }
+        createdAt
+      }
+    }
+  `,
+
+  GET_MULTISIG_TRANSACTIONS: `
+    query GetMultisigTransactions($walletId: ID, $status: String, $limit: Int) {
+      multisigTransactions(walletId: $walletId, status: $status, limit: $limit) {
+        id
+        walletId
+        to
+        amount
+        token
+        data
+        status
+        signatures
+        requiredSignatures
+        createdAt
+        expiresAt
+        executedAt
+      }
+    }
+  `,
+
   // Multi-sig mutations
   CREATE_MULTISIG_WALLET: `
     mutation CreateMultisigWallet($name: String!, $signers: [String!]!, $requiredSignatures: Int!) {
@@ -1612,11 +2327,36 @@ export const MUTATIONS_EXTENDED = {
     }
   `,
 
+  SIGN_MULTISIG_TRANSACTION: `
+    mutation SignMultisigTransaction($transactionId: ID!) {
+      signMultisigTransaction(transactionId: $transactionId) {
+        id
+        signatures
+        status
+      }
+    }
+  `,
+
   EXECUTE_MULTISIG_TRANSACTION: `
     mutation ExecuteMultisigTransaction($walletId: ID!, $txId: ID!) {
       executeMultisigTransaction(walletId: $walletId, txId: $txId) {
         id
         txHash
+      }
+    }
+  `,
+
+  CREATE_MULTISIG_TRANSACTION: `
+    mutation CreateMultisigTransaction($walletId: ID!, $to: String!, $amount: String!, $token: String!, $data: String) {
+      createMultisigTransaction(walletId: $walletId, to: $to, amount: $amount, token: $token, data: $data) {
+        id
+        to
+        amount
+        token
+        status
+        requiredSignatures
+        createdAt
+        expiresAt
       }
     }
   `,
@@ -1834,6 +2574,445 @@ export const MUTATIONS_EXTENDED = {
   REVOKE_API_KEY: `
     mutation RevokeAPIKey($keyId: ID!) {
       revokeAPIKey(keyId: $keyId)
+    }
+  `,
+
+  // Referral mutations
+  GENERATE_REFERRAL_CODE: `
+    mutation GenerateReferralCode {
+      generateReferralCode {
+        code
+        createdAt
+      }
+    }
+  `,
+
+  CLAIM_REFERRAL_REWARD: `
+    mutation ClaimReferralReward($rewardId: ID!) {
+      claimReferralReward(rewardId: $rewardId) {
+        id
+        amount
+        txHash
+      }
+    }
+  `,
+
+  // Notification mutations
+  MARK_NOTIFICATION_READ: `
+    mutation MarkNotificationRead($id: ID!) {
+      markNotificationRead(id: $id) {
+        id
+        isRead
+      }
+    }
+  `,
+
+  MARK_ALL_NOTIFICATIONS_READ: `
+    mutation MarkAllNotificationsRead {
+      markAllNotificationsRead {
+        success
+        count
+      }
+    }
+  `,
+
+  DELETE_NOTIFICATION: `
+    mutation DeleteNotification($id: ID!) {
+      deleteNotification(id: $id)
+    }
+  `,
+
+  // Wallet mutations
+  GENERATE_WALLET_ADDRESS: `
+    mutation GenerateWalletAddress($coin: String!) {
+      generateWalletAddress(coin: $coin) {
+        coin
+        address
+        qrCode
+      }
+    }
+  `,
+
+  TRANSFER_WALLET: `
+    mutation TransferWallet($fromCoin: String!, $toCoin: String!, $amount: Float!) {
+      transferWallet(fromCoin: $fromCoin, toCoin: $toCoin, amount: $amount) {
+        id
+        fromCoin
+        toCoin
+        amount
+        txHash
+        status
+      }
+    }
+  `,
+
+  // Withdrawal mutations
+  REQUEST_WITHDRAWAL: `
+    mutation RequestWithdrawal($coin: String!, $amount: Float!, $address: String!) {
+      requestWithdrawal(coin: $coin, amount: $amount, address: $address) {
+        id
+        coin
+        amount
+        fee
+        txHash
+        status
+        createdAt
+      }
+    }
+  `,
+
+  CANCEL_WITHDRAWAL: `
+    mutation CancelWithdrawal($id: ID!) {
+      cancelWithdrawal(id: $id) {
+        id
+        status
+        refundedAmount
+      }
+    }
+  `,
+
+  // Faucet mutations
+  CLAIM_FAUCET_V2: `
+    mutation ClaimFaucetV2($coin: String!, $network: String!) {
+      claimFaucetV2(coin: $coin, network: $network) {
+        id
+        coin
+        amount
+        txHash
+        status
+        claimedAt
+        nextClaimTime
+      }
+    }
+  `,
+
+  VERIFY_CAPTCHA: `
+    mutation VerifyCaptcha($token: String!) {
+      verifyCaptcha(token: $token) {
+        valid
+        score
+      }
+    }
+  `,
+
+  // User mutations
+  UPDATE_PROFILE: `
+    mutation UpdateProfile($input: ProfileInput!) {
+      updateProfile(input: $input) {
+        id
+        username
+        email
+        avatar
+      }
+    }
+  `,
+
+  UPDATE_SETTINGS: `
+    mutation UpdateSettings($input: SettingsInput!) {
+      updateSettings(input: $input) {
+        emailNotifications
+        pushNotifications
+        telegram
+        language
+        theme
+        currency
+      }
+    }
+  `,
+
+  UPDATE_SECURITY: `
+    mutation UpdateSecurity($input: SecurityInput!) {
+      updateSecurity(input: $input) {
+        twoFactorEnabled
+        sessionTimeout
+        allowedIPs
+        loginAlerts
+      }
+    }
+  `,
+
+  ENABLE_2FA: `
+    mutation Enable2FA {
+      enable2FA {
+        secret
+        qrCode
+      }
+    }
+  `,
+
+  CONFIRM_2FA: `
+    mutation Confirm2FA($code: String!) {
+      confirm2FA(code: $code) {
+        success
+      }
+    }
+  `,
+
+  DISABLE_2FA: `
+    mutation Disable2FA($code: String!) {
+      disable2FA(code: $code) {
+        success
+      }
+    }
+  `,
+
+  // Session mutations
+  REVOKE_SESSION: `
+    mutation RevokeSession($sessionId: ID!) {
+      revokeSession(sessionId: $sessionId)
+    }
+  `,
+
+  REVOKE_ALL_SESSIONS: `
+    mutation RevokeAllSessions {
+      revokeAllSessions
+    }
+  `,
+
+  // Auth mutations
+  LOGOUT: `
+    mutation Logout {
+      logout
+    }
+  `,
+
+  LOGOUT_ALL: `
+    mutation LogoutAll {
+      logoutAll
+    }
+  `,
+
+  // Achievement mutations
+  UPDATE_ACHIEVEMENT_PROGRESS: `
+    mutation UpdateAchievementProgress($achievementId: ID!) {
+      updateAchievementProgress(achievementId: $achievementId) {
+        id
+        progress
+        completed
+      }
+    }
+  `,
+
+  // Leaderboard mutations
+  JOIN_LEADERBOARD: `
+    mutation JoinLeaderboard($period: String!) {
+      joinLeaderboard(period: $period) {
+        success
+        currentRank
+      }
+    }
+  `,
+
+  // Lottery mutations
+  CLAIM_LOTTERY_PRIZE_V2: `
+    mutation ClaimLotteryPrizeV2($roundId: ID!, $ticketId: ID!) {
+      claimLotteryPrizeV2(roundId: $roundId, ticketId: $ticketId) {
+        id
+        prize
+        txHash
+        status
+      }
+    }
+  `,
+
+  // Airdrop mutations
+  VERIFY_AIRDROP_REQUIREMENTS: `
+    mutation VerifyAirdropRequirements($airdropId: ID!) {
+      verifyAirdropRequirements(airdropId: $airdropId) {
+        eligible
+        requirementsMet
+        missingRequirements
+      }
+    }
+  `,
+
+  // Validator extended mutations
+  CLAIM_VALIDATOR_REWARDS_V2: `
+    mutation ClaimValidatorRewardsV2($validatorId: ID!) {
+      claimValidatorRewardsV2(validatorId: $validatorId) {
+        id
+        amount
+        txHash
+      }
+    }
+  `,
+
+  // DAO extended mutations
+  DELEGATE_VOTE: `
+    mutation DelegateVote($proposalId: ID!, $delegatee: String!) {
+      delegateVote(proposalId: $proposalId, delegatee: $delegatee) {
+        success
+      }
+    }
+  `,
+
+  CANCEL_VOTE: `
+    mutation CancelVote($proposalId: ID!) {
+      cancelVote(proposalId: $proposalId) {
+        success
+      }
+    }
+  `,
+
+  // Bridge extended mutations
+  GET_BRIDGE_ESTIMATE: `
+    mutation GetBridgeEstimate($fromNetwork: String!, $toNetwork: String!, $token: String!, $amount: Float!) {
+      getBridgeEstimate(fromNetwork: $fromNetwork, toNetwork: $toNetwork, token: $token, amount: $amount) {
+        estimatedAmount
+        fee
+        estimatedTime
+        route
+      }
+    }
+  `,
+
+  // Token analysis mutations
+  ADD_TO_WATCHLIST: `
+    mutation AddToWatchlist($contractAddress: String!, $network: String!, $notes: String) {
+      addToWatchlist(contractAddress: $contractAddress, network: $network, notes: $notes) {
+        id
+        contractAddress
+        addedAt
+      }
+    }
+  `,
+
+  UPDATE_WATCHLIST_NOTES: `
+    mutation UpdateWatchlistNotes($watchlistId: ID!, $notes: String!) {
+      updateWatchlistNotes(watchlistId: $watchlistId, notes: $notes) {
+        id
+        notes
+      }
+    }
+  `,
+
+  // Portfolio mutations
+  ADD_PORTFOLIO_MANUAL: `
+    mutation AddPortfolioManual($coin: String!, $amount: Float!, $purchasePrice: Float, $notes: String) {
+      addPortfolioManual(coin: $coin, amount: $amount, purchasePrice: $purchasePrice, notes: $notes) {
+        id
+        coin
+        amount
+      }
+    }
+  `,
+
+  UPDATE_PORTFOLIO: `
+    mutation UpdatePortfolio($id: ID!, $notes: String) {
+      updatePortfolio(id: $id, notes: $notes) {
+        id
+        notes
+      }
+    }
+  `,
+
+  DELETE_PORTFOLIO: `
+    mutation DeletePortfolio($id: ID!) {
+      deletePortfolio(id: $id)
+    }
+  `,
+
+  // Gas alert mutations
+  UPDATE_GAS_ALERT: `
+    mutation UpdateGasAlert($id: ID!, $targetPrice: Float, $isActive: Boolean) {
+      updateGasAlert(id: $id, targetPrice: $targetPrice, isActive: $isActive) {
+        id
+        targetPrice
+        isActive
+      }
+    }
+  `,
+
+  // Whitelist mutations
+  ADD_TO_WHITELIST: `
+    mutation AddToWhitelist($address: String!, $label: String) {
+      addToWhitelist(address: $address, label: $label) {
+        id
+        address
+        label
+      }
+    }
+  `,
+
+  REMOVE_FROM_WHITELIST: `
+    mutation RemoveFromWhitelist($id: ID!) {
+      removeFromWhitelist(id: $id)
+    }
+  `,
+
+  // Backup mutations
+  IMPORT_DATA: `
+    mutation ImportData($data: String!, $format: String!) {
+      importData(data: $data, format: $format) {
+        success
+        imported
+        errors
+      }
+    }
+  `,
+
+  // Support mutations
+  CREATE_SUPPORT_TICKET: `
+    mutation CreateSupportTicket($subject: String!, $category: String!, $message: String!, $attachments: [String]) {
+      createSupportTicket(subject: $subject, category: $category, message: $message, attachments: $attachments) {
+        id
+        subject
+        status
+        createdAt
+      }
+    }
+  `,
+
+  ADD_TICKET_MESSAGE: `
+    mutation AddTicketMessage($ticketId: ID!, $message: String!) {
+      addTicketMessage(ticketId: $ticketId, message: $message) {
+        id
+        message
+        createdAt
+      }
+    }
+  `,
+
+  CLOSE_TICKET: `
+    mutation CloseTicket($ticketId: ID!) {
+      closeTicket(ticketId: $ticketId) {
+        id
+        status
+      }
+    }
+  `,
+
+  // Feedback mutations
+  SUBMIT_FEEDBACK: `
+    mutation SubmitFeedback($type: String!, $message: String!, $rating: Int) {
+      submitFeedback(type: $type, message: $message, rating: $rating) {
+        success
+      }
+    }
+  `,
+
+  REPORT_BUG: `
+    mutation ReportBug($title: String!, $description: String!, $steps: String, $attachments: [String]) {
+      reportBug(title: $title, description: $description, steps: $steps, attachments: $attachments) {
+        id
+        status
+      }
+    }
+  `,
+
+  // Announcement mutations
+  MARK_ANNOUNCEMENT_READ: `
+    mutation MarkAnnouncementRead($id: ID!) {
+      markAnnouncementRead(id: $id) {
+        id
+        isRead
+      }
+    }
+  `,
+
+  DISMISS_ANNOUNCEMENT: `
+    mutation DismissAnnouncement($id: ID!) {
+      dismissAnnouncement(id: $id)
     }
   `,
 };
