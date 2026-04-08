@@ -1,0 +1,52 @@
+name: Production Build
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install frontend dependencies
+        run: |
+          npm ci --prefer-offline --legacy-peer-deps
+
+      - name: Build frontend
+        run: |
+          NODE_OPTIONS=--max-old-space-size=4096 npm run build
+
+      - name: Install backend dependencies
+        run: |
+          cd server
+          npm ci --prefer-offline --legacy-peer-deps
+
+      - name: Generate Prisma client
+        run: |
+          cd server
+          npx prisma generate
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/crybot_test
+
+      - name: Build backend
+        run: |
+          cd server
+          NODE_OPTIONS=--max-old-space-size=4096 npm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: crybot-production-build
+          path: |
+            dist
+            server/dist
