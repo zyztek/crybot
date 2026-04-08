@@ -10,13 +10,13 @@ git clone https://github.com/zyztek/crybot.git
 cd crybot
 
 # Update environment variables for production
-# Edit server/.env with production values
+# Edit server/.env.production and .env.production with production values
 
 # Build and start
-docker-compose up -d --build
+docker compose --env-file .env.production -f docker-compose.prod.yml up -d --build
 
 # Check status
-docker-compose ps
+docker compose ps
 ```
 
 ### Option 2: Manual Deployment
