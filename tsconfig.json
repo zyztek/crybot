@@ -26,7 +26,8 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "ignoreDeprecations": "6.0"
   },
   "include": ["src", "vite.config.ts"]
 }

@@ -16,17 +16,19 @@
     "setup:auto": "npm run setup:auto:win || npm run setup:auto:mac",
     "setup:auto:win": "scripts\\auto-setup.bat",
     "setup:auto:mac": "bash scripts/auto-setup.sh",
-    "lint": "eslint src --ext ts,tsx --max-warnings=1000",
-    "lint:fix": "eslint src --ext ts,tsx --fix --max-warnings=1000",
+    "lint": "eslint src --ext ts,tsx --max-warnings 1000",
+    "lint:fix": "eslint src --ext ts,tsx --fix --max-warnings 1000",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "clsx": "^2.1.1",
-    "lucide-react": "^1.7.0",
+    "lucide-react": "1.7.0",
+    "openai": "^4.77.0",
+    "p-queue": "^8.0.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "recharts": "^3.8.1",
-    "tailwind-merge": "3.5.0",
+    "tailwind-merge": "^3.5.0",
     "zustand": "^5.0.0"
   },
   "devDependencies": {

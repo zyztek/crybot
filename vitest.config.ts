@@ -14,6 +14,14 @@ export default defineConfig({
     // Enable file caching for faster subsequent runs
     cache: true,
     cacheDir: '.vitest-cache',
+    // Exclude e2e, integration tests, and node_modules from vitest
+    exclude: [
+      '**/e2e/**', 
+      '**/server/**/api.integration.test.ts', 
+      '**/server/dist/**/api.integration.test.js',
+      '**/node_modules/**',
+      '**/dist/**',
+    ],
   },
   resolve: {
     alias: {
