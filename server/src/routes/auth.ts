@@ -152,7 +152,7 @@ router.post(
           totalEarned: user.totalEarned,
           createdAt: user.createdAt,
         },
-        wallets: user.wallets.map(w => ({
+        wallets: user.wallets.map((w: any) => ({
           coin: w.coin,
           balance: w.balance,
         })),
