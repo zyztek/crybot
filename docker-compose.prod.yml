@@ -27,12 +27,6 @@ services:
     restart: unless-stopped
     env_file:
       - ./server/.env.production
-    environment:
-      - NODE_ENV=production
-      - PORT=3000
-      - DATABASE_URL=${DATABASE_URL}
-      - JWT_SECRET=${JWT_SECRET}
-      - CORS_ORIGIN=${CORS_ORIGIN}
     ports:
       - '3000:3000'
     depends_on:
