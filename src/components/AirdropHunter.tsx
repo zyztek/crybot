@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAirdrop } from '../hooks/useGraphQL';
 import {
   Gift,
   Clock,
@@ -170,14 +171,46 @@ const airdrops: Airdrop[] = [
 ];
 
 export const AirdropHunter: React.FC = () => {
+  const { fetchAirdrops, fetchMyClaims, claim, verify } = useAirdrop();
   const [filter, setFilter] = useState<'all' | 'active' | 'upcoming' | 'ended'>('all');
   const [difficultyFilter, setDifficultyFilter] = useState<'all' | 'easy' | 'medium' | 'hard'>(
     'all'
   );
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedAirdrop, setSelectedAirdrop] = useState<Airdrop | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [airdropList, setAirdropList] = useState<Airdrop[]>(airdrops);
 
-  const filteredAirdrops = airdrops.filter(airdrop => {
+  // Fetch airdrops on mount
+  useEffect(() => {
+    fetchAirdrops.execute().then(() => {
+      setIsLoading(false);
+    }).catch(() => {
+      setIsLoading(false);
+    });
+  }, [fetchAirdrops]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Update airdrop list when data changes
+  useEffect(() => {
+    if (fetchAirdrops.data?.airdrops) {
+      setAirdropList(fetchAirdrops.data.airdrops.map((a: any) => ({
+        id: parseInt(a.id),
+        name: a.name,
+        project: a.description,
+        status: a.status,
+        reward: a.amount,
+        value: '$0',
+        deadline: 'TBA',
+        tasks: [],
+        requirements: '',
+        difficulty: 'medium',
+        verified: false,
+        logo: '🎁',
+      })));
+    }
+  }, [fetchAirdrops.data]);
+
+  const filteredAirdrops = airdropList.filter(airdrop => {
     const matchesStatus = filter === 'all' || airdrop.status === filter;
     const matchesDifficulty = difficultyFilter === 'all' || airdrop.difficulty === difficultyFilter;
     const matchesSearch =
@@ -209,10 +242,10 @@ export const AirdropHunter: React.FC = () => {
   };
 
   const stats = {
-    active: airdrops.filter(a => a.status === 'active').length,
-    upcoming: airdrops.filter(a => a.status === 'upcoming').length,
-    ended: airdrops.filter(a => a.status === 'ended').length,
-    verified: airdrops.filter(a => a.verified).length,
+    active: airdropList.filter(a => a.status === 'active').length,
+    upcoming: airdropList.filter(a => a.status === 'upcoming').length,
+    ended: airdropList.filter(a => a.status === 'ended').length,
+    verified: airdropList.filter(a => a.verified).length,
   };
 
   return (
