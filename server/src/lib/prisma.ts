@@ -2,7 +2,7 @@
  * Prisma Client - Database connection singleton
  */
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client/runtime/client';
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;

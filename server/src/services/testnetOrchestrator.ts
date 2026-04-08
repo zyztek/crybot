@@ -381,7 +381,7 @@ class TestnetOrchestrator {
       },
     });
 
-    return dbPersonas.map(p => ({
+    return dbPersonas.map((p: any) => ({
       id: p.id,
       name: p.name,
       project: p.project,

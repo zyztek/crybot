@@ -80,6 +80,14 @@ export const blockchainConfig = {
     username: getEnv('BTC_USERNAME', ''),
     password: getEnv('BTC_PASSWORD', ''),
   },
+  bitcoin: {
+    rpcUrl: getEnv('BTC_RPC_URL', ''),
+    username: getEnv('BTC_USERNAME', ''),
+    password: getEnv('BTC_PASSWORD', ''),
+  },
+  bscTestnet: {
+    rpcUrl: getEnv('BSC_TESTNET_RPC_URL', 'https://data-seed-prebsc-1-s1.bnbchain.org:8545'),
+  },
   solana: {
     rpcUrl: getEnv('SOLANA_RPC_URL', 'https://api.devnet.solana.com'),
   },

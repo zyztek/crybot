@@ -112,7 +112,7 @@ router.get(
       total: data.total,
     }));
 
-    const completedAchievements = achievementProgress.filter(a => a.completed).length;
+    const completedAchievements = achievementProgress.filter((a: any) => a.completed).length;
 
     res.json({
       success: true,

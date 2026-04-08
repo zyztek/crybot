@@ -76,8 +76,8 @@ router.get(
       orderBy: { completedAt: 'desc' },
     });
 
-    const completed = achievements.filter(a => a.completed).length;
-    const inProgress = achievements.filter(a => !a.completed && a.progress > 0).length;
+    const completed = achievements.filter((a: any) => a.completed).length;
+    const inProgress = achievements.filter((a: any) => !a.completed && a.progress > 0).length;
 
     res.json({
       success: true,

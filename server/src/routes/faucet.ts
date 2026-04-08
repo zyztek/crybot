@@ -308,7 +308,7 @@ router.get(
     res.json({
       success: true,
       data: {
-        claims: claims.map(c => ({
+        claims: claims.map((c: any) => ({
           id: c.id,
           coin: c.coin,
           amount: c.amount,
