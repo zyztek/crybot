@@ -152,7 +152,7 @@ router.post(
           totalEarned: user.totalEarned,
           createdAt: user.createdAt,
         },
-        wallets: user.wallets.map((w: any) => ({
+        wallets: user.wallets.map((w: { coin: string; balance: string }) => ({
           coin: w.coin,
           balance: w.balance,
         })),
@@ -352,15 +352,27 @@ router.get(
           balance: w.balance,
           address: w.address,
         })),
-        achievements: user.achievements.map(a => ({
-          id: a.achievement.id,
-          name: a.achievement.name,
-          description: a.achievement.description,
-          icon: a.achievement.icon,
-          progress: a.progress,
-          completed: a.completed,
-          completedAt: a.completedAt,
-        })),
+        achievements: user.achievements.map(
+          (a: {
+            achievement: {
+              id: string;
+              name: string;
+              description: string;
+              icon: string;
+            };
+            progress: number;
+            completed: boolean;
+            completedAt: Date | null;
+          }) => ({
+            id: a.achievement.id,
+            name: a.achievement.name,
+            description: a.achievement.description,
+            icon: a.achievement.icon,
+            progress: a.progress,
+            completed: a.completed,
+            completedAt: a.completedAt,
+          })
+        ),
       },
     });
   })
