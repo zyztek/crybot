@@ -25,6 +25,14 @@ const convertWallets = (wallets: Array<{ coin: string; balance: string }>): Wall
     sol: '0',
     ltc: '0',
     bnb: '0',
+    xrp: '0',
+    ada: '0',
+    avax: '0',
+    dot: '0',
+    matic: '0',
+    link: '0',
+    atom: '0',
+    uni: '0',
   };
 
   wallets.forEach(w => {

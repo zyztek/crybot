@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import { TrendingUp, Wallet, Zap, BarChart3, DollarSign, Layers, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { TrendingUp, Wallet, Zap, BarChart3, DollarSign, Layers, ArrowUpRight, ArrowDownRight, Loader2 } from 'lucide-react';
 import { useCryptoStore } from '../store/cryptoStore';
+import { useDeFi } from '../hooks/useGraphQL';
 
 interface Protocol {
   id: string;
@@ -25,13 +26,62 @@ const PROTOCOLS: Protocol[] = [
 export default function DeFiDashboard() {
   const { language } = useCryptoStore();
   const [selectedProtocol, setSelectedProtocol] = useState<string>('all');
+  
+  // GraphQL hook integration
+  const { fetchPortfolio, fetchProtocols, fetchYieldOpportunities, supplyLiquidity, withdrawLiquidity } = useDeFi();
+  const [defiProtocols, setDefiProtocols] = useState<typeof PROTOCOLS>(PROTOCOLS);
+  const [portfolio, setPortfolio] = useState<{ totalValue: number; totalEarnings: number }>({
+    totalValue: PROTOCOLS.reduce((acc, p) => acc + p.staked * 2500, 0),
+    totalEarnings: PROTOCOLS.reduce((acc, p) => acc + p.earnings, 0)
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState<'protocols' | 'portfolio' | 'yield'>('protocols');
+
+  // Fetch DeFi data on mount
+  useEffect(() => {
+    Promise.all([
+      fetchProtocols.execute(),
+      fetchPortfolio.execute()
+    ]).then(() => {
+      setIsLoading(false);
+    }).catch(() => {
+      setIsLoading(false);
+    });
+  }, [fetchProtocols, fetchPortfolio]);
+
+  // Update state when data changes
+  useEffect(() => {
+    if (fetchProtocols.data?.defiProtocols && fetchProtocols.data.defiProtocols.length > 0) {
+      const transformed = fetchProtocols.data.defiProtocols.map((proto: any) => ({
+        id: proto.id || Math.random().toString(),
+        name: proto.name || proto.protocol,
+        icon: proto.protocol,
+        protocol: proto.protocol,
+        tvl: proto.tvl || 0,
+        apy: parseFloat(proto.apy) || 0,
+        staked: parseFloat(proto.staked) || 0,
+        earnings: parseFloat(proto.earnings) || 0,
+        token: proto.token || 'ETH',
+      }));
+      setDefiProtocols(transformed);
+    }
+  }, [fetchProtocols.data]);
+
+  useEffect(() => {
+    if (fetchPortfolio.data?.defiPortfolio) {
+      setPortfolio({
+        totalValue: parseFloat(fetchPortfolio.data.defiPortfolio.totalValue) || 0,
+        totalEarnings: parseFloat(fetchPortfolio.data.defiPortfolio.totalYield) || 0
+      });
+    }
+  }, [fetchPortfolio.data]);
 
   const filteredProtocols = selectedProtocol === 'all' 
-    ? PROTOCOLS 
-    : PROTOCOLS.filter(p => p.name.toLowerCase().includes(selectedProtocol));
+    ? defiProtocols 
+    : defiProtocols.filter(p => p.name.toLowerCase().includes(selectedProtocol));
 
-  const totalValue = PROTOCOLS.reduce((acc, p) => acc + p.staked * 2500, 0);
-  const totalEarnings = PROTOCOLS.reduce((acc, p) => acc + p.earnings, 0);
+  const totalValue = portfolio.totalValue;
+  const totalEarnings = portfolio.totalEarnings;
 
   const t = {
     title: language === 'es' ? 'DeFi Dashboard' : 'DeFi Dashboard',
@@ -93,30 +143,38 @@ export default function DeFiDashboard() {
       </div>
 
       {/* Protocol Filter */}
-      <div className="flex gap-2 flex-wrap">
-        <button
-          onClick={() => setSelectedProtocol('all')}
-          className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-            selectedProtocol === 'all'
-              ? 'bg-purple-500 text-white'
-              : 'bg-slate-800 text-slate-400 hover:text-white'
-          }`}
-        >
-          {t.protocolsLabel}
-        </button>
-        {PROTOCOLS.map(p => (
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <div className="flex gap-2 flex-wrap">
           <button
-            key={p.id}
-            onClick={() => setSelectedProtocol(p.name.toLowerCase())}
+            onClick={() => setSelectedProtocol('all')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-              selectedProtocol === p.name.toLowerCase()
+              selectedProtocol === 'all'
                 ? 'bg-purple-500 text-white'
                 : 'bg-slate-800 text-slate-400 hover:text-white'
             }`}
           >
-            {p.name}
+            {t.protocolsLabel}
           </button>
-        ))}
+          {defiProtocols.map(p => (
+            <button
+              key={p.id}
+              onClick={() => setSelectedProtocol(p.name.toLowerCase())}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                selectedProtocol === p.name.toLowerCase()
+                  ? 'bg-purple-500 text-white'
+                  : 'bg-slate-800 text-slate-400 hover:text-white'
+              }`}
+            >
+              {p.name}
+            </button>
+          ))}
+        </div>
+        {isLoading && (
+          <div className="flex items-center gap-2 text-purple-400">
+            <Loader2 className="w-4 h-4 animate-spin" />
+            <span className="text-sm">Loading...</span>
+          </div>
+        )}
       </div>
 
       {/* Protocols Grid */}

@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
   User,
   Shield,
@@ -8,8 +9,10 @@ import {
   LogOut,
   CheckCircle,
   ChevronRight,
+  AlertCircle,
 } from 'lucide-react';
 import type { TranslationTexts } from '@/i18n/translations';
+import usePushNotifications from '@/hooks/usePushNotifications';
 
 interface SettingsViewProps {
   user: {
@@ -33,6 +36,47 @@ export default function SettingsView({
   onToggleTheme,
   onLogout,
 }: SettingsViewProps) {
+  const { isSupported, isSubscribed, isLoading, pushPermission, enablePush, disablePush } =
+    usePushNotifications();
+
+  // Load notification settings from localStorage on mount
+  const [notificationSettings, setNotificationSettings] = useState(() => {
+    const saved = localStorage.getItem('notificationSettings');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        // Invalid JSON, use defaults
+      }
+    }
+    return {
+      email: true,
+      claimReminders: true,
+      referralUpdates: true,
+    };
+  });
+
+  // Save notification settings to localStorage when they change
+  useEffect(() => {
+    localStorage.setItem('notificationSettings', JSON.stringify(notificationSettings));
+  }, [notificationSettings]);
+
+  const handlePushToggle = async () => {
+    if (isSubscribed) {
+      await disablePush();
+    } else {
+      await enablePush();
+    }
+  };
+
+  const toggleSetting = (key: keyof typeof notificationSettings) => {
+    if (key === 'push') {
+      handlePushToggle();
+    } else {
+      setNotificationSettings(prev => ({ ...prev, [key]: !prev[key] }));
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <div className="bg-slate-800/50 border border-purple-500/20 rounded-xl p-5 backdrop-blur-sm">
@@ -94,19 +138,55 @@ export default function SettingsView({
           {t.notifications}
         </h3>
         <div className="space-y-3">
-          {[
-            { label: 'Email Notifications' },
-            { label: 'Push Notifications' },
-            { label: 'Claim Reminders' },
-            { label: 'Referral Updates' },
-          ].map((item, i) => (
-            <div key={i} className="flex items-center justify-between">
-              <span className="text-white text-sm">{item.label}</span>
-              <div className="w-12 h-6 bg-purple-500 rounded-full p-1 cursor-pointer">
-                <div className="w-4 h-4 bg-white rounded-full ml-auto" />
-              </div>
+          {/* Push Notifications Status */}
+          {!isSupported && (
+            <div className="flex items-center gap-2 p-2 bg-amber-500/20 border border-amber-500/30 rounded-lg mb-2">
+              <AlertCircle className="w-4 h-4 text-amber-400" />
+              <span className="text-amber-300 text-xs">Push notifications not supported in this browser</span>
             </div>
-          ))}
+          )}
+          {pushPermission === 'denied' && (
+            <div className="flex items-center gap-2 p-2 bg-red-500/20 border border-red-500/30 rounded-lg mb-2">
+              <AlertCircle className="w-4 h-4 text-red-400" />
+              <span className="text-red-300 text-xs">Notifications blocked. Please enable in browser settings.</span>
+            </div>
+          )}
+          {[
+            { key: 'email' as const, label: 'Email Notifications' },
+            { key: 'push' as const, label: 'Push Notifications', requiresSupport: true },
+            { key: 'claimReminders' as const, label: 'Claim Reminders' },
+            { key: 'referralUpdates' as const, label: 'Referral Updates' },
+          ].map(item => {
+            const isDisabled = item.requiresSupport && !isSupported;
+            const isOn = item.key === 'push' ? isSubscribed : notificationSettings[item.key];
+            return (
+              <div key={item.key} className="flex items-center justify-between">
+                <span className={`text-sm ${isDisabled ? 'text-slate-500' : 'text-white'}`}>
+                  {item.label}
+                  {isLoading && item.key === 'push' && (
+                    <span className="ml-2 text-purple-400 text-xs">...</span>
+                  )}
+                </span>
+                <button
+                  onClick={() => toggleSetting(item.key)}
+                  disabled={isDisabled || (item.key === 'push' && isLoading)}
+                  className={`w-12 h-6 rounded-full p-1 cursor-pointer transition-all ${
+                    isOn
+                      ? 'bg-green-500'
+                      : isDisabled
+                      ? 'bg-slate-600 cursor-not-allowed'
+                      : 'bg-slate-600 hover:bg-slate-500'
+                  }`}
+                >
+                  <div
+                    className={`w-4 h-4 rounded-full bg-white shadow-md transition-transform ${
+                      isOn ? 'translate-x-6' : 'translate-x-0'
+                    }`}
+                  />
+                </button>
+              </div>
+            );
+          })}
         </div>
       </div>
 

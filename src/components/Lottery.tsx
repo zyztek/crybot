@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Ticket, Coins, Trophy, Clock, Users, Sparkles, CheckCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Ticket, Coins, Trophy, Clock, Users, Sparkles, CheckCircle, Loader2 } from 'lucide-react';
+import { useLottery } from '../hooks/useGraphQL';
 
 interface LotteryTicket {
   id: number;
@@ -10,12 +11,35 @@ interface LotteryTicket {
 }
 
 const Lottery: React.FC = () => {
+  const { fetchRounds, fetchMyTickets, claimPrize } = useLottery();
   const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
   const [myTickets, setMyTickets] = useState<LotteryTicket[]>([]);
   const [ticketCost] = useState(10);
-  const [jackpot] = useState(50000);
+  const [jackpot, setJackpot] = useState(50000);
   const [nextDraw, setNextDraw] = useState('23:45:32');
-  const [participants] = useState(1543);
+  const [participants, setParticipants] = useState(1543);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Fetch lottery data on mount
+  useEffect(() => {
+    const loadData = async () => {
+      setIsLoading(true);
+      try {
+        const roundsResult = await fetchRounds.execute();
+        if (roundsResult?.lotteryRounds) {
+          const activeRound = roundsResult.lotteryRounds.find((r: any) => r.status === 'active');
+          if (activeRound) {
+            setJackpot(parseFloat(activeRound.prizePool) || 50000);
+          }
+        }
+      } catch (e) {
+        // Use mock data on error
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadData();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const maxNumbers = 6;
   const numberRange = 49;
@@ -28,7 +52,7 @@ const Lottery: React.FC = () => {
     }
   };
 
-  const buyTicket = () => {
+  const handleBuyTicket = () => {
     if (selectedNumbers.length !== maxNumbers) return;
 
     const newTicket: LotteryTicket = {
@@ -67,6 +91,11 @@ const Lottery: React.FC = () => {
         </div>
 
         {/* Jackpot Banner */}
+        {isLoading && (
+          <div className="flex justify-center mb-4">
+            <Loader2 className="w-8 h-8 animate-spin text-purple-400" />
+          </div>
+        )}
         <div className="bg-gradient-to-r from-yellow-500 via-amber-500 to-yellow-500 rounded-2xl p-8 mb-8 relative overflow-hidden">
           <div className="absolute inset-0 opacity-30 bg-gradient-to-br from-yellow-200/20 to-amber-200/20"></div>
           <div className="relative z-10 text-center">
@@ -121,7 +150,7 @@ const Lottery: React.FC = () => {
 
               <div className="flex gap-4">
                 <button
-                  onClick={buyTicket}
+                  onClick={handleBuyTicket}
                   disabled={selectedNumbers.length !== maxNumbers}
                   className="flex-1 py-3 bg-gradient-to-r from-yellow-400 to-amber-600 text-white font-bold rounded-xl hover:from-yellow-500 hover:to-amber-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >

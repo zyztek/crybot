@@ -11,6 +11,7 @@ interface HeaderProps {
   onToggleTheme: () => void;
   searchTerm?: string;
   onSearch?: (term: string) => void;
+  notifications?: number;
 }
 
 export default function Header({
@@ -21,6 +22,7 @@ export default function Header({
   onToggleTheme,
   searchTerm = '',
   onSearch,
+  notifications = 0,
 }: HeaderProps) {
   const [localSearch, setLocalSearch] = useState(searchTerm);
   const [isSearchFocused, setIsSearchFocused] = useState(false);

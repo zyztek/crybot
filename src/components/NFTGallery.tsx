@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNFT } from '../hooks/useGraphQL';
 import {
   Image as ImageIcon,
   Palette,
@@ -191,11 +192,46 @@ const collections = [
 ];
 
 export const NFTGallery: React.FC = () => {
+  const { fetchCollections, fetchMyNFTs, mint, buy, list } = useNFT();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedRarity, setSelectedRarity] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'price' | 'likes' | 'views'>('price');
+  const [isLoading, setIsLoading] = useState(false);
+  const [nftList, setNftList] = useState<NFT[]>(nfts);
 
-  const filteredNFTs = nfts
+  // Fetch NFTs on mount
+  useEffect(() => {
+    const loadNFTs = async () => {
+      setIsLoading(true);
+      try {
+        const result = await fetchCollections.execute();
+        if (result?.nftCollections) {
+          setNftList(result.nftCollections.map((c: any, idx: number) => ({
+            id: idx + 1,
+            name: c.name,
+            collection: c.name,
+            image: '🖼️',
+            price: parseFloat(c.floorPrice) || 0,
+            currency: 'ETH',
+            creator: '0x...',
+            likes: 0,
+            views: 0,
+            category: 'collectibles',
+            rarity: 'common',
+            listed: true,
+            lastSale: parseFloat(c.floorPrice) || 0,
+          })));
+        }
+      } catch (e) {
+        // Use mock data on error
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadNFTs();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const filteredNFTs = nftList
     .filter(nft => {
       const matchesCategory = selectedCategory === 'all' || nft.category === selectedCategory;
       const matchesRarity = selectedRarity === 'all' || nft.rarity === selectedRarity;

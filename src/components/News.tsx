@@ -1,4 +1,6 @@
-import { Newspaper, Bell, Clock, ArrowRight, Zap, Award, Flame } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Newspaper, Bell, Clock, ArrowRight, Zap, Award, Flame, Loader2 } from 'lucide-react';
+import { useNews } from '../hooks/useGraphQL';
 
 const newsItems = [
   {
@@ -108,6 +110,82 @@ const quickStats = [
 ];
 
 export default function News({ language }: { language: 'zh' | 'en' }) {
+  // GraphQL hook integration
+  const { fetchArticles, fetchSentiment } = useNews();
+  const [newsData, setNewsData] = useState(newsItems);
+  const [isLoading, setIsLoading] = useState(false);
+  const [sentiment, setSentiment] = useState<{ overall: string; fearGreedIndex: number } | null>(null);
+
+  // Fetch news on mount
+  useEffect(() => {
+    Promise.all([
+      fetchArticles.execute(),
+      fetchSentiment.execute()
+    ]).then(() => {
+      setIsLoading(false);
+    }).catch(() => {
+      setIsLoading(false);
+    });
+  }, [fetchArticles, fetchSentiment]);
+
+  // Update state when data changes
+  useEffect(() => {
+    if (fetchArticles.data?.newsArticles && fetchArticles.data.newsArticles.length > 0) {
+      const transformed = fetchArticles.data.newsArticles.map((article: any) => ({
+        id: article.id,
+        title: article.title,
+        titleZH: article.title,
+        category: article.category,
+        categoryZH: article.category,
+        categoryColor: getCategoryColor(article.category),
+        content: article.content,
+        contentZH: article.content,
+        source: article.source,
+        time: getRelativeTime(article.publishedAt),
+        timeZH: getRelativeTime(article.publishedAt),
+        trending: false,
+        image: getCategoryEmoji(article.category),
+      }));
+      setNewsData(transformed);
+    }
+  }, [fetchArticles.data]);
+
+  useEffect(() => {
+    if (fetchSentiment.data?.marketSentiment) {
+      setSentiment({
+        overall: fetchSentiment.data.marketSentiment.overall,
+        fearGreedIndex: fetchSentiment.data.marketSentiment.fearGreedIndex
+      });
+    }
+  }, [fetchSentiment.data]);
+
+  const getCategoryColor = (category: string): string => {
+    const colors: Record<string, string> = {
+      'Market': 'green', 'Technology': 'blue', 'Platform': 'purple', 
+      'Update': 'yellow', 'Community': 'orange'
+    };
+    return colors[category] || 'green';
+  };
+
+  const getCategoryEmoji = (category: string): string => {
+    const emojis: Record<string, string> = {
+      'Market': '📈', 'Technology': '⚡', 'Platform': '🎉', 
+      'Update': '💎', 'Community': '🐕', 'default': '📰'
+    };
+    return emojis[category] || emojis['default'];
+  };
+
+  const getRelativeTime = (dateString?: string): string => {
+    if (!dateString) return 'Recently';
+    const date = new Date(dateString);
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    if (hours < 1) return 'Just now';
+    if (hours < 24) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+    const days = Math.floor(hours / 24);
+    return `${days} day${days > 1 ? 's' : ''} ago`;
+  };
   const categoryColors: Record<string, string> = {
     green: 'bg-green-500/20 text-green-400',
     blue: 'bg-blue-500/20 text-blue-400',
@@ -128,7 +206,7 @@ export default function News({ language }: { language: 'zh' | 'en' }) {
     latest: language === 'zh' ? '最新' : 'Latest',
   };
 
-  const trendingNews = newsItems.filter(item => item.trending);
+  const trendingNews = newsData.filter(item => item.trending);
 
   return (
     <div className="space-y-8">
@@ -147,6 +225,13 @@ export default function News({ language }: { language: 'zh' | 'en' }) {
       </div>
 
       <div className="grid lg:grid-cols-4 gap-4">
+        {/* Loading indicator */}
+        {isLoading && (
+          <div className="flex items-center gap-2 text-purple-400 mb-2">
+            <Loader2 className="w-4 h-4 animate-spin" />
+            <span className="text-sm">Loading latest news...</span>
+          </div>
+        )}
         {quickStats.map((stat, idx) => (
           <div key={idx} className="p-4 bg-slate-800/50 rounded-xl border border-slate-700">
             <p className="text-gray-400 text-sm">{language === 'zh' ? stat.labelZH : stat.label}</p>
@@ -220,7 +305,7 @@ export default function News({ language }: { language: 'zh' | 'en' }) {
           {t.latest}
         </h2>
         <div className="space-y-4">
-          {newsItems.slice(0, 4).map(item => (
+          {newsData.slice(0, 4).map(item => (
             <div
               key={item.id}
               className="group p-4 bg-slate-800/50 rounded-xl border border-slate-700 hover:border-slate-500/50 transition-all duration-300 flex gap-4"

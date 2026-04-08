@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useCryptoStore, texts } from './store/cryptoStore';
-import type { Faucet } from './types';
 import LoginScreen from './components/layout/LoginScreen';
 import Header from './components/layout/Header';
 import StatsBar from './components/layout/StatsBar';
@@ -9,7 +8,8 @@ import ContentArea from './components/layout/ContentArea';
 import Footer from './components/layout/Footer';
 import ToastContainer from './components/ui/ToastContainer';
 import SkipLink from './components/ui/SkipLink';
-import { useApi } from './hooks/useApi';
+import useAuthSession from './hooks/useAuthSession';
+import useFaucetClaim from './hooks/useFaucetClaim';
 
 function App() {
   const {
@@ -25,99 +25,21 @@ function App() {
     history,
     achievements,
     leaderboard,
-    login: storeLogin,
-    logout: storeLogout,
     setActiveTab,
     toggleLanguage,
     toggleTheme,
     toggleWalletAddress,
-    claimFaucet,
     copyReferralCode,
   } = useCryptoStore();
 
-  // Use API hook for real backend integration
-  const {
-    logout: apiLogout,
-    fetchFaucets,
-    claimFaucet: apiClaimFaucet,
-    fetchWallets,
-    fetchAchievements,
-    fetchLeaderboard,
-    fetchUserStats,
-    fetchReferrals,
-    syncAuth,
-  } = useApi();
+  // Custom hooks for auth and faucet claims
+  const { isInitialized, handleLogin, handleLogout, referrals } = useAuthSession();
+  const { handleClaimFaucet } = useFaucetClaim();
 
-  // Local state for API-based operations
-  const [isInitialized, setIsInitialized] = useState(false);
+  // Local state for search
   const [searchTerm, setSearchTerm] = useState('');
-  const [referrals, setReferrals] = useState<
-    Array<{ id: string; username: string; createdAt: string; earnings?: string }>
-  >([]);
 
-  // Initialize on mount - check for existing session
-  useEffect(() => {
-    const init = async () => {
-      const token = localStorage.getItem('accessToken');
-      if (token) {
-        const success = await syncAuth();
-        if (success) {
-          storeLogin();
-          // Fetch all real data from API in parallel
-          await Promise.all([
-            fetchFaucets(),
-            fetchWallets(),
-            fetchAchievements(),
-            fetchLeaderboard('all_time'),
-            fetchUserStats(),
-          ]).catch(err => console.error('Failed to fetch initial data:', err));
-
-          // Fetch referrals for the referral view
-          const referralsData = await fetchReferrals();
-          if (referralsData) {
-            setReferrals(
-              referralsData.referrals.map(r => ({
-                id: r.id,
-                username: r.username,
-                createdAt: r.createdAt,
-              }))
-            );
-          }
-        }
-      }
-      setIsInitialized(true);
-    };
-    init();
-  }, []);
-
-  // Apply theme to DOM
-  useEffect(() => {
-    document.documentElement.classList.toggle('light', theme === 'light');
-  }, [theme]);
-
-  // Handle login from LoginScreen
-  const handleLogin = () => {
-    storeLogin();
-  };
-
-  // Handle logout with API call
-  const handleLogout = async () => {
-    try {
-      await apiLogout();
-    } finally {
-      storeLogout();
-    }
-  };
-
-  // Handle faucet claim - convert to match ContentArea's expected signature
-  const handleClaimFaucet = (faucet: Faucet) => {
-    apiClaimFaucet(faucet.coin).then(result => {
-      if (result.success) {
-        // Update local state
-        claimFaucet(faucet);
-      }
-    });
-  };
+  // Theme handling is done in Header component via toggleTheme
 
   // Mock withdrawal history for wallet view
   const withdrawalHistory = [

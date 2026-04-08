@@ -22,97 +22,90 @@ interface WhaleAlert {
   impact: 'high' | 'medium' | 'low';
 }
 
+const getInitialAlerts = (): WhaleAlert[] => [
+  {
+    id: '1',
+    type: 'buy',
+    coin: 'BTC',
+    amount: 125.5,
+    valueUSD: 8478125,
+    timestamp: Date.now() - 30000,
+    impact: 'high',
+  },
+  {
+    id: '2',
+    type: 'sell',
+    coin: 'ETH',
+    amount: 5000,
+    valueUSD: 18250000,
+    exchange: 'Binance',
+    timestamp: Date.now() - 120000,
+    impact: 'high',
+  },
+  {
+    id: '3',
+    type: 'transfer',
+    coin: 'SOL',
+    amount: 250000,
+    valueUSD: 46250000,
+    walletAddress: '3x...8kP2',
+    timestamp: Date.now() - 300000,
+    impact: 'high',
+  },
+  {
+    id: '4',
+    type: 'exchange_deposit',
+    coin: 'DOGE',
+    amount: 50000000,
+    valueUSD: 9500000,
+    exchange: 'Coinbase',
+    timestamp: Date.now() - 480000,
+    impact: 'high',
+  },
+  {
+    id: '5',
+    type: 'sell',
+    coin: 'BTC',
+    amount: 45,
+    valueUSD: 3037500,
+    exchange: 'Kraken',
+    timestamp: Date.now() - 720000,
+    impact: 'medium',
+  },
+  {
+    id: '6',
+    type: 'buy',
+    coin: 'BNB',
+    amount: 10000,
+    valueUSD: 6250000,
+    exchange: 'OKX',
+    timestamp: Date.now() - 900000,
+    impact: 'medium',
+  },
+  {
+    id: '7',
+    type: 'transfer',
+    coin: 'ETH',
+    amount: 3500,
+    valueUSD: 12775000,
+    walletAddress: '0x...a7F9',
+    timestamp: Date.now() - 1200000,
+    impact: 'high',
+  },
+  {
+    id: '8',
+    type: 'exchange_withdrawal',
+    coin: 'SOL',
+    amount: 150000,
+    valueUSD: 27750000,
+    exchange: 'Binance',
+    timestamp: Date.now() - 1800000,
+    impact: 'high',
+  },
+];
+
 const WhaleAlerts = () => {
-  const [alerts] = useState<WhaleAlert[]>([
-    {
-      id: '1',
-      type: 'buy',
-      coin: 'BTC',
-      amount: 125.5,
-      valueUSD: 8478125,
-
-      timestamp: Date.now() - 30000, // 30 seconds ago
-      impact: 'high',
-    },
-    {
-      id: '2',
-      type: 'sell',
-      coin: 'ETH',
-      amount: 5000,
-      valueUSD: 18250000,
-      exchange: 'Binance',
-
-      timestamp: Date.now() - 120000, // 2 minutes ago
-      impact: 'high',
-    },
-    {
-      id: '3',
-      type: 'transfer',
-      coin: 'SOL',
-      amount: 250000,
-      valueUSD: 46250000,
-      walletAddress: '3x...8kP2',
-
-      timestamp: Date.now() - 300000, // 5 minutes ago
-      impact: 'high',
-    },
-    {
-      id: '4',
-      type: 'exchange_deposit',
-      coin: 'DOGE',
-      amount: 50000000,
-      valueUSD: 9500000,
-      exchange: 'Coinbase',
-
-      timestamp: Date.now() - 480000, // 8 minutes ago
-      impact: 'high',
-    },
-    {
-      id: '5',
-      type: 'sell',
-      coin: 'BTC',
-      amount: 45,
-      valueUSD: 3037500,
-      exchange: 'Kraken',
-
-      timestamp: Date.now() - 720000, // 12 minutes ago
-      impact: 'medium',
-    },
-    {
-      id: '6',
-      type: 'buy',
-      coin: 'BNB',
-      amount: 10000,
-      valueUSD: 6250000,
-      exchange: 'OKX',
-
-      timestamp: Date.now() - 900000, // 15 minutes ago
-      impact: 'medium',
-    },
-    {
-      id: '7',
-      type: 'transfer',
-      coin: 'ETH',
-      amount: 3500,
-      valueUSD: 12775000,
-      walletAddress: '0x...a7F9',
-
-      timestamp: Date.now() - 1200000, // 20 minutes ago
-      impact: 'high',
-    },
-    {
-      id: '8',
-      type: 'exchange_withdrawal',
-      coin: 'SOL',
-      amount: 150000,
-      valueUSD: 27750000,
-      exchange: 'Binance',
-
-      timestamp: Date.now() - 1800000, // 30 minutes ago
-      impact: 'high',
-    },
-  ]);
-
+  const [alerts] = useState<WhaleAlert[]>(getInitialAlerts());
   const [filter, setFilter] = useState<'all' | 'buy' | 'sell' | 'transfer' | 'exchange'>('all');
   const [alertThreshold, setAlertThreshold] = useState(1000000);
 
@@ -335,7 +328,7 @@ const WhaleAlerts = () => {
                 </div>
               </div>
 
-              {/* Middle - Amount & */}
+              {/* Middle - Amount */}
               <div className="text-center">
                 <div className="text-slate-400 text-sm">{alert.coin}</div>
                 <div className="text-2xl font-bold text-white">

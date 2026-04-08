@@ -79,6 +79,34 @@ const ReplayTransaction = createLazyComponent(() => import('../ReplayTransaction
 const ChainHealth = createLazyComponent(() => import('../ChainHealth'));
 const FailureAnalyzer = createLazyComponent(() => import('../FailureAnalyzer'));
 const GasProfiler = createLazyComponent(() => import('../GasProfiler'));
+const PortfolioMarginCalculator = createLazyComponent(() => import('../PortfolioMarginCalculator'));
+const ArbitrageDetector = createLazyComponent(() => import('../ArbitrageDetector'));
+const LiquidationCalculator = createLazyComponent(() => import('../LiquidationCalculator'));
+const StopLossTakeProfit = createLazyComponent(() => import('../StopLossTakeProfit'));
+const GridTradingBot = createLazyComponent(() => import('../GridTradingBot'));
+const FundingRateTracker = createLazyComponent(() => import('../FundingRateTracker'));
+const FuturesTradingInterface = createLazyComponent(() => import('../FuturesTradingInterface'));
+const OptionsTradingDashboard = createLazyComponent(() => import('../OptionsTradingDashboard'));
+const OrderBook = createLazyComponent(() => import('../OrderBook'));
+const MarginTradingSimulator = createLazyComponent(() => import('../MarginTradingSimulator'));
+const TradingJournal = createLazyComponent(() => import('../TradingJournal'));
+const TaxLossHarvesting = createLazyComponent(() => import('../TaxLossHarvesting'));
+const WalletHealthScore = createLazyComponent(() => import('../WalletHealthScore'));
+const RugPullDetector = createLazyComponent(() => import('../RugPullDetector'));
+const TokenAuditChecker = createLazyComponent(() => import('../TokenAuditChecker'));
+const PhishingLinkScanner = createLazyComponent(() => import('../PhishingLinkScanner'));
+const TokenHolderDistribution = createLazyComponent(() => import('../TokenHolderDistribution'));
+const StablecoinCirculation = createLazyComponent(() => import('../StablecoinCirculation'));
+const GasOptimizationTool = createLazyComponent(() => import('../GasOptimizationTool'));
+const GasFeePredictor = createLazyComponent(() => import('../GasFeePredictor'));
+const NetworkDifficultyChart = createLazyComponent(() => import('../NetworkDifficultyChart'));
+const HashRateMonitor = createLazyComponent(() => import('../HashRateMonitor'));
+const OnChainMetrics = createLazyComponent(() => import('../OnChainMetrics'));
+const ExchangeFlowMonitor = createLazyComponent(() => import('../ExchangeFlowMonitor'));
+const DexVolumeAggregator = createLazyComponent(() => import('../DexVolumeAggregator'));
+const DCATool = createLazyComponent(() => import('../DCATool'));
+const SmartMoneyTracker = createLazyComponent(() => import('../SmartMoneyTracker'));
+const CommunityLeaderboards = createLazyComponent(() => import('../CommunityLeaderboards'));
 
 interface ContentAreaProps {
   activeTab: TabType;
@@ -297,6 +325,108 @@ export default function ContentArea({
       return renderLazy(GasProfiler);
     case 'nft-faucet':
       return <NFTFaucetView language={language} t={t} />;
+    // ============ Phase 1: Trading & Finance (Features 1-15) ============
+    case 'pl-calc':
+      return renderLazy(PortfolioMarginCalculator);
+    case 'risk-reward':
+      return renderLazy(StopLossTakeProfit);
+    case 'position-size':
+      return renderLazy(MarginTradingSimulator);
+    case 'breakeven':
+      return renderLazy(ArbitrageDetector);
+    case 'options-greeks':
+      return renderLazy(OptionsTradingDashboard);
+    case 'liquidation':
+      return renderLazy(LiquidationCalculator);
+    case 'derivatives':
+      return renderLazy(FuturesTradingInterface);
+    case 'order-book':
+      return renderLazy(OrderBook);
+    case 'trading-journal':
+      return renderLazy(TradingJournal);
+    case 'grid-bot':
+      return renderLazy(GridTradingBot);
+    case 'copy-trading':
+      return renderLazy(SmartMoneyTracker);
+    // ============ Phase 2: DeFi & Yield ============
+    case 'yield-opt':
+      return renderLazy(YieldFarming);
+    case 'lend-opt':
+      return renderLazy(LendingProtocol);
+    case 'lp-roi':
+      return renderLazy(LiquidityPoolAnalyzer);
+    case 'flash-profit':
+      return renderLazy(FlashLoanCalculator);
+    case 'staking-proj':
+      return renderLazy(Staking);
+    case 'gov-track':
+      return renderLazy(GovernanceVoting);
+    case 'token-vest':
+      return renderLazy(TokenSale);
+    case 'defi-rev':
+      return renderLazy(DeFiDashboard);
+    // ============ Phase 3: Analytics & Monitoring ============
+    case 'whale-hist':
+      return renderLazy(WhaleAlerts);
+    case 'exchange-res':
+      return renderLazy(ExchangeFlowMonitor);
+    case 'etf-flow':
+      return renderLazy(NewsAggregator);
+    case 'liq-heat':
+      return renderLazy(FundingRateTracker);
+    case 'spot-fut':
+      return renderLazy(DexVolumeAggregator);
+    case 'net-util':
+      return renderLazy(NetworkDifficultyChart);
+    case 'nft-anal':
+      return renderLazy(NFTGallery);
+    // ============ Phase 4: Security & Tools ============
+    case 'pk-check':
+      return renderLazy(WalletAudit);
+    case 'wallet-age':
+      return renderLazy(WalletHealthScore);
+    case 'token-revok':
+      return renderLazy(ScamDetector);
+    case 'token-sniff':
+      return renderLazy(TokenAuditChecker);
+    case 'rug-pull':
+      return renderLazy(RugPullDetector);
+    case 'phishing':
+      return renderLazy(PhishingLinkScanner);
+    case 'sandwich':
+      return renderLazy(MEVProtection);
+    // ============ Phase 5: Social & Gaming ============
+    case 'trading-comp':
+      return renderLazy(CommunityLeaderboards);
+    case 'achievement-show':
+      return renderLazy(AchievementsView);
+    case 'news-agg':
+      return renderLazy(NewsAggregator);
+    case 'events-track':
+      return renderLazy(EventCalendar);
+    case 'tax':
+      return renderLazy(CryptoTaxCalculator);
+    case 'tax-loss':
+      return renderLazy(TaxLossHarvesting);
+    // ============ Additional Features ============
+    case 'dca-strat':
+      return renderLazy(DCATool);
+    case 'on-chain':
+      return renderLazy(OnChainMetrics);
+    case 'gas-opt':
+      return renderLazy(GasOptimizationTool);
+    case 'fee-est':
+      return renderLazy(GasFeePredictor);
+    case 'lend-opt':
+      return renderLazy(LendingProtocol);
+    case 'hash-rate':
+      return renderLazy(HashRateMonitor);
+    case 'stable-anal':
+      return renderLazy(StablecoinCirculation);
+    case 'token-dist':
+      return renderLazy(TokenHolderDistribution);
+    case 'arbitrage':
+      return renderLazy(ArbitrageDetector);
     default:
       return <FaucetsView faucets={faucets} onClaim={onClaimFaucet} language={language} t={t} />;
   }

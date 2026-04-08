@@ -81,7 +81,7 @@ const PriceAlerts: React.FC = () => {
       title: 'Alertas de Precio',
       createAlert: 'Crear Alerta',
       active: 'Activas',
-      triggered: 'Disparadas',
+      triggeredStatus: 'Disparadas',
       all: 'Todas',
       above: 'Por encima de',
       below: 'Por debajo de',
@@ -96,19 +96,19 @@ const PriceAlerts: React.FC = () => {
       cancel: 'Cancelar',
       delete: 'Eliminar',
       edit: 'Editar',
-      triggered: 'Disparada',
+      triggeredLabel: 'Disparada',
       activeAlert: 'Alerta Activa',
-      priceReached: '¡Precio alcanzado!',
-      daysAgo: 'días atrás',
-      hoursAgo: 'horas atrás',
-      minutesAgo: 'minutos atrás',
+      priceReached: 'Precio alcanzado!',
+      daysAgo: 'dias atras',
+      hoursAgo: 'horas atras',
+      minutesAgo: 'minutos atras',
       justNow: 'ahora',
     },
     en: {
       title: 'Price Alerts',
       createAlert: 'Create Alert',
       active: 'Active',
-      triggered: 'Triggered',
+      triggeredStatus: 'Triggered',
       all: 'All',
       above: 'Above',
       below: 'Below',
@@ -123,7 +123,7 @@ const PriceAlerts: React.FC = () => {
       cancel: 'Cancel',
       delete: 'Delete',
       edit: 'Edit',
-      triggered: 'Triggered',
+      triggeredLabel: 'Triggered',
       activeAlert: 'Active Alert',
       priceReached: 'Price reached!',
       daysAgo: 'days ago',
@@ -222,7 +222,7 @@ const PriceAlerts: React.FC = () => {
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-slate-400 text-sm">{texts.triggered}</p>
+                <p className="text-slate-400 text-sm">{texts.triggeredLabel}</p>
                 <p className="text-3xl font-bold text-yellow-400 mt-1">{triggeredAlerts}</p>
               </div>
               <div className="w-14 h-14 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
@@ -304,7 +304,7 @@ const PriceAlerts: React.FC = () => {
                         <h3 className="text-xl font-bold text-white">{alert.coin}</h3>
                         {alert.triggered && (
                           <span className="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 text-xs rounded-full">
-                            {texts.triggered}
+                            {texts.triggeredLabel}
                           </span>
                         )}
                       </div>

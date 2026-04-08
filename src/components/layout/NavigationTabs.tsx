@@ -19,6 +19,27 @@ import {
   Star,
   Network,
   Gem,
+  Calculator,
+  Target,
+  LineChart,
+  GitBranch,
+  FlaskConical,
+  Clock,
+  Calendar,
+  Radio,
+  AlertTriangle,
+  Search,
+  FileText,
+  Percent,
+  Scale,
+  Waves,
+  Hash,
+  Gauge,
+  TrendingDown,
+  Lock,
+  BookOpen,
+  History,
+  Beaker,
 } from 'lucide-react';
 import NavTab from '../ui/NavTab';
 import type { TabType, Faucet, Achievement } from '@/types';
@@ -332,6 +353,256 @@ export default function NavigationTabs({
         icon={<Gem className="w-4 h-4" />}
       >
         NFT Faucets
+      </NavTab>
+
+      {/* ============ Phase 1: Trading & Finance ============ */}
+      <NavTab
+        active={activeTab === 'pl-calc'}
+        onClick={() => onTabChange('pl-calc')}
+        icon={<Calculator className="w-4 h-4" />}
+      >
+        Margin Calc
+      </NavTab>
+      <NavTab
+        active={activeTab === 'risk-reward'}
+        onClick={() => onTabChange('risk-reward')}
+        icon={<Target className="w-4 h-4" />}
+      >
+        Risk/Reward
+      </NavTab>
+      <NavTab
+        active={activeTab === 'position-size'}
+        onClick={() => onTabChange('position-size')}
+        icon={<Scale className="w-4 h-4" />}
+      >
+        Position Size
+      </NavTab>
+      <NavTab
+        active={activeTab === 'liquidation'}
+        onClick={() => onTabChange('liquidation')}
+        icon={<AlertTriangle className="w-4 h-4" />}
+      >
+        Liquidation
+      </NavTab>
+      <NavTab
+        active={activeTab === 'options-greeks'}
+        onClick={() => onTabChange('options-greeks')}
+        icon={<LineChart className="w-4 h-4" />}
+      >
+        Options
+      </NavTab>
+      <NavTab
+        active={activeTab === 'derivatives'}
+        onClick={() => onTabChange('derivatives')}
+        icon={<TrendingDown className="w-4 h-4" />}
+      >
+        Futures
+      </NavTab>
+      <NavTab
+        active={activeTab === 'grid-bot'}
+        onClick={() => onTabChange('grid-bot')}
+        icon={<GitBranch className="w-4 h-4" />}
+      >
+        Grid Bot
+      </NavTab>
+      <NavTab
+        active={activeTab === 'trading-journal'}
+        onClick={() => onTabChange('trading-journal')}
+        icon={<BookOpen className="w-4 h-4" />}
+      >
+        Trading Journal
+      </NavTab>
+
+      {/* ============ Phase 2: DeFi & Yield ============ */}
+      <NavTab
+        active={activeTab === 'yield-opt'}
+        onClick={() => onTabChange('yield-opt')}
+        icon={<FlaskConical className="w-4 h-4" />}
+      >
+        Yield Opt
+      </NavTab>
+      <NavTab
+        active={activeTab === 'lend-opt'}
+        onClick={() => onTabChange('lend-opt')}
+        icon={<Coins className="w-4 h-4" />}
+      >
+        Lend Pool
+      </NavTab>
+      <NavTab
+        active={activeTab === 'lp-roi'}
+        onClick={() => onTabChange('lp-roi')}
+        icon={<Waves className="w-4 h-4" />}
+      >
+        LP ROI
+      </NavTab>
+      <NavTab
+        active={activeTab === 'flash-profit'}
+        onClick={() => onTabChange('flash-profit')}
+        icon={<Zap className="w-4 h-4" />}
+      >
+        Flash Loan
+      </NavTab>
+      <NavTab
+        active={activeTab === 'staking-proj'}
+        onClick={() => onTabChange('staking-proj')}
+        icon={<Lock className="w-4 h-4" />}
+      >
+        Staking
+      </NavTab>
+      <NavTab
+        active={activeTab === 'gov-track'}
+        onClick={() => onTabChange('gov-track')}
+        icon={<Building2 className="w-4 h-4" />}
+      >
+        Governance
+      </NavTab>
+      <NavTab
+        active={activeTab === 'token-vest'}
+        onClick={() => onTabChange('token-vest')}
+        icon={<Clock className="w-4 h-4" />}
+      >
+        Vesting
+      </NavTab>
+
+      {/* ============ Phase 3: Analytics & Monitoring ============ */}
+      <NavTab
+        active={activeTab === 'whale-hist'}
+        onClick={() => onTabChange('whale-hist')}
+        icon={<Activity className="w-4 h-4" />}
+      >
+        Whales
+      </NavTab>
+      <NavTab
+        active={activeTab === 'exchange-res'}
+        onClick={() => onTabChange('exchange-res')}
+        icon={<TrendingUp className="w-4 h-4" />}
+      >
+        Exchange Res
+      </NavTab>
+      <NavTab
+        active={activeTab === 'liq-heat'}
+        onClick={() => onTabChange('liq-heat')}
+        icon={<Gauge className="w-4 h-4" />}
+      >
+        Liq Heat
+      </NavTab>
+      <NavTab
+        active={activeTab === 'net-util'}
+        onClick={() => onTabChange('net-util')}
+        icon={<Hash className="w-4 h-4" />}
+      >
+        Network
+      </NavTab>
+      <NavTab
+        active={activeTab === 'nft-anal'}
+        onClick={() => onTabChange('nft-anal')}
+        icon={<Gem className="w-4 h-4" />}
+      >
+        NFT Analytics
+      </NavTab>
+
+      {/* ============ Phase 4: Security & Tools ============ */}
+      <NavTab
+        active={activeTab === 'pk-check'}
+        onClick={() => onTabChange('pk-check')}
+        icon={<Shield className="w-4 h-4" />}
+      >
+        Wallet Audit
+      </NavTab>
+      <NavTab
+        active={activeTab === 'wallet-age'}
+        onClick={() => onTabChange('wallet-age')}
+        icon={<History className="w-4 h-4" />}
+      >
+        Wallet Age
+      </NavTab>
+      <NavTab
+        active={activeTab === 'token-sniff'}
+        onClick={() => onTabChange('token-sniff')}
+        icon={<Search className="w-4 h-4" />}
+      >
+        Token Audit
+      </NavTab>
+      <NavTab
+        active={activeTab === 'rug-pull'}
+        onClick={() => onTabChange('rug-pull')}
+        icon={<AlertTriangle className="w-4 h-4" />}
+      >
+        Rug Check
+      </NavTab>
+      <NavTab
+        active={activeTab === 'phishing'}
+        onClick={() => onTabChange('phishing')}
+        icon={<Shield className="w-4 h-4" />}
+      >
+        Phishing
+      </NavTab>
+      <NavTab
+        active={activeTab === 'sandwich'}
+        onClick={() => onTabChange('sandwich')}
+        icon={<Shield className="w-4 h-4" />}
+      >
+        MEV Protect
+      </NavTab>
+
+      {/* ============ Phase 5: Social & Gaming ============ */}
+      <NavTab
+        active={activeTab === 'trading-comp'}
+        onClick={() => onTabChange('trading-comp')}
+        icon={<Trophy className="w-4 h-4" />}
+      >
+        Competitions
+      </NavTab>
+      <NavTab
+        active={activeTab === 'news-agg'}
+        onClick={() => onTabChange('news-agg')}
+        icon={<Radio className="w-4 h-4" />}
+      >
+        News
+      </NavTab>
+      <NavTab
+        active={activeTab === 'events-track'}
+        onClick={() => onTabChange('events-track')}
+        icon={<Calendar className="w-4 h-4" />}
+      >
+        Events
+      </NavTab>
+      <NavTab
+        active={activeTab === 'tax-loss'}
+        onClick={() => onTabChange('tax-loss')}
+        icon={<Percent className="w-4 h-4" />}
+      >
+        Tax Loss
+      </NavTab>
+
+      {/* ============ Additional Tools ============ */}
+      <NavTab
+        active={activeTab === 'dca-strat'}
+        onClick={() => onTabChange('dca-strat')}
+        icon={<FlaskConical className="w-4 h-4" />}
+      >
+        DCA
+      </NavTab>
+      <NavTab
+        active={activeTab === 'on-chain'}
+        onClick={() => onTabChange('on-chain')}
+        icon={<LineChart className="w-4 h-4" />}
+      >
+        On-Chain
+      </NavTab>
+      <NavTab
+        active={activeTab === 'token-dist'}
+        onClick={() => onTabChange('token-dist')}
+        icon={<GitBranch className="w-4 h-4" />}
+      >
+        Holders
+      </NavTab>
+      <NavTab
+        active={activeTab === 'arbitrage'}
+        onClick={() => onTabChange('arbitrage')}
+        icon={<Search className="w-4 h-4" />}
+      >
+        Arbitrage
       </NavTab>
     </div>
   );
