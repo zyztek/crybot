@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import { Lock, TrendingUp, Clock, Coins, ArrowUpRight, ArrowDownRight, Award, Info } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { TrendingUp, Coins, Award, Info, Loader2 } from 'lucide-react';
 import { useCryptoStore } from '../store/cryptoStore';
+import { useStaking } from '../hooks/useGraphQL';
 
 interface StakingPlan {
   id: string;
@@ -43,13 +44,73 @@ export default function Staking() {
   const { language } = useCryptoStore();
   const [activeTab, setActiveTab] = useState<'earn' | 'positions'>('earn');
   const [selectedCoin, setSelectedCoin] = useState<string>('all');
+  
+  // GraphQL hook integration
+  const { fetchPools, fetchPositions, stake, unstake } = useStaking();
+  const [stakingPools, setStakingPools] = useState<StakingPlan[]>(STAKING_PLANS);
+  const [myPositions, setMyPositions] = useState<StakedPosition[]>(MOCK_STAKES);
+  const [isLoadingPools, setIsLoadingPools] = useState(false);
+  const [isLoadingPositions, setIsLoadingPositions] = useState(false);
+
+  // Fetch staking pools on mount
+  useEffect(() => {
+    fetchPools.execute().then(() => {
+      setIsLoadingPools(false);
+    }).catch(() => {
+      setIsLoadingPools(false);
+    });
+  }, [fetchPools]);
+
+  // Update pools when data changes
+  useEffect(() => {
+    if (fetchPools.data?.stakingPools && fetchPools.data.stakingPools.length > 0) {
+      const transformed = fetchPools.data.stakingPools.map((pool: any) => ({
+        id: pool.id,
+        name: pool.name || 'Flexible',
+        coin: pool.coin,
+        apy: parseFloat(pool.apy) || 0,
+        minAmount: parseFloat(pool.minStake) || 0,
+        lockPeriod: parseInt(pool.lockPeriod) || 0,
+        rewards: 'Daily',
+      }));
+      setStakingPools(transformed);
+    }
+  }, [fetchPools.data]);
+
+  // Fetch positions when tab changes
+  useEffect(() => {
+    if (activeTab === 'positions') {
+      fetchPositions.execute().then(() => {
+        setIsLoadingPositions(false);
+      }).catch(() => {
+        setIsLoadingPositions(false);
+      });
+    }
+  }, [activeTab, fetchPositions]);
+
+  // Update positions when data changes
+  useEffect(() => {
+    if (fetchPositions.data?.myStakingPositions && fetchPositions.data.myStakingPositions.length > 0) {
+      const transformed = fetchPositions.data.myStakingPositions.map((pos: any): StakedPosition => ({
+        id: pos.id,
+        plan: pos.poolName || 'Flexible',
+        coin: pos.coin,
+        amount: parseFloat(pos.stakedAmount) || 0,
+        startDate: pos.startTime ? new Date(pos.startTime).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+        endDate: pos.unlockTime || null,
+        earned: parseFloat(pos.rewardsEarned) || 0,
+        status: (pos.status === 'active' ? 'active' : 'unlocked') as 'active' | 'unlocked',
+      }));
+      setMyPositions(transformed);
+    }
+  }, [fetchPositions.data]);
 
   const filteredPlans = selectedCoin === 'all' 
-    ? STAKING_PLANS 
-    : STAKING_PLANS.filter(p => p.coin === selectedCoin);
+    ? stakingPools 
+    : stakingPools.filter(p => p.coin === selectedCoin);
 
-  const totalStaked = MOCK_STAKES.reduce((acc, s) => acc + s.amount, 0);
-  const totalEarned = MOCK_STAKES.reduce((acc, s) => acc + s.earned, 0);
+  const totalStaked = myPositions.reduce((acc, s) => acc + s.amount, 0);
+  const totalEarned = myPositions.reduce((acc, s) => acc + s.earned, 0);
 
   const t = {
     title: language === 'es' ? 'Staking Rewards' : 'Staking Rewards',
@@ -135,21 +196,29 @@ export default function Staking() {
         </button>
       </div>
 
-      {/* Coin Filter */}
-      <div className="flex gap-2 flex-wrap">
-        {['all', 'ETH', 'SOL', 'BTC'].map(coin => (
-          <button
-            key={coin}
-            onClick={() => setSelectedCoin(coin)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-              selectedCoin === coin
-                ? 'bg-purple-500 text-white'
-                : 'bg-slate-800 text-slate-400 hover:text-white'
-            }`}
-          >
-            {coin === 'all' ? (language === 'es' ? 'Todas' : 'All') : coin}
-          </button>
-        ))}
+      {/* Coin Filter & Loading Indicator */}
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <div className="flex gap-2 flex-wrap">
+          {['all', 'ETH', 'SOL', 'BTC'].map(coin => (
+            <button
+              key={coin}
+              onClick={() => setSelectedCoin(coin)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                selectedCoin === coin
+                  ? 'bg-purple-500 text-white'
+                  : 'bg-slate-800 text-slate-400 hover:text-white'
+              }`}
+            >
+              {coin === 'all' ? (language === 'es' ? 'Todas' : 'All') : coin}
+            </button>
+          ))}
+        </div>
+        {isLoadingPools && (
+          <div className="flex items-center gap-2 text-purple-400">
+            <Loader2 className="w-4 h-4 animate-spin" />
+            <span className="text-sm">Loading pools...</span>
+          </div>
+        )}
       </div>
 
       {activeTab === 'earn' ? (
@@ -193,41 +262,49 @@ export default function Staking() {
       ) : (
         /* Active Positions */
         <div className="space-y-4">
-          {MOCK_STAKES.map(stake => (
-            <div
-              key={stake.id}
-              className="bg-slate-800/50 border border-purple-500/20 rounded-xl p-5"
-            >
-              <div className="flex items-center justify-between flex-wrap gap-4">
-                <div className="flex items-center gap-4">
-                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
-                    stake.coin === 'ETH' ? 'bg-gradient-to-br from-blue-400 to-purple-500' :
-                    stake.coin === 'SOL' ? 'bg-gradient-to-br from-purple-400 to-pink-500' :
-                    'bg-gradient-to-br from-yellow-400 to-orange-500'
-                  }`}>
-                    <span className="text-white font-bold">{stake.coin}</span>
-                  </div>
-                  <div>
-                    <p className="text-white font-bold">{stake.amount} {stake.coin}</p>
-                    <p className="text-slate-400 text-sm">{stake.plan} - {stake.startDate}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-6">
-                  <div className="text-right">
-                    <p className="text-green-400 font-bold">+{stake.earned} {stake.coin}</p>
-                    <p className="text-slate-400 text-xs">{t.earned}</p>
-                  </div>
-                  <div className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    stake.status === 'active' 
-                      ? 'bg-green-500/20 text-green-400' 
-                      : 'bg-slate-500/20 text-slate-400'
-                  }`}>
-                    {stake.status === 'active' ? t.active : t.unlocked}
-                  </div>
-                </div>
-              </div>
+          {isLoadingPositions ? (
+            <div className="flex items-center justify-center py-8">
+              <Loader2 className="w-8 h-8 animate-spin text-purple-400" />
             </div>
-          ))}
+          ) : (
+            <>
+              {myPositions.map(stake => (
+                <div
+                  key={stake.id}
+                  className="bg-slate-800/50 border border-purple-500/20 rounded-xl p-5"
+                >
+                  <div className="flex items-center justify-between flex-wrap gap-4">
+                    <div className="flex items-center gap-4">
+                      <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
+                        stake.coin === 'ETH' ? 'bg-gradient-to-br from-blue-400 to-purple-500' :
+                        stake.coin === 'SOL' ? 'bg-gradient-to-br from-purple-400 to-pink-500' :
+                        'bg-gradient-to-br from-yellow-400 to-orange-500'
+                      }`}>
+                        <span className="text-white font-bold">{stake.coin}</span>
+                      </div>
+                      <div>
+                        <p className="text-white font-bold">{stake.amount} {stake.coin}</p>
+                        <p className="text-slate-400 text-sm">{stake.plan} - {stake.startDate}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-6">
+                      <div className="text-right">
+                        <p className="text-green-400 font-bold">+{stake.earned} {stake.coin}</p>
+                        <p className="text-slate-400 text-xs">{t.earned}</p>
+                      </div>
+                      <div className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        stake.status === 'active' 
+                          ? 'bg-green-500/20 text-green-400' 
+                          : 'bg-slate-500/20 text-slate-400'
+                      }`}>
+                        {stake.status === 'active' ? t.active : t.unlocked}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
         </div>
       )}
 

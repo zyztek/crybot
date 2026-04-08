@@ -3,9 +3,8 @@
  * 
  * Handles browser push notifications using the Web Push API
  * and Service Workers for background notifications
+ * Uses localStorage for subscription storage (would use API in production)
  */
-
-import { api } from './api';
 
 export interface PushNotification {
   id: string;
@@ -97,7 +96,7 @@ class PushNotificationService {
         ),
       });
 
-      this.subscription = subscription as unknown as PushSubscription;
+      this.subscription = subscription as PushSubscription;
 
       // Send subscription to backend
       await this.saveSubscription(subscription);
@@ -161,8 +160,6 @@ class PushNotificationService {
       badge: notification.badge || '/badge-72.png',
       tag: notification.tag,
       data: notification.data,
-      actions: notification.actions,
-      vibrate: [200, 100, 200],
     };
 
     new Notification(notification.title, options);
@@ -173,7 +170,10 @@ class PushNotificationService {
    */
   private async saveSubscription(subscription: PushSubscription): Promise<void> {
     try {
-      await api.post('/notifications/subscribe', { subscription });
+      // Store subscription in localStorage for now (would be API call in production)
+      const existing = JSON.parse(localStorage.getItem('pushSubscriptions') || '[]');
+      existing.push(subscription);
+      localStorage.setItem('pushSubscriptions', JSON.stringify(existing));
     } catch (error) {
       console.error('Failed to save subscription:', error);
     }
@@ -184,7 +184,7 @@ class PushNotificationService {
    */
   private async removeSubscription(): Promise<void> {
     try {
-      await api.delete('/notifications/unsubscribe');
+      localStorage.removeItem('pushSubscriptions');
     } catch (error) {
       console.error('Failed to remove subscription:', error);
     }
