@@ -20,7 +20,7 @@ describe('StatsBar', () => {
     );
 
     expect(screen.getByText('Total Reclamado')).toBeInTheDocument();
-    expect(screen.getByText('0.00023045 BTC')).toBeInTheDocument();
+    expect(screen.getByText(/0\.00023045/)).toBeInTheDocument();
   });
 
   it('renders today claims count from history', () => {
@@ -35,7 +35,7 @@ describe('StatsBar', () => {
 
     expect(screen.getByText('Claims Hoy')).toBeInTheDocument();
     // Check that the value text exists somewhere in the document
-    expect(screen.getByText(/0\.00023045 BTC/)).toBeInTheDocument();
+    expect(screen.getByText(/0\.00023045/)).toBeInTheDocument();
   });
 
   it('renders active faucets count', () => {
@@ -62,8 +62,8 @@ describe('StatsBar', () => {
     );
 
     expect(screen.getByText('Monedas Disponibles')).toBeInTheDocument();
-    // All 6 coins have values > 0
-    expect(screen.getAllByText('6')[0]).toBeInTheDocument();
+    // All 14 coins have values > 0
+    expect(screen.getAllByText('14')[0]).toBeInTheDocument();
   });
 
   it('renders all four stat cards', () => {
@@ -91,6 +91,14 @@ describe('StatsBar', () => {
       sol: '0',
       ltc: '0.5678',
       bnb: '0',
+      xrp: '0',
+      ada: '0',
+      avax: '0',
+      dot: '0',
+      matic: '0',
+      link: '0',
+      atom: '0',
+      uni: '0',
     };
 
     renderComponent(

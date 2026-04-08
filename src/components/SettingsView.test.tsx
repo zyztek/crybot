@@ -3,6 +3,19 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import SettingsView from './SettingsView';
 import { INITIAL_USER } from '../test/fixtures';
 
+// Mock usePushNotifications to avoid async state updates that cause act() warnings
+vi.mock('@/hooks/usePushNotifications', () => ({
+  default: () => ({
+    isSupported: true,
+    isSubscribed: false,
+    isLoading: false,
+    pushPermission: 'default' as NotificationPermission,
+    enablePush: vi.fn().mockResolvedValue(true),
+    disablePush: vi.fn().mockResolvedValue(undefined),
+    showNotification: vi.fn(),
+  }),
+}));
+
 describe('SettingsView', () => {
   const mockProps = {
     user: {

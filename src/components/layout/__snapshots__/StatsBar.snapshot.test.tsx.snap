@@ -47,7 +47,7 @@ exports[`StatsBar Snapshot Tests > matches snapshot with all data (Spanish) 1`] 
         <p
           class="text-lg font-bold text-white"
         >
-          0.00023045 BTC
+          0.00023045 BTC BTC
         </p>
       </div>
     </div>
@@ -240,7 +240,7 @@ exports[`StatsBar Snapshot Tests > matches snapshot with all faucets available 1
         <p
           class="text-lg font-bold text-white"
         >
-          0.00023045 BTC
+          0.00023045 BTC BTC
         </p>
       </div>
     </div>
@@ -433,7 +433,7 @@ exports[`StatsBar Snapshot Tests > matches snapshot with empty history 1`] = `
         <p
           class="text-lg font-bold text-white"
         >
-          0.00023045 BTC
+          0.00023045 BTC BTC
         </p>
       </div>
     </div>

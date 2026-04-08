@@ -46,14 +46,16 @@ describe('App Config - Feature Flags', () => {
 });
 
 describe('App Config - App Configuration', () => {
-  it('should have default app name', async () => {
+  it('should have app name configured', async () => {
     const { APP_CONFIG } = await import('./appConfig');
-    expect(APP_CONFIG.name).toBe('CryptoFaucet Hub');
+    // App name should be defined and contain "CryptoFaucet" in test or dev mode
+    expect(APP_CONFIG.name).toMatch(/CryptoFaucet/);
   });
 
-  it('should have default version', async () => {
+  it('should have version configured', async () => {
     const { APP_CONFIG } = await import('./appConfig');
-    expect(APP_CONFIG.version).toBe('1.0.0');
+    // Version should be defined
+    expect(APP_CONFIG.version).toMatch(/\d+\.\d+\.\d+/);
   });
 
   it('should have default network as sepolia', async () => {

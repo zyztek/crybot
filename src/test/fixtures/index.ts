@@ -149,6 +149,14 @@ export const mockWalletBalance: WalletBalance = {
   sol: '2.4567',
   ltc: '0.5678',
   bnb: '0.1234',
+  xrp: '0.0',
+  ada: '0.0',
+  avax: '0.0',
+  dot: '0.0',
+  matic: '0.0',
+  link: '0.0',
+  atom: '0.0',
+  uni: '0.0',
 };
 
 // Mock Claim History
@@ -566,7 +574,7 @@ export const mockUsers = {
 
 // Mock Wallet with different balances
 export const mockWallets = {
-  empty: { btc: '0', eth: '0', doge: '0', sol: '0', ltc: '0', bnb: '0' },
+  empty: { btc: '0', eth: '0', doge: '0', sol: '0', ltc: '0', bnb: '0', xrp: '0', ada: '0', avax: '0', dot: '0', matic: '0', link: '0', atom: '0', uni: '0' },
   small: mockWalletBalance,
   large: {
     btc: '1.23456789',
@@ -575,6 +583,14 @@ export const mockWallets = {
     sol: '50.1234',
     ltc: '25.5678',
     bnb: '5.1234',
+    xrp: '100.0',
+    ada: '500.0',
+    avax: '50.0',
+    dot: '200.0',
+    matic: '1000.0',
+    link: '100.0',
+    atom: '50.0',
+    uni: '25.0',
   },
 };
 

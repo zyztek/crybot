@@ -60,7 +60,7 @@ describe('Header', () => {
     expect(screen.getByText('🦊')).toBeInTheDocument();
   });
 
-  it('renders notification badge when notifications > 0', () => {
+  it('renders notification bell', () => {
     const onToggleLanguage = vi.fn();
     const onToggleTheme = vi.fn();
     renderComponent(
@@ -74,7 +74,8 @@ describe('Header', () => {
       />
     );
 
-    expect(screen.getByText('3')).toBeInTheDocument();
+    // Header renders NotificationBell component
+    expect(screen.getByRole('button', { name: /notification/i })).toBeInTheDocument();
   });
 
   it('does not render notification badge when notifications = 0', () => {

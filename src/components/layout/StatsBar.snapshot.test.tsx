@@ -11,6 +11,14 @@ const mockWalletBalance: WalletBalance = {
   sol: '2.4567',
   ltc: '0.5678',
   bnb: '0.1234',
+  xrp: '0.0',
+  ada: '0.0',
+  avax: '0.0',
+  dot: '0.0',
+  matic: '0.0',
+  link: '0.0',
+  atom: '0.0',
+  uni: '0.0',
 };
 
 const mockHistory: ClaimHistory[] = [
