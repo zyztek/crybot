@@ -1,13 +1,12 @@
-import { create } from 'zustand';
+import type { BaseTabType } from '@/types/tabs';
 import type { StateCreator } from 'zustand';
-import type { TabType } from '@/types';
 
 export interface UIState {
-  activeTab: TabType;
+  activeTab: BaseTabType;
   language: 'es' | 'en';
   theme: 'dark' | 'light';
   showWalletAddress: boolean;
-  setActiveTab: (tab: TabType) => void;
+  setActiveTab: (tab: BaseTabType) => void;
   toggleLanguage: () => void;
   toggleTheme: () => void;
   toggleWalletAddress: () => void;
@@ -18,7 +17,7 @@ export const createUIStore: StateCreator<UIState> = (set: any, get: any, api: an
   language: 'es',
   theme: 'dark',
   showWalletAddress: false,
-  setActiveTab: (tab: TabType) => set({ activeTab: tab }),
+  setActiveTab: (tab: BaseTabType) => set({ activeTab: tab }),
   toggleLanguage: () =>
     set((state: UIState) => ({
       language: state.language === 'es' ? 'en' : 'es',

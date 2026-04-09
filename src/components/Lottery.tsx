@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Ticket, Coins, Trophy, Clock, Users, Sparkles, CheckCircle, Loader2 } from 'lucide-react';
+import { CheckCircle, Clock, Coins, Loader2, Sparkles, Ticket, Trophy, Users } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { useLottery } from '../hooks/useGraphQL';
 
 interface LotteryTicket {
@@ -26,8 +26,10 @@ const Lottery: React.FC = () => {
       setIsLoading(true);
       try {
         const roundsResult = await fetchRounds.execute();
-        if (roundsResult?.lotteryRounds) {
-          const activeRound = roundsResult.lotteryRounds.find((r: any) => r.status === 'active');
+        if ((roundsResult as any)?.lotteryRounds) {
+          const activeRound = (roundsResult as any).lotteryRounds.find(
+            (r: any) => r.status === 'active'
+          );
           if (activeRound) {
             setJackpot(parseFloat(activeRound.prizePool) || 50000);
           }

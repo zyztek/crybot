@@ -4,35 +4,21 @@
 version: 2
 
 updates:
-  # Enable version updates for npm
-  - package-ecosystem: 'npm'
-    directory: '/'
+  # Enable version updates for npm (frontend)
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
-      interval: 'weekly'
-      day: 'monday'
-      time: '09:00'
-      timezone: 'UTC'
-    open-pull-requests-limit: 10
-    commit-message:
-      prefix: 'chore'
-      include: 'scope'
-    labels:
-      - 'dependencies'
-      - 'npm'
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
     reviewers:
-      - 'zyztek'
-    versioning-strategy: 'increase'
-
-  # Backend npm dependencies
-  - package-ecosystem: 'npm'
-    directory: '/server'
-    schedule:
-      interval: 'weekly'
-      day: 'monday'
-      time: '09:00'
-      timezone: 'UTC'
-    open-pull-requests-limit: 10
+      - "zyztek"
+    assignees:
+      - "zyztek"
     commit-message:
+      prefix: "chore"
+      include: "scope"
       prefix: 'chore'
       include: 'scope'
     labels:

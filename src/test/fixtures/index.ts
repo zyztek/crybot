@@ -1,13 +1,12 @@
-import { vi } from 'vitest';
 import type { TranslationTexts } from '@/i18n/translations';
 import type {
+  Achievement,
+  ClaimHistory,
+  Faucet,
+  LeaderboardEntry,
   TabType,
   User,
   WalletBalance,
-  ClaimHistory,
-  Faucet,
-  Achievement,
-  LeaderboardEntry,
 } from '@/types';
 
 // Mock Translations (Spanish)
@@ -318,14 +317,18 @@ export const mockTabs: TabType[] = [
 
 // Mock Lazy-loaded tabs
 export const mockLazyTabs: TabType[] = [
+  'faucets',
+  'dashboard',
+  'wallet',
+  'referral',
+  'leaderboard',
+  'achievements',
+  'settings',
   'analytics',
   'games',
   'portfolio',
   'lottery',
   'yield',
-  'defi',
-  'airdrop',
-  'nft',
 ];
 
 // Mock Faucets with different statuses
@@ -574,7 +577,22 @@ export const mockUsers = {
 
 // Mock Wallet with different balances
 export const mockWallets = {
-  empty: { btc: '0', eth: '0', doge: '0', sol: '0', ltc: '0', bnb: '0', xrp: '0', ada: '0', avax: '0', dot: '0', matic: '0', link: '0', atom: '0', uni: '0' },
+  empty: {
+    btc: '0',
+    eth: '0',
+    doge: '0',
+    sol: '0',
+    ltc: '0',
+    bnb: '0',
+    xrp: '0',
+    ada: '0',
+    avax: '0',
+    dot: '0',
+    matic: '0',
+    link: '0',
+    atom: '0',
+    uni: '0',
+  },
   small: mockWalletBalance,
   large: {
     btc: '1.23456789',

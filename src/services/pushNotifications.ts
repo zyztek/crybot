@@ -1,6 +1,6 @@
 /**
  * Push Notification Service
- * 
+ *
  * Handles browser push notifications using the Web Push API
  * and Service Workers for background notifications
  * Uses localStorage for subscription storage (would use API in production)
@@ -17,7 +17,7 @@ export interface PushNotification {
   actions?: Array<{ action: string; title: string }>;
 }
 
-export interface PushSubscription {
+export interface CustomPushSubscription {
   endpoint: string;
   keys: {
     p256dh: string;
@@ -27,7 +27,7 @@ export interface PushSubscription {
 
 class PushNotificationService {
   private registration: ServiceWorkerRegistration | null = null;
-  private subscription: PushSubscription | null = null;
+  private subscription: CustomPushSubscription | null = null;
 
   /**
    * Initialize the push notification service
@@ -78,7 +78,7 @@ class PushNotificationService {
   /**
    * Subscribe to push notifications
    */
-  async subscribe(): Promise<PushSubscription | null> {
+  async subscribe(): Promise<CustomPushSubscription | null> {
     if (!this.registration) {
       await this.init();
     }
@@ -93,10 +93,10 @@ class PushNotificationService {
         userVisibleOnly: true,
         applicationServerKey: this.urlBase64ToUint8Array(
           import.meta.env.VITE_VAPID_PUBLIC_KEY || ''
-        ),
+        ) as unknown as ArrayBuffer,
       });
 
-      this.subscription = subscription as PushSubscription;
+      this.subscription = subscription as unknown as CustomPushSubscription;
 
       // Send subscription to backend
       await this.saveSubscription(subscription);
@@ -195,9 +195,7 @@ class PushNotificationService {
    */
   private urlBase64ToUint8Array(base64String: string): Uint8Array {
     const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-    const base64 = (base64String + padding)
-      .replace(/-/g, '+')
-      .replace(/_/g, '/');
+    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
 
     const rawData = window.atob(base64);
     const outputArray = new Uint8Array(rawData.length);

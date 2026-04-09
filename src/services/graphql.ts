@@ -1531,6 +1531,43 @@ export const QUERIES_EXTENDED = {
       }
     }
   `,
+
+  // Multi-sig wallet queries
+  GET_MULTISIG_WALLETS: `
+    query GetMultisigWallets {
+      multisigWallets {
+        id
+        name
+        address
+        threshold
+        signers {
+          address
+          name
+          status
+        }
+        createdAt
+      }
+    }
+  `,
+
+  GET_MULTISIG_TRANSACTIONS: `
+    query GetMultisigTransactions($walletId: ID, $status: String, $limit: Int) {
+      multisigTransactions(walletId: $walletId, status: $status, limit: $limit) {
+        id
+        walletId
+        to
+        amount
+        token
+        data
+        status
+        signatures
+        requiredSignatures
+        createdAt
+        expiresAt
+        executedAt
+      }
+    }
+  `,
 };
 
 export const MUTATIONS = {
@@ -2279,43 +2316,6 @@ export const MUTATIONS_EXTENDED = {
     }
   `,
 
-  // Multi-sig wallet queries
-  GET_MULTISIG_WALLETS: `
-    query GetMultisigWallets {
-      multisigWallets {
-        id
-        name
-        address
-        threshold
-        signers {
-          address
-          name
-          status
-        }
-        createdAt
-      }
-    }
-  `,
-
-  GET_MULTISIG_TRANSACTIONS: `
-    query GetMultisigTransactions($walletId: ID, $status: String, $limit: Int) {
-      multisigTransactions(walletId: $walletId, status: $status, limit: $limit) {
-        id
-        walletId
-        to
-        amount
-        token
-        data
-        status
-        signatures
-        requiredSignatures
-        createdAt
-        expiresAt
-        executedAt
-      }
-    }
-  `,
-
   // Multi-sig mutations
   CREATE_MULTISIG_WALLET: `
     mutation CreateMultisigWallet($name: String!, $signers: [String!]!, $requiredSignatures: Int!) {
@@ -3013,6 +3013,28 @@ export const MUTATIONS_EXTENDED = {
   DISMISS_ANNOUNCEMENT: `
     mutation DismissAnnouncement($id: ID!) {
       dismissAnnouncement(id: $id)
+    }
+  `,
+
+  // Additional security mutations
+  VERIFY_FAUCET_CLAIM_V2: `
+    mutation VerifyFaucetClaimV2($faucetId: ID!, $signature: String!, $proof: String!) {
+      verifyFaucetClaimV2(faucetId: $faucetId, signature: $signature, proof: $proof) {
+        success
+        verified
+        claimId
+        timestamp
+      }
+    }
+  `,
+
+  TERMINATE_ALL_SESSIONS: `
+    mutation TerminateAllSessions {
+      terminateAllSessions {
+        success
+        terminatedCount
+        message
+      }
     }
   `,
 };

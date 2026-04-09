@@ -1,18 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { useNFT } from '../hooks/useGraphQL';
 import {
+  ExternalLink,
+  Eye,
+  Filter,
+  Gem,
+  Heart,
   Image as ImageIcon,
   Palette,
-  Gem,
-  TrendingUp,
-  Heart,
-  Eye,
-  Clock,
-  ExternalLink,
-  Filter,
   Tag,
+  TrendingUp,
   Zap,
 } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { useNFT } from '../hooks/useGraphQL';
 
 interface NFT {
   id: number;
@@ -205,22 +204,24 @@ export const NFTGallery: React.FC = () => {
       setIsLoading(true);
       try {
         const result = await fetchCollections.execute();
-        if (result?.nftCollections) {
-          setNftList(result.nftCollections.map((c: any, idx: number) => ({
-            id: idx + 1,
-            name: c.name,
-            collection: c.name,
-            image: '🖼️',
-            price: parseFloat(c.floorPrice) || 0,
-            currency: 'ETH',
-            creator: '0x...',
-            likes: 0,
-            views: 0,
-            category: 'collectibles',
-            rarity: 'common',
-            listed: true,
-            lastSale: parseFloat(c.floorPrice) || 0,
-          })));
+        if ((result as any)?.nftCollections) {
+          setNftList(
+            (result as any).nftCollections.map((c: any, idx: number) => ({
+              id: idx + 1,
+              name: c.name,
+              collection: c.name,
+              image: '🖼️',
+              price: parseFloat(c.floorPrice) || 0,
+              currency: 'ETH',
+              creator: '0x...',
+              likes: 0,
+              views: 0,
+              category: 'collectibles',
+              rarity: 'common',
+              listed: true,
+              lastSale: parseFloat(c.floorPrice) || 0,
+            }))
+          );
         }
       } catch (e) {
         // Use mock data on error

@@ -1,0 +1,57 @@
+# Notifications and Status Updates
+name: Notifications
+
+on:
+  workflow_run:
+    workflows: ["CI", "Deploy to Production", "Performance Check"]
+    types:
+      - completed
+  push:
+    branches: [main]
+
+jobs:
+  notify-slack:
+    runs-on: ubuntu-latest
+    if: success() && github.ref == 'refs/heads/main'
+    steps:
+      - name: Send Slack notification on success
+        uses: 8398a7/action-slack@v3
+        with:
+          status: success
+          channel: '#deployments'
+          text: 'Crybot deployment successful! Check it out at https://zyztek.github.io/crybot/'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+  notify-failure:
+    runs-on: ubuntu-latest
+    if: failure()
+    steps:
+      - name: Send Slack notification on failure
+        uses: 8398a7/action-slack@v3
+        with:
+          status: failure
+          channel: '#alerts'
+          text: 'Crybot CI/CD pipeline failed! Please check the logs.'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+  update-status:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Update deployment status
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.pull_request.number || '1' }}
+          body: |
+            ## Deployment Status
+            
+            **Repository**: ${{ github.repository }}
+            **Commit**: ${{ github.sha }}
+            **Branch**: ${{ github.ref_name }}
+            **Workflow**: ${{ github.workflow }}
+            **Status**: ${{ job.status }}
+            
+            **Live Demo**: https://zyztek.github.io/crybot/
+            **Build Logs**: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}

@@ -1,4 +1,20 @@
-# 🪙 CryptoFaucet Hub - Complete Developer Guide
+# 🪙 Crybot - CryptoFaucet Hub
+
+> **Modern cryptocurrency faucet aggregator with optimized TypeScript architecture**
+
+---
+
+## Quick Start
+
+```bash
+git clone https://github.com/zyztek/crybot.git
+cd crybot
+npm install
+npm run setup:auto
+npm run dev
+```
+
+Visit `http://localhost:5173` to start using Crybot.
 
 ## 📚 Table of Contents
 
@@ -11,11 +27,18 @@
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
-Before you begin, ensure you have installed:
+| Requirement | Version | Installation                                           |
+| ----------- | ------- | ------------------------------------------------------ |
+| Node.js     | >=20.x  | [nodejs.org](https://nodejs.org/)                      |
+| npm         | >=10.x  | Included with Node.js                                  |
+| PostgreSQL  | >=16.x  | [postgresql.org](https://www.postgresql.org/download/) |
+| Git         | >=2.x   | [git-scm.com](https://git-scm.com/)                    |
+
+### Environment Setup
 
 | Requirement | Version          | Installation                                           |
 | ----------- | ---------------- | ------------------------------------------------------ |
@@ -72,12 +95,23 @@ VITE_DEFAULT_NETWORK=sepolia
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
-### Tech Stack
+### Modern Tech Stack
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
+Frontend (React 19 + TypeScript 5.6)
+  - Vite 5 (Build tool)
+  - Zustand (State management)
+  - Tailwind CSS 4 (Styling)
+  - Recharts (Charts)
+  - Lucide React (Icons)
+
+Backend (Express 4 + TypeScript)
+  - Prisma ORM (Database)
+  - PostgreSQL 16
+  - JWT + Bcrypt (Auth)
+  - WebSocket (Real-time)
 │                        FRONTEND                                 │
 ├─────────────────────────────────────────────────────────────────┤
 │  React 19 + TypeScript 5.6 + Vite 5                            │
@@ -354,20 +388,73 @@ npm test -- src/store/cryptoStore.test.ts
 
 ---
 
-## 💻 Development Guide
+## Development Guide
 
 ### Available Scripts
 
-| Command              | Description              |
-| -------------------- | ------------------------ |
-| `npm run dev`        | Start development server |
-| `npm run build`      | Build for production     |
-| `npm run preview`    | Preview production build |
-| `npm test`           | Run all tests            |
-| `npm run test:watch` | Run tests in watch mode  |
-| `npm run lint`       | Run ESLint               |
-| `npm run lint:fix`   | Fix ESLint issues        |
-| `npm run typecheck`  | Run TypeScript check     |
+```bash
+# Development
+npm run dev              # Start dev server (http://localhost:5173)
+npm run build            # Build for production
+npm run preview          # Preview production build
+
+# Quality Assurance
+npm run typecheck        # TypeScript type checking
+npm run lint             # ESLint checking
+npm run lint:fix         # Auto-fix ESLint issues
+npm test                 # Run all tests
+npm run test:watch       # Run tests in watch mode
+
+# Database
+npm run setup:auto       # Auto-setup database
+npx prisma studio        # Database GUI
+npx prisma migrate reset  # Reset database
+```
+
+### Project Structure (Optimized)
+
+```
+crybot/
+src/
+  components/
+    AppProvider.tsx          # Global context provider
+    AuthenticatedApp.tsx     # Main authenticated layout
+    layout/
+      NavigationTabs.tsx     # Simplified navigation (BaseTabType)
+      ContentAreaSimple.tsx  # Clean content rendering
+      Header.tsx, Footer.tsx # Layout components
+  types/
+    index.ts                 # Main type definitions
+    tabs.ts                  # Modular tab system (NEW!)
+  store/
+    cryptoStore.ts           # Combined Zustand store
+    slices/
+      uiStore.ts             # UI state (BaseTabType optimized)
+      authStore.ts           # Authentication
+      walletStore.ts         # Wallet management
+      faucetStore.ts         # Faucet data
+  hooks/
+    useAuthSession.ts        # Authentication hook
+    useFaucetClaim.ts        # Faucet operations
+    useGraphQL.ts            # GraphQL queries
+```
+
+### Type System Features
+
+- **Modular Tab Types**: Organized by category (Base, Trading, DeFi, Gaming)
+- **Type Safety**: Helper functions for runtime type checking
+- **Scalability**: Easy to extend with new tab categories
+- **Performance**: Reduced from 100+ tabs to 7 core tabs
+
+### Code Style Guidelines
+
+- **TypeScript**: Strict mode enabled
+- **Components**: Functional components with hooks
+- **State**: Zustand for global state, React state for local
+- **Styling**: Tailwind CSS with consistent design tokens
+- **Testing**: Jest + React Testing Library
+
+---
 
 ### Running with Docker
 
@@ -396,60 +483,23 @@ npx prisma studio
 
 - Follow ESLint configuration
 - Use TypeScript strict mode
-- Write tests for new features
-- Document complex logic
 
 ---
 
-## 📊 Metrics & Monitoring
-
-### Test Coverage
-
-```bash
-npm test -- --coverage
-```
-
-Current coverage:
-
-- Unit Tests: 95+
-- Test Files: 30+
-- Coverage: ~85%
-
-### Performance Benchmarks
-
-| Metric       | Value |
-| ------------ | ----- |
-| Initial Load | <2s   |
-| Build Time   | ~30s  |
-| Test Suite   | ~90s  |
-
----
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create feature branch: `git checkout -b feature/amazing-feature`
-3. Commit changes: `git commit -m 'Add amazing feature'`
-4. Push branch: `git push origin feature/amazing-feature`
-5. Open Pull Request
-
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
-
----
-
-## 📄 License
+## License
 
 MIT License - See [LICENSE](./LICENSE) for details.
 
 ---
 
-## 📞 Support
+## Support & Community
 
-- Open an [Issue](https://github.com/zyztek/crybot/issues)
-- Join our [Discord](https://discord.gg/crybot)
-- Email: support@crypto-faucet-hub.com
+- **Issues**: [GitHub Issues](https://github.com/zyztek/crybot/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/zyztek/crybot/discussions)
+- **Live Demo**: [https://zyztek.github.io/crybot/](https://zyztek.github.io/crybot/)
 
 ---
 
-_Last Updated: January 2024_
-_Version: 1.0.0_
+_Last Updated: April 2026_  
+_Version: 2.0.0 (Optimized Architecture)_  
+_Status: Production Ready_

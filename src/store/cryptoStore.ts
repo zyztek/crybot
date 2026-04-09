@@ -1,32 +1,31 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { texts } from '@/i18n/translations';
 import type {
-  TabType,
+  Achievement,
+  BaseTabType,
+  ClaimHistory,
+  Faucet,
+  LeaderboardEntry,
   User,
   WalletBalance,
-  Faucet,
-  ClaimHistory,
-  Achievement,
-  LeaderboardEntry,
 } from '@/types';
-import { texts } from '@/i18n/translations';
+import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 // Import store slices
 import {
+  createAchievementsStore,
   createAuthStore,
+  createFaucetStore,
   createUIStore,
   createUserStore,
   createWalletStore,
-  createFaucetStore,
-  createAchievementsStore,
 } from './slices';
 
 // Re-export initial data for testing
+export { INITIAL_ACHIEVEMENTS, LEADERBOARD } from './slices/achievementsStore';
+export { INITIAL_FAUCETS, INITIAL_HISTORY } from './slices/faucetStore';
 export { INITIAL_USER } from './slices/userStore';
 export { INITIAL_WALLET_BALANCE } from './slices/walletStore';
-export { INITIAL_FAUCETS, INITIAL_HISTORY } from './slices/faucetStore';
-export { INITIAL_ACHIEVEMENTS } from './slices/achievementsStore';
-export { LEADERBOARD } from './slices/achievementsStore';
 
 // Combined store type
 interface CryptoStore {
@@ -36,12 +35,12 @@ interface CryptoStore {
   logout: () => void;
 
   // UI state
-  activeTab: TabType;
+  activeTab: BaseTabType;
   language: 'es' | 'en';
   theme: 'dark' | 'light';
   notifications: number;
   showWalletAddress: boolean;
-  setActiveTab: (tab: TabType) => void;
+  setActiveTab: (tab: BaseTabType) => void;
   toggleLanguage: () => void;
   toggleTheme: () => void;
   toggleWalletAddress: () => void;

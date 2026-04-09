@@ -1,5 +1,16 @@
-import { useState, useEffect } from 'react';
-import { Shield, Users, Plus, Trash2, Copy, CheckCircle, AlertCircle, Wallet, ArrowRight, Clock, Loader2 } from 'lucide-react';
+import {
+  ArrowRight,
+  CheckCircle,
+  Clock,
+  Copy,
+  Loader2,
+  Plus,
+  Shield,
+  Trash2,
+  Users,
+  Wallet,
+} from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useMultisig } from '../hooks/useGraphQL';
 
 interface Signer {
@@ -24,13 +35,31 @@ interface Transaction {
 const MultisigTransactionBuilder: React.FC = () => {
   const [threshold, setThreshold] = useState(2);
   const [signers, setSigners] = useState<Signer[]>([
-    { address: '0x742d35Cc6634C0532925a3b844Bc9e7595f', name: 'Alice (Deployer)', status: 'signed' },
-    { address: '0x9B3a3D17F74b9D6E1f4C5e8F1A2E3D4B5C6D7E8F', name: 'Bob (Treasury)', status: 'pending' },
-    { address: '0x1A2B3C4D5E6F7A8B9C0D1E2F3A4B5C6D7E8F9A0B', name: 'Carol (Operations)', status: 'pending' },
+    {
+      address: '0x742d35Cc6634C0532925a3b844Bc9e7595f',
+      name: 'Alice (Deployer)',
+      status: 'signed',
+    },
+    {
+      address: '0x9B3a3D17F74b9D6E1f4C5e8F1A2E3D4B5C6D7E8F',
+      name: 'Bob (Treasury)',
+      status: 'pending',
+    },
+    {
+      address: '0x1A2B3C4D5E6F7A8B9C0D1E2F3A4B5C6D7E8F9A0B',
+      name: 'Carol (Operations)',
+      status: 'pending',
+    },
   ]);
 
   // GraphQL hooks
-  const { fetchWallets, fetchTransactions, createTransaction, signTransaction, executeTransaction } = useMultisig();
+  const {
+    fetchWallets,
+    fetchTransactions,
+    createTransaction,
+    signTransaction,
+    executeTransaction,
+  } = useMultisig();
   const [isLoading, setIsLoading] = useState(false);
   const [transactions, setTransactions] = useState<Transaction[]>([
     {
@@ -73,31 +102,38 @@ const MultisigTransactionBuilder: React.FC = () => {
       try {
         const [walletsResult, transactionsResult] = await Promise.all([
           fetchWallets.execute(),
-          fetchTransactions.execute()
+          fetchTransactions.execute(),
         ]);
-        
-        if (walletsResult?.multisigWallets && walletsResult.multisigWallets.length > 0) {
-          const wallet = walletsResult.multisigWallets[0];
-          setSigners(wallet.signers.map((s: any) => ({
-            address: s.address,
-            name: s.name,
-            status: s.status,
-          })));
+
+        if (
+          (walletsResult as any)?.multisigWallets &&
+          (walletsResult as any).multisigWallets.length > 0
+        ) {
+          const wallet = (walletsResult as any).multisigWallets[0];
+          setSigners(
+            wallet.signers.map((s: any) => ({
+              address: s.address,
+              name: s.name,
+              status: s.status,
+            }))
+          );
           setThreshold(wallet.threshold);
         }
-        if (transactionsResult?.multisigTransactions) {
-          setTransactions(transactionsResult.multisigTransactions.map((t: any) => ({
-            id: t.id,
-            to: t.to.substring(0, 10) + '...',
-            amount: t.amount,
-            token: t.token,
-            data: t.data,
-            status: t.status,
-            signatures: t.signatures,
-            requiredSignatures: t.requiredSignatures,
-            createdAt: 'Just now',
-            expiresAt: t.expiresAt || '24 hours',
-          })));
+        if ((transactionsResult as any)?.multisigTransactions) {
+          setTransactions(
+            (transactionsResult as any).multisigTransactions.map((t: any) => ({
+              id: t.id,
+              to: t.to.substring(0, 10) + '...',
+              amount: t.amount,
+              token: t.token,
+              data: t.data,
+              status: t.status,
+              signatures: t.signatures,
+              requiredSignatures: t.requiredSignatures,
+              createdAt: 'Just now',
+              expiresAt: t.expiresAt || '24 hours',
+            }))
+          );
         }
       } catch (err) {
         // Use mock data on error
@@ -124,17 +160,20 @@ const MultisigTransactionBuilder: React.FC = () => {
         data: newTransaction.data || null,
       });
       if (result?.createMultisigTransaction) {
-        setTransactions([{
-          id: result.createMultisigTransaction.id,
-          to: newTransaction.to.substring(0, 10) + '...',
-          amount: newTransaction.amount,
-          token: newTransaction.token,
-          status: 'pending',
-          signatures: [],
-          requiredSignatures: result.createMultisigTransaction.requiredSignatures,
-          createdAt: 'Just now',
-          expiresAt: result.createMultisigTransaction.expiresAt || '24 hours',
-        }, ...transactions]);
+        setTransactions([
+          {
+            id: result.createMultisigTransaction.id,
+            to: newTransaction.to.substring(0, 10) + '...',
+            amount: newTransaction.amount,
+            token: newTransaction.token,
+            status: 'pending',
+            signatures: [],
+            requiredSignatures: result.createMultisigTransaction.requiredSignatures,
+            createdAt: 'Just now',
+            expiresAt: result.createMultisigTransaction.expiresAt || '24 hours',
+          },
+          ...transactions,
+        ]);
         setNewTransaction({ to: '', amount: '', token: 'ETH', data: '' });
       }
     } catch (err) {
@@ -182,11 +221,16 @@ const MultisigTransactionBuilder: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'signed': return 'text-green-400';
-      case 'pending': return 'text-yellow-400';
-      case 'rejected': return 'text-red-400';
-      case 'executed': return 'text-purple-400';
-      default: return 'text-slate-400';
+      case 'signed':
+        return 'text-green-400';
+      case 'pending':
+        return 'text-yellow-400';
+      case 'rejected':
+        return 'text-red-400';
+      case 'executed':
+        return 'text-purple-400';
+      default:
+        return 'text-slate-400';
     }
   };
 
@@ -246,11 +290,13 @@ const MultisigTransactionBuilder: React.FC = () => {
             <span className="text-slate-400 text-sm">Threshold:</span>
             <select
               value={threshold}
-              onChange={(e) => setThreshold(parseInt(e.target.value))}
+              onChange={e => setThreshold(parseInt(e.target.value))}
               className="bg-slate-700 text-white px-3 py-1 rounded-lg text-sm border border-slate-600"
             >
               {signers.map((_, i) => (
-                <option key={i} value={i + 1}>{i + 1}</option>
+                <option key={i} value={i + 1}>
+                  {i + 1}
+                </option>
               ))}
             </select>
           </div>
@@ -267,21 +313,19 @@ const MultisigTransactionBuilder: React.FC = () => {
                   <input
                     type="text"
                     value={signer.name}
-                    onChange={(e) => updateSigner(index, 'name', e.target.value)}
+                    onChange={e => updateSigner(index, 'name', e.target.value)}
                     placeholder="Signer name"
                     className="bg-transparent text-white text-sm font-medium w-full focus:outline-none border-b border-transparent focus:border-purple-500"
                   />
                   <input
                     type="text"
                     value={signer.address}
-                    onChange={(e) => updateSigner(index, 'address', e.target.value)}
+                    onChange={e => updateSigner(index, 'address', e.target.value)}
                     placeholder="0x..."
                     className="bg-transparent text-slate-400 text-xs w-full focus:outline-none"
                   />
                 </div>
-                <span className={`text-xs ${getStatusColor(signer.status)}`}>
-                  {signer.status}
-                </span>
+                <span className={`text-xs ${getStatusColor(signer.status)}`}>{signer.status}</span>
                 {signers.length > 2 && (
                   <button
                     onClick={() => removeSigner(index)}
@@ -320,7 +364,7 @@ const MultisigTransactionBuilder: React.FC = () => {
               <input
                 type="text"
                 value={newTransaction.to}
-                onChange={(e) => setNewTransaction({ ...newTransaction, to: e.target.value })}
+                onChange={e => setNewTransaction({ ...newTransaction, to: e.target.value })}
                 placeholder="0x..."
                 className="w-full bg-slate-900 text-white px-4 py-2 rounded-lg border border-slate-700 focus:border-purple-500 focus:outline-none"
               />
@@ -330,7 +374,7 @@ const MultisigTransactionBuilder: React.FC = () => {
               <input
                 type="number"
                 value={newTransaction.amount}
-                onChange={(e) => setNewTransaction({ ...newTransaction, amount: e.target.value })}
+                onChange={e => setNewTransaction({ ...newTransaction, amount: e.target.value })}
                 placeholder="0.0"
                 className="w-full bg-slate-900 text-white px-4 py-2 rounded-lg border border-slate-700 focus:border-purple-500 focus:outline-none"
               />
@@ -339,7 +383,7 @@ const MultisigTransactionBuilder: React.FC = () => {
               <label className="text-slate-400 text-xs mb-1 block">Token</label>
               <select
                 value={newTransaction.token}
-                onChange={(e) => setNewTransaction({ ...newTransaction, token: e.target.value })}
+                onChange={e => setNewTransaction({ ...newTransaction, token: e.target.value })}
                 className="w-full bg-slate-900 text-white px-4 py-2 rounded-lg border border-slate-700 focus:border-purple-500 focus:outline-none"
               >
                 <option value="ETH">ETH</option>
@@ -354,7 +398,11 @@ const MultisigTransactionBuilder: React.FC = () => {
                 disabled={isLoading}
                 className="w-full py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
               >
-                {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+                {isLoading ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Plus className="w-4 h-4" />
+                )}
                 Create
               </button>
             </div>
@@ -365,7 +413,7 @@ const MultisigTransactionBuilder: React.FC = () => {
             <input
               type="text"
               value={newTransaction.data}
-              onChange={(e) => setNewTransaction({ ...newTransaction, data: e.target.value })}
+              onChange={e => setNewTransaction({ ...newTransaction, data: e.target.value })}
               placeholder="0x..."
               className="w-full bg-slate-900 text-white px-4 py-2 rounded-lg border border-slate-700 focus:border-purple-500 focus:outline-none text-sm"
             />
@@ -422,7 +470,9 @@ const MultisigTransactionBuilder: React.FC = () => {
                   </td>
                   <td className="px-4 py-3 text-center">
                     <div className="flex items-center justify-center gap-1">
-                      <span className={`font-medium ${tx.signatures.length >= tx.requiredSignatures ? 'text-green-400' : 'text-yellow-400'}`}>
+                      <span
+                        className={`font-medium ${tx.signatures.length >= tx.requiredSignatures ? 'text-green-400' : 'text-yellow-400'}`}
+                      >
                         {tx.signatures.length}
                       </span>
                       <span className="text-slate-500">/</span>
@@ -430,12 +480,17 @@ const MultisigTransactionBuilder: React.FC = () => {
                     </div>
                   </td>
                   <td className="px-4 py-3 text-center">
-                    <span className={`px-2 py-1 rounded-full text-xs ${
-                      tx.status === 'executed' ? 'bg-green-500/20 text-green-400' :
-                      tx.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
-                      tx.status === 'rejected' ? 'bg-red-500/20 text-red-400' :
-                      'bg-slate-500/20 text-slate-400'
-                    }`}>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs ${
+                        tx.status === 'executed'
+                          ? 'bg-green-500/20 text-green-400'
+                          : tx.status === 'pending'
+                            ? 'bg-yellow-500/20 text-yellow-400'
+                            : tx.status === 'rejected'
+                              ? 'bg-red-500/20 text-red-400'
+                              : 'bg-slate-500/20 text-slate-400'
+                      }`}
+                    >
                       {tx.status}
                     </span>
                   </td>
@@ -443,9 +498,7 @@ const MultisigTransactionBuilder: React.FC = () => {
                     <span className="text-slate-400">{tx.expiresAt}</span>
                   </td>
                   <td className="px-4 py-3">
-                    <button className="text-purple-400 hover:text-purple-300 text-xs">
-                      View
-                    </button>
+                    <button className="text-purple-400 hover:text-purple-300 text-xs">View</button>
                   </td>
                 </tr>
               ))}

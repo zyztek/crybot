@@ -54,7 +54,7 @@ interface NavigationTabsProps {
   t: any;
 }
 
-export default function NavigationTabs({ 
+export default function NavigationTabsSimple({ 
   activeTab, 
   onTabChange, 
   faucets, 

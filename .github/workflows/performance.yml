@@ -1,0 +1,70 @@
+# Performance Monitoring & Optimization
+name: Performance Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 0 * * 0' # Weekly on Sunday
+
+jobs:
+  performance-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm ci --prefer-offline --legacy-peer-deps || npm ci --legacy-peer-deps || npm install --legacy-peer-deps
+        timeout-minutes: 10
+
+      - name: Build application
+        run: npm run build
+
+      - name: Analyze bundle size
+        run: |
+          npx vite-bundle-analyzer dist --mode json
+          echo "Bundle size analysis completed"
+
+      - name: Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          configPath: '.lighthouserc.json'
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+  build-performance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm ci --prefer-offline --legacy-peer-deps || npm ci --legacy-peer-deps || npm install --legacy-peer-deps
+        timeout-minutes: 10
+
+      - name: Measure build performance
+        run: |
+          echo "Starting build performance measurement..."
+          time npm run build
+          echo "Build performance measurement completed"
+
+      - name: Check build size
+        run: |
+          du -sh dist/
+          echo "Build size analysis:"
+          find dist/ -name "*.js" -exec ls -lh {} \; | head -20

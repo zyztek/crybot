@@ -1,6 +1,24 @@
-import { useState, useEffect } from 'react';
-import { TrendingUp, TrendingDown, DollarSign, Activity, ArrowUpRight, ArrowDownRight, Clock, Loader2 } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ComposedChart, BarChart, Bar, Legend } from 'recharts';
+import {
+  Activity,
+  ArrowDownRight,
+  ArrowUpRight,
+  Clock,
+  DollarSign,
+  Loader2,
+  TrendingDown,
+  TrendingUp,
+} from 'lucide-react';
+import { useEffect, useState } from 'react';
+import {
+  Bar,
+  CartesianGrid,
+  ComposedChart,
+  Line,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 import { useCoinbasePremium } from '../hooks/useGraphQL';
 
 interface PremiumData {
@@ -12,12 +30,48 @@ interface PremiumData {
 }
 
 const PREMIUM_HISTORY: PremiumData[] = [
-  { timestamp: '2 min ago', coinbasePrice: 67432.50, otherExchangesAvg: 67345.25, premium: 0.129, volume: 2845000000 },
-  { timestamp: '15 min ago', coinbasePrice: 67415.75, otherExchangesAvg: 67320.50, premium: 0.141, volume: 2156000000 },
-  { timestamp: '30 min ago', coinbasePrice: 67380.25, otherExchangesAvg: 67295.00, premium: 0.127, volume: 1890000000 },
-  { timestamp: '1 hour ago', coinbasePrice: 67250.00, otherExchangesAvg: 67180.50, premium: 0.103, volume: 3250000000 },
-  { timestamp: '2 hours ago', coinbasePrice: 67180.25, otherExchangesAvg: 67105.75, premium: 0.111, volume: 4120000000 },
-  { timestamp: '4 hours ago', coinbasePrice: 66950.75, otherExchangesAvg: 66880.00, premium: 0.106, volume: 5680000000 },
+  {
+    timestamp: '2 min ago',
+    coinbasePrice: 67432.5,
+    otherExchangesAvg: 67345.25,
+    premium: 0.129,
+    volume: 2845000000,
+  },
+  {
+    timestamp: '15 min ago',
+    coinbasePrice: 67415.75,
+    otherExchangesAvg: 67320.5,
+    premium: 0.141,
+    volume: 2156000000,
+  },
+  {
+    timestamp: '30 min ago',
+    coinbasePrice: 67380.25,
+    otherExchangesAvg: 67295.0,
+    premium: 0.127,
+    volume: 1890000000,
+  },
+  {
+    timestamp: '1 hour ago',
+    coinbasePrice: 67250.0,
+    otherExchangesAvg: 67180.5,
+    premium: 0.103,
+    volume: 3250000000,
+  },
+  {
+    timestamp: '2 hours ago',
+    coinbasePrice: 67180.25,
+    otherExchangesAvg: 67105.75,
+    premium: 0.111,
+    volume: 4120000000,
+  },
+  {
+    timestamp: '4 hours ago',
+    coinbasePrice: 66950.75,
+    otherExchangesAvg: 66880.0,
+    premium: 0.106,
+    volume: 5680000000,
+  },
 ];
 
 const CoinbasePremiumGap: React.FC = () => {
@@ -31,7 +85,7 @@ const CoinbasePremiumGap: React.FC = () => {
   const [avgPremium, setAvgPremium] = useState(0.119);
   const [maxPremium, setMaxPremium] = useState(0.141);
   const [minPremium, setMinPremium] = useState(0.103);
-  const [currentCoinbase, setCurrentCoinbase] = useState(67432.50);
+  const [currentCoinbase, setCurrentCoinbase] = useState(67432.5);
   const [currentOthers, setCurrentOthers] = useState(67345.25);
 
   // Fetch data on mount and period change
@@ -40,8 +94,8 @@ const CoinbasePremiumGap: React.FC = () => {
       setIsLoading(true);
       try {
         const result = await fetchPremium.execute({ period: selectedPeriod });
-        if (result?.coinbasePremium) {
-          const data = result.coinbasePremium;
+        if ((result as any)?.coinbasePremium) {
+          const data = (result as any).coinbasePremium;
           setCurrentPremium(data.currentPremium);
           setAvgPremium(data.avgPremium);
           setMaxPremium(data.maxPremium);
@@ -49,13 +103,15 @@ const CoinbasePremiumGap: React.FC = () => {
           setCurrentCoinbase(data.coinbasePrice);
           setCurrentOthers(data.otherExchangesAvg);
           if (data.history) {
-            setPremiumHistory(data.history.map((h: any) => ({
-              timestamp: h.timestamp,
-              coinbasePrice: h.coinbasePrice,
-              otherExchangesAvg: h.otherExchangesAvg,
-              premium: h.premium,
-              volume: h.volume,
-            })));
+            setPremiumHistory(
+              data.history.map((h: any) => ({
+                timestamp: h.timestamp,
+                coinbasePrice: h.coinbasePrice,
+                otherExchangesAvg: h.otherExchangesAvg,
+                premium: h.premium,
+                volume: h.volume,
+              }))
+            );
           }
         }
       } catch (err) {
@@ -78,14 +134,14 @@ const CoinbasePremiumGap: React.FC = () => {
 
   const getPremiumColor = (premium: number) => {
     if (premium > 0.15) return 'text-green-400';
-    if (premium > 0.10) return 'text-yellow-400';
+    if (premium > 0.1) return 'text-yellow-400';
     if (premium > 0) return 'text-orange-400';
     return 'text-red-400';
   };
 
   const getPremiumLabel = (premium: number) => {
     if (premium > 0.15) return 'Strong Buy Signal';
-    if (premium > 0.10) return 'Moderate Premium';
+    if (premium > 0.1) return 'Moderate Premium';
     if (premium > 0) return 'Slight Premium';
     return 'Below Average';
   };
@@ -201,7 +257,9 @@ const CoinbasePremiumGap: React.FC = () => {
                 <ArrowDownRight className="w-5 h-5 text-red-400" />
               )}
             </div>
-            <p className="text-3xl font-bold text-white">${currentCoinbase.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+            <p className="text-3xl font-bold text-white">
+              ${currentCoinbase.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+            </p>
             <p className="text-green-400 text-sm mt-1">+2.34% (24h)</p>
           </div>
 
@@ -223,7 +281,9 @@ const CoinbasePremiumGap: React.FC = () => {
                 <ArrowDownRight className="w-5 h-5 text-red-400" />
               )}
             </div>
-            <p className="text-3xl font-bold text-white">${currentOthers.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+            <p className="text-3xl font-bold text-white">
+              ${currentOthers.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+            </p>
             <p className="text-orange-400 text-sm mt-1">+2.18% (24h)</p>
           </div>
         </div>
@@ -256,14 +316,20 @@ const CoinbasePremiumGap: React.FC = () => {
                     <span className="text-slate-400">{data.timestamp}</span>
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <span className="text-white">${data.coinbasePrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                    <span className="text-white">
+                      ${data.coinbasePrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                    </span>
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <span className="text-slate-300">${data.otherExchangesAvg.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                    <span className="text-slate-300">
+                      $
+                      {data.otherExchangesAvg.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                    </span>
                   </td>
                   <td className="px-4 py-3 text-right">
                     <span className={`font-medium ${getPremiumColor(data.premium)}`}>
-                      {data.premium > 0 ? '+' : ''}{data.premium.toFixed(3)}%
+                      {data.premium > 0 ? '+' : ''}
+                      {data.premium.toFixed(3)}%
                     </span>
                   </td>
                   <td className="px-4 py-3 text-right text-slate-400">
@@ -280,34 +346,80 @@ const CoinbasePremiumGap: React.FC = () => {
       <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700">
         <h4 className="text-white font-medium mb-4">Premium Over Time</h4>
         <ResponsiveContainer width="100%" height={250}>
-          <ComposedChart data={premiumHistory.map(d => ({
-            time: d.timestamp,
-            premium: d.premium * 100,
-            coinbase: d.coinbasePrice,
-            others: d.otherExchangesAvg,
-          })).reverse()}>
+          <ComposedChart
+            data={premiumHistory
+              .map(d => ({
+                time: d.timestamp,
+                premium: d.premium * 100,
+                coinbase: d.coinbasePrice,
+                others: d.otherExchangesAvg,
+              }))
+              .reverse()}
+          >
             <defs>
               <linearGradient id="premiumGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#a855f7" stopOpacity={0.8}/>
-                <stop offset="95%" stopColor="#a855f7" stopOpacity={0}/>
+                <stop offset="5%" stopColor="#a855f7" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="#a855f7" stopOpacity={0} />
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
             <XAxis dataKey="time" stroke="#64748b" fontSize={11} />
-            <YAxis yAxisId="left" stroke="#a855f7" fontSize={11} tickFormatter={(v) => `${v.toFixed(2)}%`} />
-            <YAxis yAxisId="right" orientation="right" stroke="#3b82f6" fontSize={11} tickFormatter={(v) => `$${(v/1000).toFixed(0)}k`} />
-            <Tooltip 
-              contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px' }}
+            <YAxis
+              yAxisId="left"
+              stroke="#a855f7"
+              fontSize={11}
+              tickFormatter={v => `${v.toFixed(2)}%`}
+            />
+            <YAxis
+              yAxisId="right"
+              orientation="right"
+              stroke="#3b82f6"
+              fontSize={11}
+              tickFormatter={v => `$${(v / 1000).toFixed(0)}k`}
+            />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: '#1e293b',
+                border: '1px solid #334155',
+                borderRadius: '8px',
+              }}
               labelStyle={{ color: '#94a3b8' }}
-              formatter={(value: number, name: string) => {
+              formatter={(value: any, name: any) => {
+                if (typeof value !== 'number')
+                  return [
+                    '',
+                    name === 'premium' ? 'Premium' : name === 'coinbase' ? 'Coinbase' : 'Others',
+                  ];
                 if (name === 'premium') return [`${value.toFixed(3)}%`, 'Premium'];
                 return [`$${value.toLocaleString()}`, name === 'coinbase' ? 'Coinbase' : 'Others'];
               }}
             />
-            <Legend />
-            <Bar yAxisId="left" dataKey="premium" fill="url(#premiumGradient)" name="Premium %" radius={[4, 4, 0, 0]} />
-            <Line yAxisId="right" type="monotone" dataKey="coinbase" stroke="#3b82f6" strokeWidth={2} dot={{ fill: '#3b82f6' }} name="Coinbase" />
-            <Line yAxisId="right" type="monotone" dataKey="others" stroke="#f97316" strokeWidth={2} strokeDasharray="5 5" dot={{ fill: '#f97316' }} name="Others" />
+            <Bar
+              yAxisId="left"
+              dataKey="premium"
+              fill="url(#premiumGradient)"
+              name="Premium %"
+              radius={[4, 4, 0, 0]}
+            />
+            <Line
+              yAxisId="right"
+              type="monotone"
+              dataKey="coinbase"
+              stroke="#3b82f6"
+              strokeWidth={2}
+              dot={{ fill: '#3b82f6' }}
+              name="Coinbase"
+            />
+            <Line
+              yAxisId="right"
+              type="monotone"
+              dataKey="others"
+              stroke="#f97316"
+              strokeWidth={2}
+              strokeDasharray="5 5"
+              dot={{ fill: '#f97316' }}
+              name="Others"
+            />
           </ComposedChart>
         </ResponsiveContainer>
       </div>
