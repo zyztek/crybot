@@ -38,7 +38,7 @@ router.get(
     res.json({
       success: true,
       data: {
-        achievements: achievements.map(a => ({
+        achievements: achievements.map((a: any) => ({
           id: a.id,
           name: a.name,
           description: a.description,
@@ -76,13 +76,13 @@ router.get(
       orderBy: { completedAt: 'desc' },
     });
 
-    const completed = achievements.filter(a => a.completed).length;
-    const inProgress = achievements.filter(a => !a.completed && a.progress > 0).length;
+    const completed = achievements.filter((a: any) => a.completed).length;
+    const inProgress = achievements.filter((a: any) => !a.completed && a.progress > 0).length;
 
     res.json({
       success: true,
       data: {
-        achievements: achievements.map(a => ({
+        achievements: achievements.map((a: any) => ({
           id: a.achievement.id,
           name: a.achievement.name,
           description: a.achievement.description,

@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '20'
           cache: 'npm'
@@ -30,7 +30,7 @@ jobs:
           npm ci --prefer-offline --legacy-peer-deps || npm ci --legacy-peer-deps || npm install --legacy-peer-deps
         timeout-minutes: 10
 
-      - name: Type checking (optimized system)
+- name: Type checking (optimized system)
         run: npm run typecheck
 
       - name: Lint code
@@ -60,4 +60,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

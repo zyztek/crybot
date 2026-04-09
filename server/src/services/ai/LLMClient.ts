@@ -4,7 +4,7 @@
  */
 
 import OpenAI from 'openai';
-import { LLMConfig } from '../../src/ai/types';
+import { LLMConfig } from './types';
 
 export class LLMClient {
   private client: OpenAI | null;
@@ -74,7 +74,7 @@ export class LLMClient {
   async completeBatch(prompts: string[], systemPrompt?: string): Promise<string[]> {
     // Process all prompts in parallel
     const promises = prompts.map((prompt) => this.complete(prompt, systemPrompt));
-    return Promise.all(prompts);
+    return Promise.all(promises);
   }
 
   async analyzeCode(code: string): Promise<{

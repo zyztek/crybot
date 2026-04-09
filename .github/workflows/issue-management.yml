@@ -18,7 +18,7 @@ jobs:
 
       - name: Add triage label
         if: github.event_name == 'issues'
-        uses: actions/labeler@v5
+        uses: actions/labeler@v6
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           configuration-path: .github/labeler.yml
@@ -27,7 +27,7 @@ jobs:
     if: github.event_name == 'issues'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/stale@v9
+      - uses: actions/stale@v10
         with:
           days-before-stale: 60
           days-before-close: 7

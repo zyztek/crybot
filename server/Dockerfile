@@ -1,23 +1,32 @@
-# CryptoFaucet Backend - Dockerfile
-FROM node:20-alpine
+# CryptoFaucet Backend - Production Dockerfile
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Install dependencies
+# Install dependencies for build
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
-# Copy source code
+# Copy source code and generate Prisma client
 COPY . .
-
-# Generate Prisma client (requires DATABASE_URL at build time)
 ARG DATABASE_URL
 ENV DATABASE_URL=${DATABASE_URL:-postgresql://crybot:crybot_dev_password@postgres:5432/crybot?schema=public}
 RUN npx prisma generate
 
-# Expose port
-EXPOSE 3000
+# Build the application
+RUN npm run build
 
-# Start with entrypoint script that runs migrations
-COPY prisma/seed.ts prisma/seed.ts
-ENTRYPOINT ["sh", "-c", "npx prisma db push && npx tsx prisma/seed.ts && exec npm run dev"]
+# Runtime image only contains production application files
+FROM node:20-alpine AS runtime
+WORKDIR /app
+
+COPY package*.json ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+
+# Remove dev dependencies in runtime image
+RUN npm prune --production
+
+ENV NODE_ENV=production
+EXPOSE 3000
+CMD ["npm", "run", "start:production"]

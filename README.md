@@ -258,42 +258,22 @@ Error responses:
 
 ### Docker Deployment (Recommended)
 
-```yaml
-# docker-compose.yml
-version: '3.8'
+```bash
+# Clone and setup
+git clone https://github.com/zyztek/crybot.git
+cd crybot
 
-services:
-  postgres:
-    image: postgres:16
-    environment:
-      POSTGRES_USER: crybot
-      POSTGRES_PASSWORD: your-password
-      POSTGRES_DB: crybot
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - '5432:5432'
+# Copy the compose environment template
+cp .env.compose.production.example .env.compose.production
 
-  backend:
-    build: ./server
-    ports:
-      - '3000:3000'
-    environment:
-      DATABASE_URL: postgresql://crybot:your-password@postgres:5432/crybot
-      JWT_SECRET: your-secret
-    depends_on:
-      - postgres
+# Update backend values in server/.env.production
+# Update frontend values in .env.production
+# Update compose build values in .env.compose.production
 
-  frontend:
-    build: .
-    ports:
-      - '5173:80'
-    depends_on:
-      - backend
-
-volumes:
-  postgres_data:
+docker compose --env-file .env.compose.production -f docker-compose.prod.yml up -d --build
 ```
+
+> The production compose file uses `server/.env.production` for backend runtime configuration and `./.env.production` for frontend runtime settings.
 
 ### GitHub Pages Deployment
 

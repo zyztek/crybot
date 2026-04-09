@@ -68,7 +68,7 @@ export const errorHandler = (
     return res.status(400).json({
       success: false,
       error: 'Validation Error',
-      message: err.errors.map(e => `${e.path.join('.')}: ${e.message}`).join(', '),
+      message: err.issues.map((e) => `${e.path.join('.')}: ${e.message}`).join(', '),
       code: 'VALIDATION_ERROR',
     });
   }

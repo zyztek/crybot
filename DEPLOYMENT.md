@@ -9,14 +9,17 @@
 git clone https://github.com/zyztek/crybot.git
 cd crybot
 
-# Update environment variables for production
-# Edit server/.env with production values
+# Prepare production environment files
+cp .env.compose.production.example .env.compose.production
+# Update backend values in server/.env.production
+# Update frontend values in .env.production
+# Update compose build values in .env.compose.production
 
 # Build and start
-docker-compose up -d --build
+docker compose --env-file .env.compose.production -f docker-compose.prod.yml up -d --build
 
 # Check status
-docker-compose ps
+docker compose ps
 ```
 
 ### Option 2: Manual Deployment
@@ -35,6 +38,11 @@ npm run build
 # Start
 npm start
 ```
+
+### Production Build Verification
+
+A GitHub Actions workflow is available to validate the full production build on `main`:
+- `.github/workflows/prod-build.yml`
 
 #### Frontend
 

@@ -15,7 +15,7 @@ jobs:
     continue-on-error: true
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: '20'
       - name: Run Snyk
@@ -26,7 +26,7 @@ jobs:
           args: --severity-threshold=high
       - name: Upload results
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: snyk-results
           path: snyk-results/
