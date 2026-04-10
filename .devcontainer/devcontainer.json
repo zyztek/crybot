@@ -1,0 +1,63 @@
+{
+  "name": "Crybot Development Container",
+  "dockerComposeFile": "../docker-compose.dev.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.vscode-typescript-next",
+        "bradlc.vscode-tailwindcss",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "ms-vscode.vscode-json",
+        "redhat.vscode-yaml",
+        "ms-vscode.vscode-markdown",
+        "github.vscode-github-actions",
+        "github.copilot",
+        "github.copilot-chat"
+      ],
+      "settings": {
+        "typescript.preferences.importModuleSpecifier": "relative",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit"
+        },
+        "tailwindCSS.includeLanguages": {
+          "typescript": "javascript",
+          "typescriptreact": "javascript"
+        }
+      }
+    }
+  },
+  "forwardPorts": [5173, 3000],
+  "postCreateCommand": "npm install && npm run setup:auto",
+  "remoteUser": "node",
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/node:20": {}
+  },
+  "portsAttributes": {
+    "5173": {
+      "label": "Development Server",
+      "onAutoForward": "notify"
+    },
+    "3000": {
+      "label": "API Server",
+      "onAutoForward": "notify"
+    }
+  },
+  "lifecycle": {
+    "postCreateCommand": {
+      "commands": [
+        "echo 'Setting up Crybot development environment...'",
+        "npm install",
+        "npm run setup:auto",
+        "echo 'Development environment ready!'",
+        "echo 'Starting development server...'",
+        "npm run dev &",
+        "echo 'Crybot is running at http://localhost:5173'"
+      ]
+    }
+  }
+}

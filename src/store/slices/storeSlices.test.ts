@@ -1,10 +1,9 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import type { BaseTabType, WalletBalance } from '@/types';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { create } from 'zustand';
-import type { StateCreator } from 'zustand';
-import type { TabType, WalletBalance } from '@/types';
 
 // Import store slice creators
-import { createAuthStore, createUIStore, createWalletStore, createFaucetStore } from './index';
+import { createAuthStore, createFaucetStore, createUIStore, createWalletStore } from './index';
 
 // Mock navigator.clipboard
 beforeEach(() => {
@@ -295,13 +294,13 @@ describe('Store Slices Integration Tests', () => {
       }));
 
       // Change UI state - should not affect auth
-      combined.getState().setActiveTab('analytics');
+      combined.getState().setActiveTab('dashboard');
       combined.getState().toggleLanguage();
       expect(combined.getState().isLoggedIn).toBe(false); // Auth unchanged
 
       // Change wallet state - should not affect UI
       combined.getState().updateBalance('eth', 1);
-      expect(combined.getState().activeTab).toBe('analytics'); // UI unchanged
+      expect(combined.getState().activeTab).toBe('dashboard'); // UI unchanged
       expect(combined.getState().language).toBe('en'); // UI unchanged
     });
   });
@@ -318,18 +317,18 @@ describe('Store Slices Integration Tests', () => {
 
       // Make changes
       combined.getState().login();
-      combined.getState().setActiveTab('vip');
+      combined.getState().setActiveTab('settings');
       combined.getState().toggleLanguage();
 
       // Verify changes
       expect(combined.getState().isLoggedIn).toBe(true);
-      expect(combined.getState().activeTab).toBe('vip');
+      expect(combined.getState().activeTab).toBe('settings');
       expect(combined.getState().language).toBe('en');
 
       // Reset
       combined.setState({
         isLoggedIn: false,
-        activeTab: 'faucets' as TabType,
+        activeTab: 'faucets' as BaseTabType,
         language: 'es' as const,
         theme: 'dark' as const,
         showWalletAddress: false,
@@ -345,7 +344,7 @@ describe('Store Slices Integration Tests', () => {
   describe('TypeScript Type Safety', () => {
     it('TabType accepts valid tab values', () => {
       const store = create(createUIStore);
-      const validTabs: TabType[] = [
+      const validTabs: BaseTabType[] = [
         'faucets',
         'dashboard',
         'wallet',

@@ -1,5 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { Smartphone, Download, Play, Settings, Bell, Wallet, TrendingUp, Shield, Globe, Star, CheckCircle, AlertCircle, Code, Package } from 'lucide-react';
+import {
+  AlertCircle,
+  Bell,
+  CheckCircle,
+  Code,
+  Download,
+  Globe,
+  Package,
+  Settings,
+  Shield,
+  Smartphone,
+  Star,
+  TrendingUp,
+  Wallet,
+} from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 
 interface MobileFeature {
   id: string;
@@ -47,7 +61,7 @@ export const ReactNativeApp: React.FC = () => {
       try {
         // Simulate API call
         await new Promise(resolve => setTimeout(resolve, 1500));
-        
+
         const mockFeatures: MobileFeature[] = [
           {
             id: 'mobile-trading',
@@ -58,7 +72,7 @@ export const ReactNativeApp: React.FC = () => {
             platform: ['both'],
             category: 'trading',
             downloads: 45230,
-            rating: 4.8
+            rating: 4.8,
           },
           {
             id: 'biometric-auth',
@@ -69,7 +83,7 @@ export const ReactNativeApp: React.FC = () => {
             platform: ['both'],
             category: 'security',
             downloads: 45230,
-            rating: 4.9
+            rating: 4.9,
           },
           {
             id: 'push-alerts',
@@ -80,7 +94,7 @@ export const ReactNativeApp: React.FC = () => {
             platform: ['both'],
             category: 'utility',
             downloads: 45230,
-            rating: 4.7
+            rating: 4.7,
           },
           {
             id: 'mobile-wallet',
@@ -91,7 +105,7 @@ export const ReactNativeApp: React.FC = () => {
             platform: ['both'],
             category: 'security',
             downloads: 45230,
-            rating: 4.8
+            rating: 4.8,
           },
           {
             id: 'offline-mode',
@@ -100,7 +114,7 @@ export const ReactNativeApp: React.FC = () => {
             icon: <Globe className="w-6 h-6" />,
             status: 'in-development',
             platform: ['both'],
-            category: 'utility'
+            category: 'utility',
           },
           {
             id: 'apple-watch',
@@ -109,7 +123,7 @@ export const ReactNativeApp: React.FC = () => {
             icon: <Smartphone className="w-6 h-6" />,
             status: 'in-development',
             platform: ['ios'],
-            category: 'utility'
+            category: 'utility',
           },
           {
             id: 'dark-mode',
@@ -120,7 +134,7 @@ export const ReactNativeApp: React.FC = () => {
             platform: ['both'],
             category: 'utility',
             downloads: 45230,
-            rating: 4.6
+            rating: 4.6,
           },
           {
             id: 'voice-commands',
@@ -129,8 +143,8 @@ export const ReactNativeApp: React.FC = () => {
             icon: <AlertCircle className="w-6 h-6" />,
             status: 'planned',
             platform: ['both'],
-            category: 'utility'
-          }
+            category: 'utility',
+          },
         ];
 
         const mockVersions: AppVersion[] = [
@@ -142,10 +156,10 @@ export const ReactNativeApp: React.FC = () => {
             features: [
               'Enhanced trading interface',
               'Biometric authentication improvements',
-              'Bug fixes and performance optimizations'
+              'Bug fixes and performance optimizations',
             ],
             downloads: 15230,
-            size: '45.2 MB'
+            size: '45.2 MB',
           },
           {
             version: '3.2.0',
@@ -155,24 +169,20 @@ export const ReactNativeApp: React.FC = () => {
             features: [
               'New dashboard layout',
               'Push notification system',
-              'Multi-language support'
+              'Multi-language support',
             ],
             downloads: 28450,
-            size: '42.8 MB'
+            size: '42.8 MB',
           },
           {
             version: '3.1.5',
             buildNumber: '315',
             releaseDate: '2023-12-28T09:15:00Z',
-            platform: 'both',
-            features: [
-              'Security updates',
-              'Performance improvements',
-              'New chart indicators'
-            ],
+            platform: 'ios',
+            features: ['Security updates', 'Performance improvements', 'New chart indicators'],
             downloads: 15650,
-            size: '44.1 MB'
-          }
+            size: '44.1 MB',
+          },
         ];
 
         const mockNotifications: PushNotification[] = [
@@ -183,7 +193,7 @@ export const ReactNativeApp: React.FC = () => {
             type: 'price',
             timestamp: '2024-01-15T10:30:00Z',
             read: false,
-            action: 'view-chart'
+            action: 'view-chart',
           },
           {
             id: 'notif-2',
@@ -192,7 +202,7 @@ export const ReactNativeApp: React.FC = () => {
             type: 'trade',
             timestamp: '2024-01-15T09:45:00Z',
             read: true,
-            action: 'view-trade'
+            action: 'view-trade',
           },
           {
             id: 'notif-3',
@@ -201,7 +211,7 @@ export const ReactNativeApp: React.FC = () => {
             type: 'security',
             timestamp: '2024-01-15T08:20:00Z',
             read: true,
-            action: 'view-security'
+            action: 'view-security',
           },
           {
             id: 'notif-4',
@@ -210,8 +220,8 @@ export const ReactNativeApp: React.FC = () => {
             type: 'social',
             timestamp: '2024-01-15T07:30:00Z',
             read: false,
-            action: 'view-portfolio'
-          }
+            action: 'view-portfolio',
+          },
         ];
 
         setFeatures(mockFeatures);
@@ -229,26 +239,36 @@ export const ReactNativeApp: React.FC = () => {
 
   const getStatusColor = (status: MobileFeature['status']) => {
     switch (status) {
-      case 'available': return 'bg-green-100 text-green-800';
-      case 'in-development': return 'bg-yellow-100 text-yellow-800';
-      case 'planned': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'available':
+        return 'bg-green-100 text-green-800';
+      case 'in-development':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'planned':
+        return 'bg-gray-100 text-gray-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getCategoryColor = (category: MobileFeature['category']) => {
     switch (category) {
-      case 'trading': return 'bg-blue-100 text-blue-800';
-      case 'security': return 'bg-red-100 text-red-800';
-      case 'analytics': return 'bg-purple-100 text-purple-800';
-      case 'social': return 'bg-green-100 text-green-800';
-      case 'utility': return 'bg-orange-100 text-orange-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'trading':
+        return 'bg-blue-100 text-blue-800';
+      case 'security':
+        return 'bg-red-100 text-red-800';
+      case 'analytics':
+        return 'bg-purple-100 text-purple-800';
+      case 'social':
+        return 'bg-green-100 text-green-800';
+      case 'utility':
+        return 'bg-orange-100 text-orange-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
     }
   };
 
-  const filteredFeatures = features.filter(feature => 
-    selectedPlatform === 'both' || feature.platform.includes(selectedPlatform)
+  const filteredFeatures = features.filter(
+    feature => selectedPlatform === 'both' || feature.platform.includes(selectedPlatform)
   );
 
   if (loading) {
@@ -297,7 +317,7 @@ export const ReactNativeApp: React.FC = () => {
             <Download className="w-8 h-8 opacity-50" />
           </div>
         </div>
-        
+
         <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-lg p-6 text-white">
           <div className="flex items-center justify-between">
             <div>
@@ -307,7 +327,7 @@ export const ReactNativeApp: React.FC = () => {
             <Smartphone className="w-8 h-8 opacity-50" />
           </div>
         </div>
-        
+
         <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg p-6 text-white">
           <div className="flex items-center justify-between">
             <div>
@@ -317,7 +337,7 @@ export const ReactNativeApp: React.FC = () => {
             <Star className="w-8 h-8 opacity-50" />
           </div>
         </div>
-        
+
         <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg p-6 text-white">
           <div className="flex items-center justify-between">
             <div>
@@ -336,7 +356,7 @@ export const ReactNativeApp: React.FC = () => {
           {[
             { id: 'both', name: 'All Platforms' },
             { id: 'ios', name: 'iOS' },
-            { id: 'android', name: 'Android' }
+            { id: 'android', name: 'Android' },
           ].map(platform => (
             <button
               key={platform.id}
@@ -384,29 +404,31 @@ export const ReactNativeApp: React.FC = () => {
                 <div key={feature.id} className="border rounded-lg p-4">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center space-x-2">
-                      <div className="p-2 bg-blue-100 text-blue-600 rounded-lg">
-                        {feature.icon}
-                      </div>
+                      <div className="p-2 bg-blue-100 text-blue-600 rounded-lg">{feature.icon}</div>
                       <div>
                         <h4 className="font-semibold">{feature.name}</h4>
                         <p className="text-sm text-gray-600">{feature.description}</p>
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center justify-between mb-3">
-                    <span className={`px-2 py-1 text-xs rounded-full ${getStatusColor(feature.status)}`}>
+                    <span
+                      className={`px-2 py-1 text-xs rounded-full ${getStatusColor(feature.status)}`}
+                    >
                       {feature.status}
                     </span>
-                    <span className={`px-2 py-1 text-xs rounded-full ${getCategoryColor(feature.category)}`}>
+                    <span
+                      className={`px-2 py-1 text-xs rounded-full ${getCategoryColor(feature.category)}`}
+                    >
                       {feature.category}
                     </span>
                   </div>
-                  
+
                   <div className="flex items-center justify-between text-sm text-gray-600 mb-3">
                     <span>Platform: {feature.platform.join(', ')}</span>
                   </div>
-                  
+
                   {feature.downloads && (
                     <div className="flex items-center justify-between text-sm">
                       <div className="flex items-center space-x-4">
@@ -431,7 +453,10 @@ export const ReactNativeApp: React.FC = () => {
           <div className="p-6">
             <div className="space-y-4">
               {versions.map(version => (
-                <div key={`${version.platform}-${version.version}`} className="border rounded-lg p-4">
+                <div
+                  key={`${version.platform}-${version.version}`}
+                  className="border rounded-lg p-4"
+                >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center space-x-3 mb-2">
@@ -443,13 +468,13 @@ export const ReactNativeApp: React.FC = () => {
                           {version.platform}
                         </span>
                       </div>
-                      
+
                       <div className="flex items-center space-x-4 text-sm text-gray-600 mb-3">
                         <span>Released: {new Date(version.releaseDate).toLocaleDateString()}</span>
                         <span>Size: {version.size}</span>
                         <span>{version.downloads.toLocaleString()} downloads</span>
                       </div>
-                      
+
                       <div>
                         <h5 className="font-medium mb-2">Features:</h5>
                         <ul className="space-y-1">
@@ -462,7 +487,7 @@ export const ReactNativeApp: React.FC = () => {
                         </ul>
                       </div>
                     </div>
-                    
+
                     <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
                       Download
                     </button>
@@ -478,9 +503,12 @@ export const ReactNativeApp: React.FC = () => {
           <div className="p-6">
             <div className="space-y-4">
               {notifications.map(notification => (
-                <div key={notification.id} className={`border rounded-lg p-4 ${
-                  !notification.read ? 'bg-blue-50 border-blue-200' : ''
-                }`}>
+                <div
+                  key={notification.id}
+                  className={`border rounded-lg p-4 ${
+                    !notification.read ? 'bg-blue-50 border-blue-200' : ''
+                  }`}
+                >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center space-x-2 mb-1">
@@ -497,7 +525,7 @@ export const ReactNativeApp: React.FC = () => {
                         <span>{new Date(notification.timestamp).toLocaleString()}</span>
                       </div>
                     </div>
-                    
+
                     {notification.action && (
                       <button className="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm">
                         {notification.action.replace('-', ' ')}
@@ -521,36 +549,42 @@ export const ReactNativeApp: React.FC = () => {
             <div>
               <h4 className="font-medium mb-3 text-green-600">Available Features</h4>
               <div className="space-y-2">
-                {features.filter(f => f.status === 'available').map(feature => (
-                  <div key={feature.id} className="flex items-center space-x-2">
-                    <CheckCircle className="w-4 h-4 text-green-500" />
-                    <span className="text-sm">{feature.name}</span>
-                  </div>
-                ))}
+                {features
+                  .filter(f => f.status === 'available')
+                  .map(feature => (
+                    <div key={feature.id} className="flex items-center space-x-2">
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                      <span className="text-sm">{feature.name}</span>
+                    </div>
+                  ))}
               </div>
             </div>
-            
+
             <div>
               <h4 className="font-medium mb-3 text-yellow-600">In Development</h4>
               <div className="space-y-2">
-                {features.filter(f => f.status === 'in-development').map(feature => (
-                  <div key={feature.id} className="flex items-center space-x-2">
-                    <Code className="w-4 h-4 text-yellow-500" />
-                    <span className="text-sm">{feature.name}</span>
-                  </div>
-                ))}
+                {features
+                  .filter(f => f.status === 'in-development')
+                  .map(feature => (
+                    <div key={feature.id} className="flex items-center space-x-2">
+                      <Code className="w-4 h-4 text-yellow-500" />
+                      <span className="text-sm">{feature.name}</span>
+                    </div>
+                  ))}
               </div>
             </div>
-            
+
             <div>
               <h4 className="font-medium mb-3 text-gray-600">Planned Features</h4>
               <div className="space-y-2">
-                {features.filter(f => f.status === 'planned').map(feature => (
-                  <div key={feature.id} className="flex items-center space-x-2">
-                    <AlertCircle className="w-4 h-4 text-gray-400" />
-                    <span className="text-sm">{feature.name}</span>
-                  </div>
-                ))}
+                {features
+                  .filter(f => f.status === 'planned')
+                  .map(feature => (
+                    <div key={feature.id} className="flex items-center space-x-2">
+                      <AlertCircle className="w-4 h-4 text-gray-400" />
+                      <span className="text-sm">{feature.name}</span>
+                    </div>
+                  ))}
               </div>
             </div>
           </div>

@@ -1,7 +1,7 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { create } from 'zustand';
+import { BaseTabType } from '../../types/tabs';
 import { createUIStore, type UIState } from './uiStore';
-import type { TabType } from '@/types';
 
 describe('UI Store Slice', () => {
   it('initializes with correct default values', () => {
@@ -19,7 +19,14 @@ describe('UI Store Slice', () => {
 
   it('setActiveTab accepts different tab types', () => {
     const store = create<UIState>()(createUIStore);
-    const tabs: TabType[] = ['dashboard', 'wallet', 'leaderboard', 'achievements', 'games', 'news'];
+    const tabs: BaseTabType[] = [
+      'dashboard',
+      'wallet',
+      'leaderboard',
+      'achievements',
+      'settings',
+      'faucets',
+    ];
 
     tabs.forEach(tab => {
       store.getState().setActiveTab(tab);

@@ -1,6 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { TrendingUp, DollarSign, AlertTriangle, Clock, ExternalLink, Filter, Search } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import {
+  AlertTriangle,
+  Clock,
+  DollarSign,
+  ExternalLink,
+  Filter,
+  Search,
+  TrendingUp,
+} from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 
 interface Protocol {
   id: string;
@@ -40,7 +48,7 @@ export const YieldFarmingAggregator: React.FC = () => {
     { id: 'polygon', name: 'Polygon' },
     { id: 'bnb', name: 'BSC' },
     { id: 'avalanche', name: 'Avalanche' },
-    { id: 'arbitrum', name: 'Arbitrum' }
+    { id: 'arbitrum', name: 'Arbitrum' },
   ];
 
   const categories = [
@@ -48,20 +56,20 @@ export const YieldFarmingAggregator: React.FC = () => {
     { id: 'lending', name: 'Lending' },
     { id: 'liquidity', name: 'Liquidity' },
     { id: 'staking', name: 'Staking' },
-    { id: 'yield', name: 'Yield' }
+    { id: 'yield', name: 'Yield' },
   ];
 
   const riskColors = {
     low: '#10b981',
     medium: '#f59e0b',
-    high: '#ef4444'
+    high: '#ef4444',
   };
 
   const categoryColors = {
     lending: '#3b82f6',
     liquidity: '#8b5cf6',
     staking: '#10b981',
-    yield: '#f59e0b'
+    yield: '#f59e0b',
   };
 
   useEffect(() => {
@@ -70,7 +78,7 @@ export const YieldFarmingAggregator: React.FC = () => {
       try {
         // Simulate API call to DeFi protocols
         await new Promise(resolve => setTimeout(resolve, 1500));
-        
+
         const mockProtocols: Protocol[] = [
           {
             id: 'aave-eth',
@@ -84,7 +92,7 @@ export const YieldFarmingAggregator: React.FC = () => {
             requiresLock: false,
             insurance: true,
             audited: true,
-            lastUpdated: new Date().toISOString()
+            lastUpdated: new Date().toISOString(),
           },
           {
             id: 'compound-eth',
@@ -98,7 +106,7 @@ export const YieldFarmingAggregator: React.FC = () => {
             requiresLock: false,
             insurance: true,
             audited: true,
-            lastUpdated: new Date().toISOString()
+            lastUpdated: new Date().toISOString(),
           },
           {
             id: 'uniswap-v3',
@@ -112,7 +120,7 @@ export const YieldFarmingAggregator: React.FC = () => {
             requiresLock: false,
             insurance: false,
             audited: true,
-            lastUpdated: new Date().toISOString()
+            lastUpdated: new Date().toISOString(),
           },
           {
             id: 'curve-finance',
@@ -126,7 +134,7 @@ export const YieldFarmingAggregator: React.FC = () => {
             requiresLock: false,
             insurance: true,
             audited: true,
-            lastUpdated: new Date().toISOString()
+            lastUpdated: new Date().toISOString(),
           },
           {
             id: 'lido-staking',
@@ -140,7 +148,7 @@ export const YieldFarmingAggregator: React.FC = () => {
             requiresLock: false,
             insurance: false,
             audited: true,
-            lastUpdated: new Date().toISOString()
+            lastUpdated: new Date().toISOString(),
           },
           {
             id: 'pancakeswap',
@@ -154,7 +162,7 @@ export const YieldFarmingAggregator: React.FC = () => {
             requiresLock: false,
             insurance: false,
             audited: true,
-            lastUpdated: new Date().toISOString()
+            lastUpdated: new Date().toISOString(),
           },
           {
             id: 'quickswap',
@@ -168,7 +176,7 @@ export const YieldFarmingAggregator: React.FC = () => {
             requiresLock: false,
             insurance: false,
             audited: true,
-            lastUpdated: new Date().toISOString()
+            lastUpdated: new Date().toISOString(),
           },
           {
             id: 'benqi',
@@ -182,24 +190,36 @@ export const YieldFarmingAggregator: React.FC = () => {
             requiresLock: false,
             insurance: true,
             audited: true,
-            lastUpdated: new Date().toISOString()
-          }
+            lastUpdated: new Date().toISOString(),
+          },
         ];
 
         const totalTVL = mockProtocols.reduce((sum, p) => sum + p.tvl, 0);
         const averageAPY = mockProtocols.reduce((sum, p) => sum + p.apy, 0) / mockProtocols.length;
 
         const riskDistribution = [
-          { name: 'Low Risk', value: mockProtocols.filter(p => p.riskScore <= 2).length, color: riskColors.low },
-          { name: 'Medium Risk', value: mockProtocols.filter(p => p.riskScore === 3).length, color: riskColors.medium },
-          { name: 'High Risk', value: mockProtocols.filter(p => p.riskScore >= 4).length, color: riskColors.high }
+          {
+            name: 'Low Risk',
+            value: mockProtocols.filter(p => p.riskScore <= 2).length,
+            color: riskColors.low,
+          },
+          {
+            name: 'Medium Risk',
+            value: mockProtocols.filter(p => p.riskScore === 3).length,
+            color: riskColors.medium,
+          },
+          {
+            name: 'High Risk',
+            value: mockProtocols.filter(p => p.riskScore >= 4).length,
+            color: riskColors.high,
+          },
         ];
 
         setYieldData({
           protocols: mockProtocols,
           totalTVL,
           averageAPY,
-          riskDistribution
+          riskDistribution,
         });
       } catch (error) {
         console.error('Error fetching yield data:', error);
@@ -211,26 +231,31 @@ export const YieldFarmingAggregator: React.FC = () => {
     fetchYieldData();
   }, []);
 
-  const filteredProtocols = yieldData?.protocols.filter(protocol => {
-    const matchesSearch = protocol.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         protocol.token.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesChain = selectedChain === 'all' || protocol.chain === selectedChain;
-    const matchesCategory = selectedCategory === 'all' || protocol.category === selectedCategory;
-    const matchesRisk = !showRiskOnly || protocol.riskScore >= 4;
-    
-    return matchesSearch && matchesChain && matchesCategory && matchesRisk;
-  ).sort((a, b) => {
-    switch (sortBy) {
-      case 'apy':
-        return b.apy - a.apy;
-      case 'tvl':
-        return b.tvl - a.tvl;
-      case 'risk':
-        return a.riskScore - b.riskScore;
-      default:
-        return 0;
-    }
-  }) || [];
+  const filteredProtocols =
+    yieldData?.protocols
+      .filter(protocol => {
+        const matchesSearch =
+          protocol.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          protocol.token.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesChain = selectedChain === 'all' || protocol.chain === selectedChain;
+        const matchesCategory =
+          selectedCategory === 'all' || protocol.category === selectedCategory;
+        const matchesRisk = !showRiskOnly || protocol.riskScore >= 4;
+
+        return matchesSearch && matchesChain && matchesCategory && matchesRisk;
+      })
+      .sort((a, b) => {
+        switch (sortBy) {
+          case 'apy':
+            return b.apy - a.apy;
+          case 'tvl':
+            return b.tvl - a.tvl;
+          case 'risk':
+            return a.riskScore - b.riskScore;
+          default:
+            return 0;
+        }
+      }) || [];
 
   const getRiskLevel = (score: number) => {
     if (score <= 2) return { level: 'Low', color: riskColors.low };
@@ -273,7 +298,7 @@ export const YieldFarmingAggregator: React.FC = () => {
               <DollarSign className="w-8 h-8 opacity-50" />
             </div>
           </div>
-          
+
           <div className="bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg p-6 text-white">
             <div className="flex items-center justify-between">
               <div>
@@ -283,8 +308,8 @@ export const YieldFarmingAggregator: React.FC = () => {
               <TrendingUp className="w-8 h-8 opacity-50" />
             </div>
           </div>
-          
-          <div className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg p-6 text-white">
+
+          <div className="bg-linear-to-r from-purple-500 to-pink-500 rounded-lg p-6 text-white">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm opacity-90">Active Protocols</p>
@@ -331,46 +356,50 @@ export const YieldFarmingAggregator: React.FC = () => {
               type="text"
               placeholder="Search protocols..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          
+
           <select
             value={selectedChain}
-            onChange={(e) => setSelectedChain(e.target.value)}
+            onChange={e => setSelectedChain(e.target.value)}
             className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             {chains.map(chain => (
-              <option key={chain.id} value={chain.id}>{chain.name}</option>
+              <option key={chain.id} value={chain.id}>
+                {chain.name}
+              </option>
             ))}
           </select>
-          
+
           <select
             value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
+            onChange={e => setSelectedCategory(e.target.value)}
             className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             {categories.map(category => (
-              <option key={category.id} value={category.id}>{category.name}</option>
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
             ))}
           </select>
-          
+
           <select
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as any)}
+            onChange={e => setSortBy(e.target.value as any)}
             className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="apy">Sort by APY</option>
             <option value="tvl">Sort by TVL</option>
             <option value="risk">Sort by Risk</option>
           </select>
-          
+
           <label className="flex items-center space-x-2 cursor-pointer">
             <input
               type="checkbox"
               checked={showRiskOnly}
-              onChange={(e) => setShowRiskOnly(e.target.checked)}
+              onChange={e => setShowRiskOnly(e.target.checked)}
               className="rounded text-blue-500 focus:ring-blue-500"
             />
             <span className="text-sm">High Risk Only</span>
@@ -382,14 +411,23 @@ export const YieldFarmingAggregator: React.FC = () => {
       <div className="space-y-4">
         {filteredProtocols.map(protocol => {
           const risk = getRiskLevel(protocol.riskScore);
-          
+
           return (
-            <div key={protocol.id} className="bg-white rounded-lg border p-6 hover:shadow-lg transition-shadow">
+            <div
+              key={protocol.id}
+              className="bg-white rounded-lg border p-6 hover:shadow-lg transition-shadow"
+            >
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center space-x-3 mb-2">
                     <h3 className="text-lg font-semibold">{protocol.name}</h3>
-                    <span className={`px-2 py-1 rounded text-xs font-medium`} style={{ backgroundColor: categoryColors[protocol.category] + '20', color: categoryColors[protocol.category] }}>
+                    <span
+                      className={`px-2 py-1 rounded text-xs font-medium`}
+                      style={{
+                        backgroundColor: categoryColors[protocol.category] + '20',
+                        color: categoryColors[protocol.category],
+                      }}
+                    >
                       {protocol.category}
                     </span>
                     <span className="px-2 py-1 rounded text-xs bg-gray-100 text-gray-700">
@@ -406,7 +444,7 @@ export const YieldFarmingAggregator: React.FC = () => {
                       </span>
                     )}
                   </div>
-                  
+
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-3">
                     <div>
                       <p className="text-sm text-gray-600">APY</p>
@@ -421,7 +459,10 @@ export const YieldFarmingAggregator: React.FC = () => {
                     <div>
                       <p className="text-sm text-gray-600">Risk Level</p>
                       <div className="flex items-center space-x-2">
-                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: risk.color }}></div>
+                        <div
+                          className="w-3 h-3 rounded-full"
+                          style={{ backgroundColor: risk.color }}
+                        ></div>
                         <span className="font-medium" style={{ color: risk.color }}>
                           {risk.level}
                         </span>
@@ -432,22 +473,22 @@ export const YieldFarmingAggregator: React.FC = () => {
                       <p className="font-medium">{protocol.token}</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center space-x-4 text-sm text-gray-600">
                     <div className="flex items-center space-x-1">
                       <Clock className="w-4 h-4" />
-                      <span>{protocol.requiresLock ? `Locked: ${protocol.lockPeriod || 'Variable'}` : 'No Lock'}</span>
+                      <span>
+                        {protocol.requiresLock
+                          ? `Locked: ${protocol.lockPeriod || 'Variable'}`
+                          : 'No Lock'}
+                      </span>
                     </div>
-                    <div>
-                      Updated: {new Date(protocol.lastUpdated).toLocaleTimeString()}
-                    </div>
+                    <div>Updated: {new Date(protocol.lastUpdated).toLocaleTimeString()}</div>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center space-x-2">
-                  {protocol.riskScore >= 4 && (
-                    <AlertTriangle className="w-5 h-5 text-red-500" />
-                  )}
+                  {protocol.riskScore >= 4 && <AlertTriangle className="w-5 h-5 text-red-500" />}
                   <button className="flex items-center space-x-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
                     <span>Deposit</span>
                     <ExternalLink className="w-4 h-4" />
@@ -466,8 +507,9 @@ export const YieldFarmingAggregator: React.FC = () => {
           <div className="text-sm text-yellow-800">
             <p className="font-semibold mb-1">Risk Disclaimer</p>
             <p>
-              Yield farming involves significant risks including smart contract vulnerabilities, impermanent loss, and market volatility. 
-              Always do your own research and never invest more than you can afford to lose.
+              Yield farming involves significant risks including smart contract vulnerabilities,
+              impermanent loss, and market volatility. Always do your own research and never invest
+              more than you can afford to lose.
             </p>
           </div>
         </div>

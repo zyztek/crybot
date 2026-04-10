@@ -1,14 +1,14 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { BaseTabType } from '../types/tabs';
 import { useCryptoStore } from './cryptoStore';
-import type { TabType } from '@/types';
 
 // Import initial data for reset
 import {
+  INITIAL_ACHIEVEMENTS,
   INITIAL_FAUCETS,
   INITIAL_HISTORY,
-  INITIAL_ACHIEVEMENTS,
-  INITIAL_WALLET_BALANCE,
   INITIAL_USER,
+  INITIAL_WALLET_BALANCE,
 } from './cryptoStore';
 
 // Reset store before each test
@@ -231,7 +231,7 @@ describe('CryptoStore - Edge Cases', () => {
   it('handles setActiveTab with various tab types', () => {
     const { setActiveTab } = useCryptoStore.getState();
 
-    const tabs: TabType[] = [
+    const tabs: BaseTabType[] = [
       'dashboard',
       'wallet',
       'referral',
