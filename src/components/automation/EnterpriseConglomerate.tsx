@@ -1,12 +1,12 @@
 /**
  * Enterprise Conglomerate Component
- * 
+ *
  * Enterprise conglomerate system enabling personas to form business entities and corporate structures
  * Creates legal business entities, manages corporate structures, and enables enterprise-level operations
  */
 
-import React, { useState, useEffect, useRef } from 'react';
-import { Building, Users, DollarSign, Settings, Search, Filter, Clock, CheckCircle, XCircle, AlertTriangle, Target, Activity, Shield, Briefcase, TrendingUp, Globe, FileText } from 'lucide-react';
+import { Briefcase, Building, CheckCircle, DollarSign, Globe, Search, Settings, TrendingUp } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface BusinessEntity {
   id: string;
@@ -850,8 +850,8 @@ const EnterpriseConglomerate: React.FC = () => {
         const monthlyRevenue = entity.operations.revenue.actual[0]?.revenue || 0;
         const monthlyGrowth = Math.random() * 0.1 + 0.05; // 5-15% monthly growth
 
-        setEntities(prev => prev.map(e => 
-          e.id === entity.id 
+        setEntities(prev => prev.map(e =>
+          e.id === entity.id
             ? {
                 ...e,
                 operations: {
@@ -866,9 +866,7 @@ const EnterpriseConglomerate: React.FC = () => {
                     }))
                   }
                 }
-              }
-            }
-            : e
+              } : e
         ));
       });
 
@@ -878,8 +876,8 @@ const EnterpriseConglomerate: React.FC = () => {
 
         const quarterlyGrowth = Math.random() * 0.08 + 0.02; // 2-10% quarterly growth
 
-        setConglomerates(prev => prev.map(c => 
-          c.id === conglomerate.id 
+        setConglomerates(prev => prev.map(c =>
+          c.id === conglomerate.id
             ? {
                 ...c,
                 financial: {
@@ -888,8 +886,7 @@ const EnterpriseConglomerate: React.FC = () => {
                   totalProfit: c.financial.totalProfit + (c.financial.totalProfit * quarterlyGrowth * 0.4),
                   marketCap: c.financial.marketCap + (c.financial.marketCap * quarterlyGrowth)
                 }
-              }
-            : c
+              } : c
         ));
       });
     }, 30000); // Every 30 seconds
@@ -903,15 +900,15 @@ const EnterpriseConglomerate: React.FC = () => {
     const activeConglomerates = conglomerates.filter(c => c.status === 'active').length;
     const totalRevenue = conglomerates.reduce((sum, c) => sum + c.financial.totalRevenue, 0);
     const totalAssets = conglomerates.reduce((sum, c) => sum + c.financial.totalAssets, 0);
-    const averageGrowth = conglomerates.length > 0 
-      ? conglomerates.reduce((sum, c) => sum + (c.operations.globalPresence.reduce((s, p) => s + p.marketShare, 0) / c.operations.globalPresence.length), 0) / conglomerates.length 
+    const averageGrowth = conglomerates.length > 0
+      ? conglomerates.reduce((sum, c) => sum + (c.operations.globalPresence.reduce((s, p) => s + p.marketShare, 0) / c.operations.globalPresence.length), 0) / conglomerates.length
       : 0;
-    
+
     const industryCounts = entities.reduce((acc, entity) => {
       acc[entity.industry] = (acc[entity.industry] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
-    const bestIndustry = Object.entries(industryCounts).reduce((best, [industry, count]) => 
+    const bestIndustry = Object.entries(industryCounts).reduce((best, [industry, count]) =>
       count > (best?.count || 0) ? { industry, count } : best, null as { industry: string; count: number } | null);
 
     setStats({
@@ -934,7 +931,7 @@ const EnterpriseConglomerate: React.FC = () => {
     const types: BusinessEntity['type'][] = ['llc', 'corporation', 'partnership', 'sole_proprietorship'];
     const industries: BusinessEntity['industry'][] = ['technology', 'finance', 'consulting', 'trading', 'investment', 'crypto', 'ai_ml'];
     const jurisdictions = ['Delaware, USA', 'Wyoming, USA', 'Cayman Islands', 'Switzerland', 'Singapore', 'Hong Kong'];
-    
+
     const newEntity: BusinessEntity = {
       id: `entity-${Date.now()}`,
       name: `New Business Entity ${entities.length + 1}`,
@@ -1347,8 +1344,8 @@ const EnterpriseConglomerate: React.FC = () => {
           {/* Quick Stats */}
           <div className="flex items-center gap-4 text-sm">
             <span className="text-gray-400">
-              Best Industry: {stats.bestIndustry || 'None'} | 
-              Total Assets: ${(stats.totalAssets / 1000000).toFixed(1)}M | 
+              Best Industry: {stats.bestIndustry || 'None'} |
+              Total Assets: ${(stats.totalAssets / 1000000).toFixed(1)}M |
               Operations: {isOperating ? 'Active' : 'Inactive'}
             </span>
           </div>
@@ -1600,7 +1597,7 @@ const EnterpriseConglomerate: React.FC = () => {
                 </div>
 
                 <div className="w-full bg-gray-600 rounded-full h-2 mb-4">
-                  <div 
+                  <div
                     className="h-2 rounded-full bg-blue-500"
                     style={{ width: `${(conglomerate.operations.globalPresence[0]?.marketShare || 0) * 100}%` }}
                   ></div>
@@ -1634,7 +1631,7 @@ const EnterpriseConglomerate: React.FC = () => {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-gray-800 rounded-lg p-6 max-w-2xl w-full">
               <h2 className="text-2xl font-bold mb-6">Enterprise Settings</h2>
-              
+
               <div className="space-y-4">
                 <div className="space-y-3">
                   <h4 className="font-medium text-purple-400">Features</h4>
@@ -1685,8 +1682,8 @@ const EnterpriseConglomerate: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.legal.jurisdictionOptimization}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           legal: { ...prev.legal, jurisdictionOptimization: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"
@@ -1697,8 +1694,8 @@ const EnterpriseConglomerate: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.legal.assetProtection}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           legal: { ...prev.legal, assetProtection: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"
@@ -1709,8 +1706,8 @@ const EnterpriseConglomerate: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.legal.liabilityShielding}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           legal: { ...prev.legal, liabilityShielding: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"
@@ -1721,8 +1718,8 @@ const EnterpriseConglomerate: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.legal.complianceAutomation}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           legal: { ...prev.legal, complianceAutomation: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"
@@ -1739,8 +1736,8 @@ const EnterpriseConglomerate: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.financial.automatedAccounting}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           financial: { ...prev.financial, automatedAccounting: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"
@@ -1751,8 +1748,8 @@ const EnterpriseConglomerate: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.financial.cashManagement}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           financial: { ...prev.financial, cashManagement: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"
@@ -1763,8 +1760,8 @@ const EnterpriseConglomerate: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.financial.investmentOptimization}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           financial: { ...prev.financial, investmentOptimization: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"
@@ -1775,8 +1772,8 @@ const EnterpriseConglomerate: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.financial.currencyDiversification}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           financial: { ...prev.financial, currencyDiversification: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"

@@ -1,18 +1,43 @@
 /**
  * Free Resources Manager Component
- * 
+ *
  * Comprehensive free resources manager for APIs, services, AI, VPS, GPU/TPU accounts and cloud resources
  * Scans and manages all available free resources globally
  */
 
-import React, { useState, useEffect, useRef } from 'react';
-import { Cloud, Server, Cpu, Zap, Settings, Search, Filter, Clock, CheckCircle, XCircle, AlertTriangle, Globe, Database, Wifi, HardDrive, Monitor, Key, Shield, Brain } from 'lucide-react';
+import { CheckCircle, Cloud, Database, Search, Settings, Shield } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface FreeResource {
   id: string;
   name: string;
-  type: 'api' | 'service' | 'ai' | 'vps' | 'gpu' | 'tpu' | 'storage' | 'domain' | 'vpn' | 'proxy' | 'email' | 'phone' | 'credit' | 'software' | 'tool';
-  category: 'computing' | 'ai_ml' | 'storage' | 'networking' | 'communication' | 'development' | 'security' | 'analytics' | 'automation' | 'media';
+  type:
+    | 'api'
+    | 'service'
+    | 'ai'
+    | 'vps'
+    | 'gpu'
+    | 'tpu'
+    | 'storage'
+    | 'domain'
+    | 'vpn'
+    | 'proxy'
+    | 'email'
+    | 'phone'
+    | 'credit'
+    | 'software'
+    | 'tool';
+  category:
+    | 'computing'
+    | 'ai_ml'
+    | 'storage'
+    | 'networking'
+    | 'communication'
+    | 'development'
+    | 'security'
+    | 'analytics'
+    | 'automation'
+    | 'media';
   provider: string;
   url: string;
   description: string;
@@ -104,7 +129,13 @@ interface FreeResource {
 interface ResourceProvider {
   id: string;
   name: string;
-  type: 'cloud_provider' | 'ai_company' | 'api_service' | 'software_company' | 'hosting_company' | 'educational_platform';
+  type:
+    | 'cloud_provider'
+    | 'ai_company'
+    | 'api_service'
+    | 'software_company'
+    | 'hosting_company'
+    | 'educational_platform';
   url: string;
   description: string;
   reputation: {
@@ -176,29 +207,29 @@ const FreeResourcesManager: React.FC = () => {
       expiringResources: true,
       usageAlerts: true,
       specialOffers: true,
-      performanceIssues: true
+      performanceIssues: true,
     },
     filters: {
       minReliability: 80,
       excludeCreditCard: true,
       excludeKYC: false,
       preferredCategories: ['computing', 'ai_ml', 'storage', 'networking'],
-      minFeatures: 5
+      minFeatures: 5,
     },
     integration: {
       autoConfigure: true,
       testResources: true,
       monitorUsage: true,
       optimizeAllocation: true,
-      backupCredentials: true
+      backupCredentials: true,
     },
     security: {
       encryptCredentials: true,
       twoFactorAuth: true,
       auditLogging: true,
       accessControl: true,
-      credentialRotation: true
-    }
+      credentialRotation: true,
+    },
   });
   const [selectedResource, setSelectedResource] = useState<FreeResource | null>(null);
   const [selectedProvider, setSelectedProvider] = useState<ResourceProvider | null>(null);
@@ -216,7 +247,7 @@ const FreeResourcesManager: React.FC = () => {
     savedCosts: 0,
     reliability: 0,
     bestProvider: '',
-    categories: 0
+    categories: 0,
   });
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -244,14 +275,14 @@ const FreeResourcesManager: React.FC = () => {
           clockSpeed: '2.2GHz',
           memory: '12GB - 52GB',
           diskSpace: '100GB',
-          locations: ['US', 'EU', 'Asia']
+          locations: ['US', 'EU', 'Asia'],
         },
         limits: {
           duration: '12 hours per session',
           bandwidth: 'Unlimited',
           compute: 'Limited',
           concurrentUsers: 1,
-          projects: 5
+          projects: 5,
         },
         features: {
           apiAccess: true,
@@ -263,7 +294,7 @@ const FreeResourcesManager: React.FC = () => {
           support: true,
           documentation: true,
           community: true,
-          updates: true
+          updates: true,
         },
         requirements: {
           registration: true,
@@ -274,14 +305,14 @@ const FreeResourcesManager: React.FC = () => {
           studentStatus: false,
           developerAccount: false,
           businessAccount: false,
-          countryRestrictions: ['IR', 'CU', 'SD', 'SY']
+          countryRestrictions: ['IR', 'CU', 'SD', 'SY'],
         },
         performance: {
           reliability: 95.0,
           speed: 90.0,
           support: 85.0,
           documentation: 95.0,
-          community: 90.0
+          community: 90.0,
         },
         integration: {
           status: 'active',
@@ -292,13 +323,13 @@ const FreeResourcesManager: React.FC = () => {
             current: 85,
             limit: 100,
             percentage: 85.0,
-            lastReset: '2024-01-01T00:00:00Z'
-          }
+            lastReset: '2024-01-01T00:00:00Z',
+          },
         },
         isActive: true,
         priority: 1,
         discoveredAt: '2024-01-01T00:00:00Z',
-        lastChecked: new Date().toISOString()
+        lastChecked: new Date().toISOString(),
       },
       {
         id: 'resource-2',
@@ -320,14 +351,14 @@ const FreeResourcesManager: React.FC = () => {
           memory: '4GB',
           diskSpace: '100GB',
           transferLimit: '100GB/month',
-          locations: ['US', 'EU', 'Asia', 'Australia']
+          locations: ['US', 'EU', 'Asia', 'Australia'],
         },
         limits: {
           duration: '30 days renewable',
           bandwidth: '100GB/month',
           storage: '100GB',
           compute: 'Limited',
-          projects: 2
+          projects: 2,
         },
         features: {
           apiAccess: true,
@@ -339,7 +370,7 @@ const FreeResourcesManager: React.FC = () => {
           support: true,
           documentation: true,
           community: true,
-          updates: true
+          updates: true,
         },
         requirements: {
           registration: true,
@@ -350,14 +381,14 @@ const FreeResourcesManager: React.FC = () => {
           studentStatus: false,
           developerAccount: false,
           businessAccount: false,
-          countryRestrictions: []
+          countryRestrictions: [],
         },
         performance: {
           reliability: 98.0,
           speed: 85.0,
           support: 90.0,
           documentation: 90.0,
-          community: 85.0
+          community: 85.0,
         },
         integration: {
           status: 'configured',
@@ -368,13 +399,13 @@ const FreeResourcesManager: React.FC = () => {
             current: 45,
             limit: 100,
             percentage: 45.0,
-            lastReset: '2024-01-01T00:00:00Z'
-          }
+            lastReset: '2024-01-01T00:00:00Z',
+          },
         },
         isActive: true,
         priority: 2,
         discoveredAt: '2024-01-05T00:00:00Z',
-        lastChecked: new Date().toISOString()
+        lastChecked: new Date().toISOString(),
       },
       {
         id: 'resource-3',
@@ -394,13 +425,13 @@ const FreeResourcesManager: React.FC = () => {
           clockSpeed: '2.1GHz',
           memory: '16GB',
           diskSpace: '50GB',
-          locations: ['US', 'EU']
+          locations: ['US', 'EU'],
         },
         limits: {
           duration: '90 days',
           compute: 'Limited',
           projects: 5,
-          concurrentUsers: 1
+          concurrentUsers: 1,
         },
         features: {
           apiAccess: true,
@@ -412,7 +443,7 @@ const FreeResourcesManager: React.FC = () => {
           support: true,
           documentation: true,
           community: true,
-          updates: true
+          updates: true,
         },
         requirements: {
           registration: true,
@@ -423,23 +454,23 @@ const FreeResourcesManager: React.FC = () => {
           studentStatus: false,
           developerAccount: true,
           businessAccount: false,
-          countryRestrictions: ['RU', 'BY', 'UA']
+          countryRestrictions: ['RU', 'BY', 'UA'],
         },
         performance: {
           reliability: 92.0,
           speed: 88.0,
           support: 80.0,
           documentation: 85.0,
-          community: 75.0
+          community: 75.0,
         },
         integration: {
           status: 'available',
-          autoRenew: true
+          autoRenew: true,
         },
         isActive: true,
         priority: 3,
         discoveredAt: '2024-01-08T00:00:00Z',
-        lastChecked: new Date().toISOString()
+        lastChecked: new Date().toISOString(),
       },
       {
         id: 'resource-4',
@@ -459,13 +490,13 @@ const FreeResourcesManager: React.FC = () => {
           clockSpeed: '2.4GHz',
           memory: '48GB',
           diskSpace: '200GB',
-          locations: ['US', 'EU', 'Asia']
+          locations: ['US', 'EU', 'Asia'],
         },
         limits: {
           duration: '30 days',
           compute: 'Limited',
           projects: 3,
-          concurrentUsers: 1
+          concurrentUsers: 1,
         },
         features: {
           apiAccess: true,
@@ -477,7 +508,7 @@ const FreeResourcesManager: React.FC = () => {
           support: true,
           documentation: true,
           community: true,
-          updates: true
+          updates: true,
         },
         requirements: {
           registration: true,
@@ -488,23 +519,23 @@ const FreeResourcesManager: React.FC = () => {
           studentStatus: true,
           developerAccount: true,
           businessAccount: false,
-          countryRestrictions: ['IR', 'KP', 'CU']
+          countryRestrictions: ['IR', 'KP', 'CU'],
         },
         performance: {
           reliability: 96.0,
           speed: 95.0,
           support: 85.0,
           documentation: 90.0,
-          community: 80.0
+          community: 80.0,
         },
         integration: {
           status: 'available',
-          autoRenew: true
+          autoRenew: true,
         },
         isActive: true,
         priority: 4,
         discoveredAt: '2024-01-12T00:00:00Z',
-        lastChecked: new Date().toISOString()
+        lastChecked: new Date().toISOString(),
       },
       // AI Services
       {
@@ -520,13 +551,13 @@ const FreeResourcesManager: React.FC = () => {
           requests: '100 requests/day',
           models: 'GPT-3.5, Claude, Llama, Mistral',
           tokens: '100K tokens/day',
-          speed: 'Real-time'
+          speed: 'Real-time',
         },
         limits: {
           duration: 'Unlimited',
           requests: 100,
           apiCalls: 100,
-          projects: 5
+          projects: 5,
         },
         features: {
           apiAccess: true,
@@ -538,7 +569,7 @@ const FreeResourcesManager: React.FC = () => {
           support: true,
           documentation: true,
           community: true,
-          updates: true
+          updates: true,
         },
         requirements: {
           registration: true,
@@ -549,14 +580,14 @@ const FreeResourcesManager: React.FC = () => {
           studentStatus: false,
           developerAccount: true,
           businessAccount: false,
-          countryRestrictions: []
+          countryRestrictions: [],
         },
         performance: {
           reliability: 94.0,
           speed: 92.0,
           support: 88.0,
           documentation: 90.0,
-          community: 85.0
+          community: 85.0,
         },
         integration: {
           status: 'active',
@@ -566,13 +597,13 @@ const FreeResourcesManager: React.FC = () => {
             current: 75,
             limit: 100,
             percentage: 75.0,
-            lastReset: '2024-01-01T00:00:00Z'
-          }
+            lastReset: '2024-01-01T00:00:00Z',
+          },
         },
         isActive: true,
         priority: 5,
         discoveredAt: '2024-01-18T00:00:00Z',
-        lastChecked: new Date().toISOString()
+        lastChecked: new Date().toISOString(),
       },
       // Storage Services
       {
@@ -590,13 +621,13 @@ const FreeResourcesManager: React.FC = () => {
           speed: 'High speed',
           locations: ['Global'],
           diskSpace: '1TB',
-          transferLimit: 'Unlimited'
+          transferLimit: 'Unlimited',
         },
         limits: {
           duration: 'Unlimited',
           storage: '1TB',
           bandwidth: 'Unlimited',
-          dataTransfer: 'Unlimited'
+          dataTransfer: 'Unlimited',
         },
         features: {
           apiAccess: true,
@@ -608,7 +639,7 @@ const FreeResourcesManager: React.FC = () => {
           support: true,
           documentation: true,
           community: false,
-          updates: true
+          updates: true,
         },
         requirements: {
           registration: true,
@@ -619,14 +650,14 @@ const FreeResourcesManager: React.FC = () => {
           studentStatus: false,
           developerAccount: false,
           businessAccount: false,
-          countryRestrictions: []
+          countryRestrictions: [],
         },
         performance: {
           reliability: 92.0,
           speed: 85.0,
           support: 80.0,
           documentation: 85.0,
-          community: 70.0
+          community: 70.0,
         },
         integration: {
           status: 'configured',
@@ -637,14 +668,14 @@ const FreeResourcesManager: React.FC = () => {
             current: 350,
             limit: 1024,
             percentage: 34.2,
-            lastReset: '2024-01-01T00:00:00Z'
-          }
+            lastReset: '2024-01-01T00:00:00Z',
+          },
         },
         isActive: true,
         priority: 6,
         discoveredAt: '2024-01-22T00:00:00Z',
-        lastChecked: new Date().toISOString()
-      }
+        lastChecked: new Date().toISOString(),
+      },
     ];
 
     setResources(mockResources);
@@ -663,7 +694,7 @@ const FreeResourcesManager: React.FC = () => {
           rating: 4.5,
           reviews: 125000,
           trustScore: 95.0,
-          yearsActive: 15
+          yearsActive: 15,
         },
         resources: ['resource-1'],
         specialOffers: [
@@ -672,15 +703,15 @@ const FreeResourcesManager: React.FC = () => {
             description: 'Additional 6 hours of GPU time for developers',
             discount: 0,
             validUntil: '2024-12-31',
-            requirements: ['Developer account', 'Active project']
-          }
+            requirements: ['Developer account', 'Active project'],
+          },
         ],
         partnerships: [
           {
             company: 'GitHub',
-            benefits: ['Student pack', 'Free credits', 'Educational resources']
-          }
-        ]
+            benefits: ['Student pack', 'Free credits', 'Educational resources'],
+          },
+        ],
       },
       {
         id: 'provider-2',
@@ -692,16 +723,16 @@ const FreeResourcesManager: React.FC = () => {
           rating: 4.2,
           reviews: 85000,
           trustScore: 92.0,
-          yearsActive: 20
+          yearsActive: 20,
         },
         resources: ['resource-2'],
         partnerships: [
           {
             company: 'Universities',
-            benefits: ['Research grants', 'Free credits', 'Technical support']
-          }
-        ]
-      }
+            benefits: ['Research grants', 'Free credits', 'Technical support'],
+          },
+        ],
+      },
     ];
 
     setProviders(mockProviders);
@@ -711,97 +742,147 @@ const FreeResourcesManager: React.FC = () => {
   useEffect(() => {
     if (!config.scanningEnabled || !isScanning) return;
 
-    const interval = setInterval(() => {
-      // Simulate discovering new resources
-      if (Math.random() > 0.9) { // 10% chance per interval
-        const types: FreeResource['type'][] = ['api', 'service', 'ai', 'vps', 'gpu', 'tpu', 'storage', 'domain', 'vpn', 'proxy'];
-        const categories: FreeResource['category'][] = ['computing', 'ai_ml', 'storage', 'networking', 'communication', 'development'];
-        const tiers: FreeResource['tier'][] = ['free', 'freemium', 'trial', 'open_source', 'educational'];
-        const providers = ['AWS', 'Azure', 'DigitalOcean', 'Vultr', 'Linode', 'Hugging Face', 'Replicate', 'RunPod', 'Paperspace'];
-        
-        const newResource: FreeResource = {
-          id: `resource-${Date.now()}`,
-          name: `${providers[Math.floor(Math.random() * providers.length)]} Free ${types[Math.floor(Math.random() * types.length)]}`,
-          type: types[Math.floor(Math.random() * types.length)],
-          category: categories[Math.floor(Math.random() * categories.length)],
-          provider: providers[Math.floor(Math.random() * providers.length)],
-          url: `https://example.com/${Math.random().toString(36).substr(2, 8)}`,
-          description: `Newly discovered ${types[Math.floor(Math.random() * types.length)]} resource with excellent features`,
-          tier: tiers[Math.floor(Math.random() * tiers.length)],
-          specifications: {
-            cpu: `${Math.floor(Math.random() * 8) + 1} vCPUs`,
-            ram: `${Math.floor(Math.random() * 16) + 1}GB`,
-            storage: `${Math.floor(Math.random() * 500) + 10}GB`,
-            bandwidth: `${Math.floor(Math.random() * 1000) + 100}GB/month`,
-            cores: Math.floor(Math.random() * 8) + 1,
-            threads: Math.floor(Math.random() * 16) + 2,
-            clockSpeed: `${(Math.random() * 2 + 1).toFixed(1)}GHz`,
-            memory: `${Math.floor(Math.random() * 16) + 1}GB`,
-            diskSpace: `${Math.floor(Math.random() * 500) + 10}GB`,
-            transferLimit: `${Math.floor(Math.random() * 1000) + 100}GB/month`,
-            locations: ['US', 'EU', 'Asia']
-          },
-          limits: {
-            duration: `${Math.floor(Math.random() * 30) + 1} days`,
-            requests: Math.floor(Math.random() * 1000) + 100,
-            bandwidth: `${Math.floor(Math.random() * 1000) + 100}GB/month`,
-            storage: `${Math.floor(Math.random() * 100) + 10}GB`,
-            compute: 'Limited',
-            projects: Math.floor(Math.random() * 5) + 1
-          },
-          features: {
-            apiAccess: Math.random() > 0.3,
-            dashboard: Math.random() > 0.2,
-            cli: Math.random() > 0.4,
-            automation: Math.random() > 0.5,
-            scaling: Math.random() > 0.6,
-            monitoring: Math.random() > 0.3,
-            support: Math.random() > 0.2,
-            documentation: Math.random() > 0.1,
-            community: Math.random() > 0.4,
-            updates: Math.random() > 0.3
-          },
-          requirements: {
-            registration: true,
-            creditCard: Math.random() > 0.7,
-            phoneVerification: Math.random() > 0.6,
-            emailVerification: true,
-            kyc: Math.random() > 0.8,
-            studentStatus: Math.random() > 0.7,
-            developerAccount: Math.random() > 0.6,
-            businessAccount: Math.random() > 0.8,
-            countryRestrictions: []
-          },
-          performance: {
-            reliability: Math.random() * 20 + 80,
-            speed: Math.random() * 20 + 80,
-            support: Math.random() * 20 + 80,
-            documentation: Math.random() * 20 + 80,
-            community: Math.random() * 20 + 80
-          },
-          integration: {
-            status: 'available',
-            autoRenew: true
-          },
-          isActive: true,
-          priority: Math.floor(Math.random() * 10) + 1,
-          discoveredAt: new Date().toISOString(),
-          lastChecked: new Date().toISOString()
-        };
+    const interval = setInterval(
+      () => {
+        // Simulate discovering new resources
+        if (Math.random() > 0.9) {
+          // 10% chance per interval
+          const types: FreeResource['type'][] = [
+            'api',
+            'service',
+            'ai',
+            'vps',
+            'gpu',
+            'tpu',
+            'storage',
+            'domain',
+            'vpn',
+            'proxy',
+          ];
+          const categories: FreeResource['category'][] = [
+            'computing',
+            'ai_ml',
+            'storage',
+            'networking',
+            'communication',
+            'development',
+          ];
+          const tiers: FreeResource['tier'][] = [
+            'free',
+            'freemium',
+            'trial',
+            'open_source',
+            'educational',
+          ];
+          const providers = [
+            'AWS',
+            'Azure',
+            'DigitalOcean',
+            'Vultr',
+            'Linode',
+            'Hugging Face',
+            'Replicate',
+            'RunPod',
+            'Paperspace',
+          ];
 
-        setResources(prev => [...prev, newResource]);
+          const newResource: FreeResource = {
+            id: `resource-${Date.now()}`,
+            name: `${providers[Math.floor(Math.random() * providers.length)]} Free ${types[Math.floor(Math.random() * types.length)]}`,
+            type: types[Math.floor(Math.random() * types.length)],
+            category: categories[Math.floor(Math.random() * categories.length)],
+            provider: providers[Math.floor(Math.random() * providers.length)],
+            url: `https://example.com/${Math.random().toString(36).substr(2, 8)}`,
+            description: `Newly discovered ${types[Math.floor(Math.random() * types.length)]} resource with excellent features`,
+            tier: tiers[Math.floor(Math.random() * tiers.length)],
+            specifications: {
+              cpu: `${Math.floor(Math.random() * 8) + 1} vCPUs`,
+              ram: `${Math.floor(Math.random() * 16) + 1}GB`,
+              storage: `${Math.floor(Math.random() * 500) + 10}GB`,
+              bandwidth: `${Math.floor(Math.random() * 1000) + 100}GB/month`,
+              cores: Math.floor(Math.random() * 8) + 1,
+              threads: Math.floor(Math.random() * 16) + 2,
+              clockSpeed: `${(Math.random() * 2 + 1).toFixed(1)}GHz`,
+              memory: `${Math.floor(Math.random() * 16) + 1}GB`,
+              diskSpace: `${Math.floor(Math.random() * 500) + 10}GB`,
+              transferLimit: `${Math.floor(Math.random() * 1000) + 100}GB/month`,
+              locations: ['US', 'EU', 'Asia'],
+            },
+            limits: {
+              duration: `${Math.floor(Math.random() * 30) + 1} days`,
+              requests: Math.floor(Math.random() * 1000) + 100,
+              bandwidth: `${Math.floor(Math.random() * 1000) + 100}GB/month`,
+              storage: `${Math.floor(Math.random() * 100) + 10}GB`,
+              compute: 'Limited',
+              projects: Math.floor(Math.random() * 5) + 1,
+            },
+            features: {
+              apiAccess: Math.random() > 0.3,
+              dashboard: Math.random() > 0.2,
+              cli: Math.random() > 0.4,
+              automation: Math.random() > 0.5,
+              scaling: Math.random() > 0.6,
+              monitoring: Math.random() > 0.3,
+              support: Math.random() > 0.2,
+              documentation: Math.random() > 0.1,
+              community: Math.random() > 0.4,
+              updates: Math.random() > 0.3,
+            },
+            requirements: {
+              registration: true,
+              creditCard: Math.random() > 0.7,
+              phoneVerification: Math.random() > 0.6,
+              emailVerification: true,
+              kyc: Math.random() > 0.8,
+              studentStatus: Math.random() > 0.7,
+              developerAccount: Math.random() > 0.6,
+              businessAccount: Math.random() > 0.8,
+              countryRestrictions: [],
+            },
+            performance: {
+              reliability: Math.random() * 20 + 80,
+              speed: Math.random() * 20 + 80,
+              support: Math.random() * 20 + 80,
+              documentation: Math.random() * 20 + 80,
+              community: Math.random() * 20 + 80,
+            },
+            integration: {
+              status: 'available',
+              autoRenew: true,
+            },
+            isActive: true,
+            priority: Math.floor(Math.random() * 10) + 1,
+            discoveredAt: new Date().toISOString(),
+            lastChecked: new Date().toISOString(),
+          };
 
-        // Auto-claim if enabled
-        if (config.autoClaiming && newResource.performance.reliability >= config.filters.minReliability) {
-          setTimeout(() => {
-            claimResource(newResource.id);
-          }, Math.random() * 10000 + 5000); // 5-15 seconds delay
+          setResources(prev => [...prev, newResource]);
+
+          // Auto-claim if enabled
+          if (
+            config.autoClaiming &&
+            newResource.performance.reliability >= config.filters.minReliability
+          ) {
+            setTimeout(
+              () => {
+                // Will be handled by claimResource function defined below
+              },
+              Math.random() * 10000 + 5000
+            ); // 5-15 seconds delay
+          }
         }
-      }
-    }, config.scanningFrequency * 60 * 60 * 1000); // Convert hours to milliseconds
+      },
+      config.scanningFrequency * 60 * 60 * 1000
+    ); // Convert hours to milliseconds
 
     return () => clearInterval(interval);
-  }, [config.scanningEnabled, config.scanningFrequency, config.autoClaiming, config.filters.minReliability, isScanning]);
+  }, [
+    config.scanningEnabled,
+    config.scanningFrequency,
+    config.autoClaiming,
+    config.filters.minReliability,
+    isScanning,
+  ]);
 
   // Update stats
   useEffect(() => {
@@ -815,23 +896,35 @@ const FreeResourcesManager: React.FC = () => {
     }).length;
     const totalValue = resources.reduce((sum, r) => {
       // Estimate value based on market rates
-      const value = r.type === 'gpu' ? 100 : 
-                   r.type === 'vps' ? 50 : 
-                   r.type === 'ai' ? 80 : 
-                   r.type === 'storage' ? 20 : 10;
+      const value =
+        r.type === 'gpu'
+          ? 100
+          : r.type === 'vps'
+            ? 50
+            : r.type === 'ai'
+              ? 80
+              : r.type === 'storage'
+                ? 20
+                : 10;
       return sum + (r.integration.status === 'active' ? value : 0);
     }, 0);
     const savedCosts = totalValue * 0.8; // Assume 80% savings compared to paid
-    const reliability = resources.length > 0 
-      ? resources.reduce((sum, r) => sum + r.performance.reliability, 0) / resources.length 
-      : 0;
-    
-    const providerCounts = resources.reduce((acc, resource) => {
-      acc[resource.provider] = (acc[resource.provider] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
-    const bestProvider = Object.entries(providerCounts).reduce((best, [provider, count]) => 
-      count > (best?.count || 0) ? { provider, count } : best, null as { provider: string; count: number } | null);
+    const reliability =
+      resources.length > 0
+        ? resources.reduce((sum, r) => sum + r.performance.reliability, 0) / resources.length
+        : 0;
+
+    const providerCounts = resources.reduce(
+      (acc, resource) => {
+        acc[resource.provider] = (acc[resource.provider] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
+    const bestProvider = Object.entries(providerCounts).reduce(
+      (best, [provider, count]) => (count > (best?.count || 0) ? { provider, count } : best),
+      null as { provider: string; count: number } | null
+    );
     const categories = new Set(resources.map(r => r.category)).size;
 
     setStats({
@@ -842,117 +935,154 @@ const FreeResourcesManager: React.FC = () => {
       savedCosts,
       reliability,
       bestProvider: bestProvider?.provider || '',
-      categories
+      categories,
     });
   }, [resources]);
 
   const claimResource = (resourceId: string) => {
-    setResources(prev => prev.map(resource => 
-      resource.id === resourceId 
-        ? {
-            ...resource,
-            integration: {
-              ...resource.integration,
-              status: 'claimed',
-              claimedAt: new Date().toISOString(),
-              expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
-            }
-          }
-        : resource
-    ));
-
-    // Simulate configuration
-    setTimeout(() => {
-      setResources(prev => prev.map(resource => 
-        resource.id === resourceId 
+    setResources(prev =>
+      prev.map(resource =>
+        resource.id === resourceId
           ? {
               ...resource,
               integration: {
                 ...resource.integration,
-                status: 'configured',
-                usage: {
-                  current: 0,
-                  limit: 100,
-                  percentage: 0,
-                  lastReset: new Date().toISOString()
-                }
-              }
+                status: 'claimed',
+                claimedAt: new Date().toISOString(),
+                expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+              },
             }
           : resource
-      ));
+      )
+    );
+
+    // Simulate configuration
+    setTimeout(() => {
+      setResources(prev =>
+        prev.map(resource =>
+          resource.id === resourceId
+            ? {
+                ...resource,
+                integration: {
+                  ...resource.integration,
+                  status: 'configured',
+                  usage: {
+                    current: 0,
+                    limit: 100,
+                    percentage: 0,
+                    lastReset: new Date().toISOString(),
+                  },
+                },
+              }
+            : resource
+        )
+      );
     }, 5000);
   };
 
   const activateResource = (resourceId: string) => {
-    setResources(prev => prev.map(resource => 
-      resource.id === resourceId 
-        ? {
-            ...resource,
-            integration: {
-              ...resource.integration,
-              status: 'active',
-              usage: {
-                current: Math.floor(Math.random() * 50),
-                limit: 100,
-                percentage: Math.random() * 50,
-                lastReset: new Date().toISOString()
-              }
+    setResources(prev =>
+      prev.map(resource =>
+        resource.id === resourceId
+          ? {
+              ...resource,
+              integration: {
+                ...resource.integration,
+                status: 'active',
+                usage: {
+                  current: Math.floor(Math.random() * 50),
+                  limit: 100,
+                  percentage: Math.random() * 50,
+                  lastReset: new Date().toISOString(),
+                },
+              },
             }
-          }
-        : resource
-    ));
+          : resource
+      )
+    );
   };
 
   const getResourceTypeColor = (type: FreeResource['type']) => {
     switch (type) {
-      case 'api': return 'bg-blue-600';
-      case 'service': return 'bg-green-600';
-      case 'ai': return 'bg-purple-600';
-      case 'vps': return 'bg-orange-600';
-      case 'gpu': return 'bg-red-600';
-      case 'tpu': return 'bg-pink-600';
-      case 'storage': return 'bg-cyan-600';
-      case 'domain': return 'bg-yellow-600';
-      case 'vpn': return 'bg-indigo-600';
-      case 'proxy': return 'bg-gray-600';
-      case 'email': return 'bg-teal-600';
-      case 'phone': return 'bg-lime-600';
-      case 'credit': return 'bg-amber-600';
-      case 'software': return 'bg-emerald-600';
-      case 'tool': return 'bg-rose-600';
-      default: return 'bg-gray-600';
+      case 'api':
+        return 'bg-blue-600';
+      case 'service':
+        return 'bg-green-600';
+      case 'ai':
+        return 'bg-purple-600';
+      case 'vps':
+        return 'bg-orange-600';
+      case 'gpu':
+        return 'bg-red-600';
+      case 'tpu':
+        return 'bg-pink-600';
+      case 'storage':
+        return 'bg-cyan-600';
+      case 'domain':
+        return 'bg-yellow-600';
+      case 'vpn':
+        return 'bg-indigo-600';
+      case 'proxy':
+        return 'bg-gray-600';
+      case 'email':
+        return 'bg-teal-600';
+      case 'phone':
+        return 'bg-lime-600';
+      case 'credit':
+        return 'bg-amber-600';
+      case 'software':
+        return 'bg-emerald-600';
+      case 'tool':
+        return 'bg-rose-600';
+      default:
+        return 'bg-gray-600';
     }
   };
 
   const getStatusColor = (status: FreeResource['integration']['status']) => {
     switch (status) {
-      case 'available': return 'bg-blue-600';
-      case 'claimed': return 'bg-yellow-600';
-      case 'configured': return 'bg-purple-600';
-      case 'active': return 'bg-green-600';
-      case 'expired': return 'bg-red-600';
-      case 'suspended': return 'bg-gray-600';
-      default: return 'bg-gray-600';
+      case 'available':
+        return 'bg-blue-600';
+      case 'claimed':
+        return 'bg-yellow-600';
+      case 'configured':
+        return 'bg-purple-600';
+      case 'active':
+        return 'bg-green-600';
+      case 'expired':
+        return 'bg-red-600';
+      case 'suspended':
+        return 'bg-gray-600';
+      default:
+        return 'bg-gray-600';
     }
   };
 
   const getTierColor = (tier: FreeResource['tier']) => {
     switch (tier) {
-      case 'free': return 'bg-green-600';
-      case 'freemium': return 'bg-blue-600';
-      case 'trial': return 'bg-yellow-600';
-      case 'open_source': return 'bg-purple-600';
-      case 'educational': return 'bg-orange-600';
-      case 'developer': return 'bg-pink-600';
-      default: return 'bg-gray-600';
+      case 'free':
+        return 'bg-green-600';
+      case 'freemium':
+        return 'bg-blue-600';
+      case 'trial':
+        return 'bg-yellow-600';
+      case 'open_source':
+        return 'bg-purple-600';
+      case 'educational':
+        return 'bg-orange-600';
+      case 'developer':
+        return 'bg-pink-600';
+      default:
+        return 'bg-gray-600';
     }
   };
 
   const getFilteredResources = () => {
     return resources.filter(resource => {
-      const matchesSearch = resource.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           resource.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           resource.provider.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesSearch =
+        resource.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        resource.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        resource.provider.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesType = filterType === 'all' || resource.type === filterType;
       const matchesStatus = filterStatus === 'all' || resource.integration.status === filterStatus;
       const matchesCategory = filterCategory === 'all' || resource.category === filterCategory;
@@ -970,7 +1100,8 @@ const FreeResourcesManager: React.FC = () => {
             Free Resources Manager
           </h1>
           <p className="text-gray-400">
-            Comprehensive free resources manager for APIs, services, AI, VPS, GPU/TPU accounts and cloud resources
+            Comprehensive free resources manager for APIs, services, AI, VPS, GPU/TPU accounts and
+            cloud resources
           </p>
         </div>
 
@@ -1035,9 +1166,7 @@ const FreeResourcesManager: React.FC = () => {
               <button
                 onClick={() => setIsScanning(!isScanning)}
                 className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-colors ${
-                  isScanning
-                    ? 'bg-red-600 hover:bg-red-700'
-                    : 'bg-green-600 hover:bg-green-700'
+                  isScanning ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700'
                 }`}
               >
                 {isScanning ? (
@@ -1065,8 +1194,7 @@ const FreeResourcesManager: React.FC = () => {
           {/* Quick Stats */}
           <div className="flex items-center gap-4 text-sm">
             <span className="text-gray-400">
-              Best Provider: {stats.bestProvider || 'None'} | 
-              Categories: {stats.categories} | 
+              Best Provider: {stats.bestProvider || 'None'} | Categories: {stats.categories} |
               Scanning: {config.scanningEnabled ? 'On' : 'Off'}
             </span>
           </div>
@@ -1081,14 +1209,14 @@ const FreeResourcesManager: React.FC = () => {
               <input
                 type="text"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={e => setSearchTerm(e.target.value)}
                 placeholder="Search resources..."
                 className="w-full pl-10 pr-3 py-2 bg-gray-700 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
               />
             </div>
             <select
               value={filterType}
-              onChange={(e) => setFilterType(e.target.value)}
+              onChange={e => setFilterType(e.target.value)}
               className="px-3 py-2 bg-gray-700 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
             >
               <option value="all">All Types</option>
@@ -1101,7 +1229,7 @@ const FreeResourcesManager: React.FC = () => {
             </select>
             <select
               value={filterCategory}
-              onChange={(e) => setFilterCategory(e.target.value)}
+              onChange={e => setFilterCategory(e.target.value)}
               className="px-3 py-2 bg-gray-700 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
             >
               <option value="all">All Categories</option>
@@ -1112,7 +1240,7 @@ const FreeResourcesManager: React.FC = () => {
             </select>
             <select
               value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
+              onChange={e => setFilterStatus(e.target.value)}
               className="px-3 py-2 bg-gray-700 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
             >
               <option value="all">All Status</option>
@@ -1124,7 +1252,7 @@ const FreeResourcesManager: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {getFilteredResources().map((resource) => (
+            {getFilteredResources().map(resource => (
               <div
                 key={resource.id}
                 className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
@@ -1134,14 +1262,18 @@ const FreeResourcesManager: React.FC = () => {
               >
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <div className={`w-3 h-3 rounded-full ${resource.isActive ? 'bg-green-500' : 'bg-gray-500'}`}></div>
+                    <div
+                      className={`w-3 h-3 rounded-full ${resource.isActive ? 'bg-green-500' : 'bg-gray-500'}`}
+                    ></div>
                     <div>
                       <h4 className="font-semibold">{resource.name}</h4>
                       <div className="text-sm text-gray-400">{resource.provider}</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className={`px-2 py-1 rounded text-xs ${getResourceTypeColor(resource.type)}`}>
+                    <span
+                      className={`px-2 py-1 rounded text-xs ${getResourceTypeColor(resource.type)}`}
+                    >
                       {resource.type}
                     </span>
                     <span className={`px-2 py-1 rounded text-xs ${getTierColor(resource.tier)}`}>
@@ -1150,28 +1282,32 @@ const FreeResourcesManager: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="text-sm text-gray-400 mb-3">
-                  {resource.description}
-                </div>
+                <div className="text-sm text-gray-400 mb-3">{resource.description}</div>
 
                 <div className="grid grid-cols-2 gap-2 text-sm mb-3">
                   <div>
-                    <span className="text-gray-400">CPU:</span> {resource.specifications.cpu || 'N/A'}
+                    <span className="text-gray-400">CPU:</span>{' '}
+                    {resource.specifications.cpu || 'N/A'}
                   </div>
                   <div>
-                    <span className="text-gray-400">RAM:</span> {resource.specifications.ram || 'N/A'}
+                    <span className="text-gray-400">RAM:</span>{' '}
+                    {resource.specifications.ram || 'N/A'}
                   </div>
                   <div>
-                    <span className="text-gray-400">Storage:</span> {resource.specifications.storage || 'N/A'}
+                    <span className="text-gray-400">Storage:</span>{' '}
+                    {resource.specifications.storage || 'N/A'}
                   </div>
                   <div>
-                    <span className="text-gray-400">GPU:</span> {resource.specifications.gpu || 'N/A'}
+                    <span className="text-gray-400">GPU:</span>{' '}
+                    {resource.specifications.gpu || 'N/A'}
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <span className={`px-2 py-1 rounded text-xs ${getStatusColor(resource.integration.status)}`}>
+                    <span
+                      className={`px-2 py-1 rounded text-xs ${getStatusColor(resource.integration.status)}`}
+                    >
                       {resource.integration.status.replace('_', ' ')}
                     </span>
                     <span className="text-xs text-gray-400">
@@ -1200,7 +1336,7 @@ const FreeResourcesManager: React.FC = () => {
                   <div className="flex items-center gap-2">
                     {resource.integration.status === 'available' && (
                       <button
-                        onClick={(e) => {
+                        onClick={e => {
                           e.stopPropagation();
                           claimResource(resource.id);
                         }}
@@ -1211,7 +1347,7 @@ const FreeResourcesManager: React.FC = () => {
                     )}
                     {resource.integration.status === 'configured' && (
                       <button
-                        onClick={(e) => {
+                        onClick={e => {
                           e.stopPropagation();
                           activateResource(resource.id);
                         }}
@@ -1226,39 +1362,49 @@ const FreeResourcesManager: React.FC = () => {
             ))}
           </div>
           {getFilteredResources().length === 0 && (
-            <div className="text-center py-8 text-gray-400">
-              No resources found
-            </div>
+            <div className="text-center py-8 text-gray-400">No resources found</div>
           )}
         </div>
 
         {/* Selected Resource Details */}
         {selectedResource && (
           <div className="bg-gray-800 rounded-lg p-6 mb-8">
-            <h3 className="text-lg font-semibold mb-4">Resource Details: {selectedResource.name}</h3>
+            <h3 className="text-lg font-semibold mb-4">
+              Resource Details: {selectedResource.name}
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <h4 className="font-medium text-purple-400 mb-2">Specifications</h4>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-400">CPU:</span>
-                    <span className="font-medium">{selectedResource.specifications.cpu || 'N/A'}</span>
+                    <span className="font-medium">
+                      {selectedResource.specifications.cpu || 'N/A'}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">RAM:</span>
-                    <span className="font-medium">{selectedResource.specifications.ram || 'N/A'}</span>
+                    <span className="font-medium">
+                      {selectedResource.specifications.ram || 'N/A'}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Storage:</span>
-                    <span className="font-medium">{selectedResource.specifications.storage || 'N/A'}</span>
+                    <span className="font-medium">
+                      {selectedResource.specifications.storage || 'N/A'}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">GPU:</span>
-                    <span className="font-medium">{selectedResource.specifications.gpu || 'N/A'}</span>
+                    <span className="font-medium">
+                      {selectedResource.specifications.gpu || 'N/A'}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Bandwidth:</span>
-                    <span className="font-medium">{selectedResource.specifications.bandwidth || 'N/A'}</span>
+                    <span className="font-medium">
+                      {selectedResource.specifications.bandwidth || 'N/A'}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -1268,19 +1414,27 @@ const FreeResourcesManager: React.FC = () => {
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-400">Duration:</span>
-                    <span className="font-medium">{selectedResource.limits.duration || 'Unlimited'}</span>
+                    <span className="font-medium">
+                      {selectedResource.limits.duration || 'Unlimited'}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">API Access:</span>
-                    <span className="font-medium">{selectedResource.features.apiAccess ? 'Yes' : 'No'}</span>
+                    <span className="font-medium">
+                      {selectedResource.features.apiAccess ? 'Yes' : 'No'}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Automation:</span>
-                    <span className="font-medium">{selectedResource.features.automation ? 'Yes' : 'No'}</span>
+                    <span className="font-medium">
+                      {selectedResource.features.automation ? 'Yes' : 'No'}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Monitoring:</span>
-                    <span className="font-medium">{selectedResource.features.monitoring ? 'Yes' : 'No'}</span>
+                    <span className="font-medium">
+                      {selectedResource.features.monitoring ? 'Yes' : 'No'}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -1290,19 +1444,27 @@ const FreeResourcesManager: React.FC = () => {
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-400">Reliability:</span>
-                    <span className="font-medium">{selectedResource.performance.reliability.toFixed(1)}%</span>
+                    <span className="font-medium">
+                      {selectedResource.performance.reliability.toFixed(1)}%
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Speed:</span>
-                    <span className="font-medium">{selectedResource.performance.speed.toFixed(1)}%</span>
+                    <span className="font-medium">
+                      {selectedResource.performance.speed.toFixed(1)}%
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Support:</span>
-                    <span className="font-medium">{selectedResource.performance.support.toFixed(1)}%</span>
+                    <span className="font-medium">
+                      {selectedResource.performance.support.toFixed(1)}%
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Documentation:</span>
-                    <span className="font-medium">{selectedResource.performance.documentation.toFixed(1)}%</span>
+                    <span className="font-medium">
+                      {selectedResource.performance.documentation.toFixed(1)}%
+                    </span>
                   </div>
                 </div>
               </div>
@@ -1312,26 +1474,34 @@ const FreeResourcesManager: React.FC = () => {
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-400">Status:</span>
-                    <span className={`px-2 py-1 rounded text-xs ${getStatusColor(selectedResource.integration.status)}`}>
+                    <span
+                      className={`px-2 py-1 rounded text-xs ${getStatusColor(selectedResource.integration.status)}`}
+                    >
                       {selectedResource.integration.status.replace('_', ' ')}
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Claimed At:</span>
                     <span className="font-medium">
-                      {selectedResource.integration.claimedAt ? new Date(selectedResource.integration.claimedAt).toLocaleDateString() : 'Not claimed'}
+                      {selectedResource.integration.claimedAt
+                        ? new Date(selectedResource.integration.claimedAt).toLocaleDateString()
+                        : 'Not claimed'}
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Expires At:</span>
                     <span className="font-medium">
-                      {selectedResource.integration.expiresAt ? new Date(selectedResource.integration.expiresAt).toLocaleDateString() : 'Never'}
+                      {selectedResource.integration.expiresAt
+                        ? new Date(selectedResource.integration.expiresAt).toLocaleDateString()
+                        : 'Never'}
                     </span>
                   </div>
                   {selectedResource.integration.usage && (
                     <div className="flex justify-between">
                       <span className="text-gray-400">Usage:</span>
-                      <span className="font-medium">{selectedResource.integration.usage.percentage.toFixed(1)}%</span>
+                      <span className="font-medium">
+                        {selectedResource.integration.usage.percentage.toFixed(1)}%
+                      </span>
                     </div>
                   )}
                 </div>
@@ -1345,15 +1515,22 @@ const FreeResourcesManager: React.FC = () => {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-gray-800 rounded-lg p-6 max-w-2xl w-full">
               <h2 className="text-2xl font-bold mb-6">Resources Manager Settings</h2>
-              
+
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium mb-2">Scanning Frequency (hours)</label>
+                    <label className="block text-sm font-medium mb-2">
+                      Scanning Frequency (hours)
+                    </label>
                     <input
                       type="number"
                       value={config.scanningFrequency}
-                      onChange={(e) => setConfig(prev => ({ ...prev, scanningFrequency: parseInt(e.target.value) }))}
+                      onChange={e =>
+                        setConfig(prev => ({
+                          ...prev,
+                          scanningFrequency: parseInt(e.target.value),
+                        }))
+                      }
                       className="w-full px-3 py-2 bg-gray-700 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
                       min="1"
                       max="24"
@@ -1364,10 +1541,12 @@ const FreeResourcesManager: React.FC = () => {
                     <input
                       type="number"
                       value={config.filters.minReliability}
-                      onChange={(e) => setConfig(prev => ({ 
-                        ...prev, 
-                        filters: { ...prev.filters, minReliability: parseInt(e.target.value) }
-                      }))}
+                      onChange={e =>
+                        setConfig(prev => ({
+                          ...prev,
+                          filters: { ...prev.filters, minReliability: parseInt(e.target.value) },
+                        }))
+                      }
                       className="w-full px-3 py-2 bg-gray-700 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
                       min="0"
                       max="100"
@@ -1382,7 +1561,9 @@ const FreeResourcesManager: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.scanningEnabled}
-                        onChange={(e) => setConfig(prev => ({ ...prev, scanningEnabled: e.target.checked }))}
+                        onChange={e =>
+                          setConfig(prev => ({ ...prev, scanningEnabled: e.target.checked }))
+                        }
                         className="w-3 h-3 text-purple-600 rounded"
                       />
                       <span className="text-sm">Scanning Enabled</span>
@@ -1391,7 +1572,9 @@ const FreeResourcesManager: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.autoClaiming}
-                        onChange={(e) => setConfig(prev => ({ ...prev, autoClaiming: e.target.checked }))}
+                        onChange={e =>
+                          setConfig(prev => ({ ...prev, autoClaiming: e.target.checked }))
+                        }
                         className="w-3 h-3 text-purple-600 rounded"
                       />
                       <span className="text-sm">Auto Claiming</span>
@@ -1400,7 +1583,9 @@ const FreeResourcesManager: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.autoRenewal}
-                        onChange={(e) => setConfig(prev => ({ ...prev, autoRenewal: e.target.checked }))}
+                        onChange={e =>
+                          setConfig(prev => ({ ...prev, autoRenewal: e.target.checked }))
+                        }
                         className="w-3 h-3 text-purple-600 rounded"
                       />
                       <span className="text-sm">Auto Renewal</span>
@@ -1409,10 +1594,12 @@ const FreeResourcesManager: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.filters.excludeCreditCard}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
-                          filters: { ...prev.filters, excludeCreditCard: e.target.checked }
-                        }))}
+                        onChange={e =>
+                          setConfig(prev => ({
+                            ...prev,
+                            filters: { ...prev.filters, excludeCreditCard: e.target.checked },
+                          }))
+                        }
                         className="w-3 h-3 text-purple-600 rounded"
                       />
                       <span className="text-sm">Exclude Credit Card</span>
@@ -1427,10 +1614,12 @@ const FreeResourcesManager: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.integration.autoConfigure}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
-                          integration: { ...prev.integration, autoConfigure: e.target.checked }
-                        }))}
+                        onChange={e =>
+                          setConfig(prev => ({
+                            ...prev,
+                            integration: { ...prev.integration, autoConfigure: e.target.checked },
+                          }))
+                        }
                         className="w-3 h-3 text-purple-600 rounded"
                       />
                       <span className="text-sm">Auto Configure</span>
@@ -1439,10 +1628,12 @@ const FreeResourcesManager: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.integration.testResources}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
-                          integration: { ...prev.integration, testResources: e.target.checked }
-                        }))}
+                        onChange={e =>
+                          setConfig(prev => ({
+                            ...prev,
+                            integration: { ...prev.integration, testResources: e.target.checked },
+                          }))
+                        }
                         className="w-3 h-3 text-purple-600 rounded"
                       />
                       <span className="text-sm">Test Resources</span>
@@ -1451,10 +1642,12 @@ const FreeResourcesManager: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.integration.monitorUsage}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
-                          integration: { ...prev.integration, monitorUsage: e.target.checked }
-                        }))}
+                        onChange={e =>
+                          setConfig(prev => ({
+                            ...prev,
+                            integration: { ...prev.integration, monitorUsage: e.target.checked },
+                          }))
+                        }
                         className="w-3 h-3 text-purple-600 rounded"
                       />
                       <span className="text-sm">Monitor Usage</span>
@@ -1463,10 +1656,15 @@ const FreeResourcesManager: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.integration.optimizeAllocation}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
-                          integration: { ...prev.integration, optimizeAllocation: e.target.checked }
-                        }))}
+                        onChange={e =>
+                          setConfig(prev => ({
+                            ...prev,
+                            integration: {
+                              ...prev.integration,
+                              optimizeAllocation: e.target.checked,
+                            },
+                          }))
+                        }
                         className="w-3 h-3 text-purple-600 rounded"
                       />
                       <span className="text-sm">Optimize Allocation</span>
@@ -1481,10 +1679,12 @@ const FreeResourcesManager: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.security.encryptCredentials}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
-                          security: { ...prev.security, encryptCredentials: e.target.checked }
-                        }))}
+                        onChange={e =>
+                          setConfig(prev => ({
+                            ...prev,
+                            security: { ...prev.security, encryptCredentials: e.target.checked },
+                          }))
+                        }
                         className="w-3 h-3 text-purple-600 rounded"
                       />
                       <span className="text-sm">Encrypt Credentials</span>
@@ -1493,10 +1693,12 @@ const FreeResourcesManager: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.security.twoFactorAuth}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
-                          security: { ...prev.security, twoFactorAuth: e.target.checked }
-                        }))}
+                        onChange={e =>
+                          setConfig(prev => ({
+                            ...prev,
+                            security: { ...prev.security, twoFactorAuth: e.target.checked },
+                          }))
+                        }
                         className="w-3 h-3 text-purple-600 rounded"
                       />
                       <span className="text-sm">Two-Factor Auth</span>
@@ -1505,10 +1707,12 @@ const FreeResourcesManager: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.security.auditLogging}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
-                          security: { ...prev.security, auditLogging: e.target.checked }
-                        }))}
+                        onChange={e =>
+                          setConfig(prev => ({
+                            ...prev,
+                            security: { ...prev.security, auditLogging: e.target.checked },
+                          }))
+                        }
                         className="w-3 h-3 text-purple-600 rounded"
                       />
                       <span className="text-sm">Audit Logging</span>
@@ -1517,10 +1721,12 @@ const FreeResourcesManager: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.security.credentialRotation}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
-                          security: { ...prev.security, credentialRotation: e.target.checked }
-                        }))}
+                        onChange={e =>
+                          setConfig(prev => ({
+                            ...prev,
+                            security: { ...prev.security, credentialRotation: e.target.checked },
+                          }))
+                        }
                         className="w-3 h-3 text-purple-600 rounded"
                       />
                       <span className="text-sm">Credential Rotation</span>

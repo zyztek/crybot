@@ -1,12 +1,12 @@
 /**
  * Captcha Credit System Component
- * 
+ *
  * Advanced captcha credit earning system with automated solving and credit management
  * Integrates with multiple captcha platforms for credit accumulation and trading
  */
 
-import React, { useState, useEffect, useRef } from 'react';
-import { CreditCard, Zap, TrendingUp, Settings, Search, Filter, Clock, CheckCircle, XCircle, AlertTriangle, Shield, Target, Coins, Exchange } from 'lucide-react';
+import { Coins, CreditCard, Exchange, Settings, Target, TrendingUp, XCircle, Zap } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface CaptchaPlatform {
   id: string;
@@ -479,18 +479,18 @@ const CaptchaCreditSystem: React.FC = () => {
     const interval = setInterval(() => {
       const currentHour = new Date().getHours();
       const isWorkingHour = config.solving.workingHours.includes(currentHour);
-      
+
       if (!isWorkingHour) return;
 
       accounts.forEach(account => {
         if (!account.settings.autoSolve) return;
-        
+
         const platform = platforms.find(p => p.id === account.platformId);
         if (!platform || !platform.isActive) return;
 
         // Check if account can solve more captchas
-        const hourlySolves = transactions.filter(t => 
-          t.accountId === account.id && 
+        const hourlySolves = transactions.filter(t =>
+          t.accountId === account.id &&
           t.type === 'earned' &&
           new Date(t.timestamp).getHours() === currentHour
         ).length;
@@ -500,11 +500,11 @@ const CaptchaCreditSystem: React.FC = () => {
         // Simulate captcha solving
         const solvingTime = platform.averageTime + (Math.random() - 0.5) * 10;
         const success = Math.random() > (1 - platform.successRate / 100);
-        
+
         setTimeout(() => {
           if (success) {
             const credits = platform.creditRate.perSolve;
-            
+
             // Create earning transaction
             const newTransaction: CreditTransaction = {
               id: `tx-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
@@ -527,8 +527,8 @@ const CaptchaCreditSystem: React.FC = () => {
             setTransactions(prev => [newTransaction, ...prev]);
 
             // Update account balance
-            setAccounts(prev => prev.map(acc => 
-              acc.id === account.id 
+            setAccounts(prev => prev.map(acc =>
+              acc.id === account.id
                 ? {
                     ...acc,
                     balance: {
@@ -547,14 +547,13 @@ const CaptchaCreditSystem: React.FC = () => {
                     },
                     lastActivity: new Date().toISOString()
                   }
-                }
-                : acc
+                } : acc
             ));
 
             // Check for bonus
             if ((account.stats.successfulSolves + 1) % platform.creditRate.bonusThreshold === 0) {
               const bonusCredits = credits * platform.creditRate.bonusMultiplier;
-              
+
               const bonusTransaction: CreditTransaction = {
                 id: `bonus-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
                 accountId: account.id,
@@ -573,8 +572,8 @@ const CaptchaCreditSystem: React.FC = () => {
 
               setTransactions(prev => [bonusTransaction, ...prev]);
 
-              setAccounts(prev => prev.map(acc => 
-                acc.id === account.id 
+              setAccounts(prev => prev.map(acc =>
+                acc.id === account.id
                   ? {
                       ...acc,
                       balance: {
@@ -594,8 +593,8 @@ const CaptchaCreditSystem: React.FC = () => {
             }
           } else {
             // Failed solve
-            setAccounts(prev => prev.map(acc => 
-              acc.id === account.id 
+            setAccounts(prev => prev.map(acc =>
+              acc.id === account.id
                 ? {
                     ...acc.stats,
                     totalSolved: acc.stats.totalSolved + 1,
@@ -619,13 +618,13 @@ const CaptchaCreditSystem: React.FC = () => {
     const interval = setInterval(() => {
       accounts.forEach(account => {
         if (!account.settings.autoWithdraw) return;
-        
+
         const platform = platforms.find(p => p.id === account.platformId);
         if (!platform) return;
 
         if (account.balance.credits >= account.settings.withdrawalThreshold) {
           const withdrawalAmount = account.balance.credits;
-          
+
           // Create withdrawal transaction
           const newTransaction: CreditTransaction = {
             id: `withdraw-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
@@ -645,8 +644,8 @@ const CaptchaCreditSystem: React.FC = () => {
 
           // Simulate withdrawal completion
           setTimeout(() => {
-            setTransactions(prev => prev.map(tx => 
-              tx.id === newTransaction.id 
+            setTransactions(prev => prev.map(tx =>
+              tx.id === newTransaction.id
                 ? {
                     ...tx,
                     status: 'completed',
@@ -655,8 +654,8 @@ const CaptchaCreditSystem: React.FC = () => {
                 : tx
             ));
 
-            setAccounts(prev => prev.map(acc => 
-              acc.id === account.id 
+            setAccounts(prev => prev.map(acc =>
+              acc.id === account.id
                 ? {
                     ...acc,
                     balance: {
@@ -688,7 +687,7 @@ const CaptchaCreditSystem: React.FC = () => {
     const successfulSolves = accounts.reduce((sum, acc) => sum + acc.stats.successfulSolves, 0);
     const solvingRate = totalSolves > 0 ? (successfulSolves / totalSolves) * 100 : 0;
     const averageEarnings = accounts.length > 0 ? totalEarned / accounts.length : 0;
-    
+
     const bestPlatform = accounts.reduce((best, acc) => {
       const platform = platforms.find(p => p.id === acc.platformId);
       if (!platform) return best;
@@ -720,7 +719,7 @@ const CaptchaCreditSystem: React.FC = () => {
     if (activePlatforms.length === 0) return;
 
     const selectedPlatform = activePlatforms[Math.floor(Math.random() * activePlatforms.length)];
-    
+
     const newAccount: CreditAccount = {
       id: `account-${Date.now()}`,
       personaId: 'persona-1',
@@ -793,8 +792,8 @@ const CaptchaCreditSystem: React.FC = () => {
 
     // Simulate withdrawal completion
     setTimeout(() => {
-      setTransactions(prev => prev.map(tx => 
-        tx.id === newTransaction.id 
+      setTransactions(prev => prev.map(tx =>
+        tx.id === newTransaction.id
           ? {
               ...tx,
               status: 'completed',
@@ -803,8 +802,8 @@ const CaptchaCreditSystem: React.FC = () => {
           : tx
       ));
 
-      setAccounts(prev => prev.map(acc => 
-        acc.id === accountId 
+      setAccounts(prev => prev.map(acc =>
+        acc.id === accountId
           ? {
               ...acc,
               balance: {
@@ -968,8 +967,8 @@ const CaptchaCreditSystem: React.FC = () => {
           {/* Quick Stats */}
           <div className="flex items-center gap-4 text-sm">
             <span className="text-gray-400">
-              Best Platform: {stats.bestPlatform || 'None'} | 
-              Average Earnings: ${stats.averageEarnings.toFixed(2)} | 
+              Best Platform: {stats.bestPlatform || 'None'} |
+              Average Earnings: ${stats.averageEarnings.toFixed(2)} |
               Auto Solving: {config.autoSolving ? 'On' : 'Off'}
             </span>
           </div>
@@ -1252,7 +1251,7 @@ const CaptchaCreditSystem: React.FC = () => {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-gray-800 rounded-lg p-6 max-w-2xl w-full">
               <h2 className="text-2xl font-bold mb-6">Credit System Settings</h2>
-              
+
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -1271,8 +1270,8 @@ const CaptchaCreditSystem: React.FC = () => {
                     <input
                       type="number"
                       value={config.solving.maxConcurrent}
-                      onChange={(e) => setConfig(prev => ({ 
-                        ...prev, 
+                      onChange={(e) => setConfig(prev => ({
+                        ...prev,
                         solving: { ...prev.solving, maxConcurrent: parseInt(e.target.value) }
                       }))}
                       className="w-full px-3 py-2 bg-gray-700 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
@@ -1349,8 +1348,8 @@ const CaptchaCreditSystem: React.FC = () => {
                       <label className="block text-sm font-medium mb-2">Preferred Difficulty</label>
                       <select
                         value={config.solving.preferredDifficulty}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           solving: { ...prev.solving, preferredDifficulty: e.target.value as any }
                         }))}
                         className="w-full px-3 py-2 bg-gray-700 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
@@ -1366,8 +1365,8 @@ const CaptchaCreditSystem: React.FC = () => {
                       <input
                         type="number"
                         value={config.solving.breakFrequency}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           solving: { ...prev.solving, breakFrequency: parseInt(e.target.value) }
                         }))}
                         className="w-full px-3 py-2 bg-gray-700 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"

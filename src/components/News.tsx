@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Newspaper, Bell, Clock, ArrowRight, Zap, Award, Flame, Loader2 } from 'lucide-react';
+import { ArrowRight, Award, Bell, Clock, Flame, Loader2, Newspaper, Zap } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useNews } from '../hooks/useGraphQL';
 
 const newsItems = [
@@ -114,19 +114,52 @@ export default function News({ language }: { language: 'zh' | 'en' }) {
   const { fetchArticles, fetchSentiment } = useNews();
   const [newsData, setNewsData] = useState(newsItems);
   const [isLoading, setIsLoading] = useState(false);
-  const [sentiment, setSentiment] = useState<{ overall: string; fearGreedIndex: number } | null>(null);
+  const [sentiment, setSentiment] = useState<{ overall: string; fearGreedIndex: number } | null>(
+    null
+  );
 
   // Fetch news on mount
   useEffect(() => {
-    Promise.all([
-      fetchArticles.execute(),
-      fetchSentiment.execute()
-    ]).then(() => {
-      setIsLoading(false);
-    }).catch(() => {
-      setIsLoading(false);
-    });
+    Promise.all([fetchArticles.execute(), fetchSentiment.execute()])
+      .then(() => {
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setIsLoading(false);
+      });
   }, [fetchArticles, fetchSentiment]);
+
+  const getCategoryColor = (category: string): string => {
+    const colors: Record<string, string> = {
+      Market: 'green',
+      Technology: 'blue',
+      Platform: 'purple',
+      Update: 'yellow',
+      Community: 'orange',
+    };
+    return colors[category] || 'green';
+  };
+
+  const getCategoryEmoji = (category: string): string => {
+    const emojis: Record<string, string> = {
+      Market: '📈',
+      Technology: '⚡',
+      Platform: '🎉',
+      Update: '💎',
+      Community: '🐕',
+      default: '📰',
+    };
+    return emojis[category] || emojis['default'];
+  };
+
+  const getRelativeTime = (dateString?: string): string => {
+    if (!dateString) return 'Recently';
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - date.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+  };
 
   // Update state when data changes
   useEffect(() => {
@@ -154,23 +187,30 @@ export default function News({ language }: { language: 'zh' | 'en' }) {
     if (fetchSentiment.data?.marketSentiment) {
       setSentiment({
         overall: fetchSentiment.data.marketSentiment.overall,
-        fearGreedIndex: fetchSentiment.data.marketSentiment.fearGreedIndex
+        fearGreedIndex: fetchSentiment.data.marketSentiment.fearGreedIndex,
       });
     }
   }, [fetchSentiment.data]);
 
   const getCategoryColor = (category: string): string => {
     const colors: Record<string, string> = {
-      'Market': 'green', 'Technology': 'blue', 'Platform': 'purple', 
-      'Update': 'yellow', 'Community': 'orange'
+      Market: 'green',
+      Technology: 'blue',
+      Platform: 'purple',
+      Update: 'yellow',
+      Community: 'orange',
     };
     return colors[category] || 'green';
   };
 
   const getCategoryEmoji = (category: string): string => {
     const emojis: Record<string, string> = {
-      'Market': '📈', 'Technology': '⚡', 'Platform': '🎉', 
-      'Update': '💎', 'Community': '🐕', 'default': '📰'
+      Market: '📈',
+      Technology: '⚡',
+      Platform: '🎉',
+      Update: '💎',
+      Community: '🐕',
+      default: '📰',
     };
     return emojis[category] || emojis['default'];
   };

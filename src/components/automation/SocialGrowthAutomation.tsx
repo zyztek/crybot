@@ -1,12 +1,12 @@
 /**
  * Social Growth Automation Component
- * 
+ *
  * Zefoy-style social growth automation across all platforms
  * Automated engagement, follower growth, and social media optimization
  */
 
-import React, { useState, useEffect, useRef } from 'react';
-import { Users, TrendingUp, Heart, MessageCircle, Share2, Play, Pause, Settings, Search, Filter, Clock, CheckCircle, XCircle, AlertTriangle, Zap, Globe, Target, Activity, Rocket } from 'lucide-react';
+import { Activity, Heart, Pause, Play, Rocket, Search, Settings, Target, TrendingUp, Users, XCircle } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface SocialPlatform {
   id: string;
@@ -579,7 +579,7 @@ const SocialGrowthAutomation: React.FC = () => {
                   typingPattern: config.humanizationLevel > 70 ? 'normal' : Math.random() > 0.5 ? 'fast' : 'slow',
                   errorRate: (100 - config.humanizationLevel) / 1000, // Lower humanization = fewer errors
                   pauseFrequency: config.humanizationLevel > 80 ? 2 : 1,
-                  emotionalTone: config.behavior.emotionalRange ? 
+                  emotionalTone: config.behavior.emotionalRange ?
                     ['positive', 'enthusiastic', 'professional', 'neutral'][Math.floor(Math.random() * 4)] as any :
                     'neutral'
                 },
@@ -615,22 +615,22 @@ const SocialGrowthAutomation: React.FC = () => {
             status: 'executing'
           };
         }
-        
+
         if (task.status === 'executing') {
           // Complete execution after random time
           setTimeout(() => {
             const success = Math.random() > 0.1; // 90% success rate
-            const executionTime = task.behavior.humanization.typingPattern === 'fast' ? 5 : 
+            const executionTime = task.behavior.humanization.typingPattern === 'fast' ? 5 :
                                  task.behavior.humanization.typingPattern === 'slow' ? 20 : 10;
-            
+
             const engagement = success ? {
               likes: Math.floor(Math.random() * 10) + 1,
               comments: Math.floor(Math.random() * 3),
               shares: Math.floor(Math.random() * 2)
             } : undefined;
 
-            setTasks(prev => prev.map(t => 
-              t.id === task.id 
+            setTasks(prev => prev.map(t =>
+              t.id === task.id
                 ? {
                     ...t,
                     status: success ? 'completed' : 'failed',
@@ -648,8 +648,8 @@ const SocialGrowthAutomation: React.FC = () => {
 
             // Update campaign performance
             if (success) {
-              setCampaigns(prev => prev.map(campaign => 
-                campaign.personaId === task.personaId 
+              setCampaigns(prev => prev.map(campaign =>
+                campaign.personaId === task.personaId
                   ? {
                       ...campaign,
                       performance: {
@@ -664,7 +664,7 @@ const SocialGrowthAutomation: React.FC = () => {
             }
           }, executionTime * 1000);
         }
-        
+
         return task;
       }));
     }, 5000); // Every 5 seconds
@@ -680,8 +680,8 @@ const SocialGrowthAutomation: React.FC = () => {
     const totalFollowers = campaigns.reduce((sum, c) => sum + c.performance.currentFollowers, 0);
     const targetFollowers = campaigns.reduce((sum, c) => sum + c.performance.targetFollowers, 0);
     const followerGrowth = targetFollowers > 0 ? (totalFollowers / targetFollowers) * 100 : 0;
-    const averageEngagement = campaigns.length > 0 
-      ? campaigns.reduce((sum, c) => sum + c.performance.currentEngagement, 0) / campaigns.length 
+    const averageEngagement = campaigns.length > 0
+      ? campaigns.reduce((sum, c) => sum + c.performance.currentEngagement, 0) / campaigns.length
       : 0;
     const averageTime = tasks.filter(t => t.result?.executionTime).length > 0
       ? tasks.reduce((sum, t) => sum + (t.result?.executionTime || 0), 0) / tasks.filter(t => t.result?.executionTime).length
@@ -706,9 +706,26 @@ const SocialGrowthAutomation: React.FC = () => {
       bestPlatform: bestPlatform.platform,
       averageTime
     });
-  }, [tasks, campaigns]);
-
   const generateComment = (contentPillars: string[], emotionalRange: boolean): string => {
+    const templates = [
+      `Great insights on ${contentPillars[0]}! This really resonates with what I've been seeing in the market.`,
+      `Interesting perspective on ${contentPillars[1]}. Have you considered to latest developments?`,
+      `This ${contentPillars[2]} analysis is spot on. The data definitely supports your conclusions.`,
+      `Love your take on ${contentPillars[3]}. Would love to hear more about your methodology.`,
+      `Excellent breakdown of ${contentPillars[0]}. This is exactly what the community needs to see!`
+    ];
+
+    const template = templates[Math.floor(Math.random() * templates.length)];
+
+    if (emotionalRange && Math.random() > 0.7) {
+      const emotions = ['Amazing!', 'Fantastic!', 'Incredible!', 'Outstanding!', 'Brilliant!'];
+      return `${emotions[Math.floor(Math.random() * emotions.length)]} ${template}`;
+    }
+
+    return template;
+  };
+
+  }, [tasks, campaigns]);
     const templates = [
       `Great insights on ${contentPillars[0]}! This really resonates with what I've been seeing in the market.`,
       `Interesting perspective on ${contentPillars[1]}. Have you considered the latest developments?`,
@@ -718,12 +735,12 @@ const SocialGrowthAutomation: React.FC = () => {
     ];
 
     const template = templates[Math.floor(Math.random() * templates.length)];
-    
+
     if (emotionalRange && Math.random() > 0.7) {
       const emotions = ['Amazing!', 'Fantastic!', 'Incredible!', 'Outstanding!', 'Brilliant!'];
       return `${emotions[Math.floor(Math.random() * emotions.length)]} ${template}`;
     }
-    
+
     return template;
   };
 
@@ -942,8 +959,8 @@ const SocialGrowthAutomation: React.FC = () => {
           {/* Quick Stats */}
           <div className="flex items-center gap-4 text-sm">
             <span className="text-gray-400">
-              Best Platform: {stats.bestPlatform || 'None'} | 
-              Avg Time: {stats.averageTime.toFixed(1)}s | 
+              Best Platform: {stats.bestPlatform || 'None'} |
+              Avg Time: {stats.averageTime.toFixed(1)}s |
               Humanization: {config.humanizationLevel}%
             </span>
           </div>
@@ -1186,7 +1203,7 @@ const SocialGrowthAutomation: React.FC = () => {
                 </div>
 
                 <div className="w-full bg-gray-600 rounded-full h-2 mb-4">
-                  <div 
+                  <div
                     className="h-2 rounded-full bg-green-500"
                     style={{ width: `${(campaign.performance.currentFollowers / campaign.performance.targetFollowers) * 100}%` }}
                   ></div>
@@ -1216,7 +1233,7 @@ const SocialGrowthAutomation: React.FC = () => {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-gray-800 rounded-lg p-6 max-w-2xl w-full">
               <h2 className="text-2xl font-bold mb-6">Growth Automation Settings</h2>
-              
+
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -1299,8 +1316,8 @@ const SocialGrowthAutomation: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.behavior.randomizeTiming}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           behavior: { ...prev.behavior, randomizeTiming: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"
@@ -1311,8 +1328,8 @@ const SocialGrowthAutomation: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.behavior.varyPatterns}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           behavior: { ...prev.behavior, varyPatterns: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"
@@ -1323,8 +1340,8 @@ const SocialGrowthAutomation: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.behavior.emotionalRange}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           behavior: { ...prev.behavior, emotionalRange: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"
@@ -1335,8 +1352,8 @@ const SocialGrowthAutomation: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.behavior.sleepSimulation}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           behavior: { ...prev.behavior, sleepSimulation: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"
@@ -1353,8 +1370,8 @@ const SocialGrowthAutomation: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.safety.rateLimiting}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           safety: { ...prev.safety, rateLimiting: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"
@@ -1365,8 +1382,8 @@ const SocialGrowthAutomation: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.safety.proxyRotation}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           safety: { ...prev.safety, proxyRotation: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"
@@ -1377,8 +1394,8 @@ const SocialGrowthAutomation: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.safety.accountWarming}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           safety: { ...prev.safety, accountWarming: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"
@@ -1389,8 +1406,8 @@ const SocialGrowthAutomation: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.safety.riskAssessment}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           safety: { ...prev.safety, riskAssessment: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"

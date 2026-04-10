@@ -1,12 +1,12 @@
 /**
  * Account Warming System Component
- * 
+ *
  * Advanced account warming system with human-like social interactions
  * Simulates real user behavior across social networks and platforms
  */
 
-import React, { useState, useEffect, useRef } from 'react';
-import { Users, Heart, MessageCircle, Share2, TrendingUp, Clock, Settings, Search, Filter, Play, Pause, Zap, Globe, Calendar, Activity } from 'lucide-react';
+import { Activity, Calendar, Heart, Pause, Play, Search, Settings, TrendingUp, Users, Zap } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface SocialPlatform {
   id: string;
@@ -541,56 +541,6 @@ const AccountWarmingSystem: React.FC = () => {
 
             const platformData = platforms.find(p => p.id === platform.platformId);
             if (!platformData) return;
-
-            const currentHour = new Date().getHours();
-            const isInTimeWindow = activityConfig.timeWindows.some(window => {
-              const [startHour, startMin] = window.start.split(':').map(Number);
-              const [endHour, endMin] = window.end.split(':').map(Number);
-              const currentMinutes = currentHour * 60 + new Date().getMinutes();
-              const startMinutes = startHour * 60 + startMin;
-              const endMinutes = endHour * 60 + endMin;
-              return currentMinutes >= startMinutes && currentMinutes <= endMinutes;
-            });
-
-            if (!isInTimeWindow) return;
-
-            const newActivity: WarmingActivity = {
-              id: `activity-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-              personaId: schedule.personaId,
-              platformId: platform.platformId,
-              type: activityConfig.type,
-              content: generateContent(activityConfig.type, activityConfig.contentThemes, activityConfig.targetHashtags),
-              timing: {
-                scheduledFor: new Date(Date.now() + Math.random() * 3600000).toISOString(),
-                delay: config.safetyLimits.minDelayBetween + Math.random() * (config.safetyLimits.maxDelayBetween - config.safetyLimits.minDelayBetween),
-                randomOffset: Math.random() * 10
-              },
-              behavior: {
-                humanization: {
-                  typos: config.humanization && Math.random() > 0.8,
-                  delays: config.humanization,
-                  variations: config.humanization,
-                  emotions: config.behavior.emotionalRange && Math.random() > 0.5
-                },
-                engagement: {
-                  expectedLikes: Math.floor(Math.random() * 20) + 5,
-                  expectedComments: Math.floor(Math.random() * 5) + 1,
-                  expectedShares: Math.floor(Math.random() * 3)
-                }
-              },
-              status: 'scheduled',
-              createdAt: new Date().toISOString()
-            };
-
-            setActivities(prev => [...prev, newActivity]);
-          });
-        });
-      });
-    }, 30000); // Every 30 seconds
-
-    return () => clearInterval(interval);
-  }, [config.autoScheduling, isRunning, schedules, platforms, config]);
-
   // Activity execution simulation
   useEffect(() => {
     if (!isRunning) return;
@@ -600,7 +550,7 @@ const AccountWarmingSystem: React.FC = () => {
         if (activity.status === 'scheduled' && new Date(activity.timing.scheduledFor) <= new Date()) {
           // Execute activity
           const success = Math.random() > 0.1; // 90% success rate
-          
+
           return {
             ...activity,
             status: 'executing',
@@ -610,7 +560,7 @@ const AccountWarmingSystem: React.FC = () => {
             }
           };
         }
-        
+
         if (activity.status === 'executing') {
           // Complete execution after random time
           setTimeout(() => {
@@ -621,8 +571,8 @@ const AccountWarmingSystem: React.FC = () => {
               shares: Math.floor(Math.random() * activity.behavior.engagement.expectedShares * 1.3)
             } : undefined;
 
-            setActivities(prev => prev.map(a => 
-              a.id === activity.id 
+            setActivities(prev => prev.map(a =>
+              a.id === activity.id
                 ? {
                     ...a,
                     status: success ? 'completed' : 'failed',
@@ -638,8 +588,8 @@ const AccountWarmingSystem: React.FC = () => {
 
             // Update schedule progress
             if (success) {
-              setSchedules(prev => prev.map(schedule => 
-                schedule.personaId === activity.personaId 
+              setSchedules(prev => prev.map(schedule =>
+                schedule.personaId === activity.personaId
                   ? {
                       ...schedule,
                       progress: {
@@ -653,7 +603,7 @@ const AccountWarmingSystem: React.FC = () => {
             }
           }, Math.random() * 5000 + 2000);
         }
-        
+
         return activity;
       }));
     }, 5000); // Every 5 seconds
@@ -669,7 +619,7 @@ const AccountWarmingSystem: React.FC = () => {
       ? activities.reduce((sum, a) => sum + (a.result?.engagement?.likes || 0), 0) / activities.filter(a => a.result?.engagement).length
       : 0;
     const followerGrowth = schedules.reduce((sum, s) => sum + s.progress.followersGained, 0);
-    const warmingProgress = schedules.length > 0 
+    const warmingProgress = schedules.length > 0
       ? schedules.reduce((sum, s) => sum + (s.progress.currentDay / s.duration.totalDays), 0) / schedules.length * 100
       : 0;
     const activePlatforms = platforms.filter(p => p.isActive).length;
@@ -708,7 +658,7 @@ const AccountWarmingSystem: React.FC = () => {
     };
 
     const template = contentTemplates[type]?.[Math.floor(Math.random() * contentTemplates[type].length)] || '';
-    
+
     // Add humanization
     let humanizedContent = template;
     if (config.humanization && Math.random() > 0.8) {
@@ -937,8 +887,8 @@ const AccountWarmingSystem: React.FC = () => {
           {/* Quick Stats */}
           <div className="flex items-center gap-4 text-sm">
             <span className="text-gray-400">
-              Active Platforms: {stats.activePlatforms} | 
-              Progress: {stats.warmingProgress.toFixed(1)}% | 
+              Active Platforms: {stats.activePlatforms} |
+              Progress: {stats.warmingProgress.toFixed(1)}% |
               Auto Scheduling: {config.autoScheduling ? 'On' : 'Off'}
             </span>
           </div>
@@ -1167,7 +1117,7 @@ const AccountWarmingSystem: React.FC = () => {
                 </div>
 
                 <div className="w-full bg-gray-600 rounded-full h-2 mb-4">
-                  <div 
+                  <div
                     className="h-2 rounded-full bg-green-500"
                     style={{ width: `${(schedule.progress.currentDay / schedule.duration.totalDays) * 100}%` }}
                   ></div>
@@ -1175,7 +1125,7 @@ const AccountWarmingSystem: React.FC = () => {
 
                 <div className="grid grid-cols-4 gap-4 text-sm">
                   <div>
-                    <span className="text-gray-400">Engagement:</span> 
+                    <span className="text-gray-400">Engagement:</span>
                     <span className={schedule.progress.engagementAchieved >= schedule.goals.engagementRate ? 'text-green-400' : 'text-yellow-400'}>
                       {schedule.progress.engagementAchieved.toFixed(1)}%/{schedule.goals.engagementRate}%
                     </span>
@@ -1200,7 +1150,7 @@ const AccountWarmingSystem: React.FC = () => {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-gray-800 rounded-lg p-6 max-w-2xl w-full">
               <h2 className="text-2xl font-bold mb-6">Warming System Settings</h2>
-              
+
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -1208,8 +1158,8 @@ const AccountWarmingSystem: React.FC = () => {
                     <input
                       type="number"
                       value={config.safetyLimits.maxDailyActivities}
-                      onChange={(e) => setConfig(prev => ({ 
-                        ...prev, 
+                      onChange={(e) => setConfig(prev => ({
+                        ...prev,
                         safetyLimits: { ...prev.safetyLimits, maxDailyActivities: parseInt(e.target.value) }
                       }))}
                       className="w-full px-3 py-2 bg-gray-700 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
@@ -1222,8 +1172,8 @@ const AccountWarmingSystem: React.FC = () => {
                     <input
                       type="number"
                       value={config.safetyLimits.maxHourlyActivities}
-                      onChange={(e) => setConfig(prev => ({ 
-                        ...prev, 
+                      onChange={(e) => setConfig(prev => ({
+                        ...prev,
                         safetyLimits: { ...prev.safetyLimits, maxHourlyActivities: parseInt(e.target.value) }
                       }))}
                       className="w-full px-3 py-2 bg-gray-700 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
@@ -1282,8 +1232,8 @@ const AccountWarmingSystem: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.behavior.simulateOffline}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           behavior: { ...prev.behavior, simulateOffline: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"
@@ -1294,8 +1244,8 @@ const AccountWarmingSystem: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.behavior.randomizePatterns}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           behavior: { ...prev.behavior, randomizePatterns: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"
@@ -1306,8 +1256,8 @@ const AccountWarmingSystem: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.behavior.emotionalRange}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           behavior: { ...prev.behavior, emotionalRange: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"
@@ -1318,8 +1268,8 @@ const AccountWarmingSystem: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.behavior.personalityConsistency}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           behavior: { ...prev.behavior, personalityConsistency: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"

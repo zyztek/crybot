@@ -4,8 +4,8 @@
  * React hook for WebSocket connections with event subscriptions
  */
 
-import { useEffect, useRef, useState, useCallback } from 'react';
-import { wsClient, WSMessage, WS_EVENTS, MessageHandler } from '../services/websocket';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { MessageHandler, WSMessage, WS_EVENTS, wsClient } from '../services/websocket';
 
 type WSConnectionState = 'connecting' | 'connected' | 'disconnected' | 'reconnecting';
 
@@ -39,7 +39,7 @@ export function useWebSocket(options: UseWebSocketOptions = {}): UseWebSocketRet
 
   // Handle connection state changes
   useEffect(() => {
-    const unsubscribe = wsClient.onStateChange((newState) => {
+    const unsubscribe = wsClient.onStateChange(newState => {
       setState(newState);
       setIsConnected(newState === 'connected');
     });
@@ -67,7 +67,7 @@ export function useWebSocket(options: UseWebSocketOptions = {}): UseWebSocketRet
     const unsubscribers: Array<() => void> = [];
 
     events.forEach(eventType => {
-      const unsubscribe = wsClient.subscribe(eventType, (message) => {
+      const unsubscribe = wsClient.subscribe(eventType, message => {
         setLastMessage(message);
         setMessages(prev => [...prev.slice(-99), message]); // Keep last 100 messages
       });
@@ -119,7 +119,6 @@ export function useWebSocketEvent(
   deps: React.DependencyList = []
 ): void {
   const handlerRef = useRef(handler);
-  handlerRef.current = handler;
 
   useEffect(() => {
     const unsubscribe = wsClient.subscribe(eventType, handlerRef.current);

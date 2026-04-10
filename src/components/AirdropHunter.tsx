@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { useAirdrop } from '../hooks/useGraphQL';
 import {
-  Gift,
-  Clock,
-  CheckCircle,
   AlertTriangle,
-  Sparkles,
-  Trophy,
+  CheckCircle,
+  Clock,
   ExternalLink,
   Filter,
+  Gift,
   Search,
+  Sparkles,
+  Trophy,
 } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { useAirdrop } from '../hooks/useGraphQL';
 
 interface Airdrop {
   id: number;
@@ -183,30 +183,35 @@ export const AirdropHunter: React.FC = () => {
 
   // Fetch airdrops on mount
   useEffect(() => {
-    fetchAirdrops.execute().then(() => {
-      setIsLoading(false);
-    }).catch(() => {
-      setIsLoading(false);
-    });
-  }, [fetchAirdrops]); // eslint-disable-line react-hooks/exhaustive-deps
+    fetchAirdrops
+      .execute()
+      .then(() => {
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setIsLoading(false);
+      });
+  }, [fetchAirdrops]);
 
   // Update airdrop list when data changes
   useEffect(() => {
     if (fetchAirdrops.data?.airdrops) {
-      setAirdropList(fetchAirdrops.data.airdrops.map((a: any) => ({
-        id: parseInt(a.id),
-        name: a.name,
-        project: a.description,
-        status: a.status,
-        reward: a.amount,
-        value: '$0',
-        deadline: 'TBA',
-        tasks: [],
-        requirements: '',
-        difficulty: 'medium',
-        verified: false,
-        logo: '🎁',
-      })));
+      setAirdropList(
+        fetchAirdrops.data.airdrops.map((a: any) => ({
+          id: parseInt(a.id),
+          name: a.name,
+          project: a.description,
+          status: a.status,
+          reward: a.amount,
+          value: '$0',
+          deadline: 'TBA',
+          tasks: [],
+          requirements: '',
+          difficulty: 'medium',
+          verified: false,
+          logo: '🎁',
+        }))
+      );
     }
   }, [fetchAirdrops.data]);
 

@@ -5,8 +5,15 @@
  * Provides loading, error, and data states
  */
 
-import { useState, useCallback, useEffect, useRef } from 'react';
-import { graphqlQuery, graphqlMutation, GraphQLResponse, GraphQLVariables, QUERIES_EXTENDED, MUTATIONS_EXTENDED } from '../services/graphql';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  GraphQLResponse,
+  GraphQLVariables,
+  MUTATIONS_EXTENDED,
+  QUERIES_EXTENDED,
+  graphqlMutation,
+  graphqlQuery,
+} from '../services/graphql';
 
 // ============ Type Definitions for Extended Queries/Mutations ============
 
@@ -459,26 +466,29 @@ export function useGraphQLQuery<T>(
   const [error, setError] = useState<Error | null>(null);
   const variablesRef = useRef(variables);
 
-  const execute = useCallback(async (vars?: GraphQLVariables) => {
-    setLoading(true);
-    setError(null);
-    
-    const currentVars = vars ?? variablesRef.current;
-    
-    try {
-      const response = await graphqlQuery<T>(query, currentVars);
-      
-      if (response.errors && response.errors.length > 0) {
-        throw new Error(response.errors[0].message);
+  const execute = useCallback(
+    async (vars?: GraphQLVariables) => {
+      setLoading(true);
+      setError(null);
+
+      const currentVars = vars ?? variablesRef.current;
+
+      try {
+        const response = await graphqlQuery<T>(query, currentVars);
+
+        if (response.errors && response.errors.length > 0) {
+          throw new Error(response.errors[0].message);
+        }
+
+        setData(response.data ?? null);
+      } catch (err) {
+        setError(err instanceof Error ? err : new Error('Unknown error'));
+      } finally {
+        setLoading(false);
       }
-      
-      setData(response.data ?? null);
-    } catch (err) {
-      setError(err instanceof Error ? err : new Error('Unknown error'));
-    } finally {
-      setLoading(false);
-    }
-  }, [query]);
+    },
+    [query]
+  );
 
   const refetch = useCallback(async () => {
     await execute();
@@ -488,7 +498,7 @@ export function useGraphQLQuery<T>(
     if (immediate) {
       execute();
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   return { data, loading, error, execute, refetch };
 }
@@ -509,29 +519,32 @@ export function useGraphQLMutation<T>(
   const [error, setError] = useState<Error | null>(null);
   const variablesRef = useRef(variables);
 
-  const execute = useCallback(async (vars?: GraphQLVariables): Promise<T | null> => {
-    setLoading(true);
-    setError(null);
-    
-    const currentVars = vars ?? variablesRef.current;
-    
-    try {
-      const response = await graphqlMutation<T>(mutation, currentVars);
-      
-      if (response.errors && response.errors.length > 0) {
-        throw new Error(response.errors[0].message);
+  const execute = useCallback(
+    async (vars?: GraphQLVariables): Promise<T | null> => {
+      setLoading(true);
+      setError(null);
+
+      const currentVars = vars ?? variablesRef.current;
+
+      try {
+        const response = await graphqlMutation<T>(mutation, currentVars);
+
+        if (response.errors && response.errors.length > 0) {
+          throw new Error(response.errors[0].message);
+        }
+
+        const result = response.data ?? null;
+        setData(result);
+        return result;
+      } catch (err) {
+        setError(err instanceof Error ? err : new Error('Unknown error'));
+        return null;
+      } finally {
+        setLoading(false);
       }
-      
-      const result = response.data ?? null;
-      setData(result);
-      return result;
-    } catch (err) {
-      setError(err instanceof Error ? err : new Error('Unknown error'));
-      return null;
-    } finally {
-      setLoading(false);
-    }
-  }, [mutation]);
+    },
+    [mutation]
+  );
 
   const reset = useCallback(() => {
     setData(null);
@@ -558,34 +571,37 @@ export function useGraphQL<T>(
   const [error, setError] = useState<Error | null>(null);
   const variablesRef = useRef(variables);
 
-  const execute = useCallback(async (vars?: GraphQLVariables): Promise<void | T | null> => {
-    setLoading(true);
-    setError(null);
-    
-    const currentVars = vars ?? variablesRef.current;
-    
-    try {
-      let response: GraphQLResponse<T>;
-      
-      if (isMutation) {
-        response = await graphqlMutation<T>(queryOrMutation, currentVars);
-      } else {
-        response = await graphqlQuery<T>(queryOrMutation, currentVars);
+  const execute = useCallback(
+    async (vars?: GraphQLVariables): Promise<void | T | null> => {
+      setLoading(true);
+      setError(null);
+
+      const currentVars = vars ?? variablesRef.current;
+
+      try {
+        let response: GraphQLResponse<T>;
+
+        if (isMutation) {
+          response = await graphqlMutation<T>(queryOrMutation, currentVars);
+        } else {
+          response = await graphqlQuery<T>(queryOrMutation, currentVars);
+        }
+
+        if (response.errors && response.errors.length > 0) {
+          throw new Error(response.errors[0].message);
+        }
+
+        const result = response.data ?? null;
+        setData(result);
+        return result;
+      } catch (err) {
+        setError(err instanceof Error ? err : new Error('Unknown error'));
+      } finally {
+        setLoading(false);
       }
-      
-      if (response.errors && response.errors.length > 0) {
-        throw new Error(response.errors[0].message);
-      }
-      
-      const result = response.data ?? null;
-      setData(result);
-      return result;
-    } catch (err) {
-      setError(err instanceof Error ? err : new Error('Unknown error'));
-    } finally {
-      setLoading(false);
-    }
-  }, [queryOrMutation, isMutation]);
+    },
+    [queryOrMutation, isMutation]
+  );
 
   const refetch = useCallback(async () => {
     if (!isMutation) {
@@ -602,7 +618,7 @@ export function useGraphQL<T>(
     if (immediate && !isMutation) {
       execute();
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   return { data, loading, error, execute, refetch, reset };
 }
@@ -749,11 +765,19 @@ export default {
  * Helper function to use Staking queries
  */
 export function useStaking() {
-  const fetchPools = useGraphQLQuery<{ stakingPools: StakingPool[] }>(QUERIES_EXTENDED.GET_STAKING_POOLS, { immediate: false });
-  const fetchPositions = useGraphQLQuery<{ myStakingPositions: StakingPosition[] }>(QUERIES_EXTENDED.GET_MY_STAKING_POSITIONS, { immediate: false });
+  const fetchPools = useGraphQLQuery<{ stakingPools: StakingPool[] }>(
+    QUERIES_EXTENDED.GET_STAKING_POOLS,
+    { immediate: false }
+  );
+  const fetchPositions = useGraphQLQuery<{ myStakingPositions: StakingPosition[] }>(
+    QUERIES_EXTENDED.GET_MY_STAKING_POSITIONS,
+    { immediate: false }
+  );
   const stake = useGraphQLMutation<{ stakeToken: any }>(MUTATIONS_EXTENDED.STAKE_TOKEN);
   const unstake = useGraphQLMutation<{ unstakeToken: any }>(MUTATIONS_EXTENDED.UNSTAKE_TOKEN);
-  const claimRewards = useGraphQLMutation<{ claimStakingRewards: any }>(MUTATIONS_EXTENDED.CLAIM_STAKING_REWARDS);
+  const claimRewards = useGraphQLMutation<{ claimStakingRewards: any }>(
+    MUTATIONS_EXTENDED.CLAIM_STAKING_REWARDS
+  );
 
   return {
     fetchPools,
@@ -768,11 +792,24 @@ export function useStaking() {
  * Helper function to use DeFi queries
  */
 export function useDeFi() {
-  const fetchPortfolio = useGraphQLQuery<{ defiPortfolio: DeFiPortfolio }>(QUERIES_EXTENDED.GET_DEFI_PORTFOLIO, { immediate: false });
-  const fetchProtocols = useGraphQLQuery<{ defiProtocols: any[] }>(QUERIES_EXTENDED.GET_DEFI_PROTOCOLS, { immediate: false });
-  const fetchYieldOpportunities = useGraphQLQuery<{ yieldOpportunities: any[] }>(QUERIES_EXTENDED.GET_YIELD_OPPORTUNITIES, { immediate: false });
-  const supplyLiquidity = useGraphQLMutation<{ supplyLiquidity: any }>(MUTATIONS_EXTENDED.SUPPLY_LIQUIDITY);
-  const withdrawLiquidity = useGraphQLMutation<{ withdrawLiquidity: any }>(MUTATIONS_EXTENDED.WITHDRAW_LIQUIDITY);
+  const fetchPortfolio = useGraphQLQuery<{ defiPortfolio: DeFiPortfolio }>(
+    QUERIES_EXTENDED.GET_DEFI_PORTFOLIO,
+    { immediate: false }
+  );
+  const fetchProtocols = useGraphQLQuery<{ defiProtocols: any[] }>(
+    QUERIES_EXTENDED.GET_DEFI_PROTOCOLS,
+    { immediate: false }
+  );
+  const fetchYieldOpportunities = useGraphQLQuery<{ yieldOpportunities: any[] }>(
+    QUERIES_EXTENDED.GET_YIELD_OPPORTUNITIES,
+    { immediate: false }
+  );
+  const supplyLiquidity = useGraphQLMutation<{ supplyLiquidity: any }>(
+    MUTATIONS_EXTENDED.SUPPLY_LIQUIDITY
+  );
+  const withdrawLiquidity = useGraphQLMutation<{ withdrawLiquidity: any }>(
+    MUTATIONS_EXTENDED.WITHDRAW_LIQUIDITY
+  );
 
   return {
     fetchPortfolio,
@@ -787,9 +824,18 @@ export function useDeFi() {
  * Helper function to use News queries
  */
 export function useNews() {
-  const fetchArticles = useGraphQLQuery<{ newsArticles: NewsArticle[] }>(QUERIES_EXTENDED.GET_NEWS_ARTICLES, { immediate: false });
-  const fetchCategories = useGraphQLQuery<{ newsCategories: string[] }>(QUERIES_EXTENDED.GET_NEWS_CATEGORIES, { immediate: false });
-  const fetchSentiment = useGraphQLQuery<{ marketSentiment: MarketSentiment }>(QUERIES_EXTENDED.GET_MARKET_SENTIMENT, { immediate: false });
+  const fetchArticles = useGraphQLQuery<{ newsArticles: NewsArticle[] }>(
+    QUERIES_EXTENDED.GET_NEWS_ARTICLES,
+    { immediate: false }
+  );
+  const fetchCategories = useGraphQLQuery<{ newsCategories: string[] }>(
+    QUERIES_EXTENDED.GET_NEWS_CATEGORIES,
+    { immediate: false }
+  );
+  const fetchSentiment = useGraphQLQuery<{ marketSentiment: MarketSentiment }>(
+    QUERIES_EXTENDED.GET_MARKET_SENTIMENT,
+    { immediate: false }
+  );
 
   return {
     fetchArticles,
@@ -802,8 +848,13 @@ export function useNews() {
  * Helper function to use NFT queries
  */
 export function useNFT() {
-  const fetchCollections = useGraphQLQuery<{ nftCollections: NFTCollection[] }>(QUERIES_EXTENDED.GET_NFT_COLLECTIONS, { immediate: false });
-  const fetchMyNFTs = useGraphQLQuery<{ myNFTs: any[] }>(QUERIES_EXTENDED.GET_MY_NFTS, { immediate: false });
+  const fetchCollections = useGraphQLQuery<{ nftCollections: NFTCollection[] }>(
+    QUERIES_EXTENDED.GET_NFT_COLLECTIONS,
+    { immediate: false }
+  );
+  const fetchMyNFTs = useGraphQLQuery<{ myNFTs: any[] }>(QUERIES_EXTENDED.GET_MY_NFTS, {
+    immediate: false,
+  });
   const mint = useGraphQLMutation<{ mintNFT: any }>(MUTATIONS_EXTENDED.MINT_NFT);
   const transfer = useGraphQLMutation<{ transferNFT: any }>(MUTATIONS_EXTENDED.TRANSFER_NFT);
   const buy = useGraphQLMutation<{ buyNFT: any }>(MUTATIONS_EXTENDED.BUY_NFT);
@@ -823,10 +874,20 @@ export function useNFT() {
  * Helper function to use Lottery queries
  */
 export function useLottery() {
-  const fetchRounds = useGraphQLQuery<{ lotteryRounds: LotteryRound[] }>(QUERIES_EXTENDED.GET_LOTTERY_ROUNDS, { immediate: false });
-  const fetchMyTickets = useGraphQLQuery<{ myLotteryTickets: any[] }>(QUERIES_EXTENDED.GET_MY_LOTTERY_TICKETS, { immediate: false });
-  const buyTicket = useGraphQLMutation<{ buyLotteryTicket: any }>(MUTATIONS_EXTENDED.BUY_LOTTERY_TICKET);
-  const claimPrize = useGraphQLMutation<{ claimLotteryPrize: any }>(MUTATIONS_EXTENDED.CLAIM_LOTTERY_PRIZE);
+  const fetchRounds = useGraphQLQuery<{ lotteryRounds: LotteryRound[] }>(
+    QUERIES_EXTENDED.GET_LOTTERY_ROUNDS,
+    { immediate: false }
+  );
+  const fetchMyTickets = useGraphQLQuery<{ myLotteryTickets: any[] }>(
+    QUERIES_EXTENDED.GET_MY_LOTTERY_TICKETS,
+    { immediate: false }
+  );
+  const buyTicket = useGraphQLMutation<{ buyLotteryTicket: any }>(
+    MUTATIONS_EXTENDED.BUY_LOTTERY_TICKET
+  );
+  const claimPrize = useGraphQLMutation<{ claimLotteryPrize: any }>(
+    MUTATIONS_EXTENDED.CLAIM_LOTTERY_PRIZE
+  );
 
   return {
     fetchRounds,
@@ -840,8 +901,13 @@ export function useLottery() {
  * Helper function to use Airdrop queries
  */
 export function useAirdrop() {
-  const fetchAirdrops = useGraphQLQuery<{ airdrops: Airdrop[] }>(QUERIES_EXTENDED.GET_AIRDROPS, { immediate: false });
-  const fetchMyClaims = useGraphQLQuery<{ myAirdropClaims: any[] }>(QUERIES_EXTENDED.GET_MY_AIRDROP_CLAIMS, { immediate: false });
+  const fetchAirdrops = useGraphQLQuery<{ airdrops: Airdrop[] }>(QUERIES_EXTENDED.GET_AIRDROPS, {
+    immediate: false,
+  });
+  const fetchMyClaims = useGraphQLQuery<{ myAirdropClaims: any[] }>(
+    QUERIES_EXTENDED.GET_MY_AIRDROP_CLAIMS,
+    { immediate: false }
+  );
   const claim = useGraphQLMutation<{ claimAirdrop: any }>(MUTATIONS_EXTENDED.CLAIM_AIRDROP);
   const verify = useGraphQLMutation<{ verifyAirdrop: any }>(MUTATIONS_EXTENDED.VERIFY_AIRDROP);
 
@@ -857,9 +923,17 @@ export function useAirdrop() {
  * Helper function to use Gas/Oracle queries
  */
 export function useGasOracle() {
-  const fetchGasPrices = useGraphQLQuery<{ gasPrices: any }>(QUERIES_EXTENDED.GET_GAS_PRICES, { immediate: false });
-  const fetchTokenPrices = useGraphQLQuery<{ tokenPrices: any[] }>(QUERIES_EXTENDED.GET_TOKEN_PRICES, { immediate: false });
-  const fetchHistoricalGas = useGraphQLQuery<{ historicalGas: any[] }>(QUERIES_EXTENDED.GET_HISTORICAL_GAS, { immediate: false });
+  const fetchGasPrices = useGraphQLQuery<{ gasPrices: any }>(QUERIES_EXTENDED.GET_GAS_PRICES, {
+    immediate: false,
+  });
+  const fetchTokenPrices = useGraphQLQuery<{ tokenPrices: any[] }>(
+    QUERIES_EXTENDED.GET_TOKEN_PRICES,
+    { immediate: false }
+  );
+  const fetchHistoricalGas = useGraphQLQuery<{ historicalGas: any[] }>(
+    QUERIES_EXTENDED.GET_HISTORICAL_GAS,
+    { immediate: false }
+  );
 
   return {
     fetchGasPrices,
@@ -872,10 +946,19 @@ export function useGasOracle() {
  * Helper function to use Price Alert queries
  */
 export function usePriceAlerts() {
-  const fetchAlerts = useGraphQLQuery<{ priceAlerts: PriceAlert[] }>(QUERIES_EXTENDED.GET_PRICE_ALERTS, { immediate: false });
-  const create = useGraphQLMutation<{ createPriceAlert: any }>(MUTATIONS_EXTENDED.CREATE_PRICE_ALERT);
-  const deleteAlert = useGraphQLMutation<{ deletePriceAlert: boolean }>(MUTATIONS_EXTENDED.DELETE_PRICE_ALERT);
-  const update = useGraphQLMutation<{ updatePriceAlert: any }>(MUTATIONS_EXTENDED.UPDATE_PRICE_ALERT);
+  const fetchAlerts = useGraphQLQuery<{ priceAlerts: PriceAlert[] }>(
+    QUERIES_EXTENDED.GET_PRICE_ALERTS,
+    { immediate: false }
+  );
+  const create = useGraphQLMutation<{ createPriceAlert: any }>(
+    MUTATIONS_EXTENDED.CREATE_PRICE_ALERT
+  );
+  const deleteAlert = useGraphQLMutation<{ deletePriceAlert: boolean }>(
+    MUTATIONS_EXTENDED.DELETE_PRICE_ALERT
+  );
+  const update = useGraphQLMutation<{ updatePriceAlert: any }>(
+    MUTATIONS_EXTENDED.UPDATE_PRICE_ALERT
+  );
 
   return {
     fetchAlerts,
@@ -889,9 +972,16 @@ export function usePriceAlerts() {
  * Helper function to use Whale Alert queries
  */
 export function useWhaleAlerts() {
-  const fetchAlerts = useGraphQLQuery<{ whaleAlerts: WhaleAlert[] }>(QUERIES_EXTENDED.GET_WHALE_ALERTS, { immediate: false });
-  const subscribe = useGraphQLMutation<{ subscribeWhaleAlerts: any }>(MUTATIONS_EXTENDED.SUBSCRIBE_WHALE_ALERTS);
-  const unsubscribe = useGraphQLMutation<{ unsubscribeWhaleAlerts: boolean }>(MUTATIONS_EXTENDED.UNSUBSCRIBE_WHALE_ALERTS);
+  const fetchAlerts = useGraphQLQuery<{ whaleAlerts: WhaleAlert[] }>(
+    QUERIES_EXTENDED.GET_WHALE_ALERTS,
+    { immediate: false }
+  );
+  const subscribe = useGraphQLMutation<{ subscribeWhaleAlerts: any }>(
+    MUTATIONS_EXTENDED.SUBSCRIBE_WHALE_ALERTS
+  );
+  const unsubscribe = useGraphQLMutation<{ unsubscribeWhaleAlerts: boolean }>(
+    MUTATIONS_EXTENDED.UNSUBSCRIBE_WHALE_ALERTS
+  );
 
   return {
     fetchAlerts,
@@ -904,9 +994,16 @@ export function useWhaleAlerts() {
  * Helper function to use Trading Signals queries
  */
 export function useTradingSignals() {
-  const fetchSignals = useGraphQLQuery<{ tradingSignals: TradingSignal[] }>(QUERIES_EXTENDED.GET_TRADING_SIGNALS, { immediate: false });
-  const createSignal = useGraphQLMutation<{ createTradingSignal: any }>(MUTATIONS_EXTENDED.CREATE_TRADING_SIGNAL);
-  const followSignal = useGraphQLMutation<{ followTradingSignal: any }>(MUTATIONS_EXTENDED.FOLLOW_TRADING_SIGNAL);
+  const fetchSignals = useGraphQLQuery<{ tradingSignals: TradingSignal[] }>(
+    QUERIES_EXTENDED.GET_TRADING_SIGNALS,
+    { immediate: false }
+  );
+  const createSignal = useGraphQLMutation<{ createTradingSignal: any }>(
+    MUTATIONS_EXTENDED.CREATE_TRADING_SIGNAL
+  );
+  const followSignal = useGraphQLMutation<{ followTradingSignal: any }>(
+    MUTATIONS_EXTENDED.FOLLOW_TRADING_SIGNAL
+  );
 
   return {
     fetchSignals,
@@ -919,10 +1016,18 @@ export function useTradingSignals() {
  * Helper function to use Missions queries
  */
 export function useMissions() {
-  const fetchMissions = useGraphQLQuery<{ missions: Mission[] }>(QUERIES_EXTENDED.GET_MISSIONS, { immediate: false });
-  const fetchMyMissions = useGraphQLQuery<{ myMissions: any[] }>(QUERIES_EXTENDED.GET_MY_MISSIONS, { immediate: false });
-  const claimReward = useGraphQLMutation<{ claimMissionReward: any }>(MUTATIONS_EXTENDED.CLAIM_MISSION_REWARD);
-  const updateProgress = useGraphQLMutation<{ updateMissionProgress: any }>(MUTATIONS_EXTENDED.UPDATE_MISSION_PROGRESS);
+  const fetchMissions = useGraphQLQuery<{ missions: Mission[] }>(QUERIES_EXTENDED.GET_MISSIONS, {
+    immediate: false,
+  });
+  const fetchMyMissions = useGraphQLQuery<{ myMissions: any[] }>(QUERIES_EXTENDED.GET_MY_MISSIONS, {
+    immediate: false,
+  });
+  const claimReward = useGraphQLMutation<{ claimMissionReward: any }>(
+    MUTATIONS_EXTENDED.CLAIM_MISSION_REWARD
+  );
+  const updateProgress = useGraphQLMutation<{ updateMissionProgress: any }>(
+    MUTATIONS_EXTENDED.UPDATE_MISSION_PROGRESS
+  );
 
   return {
     fetchMissions,
@@ -936,8 +1041,13 @@ export function useMissions() {
  * Helper function to use Validators queries
  */
 export function useValidators() {
-  const fetchValidators = useGraphQLQuery<{ validators: Validator[] }>(QUERIES_EXTENDED.GET_VALIDATORS, { immediate: false });
-  const delegate = useGraphQLMutation<{ delegateToValidator: any }>(MUTATIONS_EXTENDED.DELEGATE_TO_VALIDATOR);
+  const fetchValidators = useGraphQLQuery<{ validators: Validator[] }>(
+    QUERIES_EXTENDED.GET_VALIDATORS,
+    { immediate: false }
+  );
+  const delegate = useGraphQLMutation<{ delegateToValidator: any }>(
+    MUTATIONS_EXTENDED.DELEGATE_TO_VALIDATOR
+  );
   const undelegate = useGraphQLMutation<{ undelegate: any }>(MUTATIONS_EXTENDED.UNDELEGATE);
   const redelegate = useGraphQLMutation<{ redelegate: any }>(MUTATIONS_EXTENDED.REDELEGATE);
 
@@ -953,11 +1063,20 @@ export function useValidators() {
  * Helper function to use DAO queries
  */
 export function useDAO() {
-  const fetchProposals = useGraphQLQuery<{ daoProposals: DAOProposal[] }>(QUERIES_EXTENDED.GET_DAO_PROPOSALS, { immediate: false });
-  const fetchMyVotes = useGraphQLQuery<{ myDAOVotes: any[] }>(QUERIES_EXTENDED.GET_MY_DAO_VOTES, { immediate: false });
-  const createProposal = useGraphQLMutation<{ createProposal: any }>(MUTATIONS_EXTENDED.CREATE_PROPOSAL);
+  const fetchProposals = useGraphQLQuery<{ daoProposals: DAOProposal[] }>(
+    QUERIES_EXTENDED.GET_DAO_PROPOSALS,
+    { immediate: false }
+  );
+  const fetchMyVotes = useGraphQLQuery<{ myDAOVotes: any[] }>(QUERIES_EXTENDED.GET_MY_DAO_VOTES, {
+    immediate: false,
+  });
+  const createProposal = useGraphQLMutation<{ createProposal: any }>(
+    MUTATIONS_EXTENDED.CREATE_PROPOSAL
+  );
   const vote = useGraphQLMutation<{ voteOnProposal: any }>(MUTATIONS_EXTENDED.VOTE_ON_PROPOSAL);
-  const executeProposal = useGraphQLMutation<{ executeProposal: any }>(MUTATIONS_EXTENDED.EXECUTE_PROPOSAL);
+  const executeProposal = useGraphQLMutation<{ executeProposal: any }>(
+    MUTATIONS_EXTENDED.EXECUTE_PROPOSAL
+  );
 
   return {
     fetchProposals,
@@ -972,8 +1091,14 @@ export function useDAO() {
  * Helper function to use Bridge queries
  */
 export function useBridge() {
-  const fetchQuote = useGraphQLQuery<{ bridgeQuote: BridgeQuote }>(QUERIES_EXTENDED.GET_BRIDGE_QUOTE, { immediate: false });
-  const fetchHistory = useGraphQLQuery<{ bridgeHistory: any[] }>(QUERIES_EXTENDED.GET_BRIDGE_HISTORY, { immediate: false });
+  const fetchQuote = useGraphQLQuery<{ bridgeQuote: BridgeQuote }>(
+    QUERIES_EXTENDED.GET_BRIDGE_QUOTE,
+    { immediate: false }
+  );
+  const fetchHistory = useGraphQLQuery<{ bridgeHistory: any[] }>(
+    QUERIES_EXTENDED.GET_BRIDGE_HISTORY,
+    { immediate: false }
+  );
   const initiate = useGraphQLMutation<{ initiateBridge: any }>(MUTATIONS_EXTENDED.INITIATE_BRIDGE);
   const complete = useGraphQLMutation<{ completeBridge: any }>(MUTATIONS_EXTENDED.COMPLETE_BRIDGE);
   const cancel = useGraphQLMutation<{ cancelBridge: any }>(MUTATIONS_EXTENDED.CANCEL_BRIDGE);
@@ -991,8 +1116,13 @@ export function useBridge() {
  * Helper function to use Token Security queries
  */
 export function useTokenSecurity() {
-  const checkSafety = useGraphQLQuery<{ checkTokenSafety: TokenSafety }>(QUERIES_EXTENDED.CHECK_TOKEN_SAFETY, { immediate: false });
-  const getTokenInfo = useGraphQLQuery<{ tokenInfo: any }>(QUERIES_EXTENDED.GET_TOKEN_INFO, { immediate: false });
+  const checkSafety = useGraphQLQuery<{ checkTokenSafety: TokenSafety }>(
+    QUERIES_EXTENDED.CHECK_TOKEN_SAFETY,
+    { immediate: false }
+  );
+  const getTokenInfo = useGraphQLQuery<{ tokenInfo: any }>(QUERIES_EXTENDED.GET_TOKEN_INFO, {
+    immediate: false,
+  });
 
   return {
     checkSafety,
@@ -1004,9 +1134,16 @@ export function useTokenSecurity() {
  * Helper function to use Referral queries
  */
 export function useReferral() {
-  const fetchStats = useGraphQLQuery<{ referralStats: ReferralStats }>(QUERIES_EXTENDED.GET_REFERRAL_STATS, { immediate: false });
-  const generateCode = useGraphQLMutation<{ generateReferralCode: any }>(MUTATIONS_EXTENDED.GENERATE_REFERRAL_CODE);
-  const claimReward = useGraphQLMutation<{ claimReferralReward: any }>(MUTATIONS_EXTENDED.CLAIM_REFERRAL_REWARD);
+  const fetchStats = useGraphQLQuery<{ referralStats: ReferralStats }>(
+    QUERIES_EXTENDED.GET_REFERRAL_STATS,
+    { immediate: false }
+  );
+  const generateCode = useGraphQLMutation<{ generateReferralCode: any }>(
+    MUTATIONS_EXTENDED.GENERATE_REFERRAL_CODE
+  );
+  const claimReward = useGraphQLMutation<{ claimReferralReward: any }>(
+    MUTATIONS_EXTENDED.CLAIM_REFERRAL_REWARD
+  );
 
   return {
     fetchStats,
@@ -1019,7 +1156,10 @@ export function useReferral() {
  * Helper function to use Converter queries
  */
 export function useConverter() {
-  const getRate = useGraphQLQuery<{ conversionRate: ConversionRate }>(QUERIES_EXTENDED.GET_CONVERSION_RATE, { immediate: false });
+  const getRate = useGraphQLQuery<{ conversionRate: ConversionRate }>(
+    QUERIES_EXTENDED.GET_CONVERSION_RATE,
+    { immediate: false }
+  );
   const swap = useGraphQLMutation<{ swapTokens: any }>(MUTATIONS_EXTENDED.SWAP_TOKENS);
 
   return {
@@ -1032,11 +1172,17 @@ export function useConverter() {
  * Helper function to use DEX queries
  */
 export function useDEX() {
-  const getQuote = useGraphQLQuery<{ dexQuote: any }>(QUERIES_EXTENDED.GET_DEX_QUOTE, { immediate: false });
-  const getPoolInfo = useGraphQLQuery<{ poolInfo: any }>(QUERIES_EXTENDED.GET_POOL_INFO, { immediate: false });
+  const getQuote = useGraphQLQuery<{ dexQuote: any }>(QUERIES_EXTENDED.GET_DEX_QUOTE, {
+    immediate: false,
+  });
+  const getPoolInfo = useGraphQLQuery<{ poolInfo: any }>(QUERIES_EXTENDED.GET_POOL_INFO, {
+    immediate: false,
+  });
   const executeSwap = useGraphQLMutation<{ executeSwap: any }>(MUTATIONS_EXTENDED.EXECUTE_SWAP);
   const addLiquidity = useGraphQLMutation<{ addLiquidity: any }>(MUTATIONS_EXTENDED.ADD_LIQUIDITY);
-  const removeLiquidity = useGraphQLMutation<{ removeLiquidity: any }>(MUTATIONS_EXTENDED.REMOVE_LIQUIDITY);
+  const removeLiquidity = useGraphQLMutation<{ removeLiquidity: any }>(
+    MUTATIONS_EXTENDED.REMOVE_LIQUIDITY
+  );
 
   return {
     getQuote,
@@ -1054,11 +1200,23 @@ export function useDEX() {
  * Helper function to use Notification queries
  */
 export function useNotifications() {
-  const fetchNotifications = useGraphQLQuery<{ notifications: Notification[] }>(QUERIES_EXTENDED.GET_NOTIFICATIONS, { immediate: false });
-  const fetchUnreadCount = useGraphQLQuery<{ unreadNotificationCount: number }>(QUERIES_EXTENDED.GET_UNREAD_NOTIFICATION_COUNT, { immediate: false });
-  const markRead = useGraphQLMutation<{ markNotificationRead: any }>(MUTATIONS_EXTENDED.MARK_NOTIFICATION_READ);
-  const markAllRead = useGraphQLMutation<{ markAllNotificationsRead: any }>(MUTATIONS_EXTENDED.MARK_ALL_NOTIFICATIONS_READ);
-  const deleteNotification = useGraphQLMutation<{ deleteNotification: boolean }>(MUTATIONS_EXTENDED.DELETE_NOTIFICATION);
+  const fetchNotifications = useGraphQLQuery<{ notifications: Notification[] }>(
+    QUERIES_EXTENDED.GET_NOTIFICATIONS,
+    { immediate: false }
+  );
+  const fetchUnreadCount = useGraphQLQuery<{ unreadNotificationCount: number }>(
+    QUERIES_EXTENDED.GET_UNREAD_NOTIFICATION_COUNT,
+    { immediate: false }
+  );
+  const markRead = useGraphQLMutation<{ markNotificationRead: any }>(
+    MUTATIONS_EXTENDED.MARK_NOTIFICATION_READ
+  );
+  const markAllRead = useGraphQLMutation<{ markAllNotificationsRead: any }>(
+    MUTATIONS_EXTENDED.MARK_ALL_NOTIFICATIONS_READ
+  );
+  const deleteNotification = useGraphQLMutation<{ deleteNotification: boolean }>(
+    MUTATIONS_EXTENDED.DELETE_NOTIFICATION
+  );
 
   return {
     fetchNotifications,
@@ -1073,10 +1231,21 @@ export function useNotifications() {
  * Helper function to use Wallet queries
  */
 export function useWallet() {
-  const fetchBalance = useGraphQLQuery<{ walletBalance: WalletBalance }>(QUERIES_EXTENDED.GET_WALLET_BALANCE, { immediate: false });
-  const fetchAllBalances = useGraphQLQuery<{ allWalletBalances: WalletBalance[] }>(QUERIES_EXTENDED.GET_ALL_WALLET_BALANCES, { immediate: false });
-  const fetchAddress = useGraphQLQuery<{ walletAddress: WalletAddress }>(QUERIES_EXTENDED.GET_WALLET_ADDRESS, { immediate: false });
-  const generateAddress = useGraphQLMutation<{ generateWalletAddress: any }>(MUTATIONS_EXTENDED.GENERATE_WALLET_ADDRESS);
+  const fetchBalance = useGraphQLQuery<{ walletBalance: WalletBalance }>(
+    QUERIES_EXTENDED.GET_WALLET_BALANCE,
+    { immediate: false }
+  );
+  const fetchAllBalances = useGraphQLQuery<{ allWalletBalances: WalletBalance[] }>(
+    QUERIES_EXTENDED.GET_ALL_WALLET_BALANCES,
+    { immediate: false }
+  );
+  const fetchAddress = useGraphQLQuery<{ walletAddress: WalletAddress }>(
+    QUERIES_EXTENDED.GET_WALLET_ADDRESS,
+    { immediate: false }
+  );
+  const generateAddress = useGraphQLMutation<{ generateWalletAddress: any }>(
+    MUTATIONS_EXTENDED.GENERATE_WALLET_ADDRESS
+  );
   const transfer = useGraphQLMutation<{ transferWallet: any }>(MUTATIONS_EXTENDED.TRANSFER_WALLET);
 
   return {
@@ -1092,10 +1261,20 @@ export function useWallet() {
  * Helper function to use Transaction queries
  */
 export function useTransactions() {
-  const fetchTransaction = useGraphQLQuery<{ transaction: Transaction }>(QUERIES_EXTENDED.GET_TRANSACTION_DETAILS, { immediate: false });
-  const fetchPending = useGraphQLQuery<{ pendingTransactions: Transaction[] }>(QUERIES_EXTENDED.GET_PENDING_TRANSACTIONS, { immediate: false });
-  const requestWithdrawal = useGraphQLMutation<{ requestWithdrawal: any }>(MUTATIONS_EXTENDED.REQUEST_WITHDRAWAL);
-  const cancelWithdrawal = useGraphQLMutation<{ cancelWithdrawal: any }>(MUTATIONS_EXTENDED.CANCEL_WITHDRAWAL);
+  const fetchTransaction = useGraphQLQuery<{ transaction: Transaction }>(
+    QUERIES_EXTENDED.GET_TRANSACTION_DETAILS,
+    { immediate: false }
+  );
+  const fetchPending = useGraphQLQuery<{ pendingTransactions: Transaction[] }>(
+    QUERIES_EXTENDED.GET_PENDING_TRANSACTIONS,
+    { immediate: false }
+  );
+  const requestWithdrawal = useGraphQLMutation<{ requestWithdrawal: any }>(
+    MUTATIONS_EXTENDED.REQUEST_WITHDRAWAL
+  );
+  const cancelWithdrawal = useGraphQLMutation<{ cancelWithdrawal: any }>(
+    MUTATIONS_EXTENDED.CANCEL_WITHDRAWAL
+  );
 
   return {
     fetchTransaction,
@@ -1109,11 +1288,22 @@ export function useTransactions() {
  * Helper function to use Faucet queries
  */
 export function useFaucet() {
-  const fetchStatus = useGraphQLQuery<{ faucetStatus: FaucetStatus }>(QUERIES_EXTENDED.GET_FAUCET_STATUS, { immediate: false });
-  const fetchHistory = useGraphQLQuery<{ faucetHistory: any[] }>(QUERIES_EXTENDED.GET_FAUCET_HISTORY, { immediate: false });
-  const fetchStats = useGraphQLQuery<{ faucetStats: FaucetStats }>(QUERIES_EXTENDED.GET_FAUCET_STATS, { immediate: false });
+  const fetchStatus = useGraphQLQuery<{ faucetStatus: FaucetStatus }>(
+    QUERIES_EXTENDED.GET_FAUCET_STATUS,
+    { immediate: false }
+  );
+  const fetchHistory = useGraphQLQuery<{ faucetHistory: any[] }>(
+    QUERIES_EXTENDED.GET_FAUCET_HISTORY,
+    { immediate: false }
+  );
+  const fetchStats = useGraphQLQuery<{ faucetStats: FaucetStats }>(
+    QUERIES_EXTENDED.GET_FAUCET_STATS,
+    { immediate: false }
+  );
   const claim = useGraphQLMutation<{ claimFaucetV2: any }>(MUTATIONS_EXTENDED.CLAIM_FAUCET_V2);
-  const verifyClaim = useGraphQLMutation<{ verifyFaucetClaim: any }>(MUTATIONS_EXTENDED.VERIFY_FAUCET_CLAIM_V2);
+  const verifyClaim = useGraphQLMutation<{ verifyFaucetClaim: any }>(
+    MUTATIONS_EXTENDED.VERIFY_FAUCET_CLAIM_V2
+  );
 
   return {
     fetchStatus,
@@ -1128,10 +1318,21 @@ export function useFaucet() {
  * Helper function to use Achievement queries
  */
 export function useAchievements() {
-  const fetchAll = useGraphQLQuery<{ achievements: Achievement[] }>(QUERIES_EXTENDED.GET_ALL_ACHIEVEMENTS, { immediate: false });
-  const fetchDetail = useGraphQLQuery<{ achievement: Achievement }>(QUERIES_EXTENDED.GET_ACHIEVEMENT_DETAILS, { immediate: false });
-  const fetchCompleted = useGraphQLQuery<{ completedAchievements: Achievement[] }>(QUERIES_EXTENDED.GET_COMPLETED_ACHIEVEMENTS_V2, { immediate: false });
-  const claimReward = useGraphQLMutation<{ claimAchievementReward: any }>(MUTATIONS_EXTENDED.CLAIM_ACHIEVEMENT_REWARD);
+  const fetchAll = useGraphQLQuery<{ achievements: Achievement[] }>(
+    QUERIES_EXTENDED.GET_ALL_ACHIEVEMENTS,
+    { immediate: false }
+  );
+  const fetchDetail = useGraphQLQuery<{ achievement: Achievement }>(
+    QUERIES_EXTENDED.GET_ACHIEVEMENT_DETAILS,
+    { immediate: false }
+  );
+  const fetchCompleted = useGraphQLQuery<{ completedAchievements: Achievement[] }>(
+    QUERIES_EXTENDED.GET_COMPLETED_ACHIEVEMENTS_V2,
+    { immediate: false }
+  );
+  const claimReward = useGraphQLMutation<{ claimAchievementReward: any }>(
+    MUTATIONS_EXTENDED.CLAIM_ACHIEVEMENT_REWARD
+  );
 
   return {
     fetchAll,
@@ -1145,9 +1346,17 @@ export function useAchievements() {
  * Helper function to use Leaderboard queries
  */
 export function useLeaderboard() {
-  const fetchTopReferrers = useGraphQLQuery<{ topReferrers: LeaderboardEntry[] }>(QUERIES_EXTENDED.GET_TOP_REFERRERS, { immediate: false });
-  const fetchTopClaimers = useGraphQLQuery<{ topClaimers: LeaderboardEntry[] }>(QUERIES_EXTENDED.GET_TOP_CLAIMERS, { immediate: false });
-  const fetchMyRank = useGraphQLQuery<{ myRank: LeaderboardEntry }>(QUERIES_EXTENDED.GET_MY_RANK, { immediate: false });
+  const fetchTopReferrers = useGraphQLQuery<{ topReferrers: LeaderboardEntry[] }>(
+    QUERIES_EXTENDED.GET_TOP_REFERRERS,
+    { immediate: false }
+  );
+  const fetchTopClaimers = useGraphQLQuery<{ topClaimers: LeaderboardEntry[] }>(
+    QUERIES_EXTENDED.GET_TOP_CLAIMERS,
+    { immediate: false }
+  );
+  const fetchMyRank = useGraphQLQuery<{ myRank: LeaderboardEntry }>(QUERIES_EXTENDED.GET_MY_RANK, {
+    immediate: false,
+  });
 
   return {
     fetchTopReferrers,
@@ -1160,8 +1369,13 @@ export function useLeaderboard() {
  * Helper function to use Settings queries
  */
 export function useSettings() {
-  const fetchUserSettings = useGraphQLQuery<{ userSettings: UserSettings }>(QUERIES_EXTENDED.GET_USER_SETTINGS, { immediate: false });
-  const updateSettings = useGraphQLMutation<{ updateUserSettings: any }>(MUTATIONS_EXTENDED.UPDATE_SETTINGS);
+  const fetchUserSettings = useGraphQLQuery<{ userSettings: UserSettings }>(
+    QUERIES_EXTENDED.GET_USER_SETTINGS,
+    { immediate: false }
+  );
+  const updateSettings = useGraphQLMutation<{ updateUserSettings: any }>(
+    MUTATIONS_EXTENDED.UPDATE_SETTINGS
+  );
 
   return {
     fetchUserSettings,
@@ -1173,7 +1387,10 @@ export function useSettings() {
  * Helper function to use Security queries
  */
 export function useSecurity() {
-  const fetchSecuritySettings = useGraphQLQuery<{ securitySettings: SecuritySettings }>(QUERIES_EXTENDED.GET_SECURITY_SETTINGS, { immediate: false });
+  const fetchSecuritySettings = useGraphQLQuery<{ securitySettings: SecuritySettings }>(
+    QUERIES_EXTENDED.GET_SECURITY_SETTINGS,
+    { immediate: false }
+  );
   const enable2FA = useGraphQLMutation<{ enable2FA: any }>(MUTATIONS_EXTENDED.ENABLE_2FA);
   const disable2FA = useGraphQLMutation<{ disable2FA: any }>(MUTATIONS_EXTENDED.DISABLE_2FA);
   const verify2FA = useGraphQLMutation<{ verify2FA: any }>(MUTATIONS_EXTENDED.ENABLE_2FA);
@@ -1190,9 +1407,16 @@ export function useSecurity() {
  * Helper function to use Sessions queries
  */
 export function useSessions() {
-  const fetchSessions = useGraphQLQuery<{ activeSessions: Session[] }>(QUERIES_EXTENDED.GET_ACTIVE_SESSIONS, { immediate: false });
-  const terminateSession = useGraphQLMutation<{ terminateSession: boolean }>(MUTATIONS_EXTENDED.TERMINATE_ALL_SESSIONS);
-  const terminateAllSessions = useGraphQLMutation<{ terminateAllSessions: number }>(MUTATIONS_EXTENDED.TERMINATE_ALL_SESSIONS);
+  const fetchSessions = useGraphQLQuery<{ activeSessions: Session[] }>(
+    QUERIES_EXTENDED.GET_ACTIVE_SESSIONS,
+    { immediate: false }
+  );
+  const terminateSession = useGraphQLMutation<{ terminateSession: boolean }>(
+    MUTATIONS_EXTENDED.TERMINATE_ALL_SESSIONS
+  );
+  const terminateAllSessions = useGraphQLMutation<{ terminateAllSessions: number }>(
+    MUTATIONS_EXTENDED.TERMINATE_ALL_SESSIONS
+  );
 
   return {
     fetchSessions,
@@ -1205,9 +1429,13 @@ export function useSessions() {
  * Helper function to use API Keys queries
  */
 export function useApiKeys() {
-  const fetchKeys = useGraphQLQuery<{ apiKeys: ApiKey[] }>(QUERIES_EXTENDED.GET_API_KEYS, { immediate: false });
+  const fetchKeys = useGraphQLQuery<{ apiKeys: ApiKey[] }>(QUERIES_EXTENDED.GET_API_KEYS, {
+    immediate: false,
+  });
   const createKey = useGraphQLMutation<{ createAPIKey: any }>(MUTATIONS_EXTENDED.CREATE_API_KEY);
-  const revokeKey = useGraphQLMutation<{ revokeAPIKey: boolean }>(MUTATIONS_EXTENDED.REVOKE_API_KEY);
+  const revokeKey = useGraphQLMutation<{ revokeAPIKey: boolean }>(
+    MUTATIONS_EXTENDED.REVOKE_API_KEY
+  );
   const updateKey = useGraphQLMutation<{ updateAPIKey: any }>(MUTATIONS_EXTENDED.CREATE_API_KEY);
 
   return {
@@ -1222,10 +1450,18 @@ export function useApiKeys() {
  * Helper function to use Webhooks queries
  */
 export function useWebhooks() {
-  const fetchWebhooks = useGraphQLQuery<{ webhooks: Webhook[] }>(QUERIES_EXTENDED.GET_WEBHOOKS, { immediate: false });
-  const createWebhook = useGraphQLMutation<{ createWebhook: any }>(MUTATIONS_EXTENDED.CREATE_WEBHOOK);
-  const updateWebhook = useGraphQLMutation<{ updateWebhook: any }>(MUTATIONS_EXTENDED.CREATE_WEBHOOK);
-  const deleteWebhook = useGraphQLMutation<{ deleteWebhook: boolean }>(MUTATIONS_EXTENDED.DELETE_WEBHOOK);
+  const fetchWebhooks = useGraphQLQuery<{ webhooks: Webhook[] }>(QUERIES_EXTENDED.GET_WEBHOOKS, {
+    immediate: false,
+  });
+  const createWebhook = useGraphQLMutation<{ createWebhook: any }>(
+    MUTATIONS_EXTENDED.CREATE_WEBHOOK
+  );
+  const updateWebhook = useGraphQLMutation<{ updateWebhook: any }>(
+    MUTATIONS_EXTENDED.CREATE_WEBHOOK
+  );
+  const deleteWebhook = useGraphQLMutation<{ deleteWebhook: boolean }>(
+    MUTATIONS_EXTENDED.DELETE_WEBHOOK
+  );
   const testWebhook = useGraphQLMutation<{ testWebhook: any }>(MUTATIONS_EXTENDED.CREATE_WEBHOOK);
 
   return {
@@ -1241,11 +1477,22 @@ export function useWebhooks() {
  * Helper function to use Support queries
  */
 export function useSupport() {
-  const fetchTickets = useGraphQLQuery<{ supportTickets: SupportTicket[] }>(QUERIES_EXTENDED.GET_SUPPORT_TICKETS, { immediate: false });
-  const createTicket = useGraphQLMutation<{ createSupportTicket: any }>(MUTATIONS_EXTENDED.CREATE_SUPPORT_TICKET);
-  const updateTicket = useGraphQLMutation<{ updateSupportTicket: any }>(MUTATIONS_EXTENDED.UPDATE_SUPPORT_TICKET);
-  const addComment = useGraphQLMutation<{ addTicketComment: any }>(MUTATIONS_EXTENDED.ADD_TICKET_COMMENT);
-  const closeTicket = useGraphQLMutation<{ closeSupportTicket: any }>(MUTATIONS_EXTENDED.CLOSE_SUPPORT_TICKET);
+  const fetchTickets = useGraphQLQuery<{ supportTickets: SupportTicket[] }>(
+    QUERIES_EXTENDED.GET_SUPPORT_TICKETS,
+    { immediate: false }
+  );
+  const createTicket = useGraphQLMutation<{ createSupportTicket: any }>(
+    MUTATIONS_EXTENDED.CREATE_SUPPORT_TICKET
+  );
+  const updateTicket = useGraphQLMutation<{ updateSupportTicket: any }>(
+    MUTATIONS_EXTENDED.UPDATE_SUPPORT_TICKET
+  );
+  const addComment = useGraphQLMutation<{ addTicketComment: any }>(
+    MUTATIONS_EXTENDED.ADD_TICKET_COMMENT
+  );
+  const closeTicket = useGraphQLMutation<{ closeSupportTicket: any }>(
+    MUTATIONS_EXTENDED.CLOSE_SUPPORT_TICKET
+  );
 
   return {
     fetchTickets,
@@ -1260,9 +1507,17 @@ export function useSupport() {
  * Helper function to use Platform Stats queries
  */
 export function usePlatformStats() {
-  const fetchStats = useGraphQLQuery<{ platformStats: PlatformStats }>(QUERIES_EXTENDED.GET_PLATFORM_STATS, { immediate: false });
-  const fetchCoinStats = useGraphQLQuery<{ coinStats: any[] }>(QUERIES_EXTENDED.GET_COIN_STATS, { immediate: false });
-  const fetchActivityLog = useGraphQLQuery<{ activityLog: ActivityLog[] }>(QUERIES_EXTENDED.GET_ACTIVITY_LOG, { immediate: false });
+  const fetchStats = useGraphQLQuery<{ platformStats: PlatformStats }>(
+    QUERIES_EXTENDED.GET_PLATFORM_STATS,
+    { immediate: false }
+  );
+  const fetchCoinStats = useGraphQLQuery<{ coinStats: any[] }>(QUERIES_EXTENDED.GET_COIN_STATS, {
+    immediate: false,
+  });
+  const fetchActivityLog = useGraphQLQuery<{ activityLog: ActivityLog[] }>(
+    QUERIES_EXTENDED.GET_ACTIVITY_LOG,
+    { immediate: false }
+  );
 
   return {
     fetchStats,
@@ -1278,8 +1533,14 @@ export function usePlatformStats() {
  * Helper function to use Bitcoin ETF queries
  */
 export function useBTCEtf() {
-  const fetchFlows = useGraphQLQuery<{ btcEtfFlows: BTCEtfFlow[] }>(QUERIES_EXTENDED.GET_BTC_ETF_FLOWS, { immediate: false });
-  const fetchSummary = useGraphQLQuery<{ btcEtfSummary: BTCEtfSummary }>(QUERIES_EXTENDED.GET_BTC_ETF_SUMMARY, { immediate: false });
+  const fetchFlows = useGraphQLQuery<{ btcEtfFlows: BTCEtfFlow[] }>(
+    QUERIES_EXTENDED.GET_BTC_ETF_FLOWS,
+    { immediate: false }
+  );
+  const fetchSummary = useGraphQLQuery<{ btcEtfSummary: BTCEtfSummary }>(
+    QUERIES_EXTENDED.GET_BTC_ETF_SUMMARY,
+    { immediate: false }
+  );
 
   return {
     fetchFlows,
@@ -1291,7 +1552,10 @@ export function useBTCEtf() {
  * Helper function to use Coinbase Premium queries
  */
 export function useCoinbasePremium() {
-  const fetchPremium = useGraphQLQuery<{ coinbasePremium: CoinbasePremium }>(QUERIES_EXTENDED.GET_COINBASE_PREMIUM, { immediate: false });
+  const fetchPremium = useGraphQLQuery<{ coinbasePremium: CoinbasePremium }>(
+    QUERIES_EXTENDED.GET_COINBASE_PREMIUM,
+    { immediate: false }
+  );
 
   return {
     fetchPremium,
@@ -1302,12 +1566,26 @@ export function useCoinbasePremium() {
  * Helper function to use Multisig wallet queries
  */
 export function useMultisig() {
-  const fetchWallets = useGraphQLQuery<{ multisigWallets: MultisigWallet[] }>(QUERIES_EXTENDED.GET_MULTISIG_WALLETS, { immediate: false });
-  const fetchTransactions = useGraphQLQuery<{ multisigTransactions: MultisigTransaction[] }>(QUERIES_EXTENDED.GET_MULTISIG_TRANSACTIONS, { immediate: false });
-  const createWallet = useGraphQLMutation<{ createMultisigWallet: any }>(MUTATIONS_EXTENDED.CREATE_MULTISIG_WALLET);
-  const createTransaction = useGraphQLMutation<{ createMultisigTransaction: any }>(MUTATIONS_EXTENDED.CREATE_MULTISIG_TRANSACTION);
-  const signTransaction = useGraphQLMutation<{ signMultisigTransaction: any }>(MUTATIONS_EXTENDED.SIGN_MULTISIG_TRANSACTION);
-  const executeTransaction = useGraphQLMutation<{ executeMultisigTransaction: any }>(MUTATIONS_EXTENDED.EXECUTE_MULTISIG_TRANSACTION);
+  const fetchWallets = useGraphQLQuery<{ multisigWallets: MultisigWallet[] }>(
+    QUERIES_EXTENDED.GET_MULTISIG_WALLETS,
+    { immediate: false }
+  );
+  const fetchTransactions = useGraphQLQuery<{ multisigTransactions: MultisigTransaction[] }>(
+    QUERIES_EXTENDED.GET_MULTISIG_TRANSACTIONS,
+    { immediate: false }
+  );
+  const createWallet = useGraphQLMutation<{ createMultisigWallet: any }>(
+    MUTATIONS_EXTENDED.CREATE_MULTISIG_WALLET
+  );
+  const createTransaction = useGraphQLMutation<{ createMultisigTransaction: any }>(
+    MUTATIONS_EXTENDED.CREATE_MULTISIG_TRANSACTION
+  );
+  const signTransaction = useGraphQLMutation<{ signMultisigTransaction: any }>(
+    MUTATIONS_EXTENDED.SIGN_MULTISIG_TRANSACTION
+  );
+  const executeTransaction = useGraphQLMutation<{ executeMultisigTransaction: any }>(
+    MUTATIONS_EXTENDED.EXECUTE_MULTISIG_TRANSACTION
+  );
 
   return {
     fetchWallets,

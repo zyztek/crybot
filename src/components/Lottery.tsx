@@ -41,7 +41,7 @@ const Lottery: React.FC = () => {
       }
     };
     loadData();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const maxNumbers = 6;
   const numberRange = 49;

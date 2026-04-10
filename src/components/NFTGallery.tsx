@@ -230,7 +230,7 @@ export const NFTGallery: React.FC = () => {
       }
     };
     loadNFTs();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const filteredNFTs = nftList
     .filter(nft => {

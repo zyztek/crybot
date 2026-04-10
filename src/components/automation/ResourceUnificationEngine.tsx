@@ -1,12 +1,12 @@
 /**
  * Resource Unification Engine Component
- * 
+ *
  * Resource unification engine for VPS cores, RAM, internet, and remote resource management via Proxmox
  * Unifies and manages all available computing resources from multiple providers
  */
 
-import React, { useState, useEffect, useRef } from 'react';
-import { Server, Cpu, HardDrive, Wifi, Zap, Settings, Search, Filter, Clock, CheckCircle, XCircle, AlertTriangle, Globe, Activity, Shield, Link, Monitor } from 'lucide-react';
+import { CheckCircle, Cpu, HardDrive, Link, Search, Server, Settings, Wifi } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface ResourceNode {
   id: string;
@@ -859,7 +859,7 @@ const ResourceUnificationEngine: React.FC = () => {
         const providers = ['AWS', 'Azure', 'DigitalOcean', 'Vultr', 'Linode', 'Hetzner', 'Oracle', 'Alibaba'];
         const types: ResourceNode['type'][] = ['vps', 'gpu', 'tpu', 'dedicated', 'container', 'function'];
         const locations = ['US-East', 'US-West', 'EU-West', 'EU-East', 'Asia-Pacific', 'South America'];
-        
+
         const newNode: ResourceNode = {
           id: `node-${Date.now()}`,
           name: `${providers[Math.floor(Math.random() * providers.length)]} ${types[Math.floor(Math.random() * types.length)]}`,
@@ -966,8 +966,8 @@ const ResourceUnificationEngine: React.FC = () => {
         // Auto-integrate if enabled
         if (config.autoIntegration) {
           setTimeout(() => {
-            setNodes(prev => prev.map(node => 
-              node.id === newNode.id 
+            setNodes(prev => prev.map(node =>
+              node.id === newNode.id
                 ? {
                     ...node,
                     availability: {
@@ -995,7 +995,7 @@ const ResourceUnificationEngine: React.FC = () => {
         const isHealthy = Math.random() > 0.1; // 90% chance healthy
         const newLoad = Math.random() * 80 + 10;
         const newTemp = Math.random() * 30 + 40;
-        
+
         return {
           ...node,
           availability: {
@@ -1021,7 +1021,6 @@ const ResourceUnificationEngine: React.FC = () => {
                 status: isHealthy ? 'normal' : 'critical'
               }
             ].slice(-20) // Keep last 20 entries
-            ]
           }
         };
       }));
@@ -1044,16 +1043,16 @@ const ResourceUnificationEngine: React.FC = () => {
       const value = parseFloat(storage.replace(/[^\d.]/g, ''));
       return sum + (storage.includes('TB') ? value * 1024 : value);
     }, 0);
-    const averageUptime = nodes.length > 0 
-      ? nodes.reduce((sum, n) => sum + n.availability.uptime, 0) / nodes.length 
+    const averageUptime = nodes.length > 0
+      ? nodes.reduce((sum, n) => sum + n.availability.uptime, 0) / nodes.length
       : 0;
     const totalCost = nodes.reduce((sum, n) => sum + n.cost.amount, 0);
-    
+
     const providerCounts = nodes.reduce((acc, node) => {
       acc[node.provider] = (acc[node.provider] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
-    const bestProvider = Object.entries(providerCounts).reduce((best, [provider, count]) => 
+    const bestProvider = Object.entries(providerCounts).reduce((best, [provider, count]) =>
       count > (best?.count || 0) ? { provider, count } : best, null as { provider: string; count: number } | null);
     const resourceTypes = new Set(nodes.map(n => n.type)).size;
 
@@ -1076,8 +1075,8 @@ const ResourceUnificationEngine: React.FC = () => {
   };
 
   const integrateNode = (nodeId: string) => {
-    setNodes(prev => prev.map(node => 
-      node.id === nodeId 
+    setNodes(prev => prev.map(node =>
+      node.id === nodeId
         ? {
             ...node,
             availability: {
@@ -1286,8 +1285,8 @@ const ResourceUnificationEngine: React.FC = () => {
           {/* Quick Stats */}
           <div className="flex items-center gap-4 text-sm">
             <span className="text-gray-400">
-              Best Provider: {stats.bestProvider || 'None'} | 
-              Resource Types: {stats.resourceTypes} | 
+              Best Provider: {stats.bestProvider || 'None'} |
+              Resource Types: {stats.resourceTypes} |
               Auto Discovery: {config.autoDiscovery ? 'On' : 'Off'}
             </span>
           </div>
@@ -1378,8 +1377,8 @@ const ResourceUnificationEngine: React.FC = () => {
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
                       <span className="text-xs text-gray-400">
-                        Uptime: {node.availability.uptime.toFixed(1)}% | 
-                        Load: {node.availability.loadAverage.toFixed(1)}% | 
+                        Uptime: {node.availability.uptime.toFixed(1)}% |
+                        Load: {node.availability.loadAverage.toFixed(1)}% |
                         Temp: {node.availability.temperature.toFixed(0)}°C
                       </span>
                     </div>
@@ -1537,7 +1536,7 @@ const ResourceUnificationEngine: React.FC = () => {
                 </div>
 
                 <div className="w-full bg-gray-600 rounded-full h-2 mb-4">
-                  <div 
+                  <div
                     className="h-2 rounded-full bg-blue-500"
                     style={{ width: `${pool.performance.averageLoad}%` }}
                   ></div>
@@ -1571,7 +1570,7 @@ const ResourceUnificationEngine: React.FC = () => {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-gray-800 rounded-lg p-6 max-w-2xl w-full">
               <h2 className="text-2xl font-bold mb-6">Resource Unification Settings</h2>
-              
+
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>

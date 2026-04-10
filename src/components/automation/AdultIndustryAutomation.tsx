@@ -1,12 +1,12 @@
 /**
  * Adult Industry Automation Component
- * 
+ *
  * Adult industry automation system for additional revenue generation with real avatars and content
  * Manages adult content creation, distribution, monetization, and compliance
  */
 
-import React, { useState, useEffect, useRef } from 'react';
-import { Heart, Users, DollarSign, Settings, Search, Filter, Clock, CheckCircle, XCircle, AlertTriangle, Target, Activity, Shield, Video, Camera, Mic, MessageCircle, Star, TrendingUp, Eye } from 'lucide-react';
+import { CheckCircle, DollarSign, Heart, Search, Settings, Star, TrendingUp, Users } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface AdultContentCreator {
   id: string;
@@ -419,9 +419,8 @@ const AdultIndustryAutomation: React.FC = () => {
           phone: ['NiteFlirt', 'TalkToMe'],
           chat: ['WhatsApp', 'Telegram', 'Discord'],
           social: ['Twitter', 'Instagram', 'TikTok']
-        }
-      },
-      performance: {
+        },
+        performance: {
         totalSessions: 1250,
         averageRating: 4.7,
         totalEarnings: 87500,
@@ -471,7 +470,7 @@ const AdultIndustryAutomation: React.FC = () => {
       isActive: true,
       priority: 1,
       createdAt: '2024-01-15T00:00:00Z',
-      lastUpdated: new Date().toISOString()
+      lastUpdated: new Date().toISOString(),
       },
       {
         id: 'creator-2',
@@ -577,7 +576,7 @@ const AdultIndustryAutomation: React.FC = () => {
       isActive: true,
       priority: 2,
       createdAt: '2024-01-10T00:00:00Z',
-      lastUpdated: new Date().toISOString()
+      lastUpdated: new Date().toISOString(),
       }
     ];
 
@@ -861,8 +860,8 @@ const AdultIndustryAutomation: React.FC = () => {
         const newEarnings = newSessions * (creator.performance.averageSessionDuration / 60) * 2.99;
         const newRating = Math.max(0, Math.min(5, creator.performance.averageRating + (Math.random() * 0.2 - 0.1)));
 
-        setCreators(prev => prev.map(c => 
-          c.id === creator.id 
+        setCreators(prev => prev.map(c =>
+          c.id === creator.id
             ? {
                 ...c,
                 performance: {
@@ -885,8 +884,8 @@ const AdultIndustryAutomation: React.FC = () => {
       platforms.forEach(platform => {
         if (platform.integration.status !== 'connected') return;
 
-        setPlatforms(prev => prev.map(p => 
-          p.id === platform.id 
+        setPlatforms(prev => prev.map(p =>
+          p.id === platform.id
             ? {
                 ...p,
                 lastChecked: new Date().toISOString()
@@ -901,8 +900,8 @@ const AdultIndustryAutomation: React.FC = () => {
         const newPurchases = Math.floor(Math.random() * 5) + 1;
         const newRevenue = newPurchases * item.price.amount;
 
-        setContent(prev => prev.map(c => 
-          c.id === item.id 
+        setContent(prev => prev.map(c =>
+          c.id === item.id
             ? {
                 ...c,
                 performance: {
@@ -931,7 +930,7 @@ const AdultIndustryAutomation: React.FC = () => {
       if (Math.random() > 0.7) { // 30% chance
         const types: AdultContentItem['type'][] = ['video', 'photo_set', 'live_show', 'custom_content'];
         const categories = ['solo', 'couple', 'group', 'fetish', 'roleplay'];
-        
+
         const newContent: AdultContentItem = {
           id: `content-${Date.now()}`,
           title: `Auto-Generated Content ${Date.now()}`,
@@ -995,20 +994,20 @@ const AdultIndustryAutomation: React.FC = () => {
   useEffect(() => {
     const activeCreators = creators.filter(c => c.isActive).length;
     const activePlatforms = platforms.filter(p => p.isActive).length;
-    const totalRevenue = creators.reduce((sum, c) => sum + c.performance.totalEarnings, 0) + 
+    const totalRevenue = creators.reduce((sum, c) => sum + c.performance.totalEarnings, 0) +
                          content.reduce((sum, c) => sum + c.performance.revenue, 0);
-    const averageRating = creators.length > 0 
-      ? creators.reduce((sum, c) => sum + c.performance.averageRating, 0) / creators.length 
+    const averageRating = creators.length > 0
+      ? creators.reduce((sum, c) => sum + c.performance.averageRating, 0) / creators.length
       : 0;
-    const totalConversion = content.length > 0 
-      ? content.reduce((sum, c) => sum + c.performance.conversion, 0) / content.length 
+    const totalConversion = content.length > 0
+      ? content.reduce((sum, c) => sum + c.performance.conversion, 0) / content.length
       : 0;
-    
+
     const platformCounts = platforms.reduce((acc, platform) => {
       acc[platform.name] = (acc[platform.name] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
-    const bestPlatform = Object.entries(platformCounts).reduce((best, [platform, count]) => 
+    const bestPlatform = Object.entries(platformCounts).reduce((best, [platform, count]) =>
       count > (best?.count || 0) ? { platform, count } : best, null as { platform: string; count: number } | null);
 
     setStats({
@@ -1033,8 +1032,8 @@ const AdultIndustryAutomation: React.FC = () => {
     const creator = creators.find(c => c.id === creatorId);
     if (!creator) return;
 
-    setCreators(prev => prev.map(c => 
-      c.id === creatorId 
+    setCreators(prev => prev.map(c =>
+      c.id === creatorId
         ? {
             ...c,
             avatarId: `avatar-${Date.now()}`,
@@ -1185,8 +1184,8 @@ const AdultIndustryAutomation: React.FC = () => {
           {/* Quick Stats */}
           <div className="flex items-center gap-4 text-sm">
             <span className="text-gray-400">
-              Best Platform: {stats.bestPlatform || 'None'} | 
-              Total Content: {stats.totalContent} | 
+              Best Platform: {stats.bestPlatform || 'None'} |
+              Total Content: {stats.totalContent} |
               Auto Generation: {config.autoContentGeneration ? 'On' : 'Off'}
             </span>
           </div>
@@ -1263,7 +1262,7 @@ const AdultIndustryAutomation: React.FC = () => {
                   </div>
 
                   <div className="w-full bg-gray-600 rounded-full h-2 mb-3">
-                    <div 
+                    <div
                       className="h-2 rounded-full bg-pink-500"
                       style={{ width: `${creator.performance.popularity}%` }}
                     ></div>
@@ -1272,13 +1271,13 @@ const AdultIndustryAutomation: React.FC = () => {
                   <div className="flex items-center justify-between text-sm">
                     <div className="flex items-center gap-2">
                       <span className="text-xs text-gray-400">
-                        Sessions: {creator.performance.totalSessions} | 
+                        Sessions: {creator.performance.totalSessions} |
                         Conversion: {creator.performance.conversion.toFixed(1)}%
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="text-xs text-gray-400">
-                        {creator.capabilities.videoQuality} | 
+                        {creator.capabilities.videoQuality} |
                         {creator.personality.languages.join(', ')}
                       </span>
                     </div>
@@ -1436,7 +1435,7 @@ const AdultIndustryAutomation: React.FC = () => {
                 </div>
 
                 <div className="w-full bg-gray-600 rounded-full h-2 mb-4">
-                  <div 
+                  <div
                     className="h-2 rounded-full bg-blue-500"
                     style={{ width: `${item.performance.conversion}%` }}
                   ></div>
@@ -1445,13 +1444,13 @@ const AdultIndustryAutomation: React.FC = () => {
                 <div className="flex items-center justify-between text-sm">
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-gray-400">
-                      Views: {item.performance.views} | 
-                      Purchases: {item.performance.purchases} | 
+                      Views: {item.performance.views} |
+                      Purchases: {item.performance.purchases} |
                       Revenue: ${item.performance.revenue.toLocaleString()}
                     </span>
                   </div>
                   <div className="text-xs text-gray-400">
-                    Rating: {item.performance.averageRating.toFixed(1)}/5.0 | 
+                    Rating: {item.performance.averageRating.toFixed(1)}/5.0 |
                     Conversion: {item.performance.conversion.toFixed(1)}%
                   </div>
                 </div>
@@ -1470,7 +1469,7 @@ const AdultIndustryAutomation: React.FC = () => {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-gray-800 rounded-lg p-6 max-w-2xl w-full">
               <h2 className="text-2xl font-bold mb-6">Adult Automation Settings</h2>
-              
+
               <div className="space-y-4">
                 <div className="space-y-3">
                   <h4 className="font-medium text-purple-400">Content Generation</h4>
@@ -1521,8 +1520,8 @@ const AdultIndustryAutomation: React.FC = () => {
                       <label className="block text-sm font-medium mb-2">Quality Level</label>
                       <select
                         value={config.content.qualityLevel}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           content: { ...prev.content, qualityLevel: e.target.value as any }
                         }))}
                         className="w-full px-3 py-2 bg-gray-700 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
@@ -1538,8 +1537,8 @@ const AdultIndustryAutomation: React.FC = () => {
                       <input
                         type="number"
                         value={config.content.generationFrequency}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           content: { ...prev.content, generationFrequency: parseInt(e.target.value) }
                         }))}
                         className="w-full px-3 py-2 bg-gray-700 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
@@ -1557,8 +1556,8 @@ const AdultIndustryAutomation: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.compliance.ageVerification}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           compliance: { ...prev.compliance, ageVerification: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"
@@ -1569,8 +1568,8 @@ const AdultIndustryAutomation: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.compliance.contentFiltering}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           compliance: { ...prev.compliance, contentFiltering: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"
@@ -1581,8 +1580,8 @@ const AdultIndustryAutomation: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.compliance.geoBlocking}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           compliance: { ...prev.compliance, geoBlocking: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"
@@ -1593,8 +1592,8 @@ const AdultIndustryAutomation: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.compliance.auditTrail}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           compliance: { ...prev.compliance, auditTrail: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"
@@ -1611,8 +1610,8 @@ const AdultIndustryAutomation: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.monetization.dynamicPricing}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           monetization: { ...prev.monetization, dynamicPricing: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"
@@ -1623,8 +1622,8 @@ const AdultIndustryAutomation: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.monetization.tipOptimization}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           monetization: { ...prev.monetization, tipOptimization: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"
@@ -1635,8 +1634,8 @@ const AdultIndustryAutomation: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.monetization.upselling}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           monetization: { ...prev.monetization, upselling: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"
@@ -1647,8 +1646,8 @@ const AdultIndustryAutomation: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.monetization.crossSelling}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
                           monetization: { ...prev.monetization, crossSelling: e.target.checked }
                         }))}
                         className="w-3 h-3 text-purple-600 rounded"

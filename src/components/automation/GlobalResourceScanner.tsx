@@ -1,18 +1,46 @@
 /**
  * Global Resource Scanner Component
- * 
+ *
  * Global scanner for free resources from IBM mainframes, Google Colab, Intel, NVIDIA and all available sources
  * Continuously scans the internet for new free resources and opportunities
  */
 
-import React, { useState, useEffect, useRef } from 'react';
-import { Globe, Search, Zap, Settings, Filter, Clock, CheckCircle, XCircle, AlertTriangle, Brain, Activity, Shield, Radar, Satellite, Database, Cloud, Server } from 'lucide-react';
+import {
+  Activity,
+  Brain,
+  CheckCircle,
+  Database,
+  Globe,
+  Radar,
+  Search,
+  Settings,
+} from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface ResourceSource {
   id: string;
   name: string;
-  category: 'cloud' | 'ai_ml' | 'mainframe' | 'gpu' | 'storage' | 'network' | 'education' | 'developer' | 'research' | 'startup';
-  type: 'api' | 'service' | 'computing' | 'storage' | 'network' | 'software' | 'credit' | 'trial' | 'educational';
+  category:
+    | 'cloud'
+    | 'ai_ml'
+    | 'mainframe'
+    | 'gpu'
+    | 'storage'
+    | 'network'
+    | 'education'
+    | 'developer'
+    | 'research'
+    | 'startup';
+  type:
+    | 'api'
+    | 'service'
+    | 'computing'
+    | 'storage'
+    | 'network'
+    | 'software'
+    | 'credit'
+    | 'trial'
+    | 'educational';
   provider: string;
   url: string;
   description: string;
@@ -45,7 +73,13 @@ interface ResourceSource {
     documentation: string[];
   };
   discovery: {
-    method: 'web_scraping' | 'api_scan' | 'social_monitoring' | 'forum_analysis' | 'competitor_analysis' | 'partner_intelligence';
+    method:
+      | 'web_scraping'
+      | 'api_scan'
+      | 'social_monitoring'
+      | 'forum_analysis'
+      | 'competitor_analysis'
+      | 'partner_intelligence';
     source: string;
     confidence: number; // 0-100
     discoveredAt: string;
@@ -146,15 +180,15 @@ const GlobalResourceScanner: React.FC = () => {
       patternRecognition: true,
       competitorAnalysis: true,
       socialMonitoring: true,
-      partnerIntelligence: true
+      partnerIntelligence: true,
     },
     filters: {
       minConfidence: 75,
-      minValue: 10.00,
+      minValue: 10.0,
       excludeCreditCard: true,
       excludeKYC: false,
       preferredRegions: ['US', 'EU', 'Asia'],
-      blacklist: ['spam', 'scam', 'fake']
+      blacklist: ['spam', 'scam', 'fake'],
     },
     notifications: {
       newResources: true,
@@ -162,15 +196,15 @@ const GlobalResourceScanner: React.FC = () => {
       claimedResources: true,
       expiredResources: true,
       scanComplete: true,
-      errors: true
+      errors: true,
     },
     security: {
       proxyRotation: true,
       userAgents: true,
       rateLimiting: true,
       stealthMode: true,
-      encryption: true
-    }
+      encryption: true,
+    },
   });
   const [selectedSource, setSelectedSource] = useState<ResourceSource | null>(null);
   const [isScanning, setIsScanning] = useState(false);
@@ -187,7 +221,7 @@ const GlobalResourceScanner: React.FC = () => {
     averageConfidence: 0,
     bestCategory: '',
     regions: 0,
-    activeRules: 0
+    activeRules: 0,
   });
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -209,15 +243,15 @@ const GlobalResourceScanner: React.FC = () => {
           countries: ['US', 'UK', 'CA', 'AU', 'EU', 'Asia'],
           restrictions: ['12 hours max session', 'no background processing'],
           verification: true,
-          queue: false
+          queue: false,
         },
         specifications: {
           resource: 'Tesla T4 / A100 GPU',
           quantity: '12 hours per session',
           duration: 'Unlimited',
-          value: 150.00,
+          value: 150.0,
           features: ['GPU access', 'TPU access', 'Pre-installed libraries', 'Colab Pro features'],
-          limitations: ['Session timeout', 'No persistent storage', 'Rate limits']
+          limitations: ['Session timeout', 'No persistent storage', 'Rate limits'],
         },
         requirements: {
           registration: true,
@@ -229,7 +263,7 @@ const GlobalResourceScanner: React.FC = () => {
           business: false,
           research: false,
           kyc: false,
-          documentation: ['Google Account']
+          documentation: ['Google Account'],
         },
         discovery: {
           method: 'web_scraping',
@@ -237,7 +271,7 @@ const GlobalResourceScanner: React.FC = () => {
           confidence: 95.0,
           discoveredAt: '2024-01-15T00:00:00Z',
           verifiedAt: '2024-01-15T01:00:00Z',
-          lastChecked: new Date().toISOString()
+          lastChecked: new Date().toISOString(),
         },
         status: 'verified',
         priority: 1,
@@ -248,8 +282,8 @@ const GlobalResourceScanner: React.FC = () => {
           successRate: 95.0,
           competition: 'medium',
           renewal: true,
-          scalability: true
-        }
+          scalability: true,
+        },
       },
       {
         id: 'source-2',
@@ -265,15 +299,15 @@ const GlobalResourceScanner: React.FC = () => {
           countries: ['US', 'EU', 'Canada', 'Australia'],
           restrictions: ['Educational use only', '30 days trial'],
           verification: true,
-          queue: false
+          queue: false,
         },
         specifications: {
           resource: 'IBM z16 Mainframe',
           quantity: '1 partition',
           duration: '30 days',
-          value: 500.00,
+          value: 500.0,
           features: ['Mainframe access', 'z/OS', 'COBOL', 'JCL', 'DB2'],
-          limitations: ['Educational use only', 'Time limited', 'Resource quotas']
+          limitations: ['Educational use only', 'Time limited', 'Resource quotas'],
         },
         requirements: {
           registration: true,
@@ -285,7 +319,7 @@ const GlobalResourceScanner: React.FC = () => {
           business: false,
           research: true,
           kyc: false,
-          documentation: ['Student ID', 'Educational institution']
+          documentation: ['Student ID', 'Educational institution'],
         },
         discovery: {
           method: 'partner_intelligence',
@@ -293,7 +327,7 @@ const GlobalResourceScanner: React.FC = () => {
           confidence: 92.0,
           discoveredAt: '2024-01-10T00:00:00Z',
           verifiedAt: '2024-01-10T02:00:00Z',
-          lastChecked: new Date().toISOString()
+          lastChecked: new Date().toISOString(),
         },
         status: 'verified',
         priority: 2,
@@ -304,8 +338,8 @@ const GlobalResourceScanner: React.FC = () => {
           successRate: 85.0,
           competition: 'low',
           renewal: false,
-          scalability: false
-        }
+          scalability: false,
+        },
       },
       {
         id: 'source-3',
@@ -321,15 +355,20 @@ const GlobalResourceScanner: React.FC = () => {
           countries: ['US', 'EU', 'Asia', 'Canada'],
           restrictions: ['90 days max', 'Developer account required'],
           verification: true,
-          queue: false
+          queue: false,
         },
         specifications: {
           resource: 'Intel Arc A770 GPU',
           quantity: 'Unlimited jobs',
           duration: '90 days',
-          value: 200.00,
-          features: ['Arc GPU access', 'OneAPI tools', 'Development environment', 'Technical support'],
-          limitations: ['Developer use only', 'Time limited', 'Resource quotas']
+          value: 200.0,
+          features: [
+            'Arc GPU access',
+            'OneAPI tools',
+            'Development environment',
+            'Technical support',
+          ],
+          limitations: ['Developer use only', 'Time limited', 'Resource quotas'],
         },
         requirements: {
           registration: true,
@@ -341,7 +380,7 @@ const GlobalResourceScanner: React.FC = () => {
           business: false,
           research: false,
           kyc: false,
-          documentation: ['Developer account']
+          documentation: ['Developer account'],
         },
         discovery: {
           method: 'api_scan',
@@ -349,7 +388,7 @@ const GlobalResourceScanner: React.FC = () => {
           confidence: 88.0,
           discoveredAt: '2024-01-08T00:00:00Z',
           verifiedAt: '2024-01-08T01:30:00Z',
-          lastChecked: new Date().toISOString()
+          lastChecked: new Date().toISOString(),
         },
         status: 'verified',
         priority: 3,
@@ -360,8 +399,8 @@ const GlobalResourceScanner: React.FC = () => {
           successRate: 90.0,
           competition: 'medium',
           renewal: false,
-          scalability: true
-        }
+          scalability: true,
+        },
       },
       {
         id: 'source-4',
@@ -377,15 +416,15 @@ const GlobalResourceScanner: React.FC = () => {
           countries: ['US', 'EU', 'Canada', 'Asia'],
           restrictions: ['Research proposal required', 'Academic institution'],
           verification: true,
-          queue: true
+          queue: true,
         },
         specifications: {
           resource: 'RTX A6000 / A40',
           quantity: 'Variable allocation',
           duration: '6 months',
-          value: 1000.00,
+          value: 1000.0,
           features: ['High-end GPUs', 'CUDA access', 'Technical support', 'Research collaboration'],
-          limitations: ['Research only', 'Proposal required', 'Limited availability']
+          limitations: ['Research only', 'Proposal required', 'Limited availability'],
         },
         requirements: {
           registration: true,
@@ -397,7 +436,7 @@ const GlobalResourceScanner: React.FC = () => {
           business: false,
           research: true,
           kyc: true,
-          documentation: ['Research proposal', 'Academic affiliation', 'CV']
+          documentation: ['Research proposal', 'Academic affiliation', 'CV'],
         },
         discovery: {
           method: 'forum_analysis',
@@ -405,7 +444,7 @@ const GlobalResourceScanner: React.FC = () => {
           confidence: 85.0,
           discoveredAt: '2024-01-12T00:00:00Z',
           verifiedAt: '2024-01-12T03:00:00Z',
-          lastChecked: new Date().toISOString()
+          lastChecked: new Date().toISOString(),
         },
         status: 'verified',
         priority: 4,
@@ -416,8 +455,8 @@ const GlobalResourceScanner: React.FC = () => {
           successRate: 60.0,
           competition: 'high',
           renewal: false,
-          scalability: false
-        }
+          scalability: false,
+        },
       },
       {
         id: 'source-5',
@@ -433,15 +472,15 @@ const GlobalResourceScanner: React.FC = () => {
           countries: ['US', 'EU', 'Asia', 'Canada', 'Australia'],
           restrictions: ['New accounts only', '12 months'],
           verification: true,
-          queue: false
+          queue: false,
         },
         specifications: {
           resource: 'EC2 t2.micro, S3, Lambda',
           quantity: '750 hours/month',
           duration: '12 months',
-          value: 300.00,
+          value: 300.0,
           features: ['EC2 instances', 'S3 storage', 'Lambda functions', 'DynamoDB'],
-          limitations: ['New customers only', 'Usage limits', 'Service restrictions']
+          limitations: ['New customers only', 'Usage limits', 'Service restrictions'],
         },
         requirements: {
           registration: true,
@@ -453,7 +492,7 @@ const GlobalResourceScanner: React.FC = () => {
           business: false,
           research: false,
           kyc: false,
-          documentation: ['Phone verification', 'Credit card']
+          documentation: ['Phone verification', 'Credit card'],
         },
         discovery: {
           method: 'competitor_analysis',
@@ -461,7 +500,7 @@ const GlobalResourceScanner: React.FC = () => {
           confidence: 98.0,
           discoveredAt: '2024-01-01T00:00:00Z',
           verifiedAt: '2024-01-01T00:30:00Z',
-          lastChecked: new Date().toISOString()
+          lastChecked: new Date().toISOString(),
         },
         status: 'verified',
         priority: 5,
@@ -472,9 +511,9 @@ const GlobalResourceScanner: React.FC = () => {
           successRate: 98.0,
           competition: 'high',
           renewal: false,
-          scalability: true
-        }
-      }
+          scalability: true,
+        },
+      },
     ];
 
     setSources(mockSources);
@@ -489,21 +528,27 @@ const GlobalResourceScanner: React.FC = () => {
         type: 'keyword',
         description: 'Scans for free GPU and AI/ML resources from major providers',
         configuration: {
-          keywords: ['free gpu', 'ai research', 'machine learning credits', 'colab pro', 'gpu access'],
+          keywords: [
+            'free gpu',
+            'ai research',
+            'machine learning credits',
+            'colab pro',
+            'gpu access',
+          ],
           patterns: ['free.*gpu', 'research.*grant', 'academic.*ai', 'developer.*gpu'],
           sources: ['google.com', 'nvidia.com', 'intel.com', 'amd.com', 'openai.com'],
           frequency: 4,
           depth: 8,
-          filters: ['spam', 'scam', 'advertisement']
+          filters: ['spam', 'scam', 'advertisement'],
         },
         performance: {
           successRate: 85.0,
           lastRun: new Date(Date.now() - 14400000).toISOString(), // 4 hours ago
           discoveries: 12,
-          falsePositives: 2
+          falsePositives: 2,
         },
         isActive: true,
-        priority: 1
+        priority: 1,
       },
       {
         id: 'rule-2',
@@ -513,19 +558,24 @@ const GlobalResourceScanner: React.FC = () => {
         configuration: {
           keywords: ['free tier', 'extended trial', 'developer credits', 'startup program'],
           patterns: ['free.*tier', 'developer.*program', 'startup.*credits'],
-          sources: ['aws.amazon.com', 'cloud.google.com', 'azure.microsoft.com', 'digitalocean.com'],
+          sources: [
+            'aws.amazon.com',
+            'cloud.google.com',
+            'azure.microsoft.com',
+            'digitalocean.com',
+          ],
           frequency: 6,
           depth: 5,
-          filters: ['expired', 'deprecated']
+          filters: ['expired', 'deprecated'],
         },
         performance: {
           successRate: 92.0,
           lastRun: new Date(Date.now() - 21600000).toISOString(), // 6 hours ago
           discoveries: 8,
-          falsePositives: 1
+          falsePositives: 1,
         },
         isActive: true,
-        priority: 2
+        priority: 2,
       },
       {
         id: 'rule-3',
@@ -533,22 +583,27 @@ const GlobalResourceScanner: React.FC = () => {
         type: 'forum',
         description: 'Scans educational forums and communities for free academic resources',
         configuration: {
-          keywords: ['student free', 'academic research', 'university credits', 'educational grant'],
+          keywords: [
+            'student free',
+            'academic research',
+            'university credits',
+            'educational grant',
+          ],
           patterns: ['student.*free', 'academic.*access', 'research.*credits'],
           sources: ['reddit.com', 'stackoverflow.com', 'github.com', 'academic.oup.com'],
           frequency: 8,
           depth: 6,
-          filters: ['expired', 'regional_restriction']
+          filters: ['expired', 'regional_restriction'],
         },
         performance: {
           successRate: 78.0,
           lastRun: new Date(Date.now() - 28800000).toISOString(), // 8 hours ago
           discoveries: 15,
-          falsePositives: 3
+          falsePositives: 3,
         },
         isActive: true,
-        priority: 3
-      }
+        priority: 3,
+      },
     ];
 
     setRules(mockRules);
@@ -558,135 +613,185 @@ const GlobalResourceScanner: React.FC = () => {
   useEffect(() => {
     if (!config.scanningEnabled || !isScanning) return;
 
-    const interval = setInterval(() => {
-      // Simulate discovering new resources
-      rules.forEach(rule => {
-        if (!rule.isActive) return;
+    const interval = setInterval(
+      () => {
+        // Simulate discovering new resources
+        rules.forEach(rule => {
+          if (!rule.isActive) return;
 
-        if (Math.random() > 0.8) { // 20% chance per rule
-          const providers = ['Microsoft', 'Oracle', 'Alibaba', 'Hetzner', 'Vultr', 'Linode', 'Scaleway', 'OVH'];
-          const categories: ResourceSource['category'][] = ['cloud', 'ai_ml', 'gpu', 'storage', 'network'];
-          const types: ResourceSource['type'][] = ['computing', 'storage', 'api', 'service', 'trial'];
-          const regions = ['US', 'EU', 'Asia', 'Canada', 'Australia', 'South America'];
-          
-          const newSource: ResourceSource = {
-            id: `source-${Date.now()}-${Math.random().toString(36).substr(2, 8)}`,
-            name: `${providers[Math.floor(Math.random() * providers.length)]} Free ${categories[Math.floor(Math.random() * categories.length)]}`,
-            category: categories[Math.floor(Math.random() * categories.length)],
-            type: types[Math.floor(Math.random() * types.length)],
-            provider: providers[Math.floor(Math.random() * providers.length)],
-            url: `https://example.com/${Math.random().toString(36).substr(2, 8)}`,
-            description: `Newly discovered free ${categories[Math.floor(Math.random() * categories.length)]} resource with excellent features`,
-            region: regions[Math.floor(Math.random() * regions.length)],
-            availability: {
-              global: Math.random() > 0.3,
-              countries: regions.slice(0, Math.floor(Math.random() * 3) + 1),
-              restrictions: Math.random() > 0.5 ? ['Time limited'] : [],
-              verification: Math.random() > 0.2,
-              queue: Math.random() > 0.7
-            },
-            specifications: {
-              resource: `${categories[Math.floor(Math.random() * categories.length)]} access`,
-              quantity: `${Math.floor(Math.random() * 100) + 10} units`,
-              duration: `${Math.floor(Math.random() * 90) + 1} days`,
-              value: Math.random() * 500 + 50,
-              features: ['API access', 'Documentation', 'Support', 'Scalability'],
-              limitations: ['Usage limits', 'Regional restrictions']
-            },
-            requirements: {
-              registration: true,
-              email: true,
-              phone: Math.random() > 0.5,
-              creditCard: Math.random() > 0.6,
-              student: Math.random() > 0.7,
-              developer: Math.random() > 0.5,
-              business: Math.random() > 0.8,
-              research: Math.random() > 0.7,
-              kyc: Math.random() > 0.9,
-              documentation: ['Email verification']
-            },
-            discovery: {
-              method: rule.type,
-              source: rule.configuration.sources[Math.floor(Math.random() * rule.configuration.sources.length)],
-              confidence: Math.random() * 30 + 70,
-              discoveredAt: new Date().toISOString(),
-              lastChecked: new Date().toISOString()
-            },
-            status: 'discovered',
-            priority: Math.floor(Math.random() * 10) + 1,
-            tags: ['auto_discovered', 'new', 'free', 'scanned'],
-            metadata: {
-              difficulty: ['easy', 'medium', 'hard'][Math.floor(Math.random() * 3)] as any,
-              timeToClaim: Math.floor(Math.random() * 30) + 5,
-              successRate: Math.random() * 40 + 60,
-              competition: ['low', 'medium', 'high'][Math.floor(Math.random() * 3)] as any,
-              renewal: Math.random() > 0.5,
-              scalability: Math.random() > 0.4
+          if (Math.random() > 0.8) {
+            // 20% chance per rule
+            const providers = [
+              'Microsoft',
+              'Oracle',
+              'Alibaba',
+              'Hetzner',
+              'Vultr',
+              'Linode',
+              'Scaleway',
+              'OVH',
+            ];
+            const categories: ResourceSource['category'][] = [
+              'cloud',
+              'ai_ml',
+              'gpu',
+              'storage',
+              'network',
+            ];
+            const types: ResourceSource['type'][] = [
+              'computing',
+              'storage',
+              'api',
+              'service',
+              'trial',
+            ];
+            const regions = ['US', 'EU', 'Asia', 'Canada', 'Australia', 'South America'];
+
+            const newSource: ResourceSource = {
+              id: `source-${Date.now()}-${Math.random().toString(36).substr(2, 8)}`,
+              name: `${providers[Math.floor(Math.random() * providers.length)]} Free ${categories[Math.floor(Math.random() * categories.length)]}`,
+              category: categories[Math.floor(Math.random() * categories.length)],
+              type: types[Math.floor(Math.random() * types.length)],
+              provider: providers[Math.floor(Math.random() * providers.length)],
+              url: `https://example.com/${Math.random().toString(36).substr(2, 8)}`,
+              description: `Newly discovered free ${categories[Math.floor(Math.random() * categories.length)]} resource with excellent features`,
+              region: regions[Math.floor(Math.random() * regions.length)],
+              availability: {
+                global: Math.random() > 0.3,
+                countries: regions.slice(0, Math.floor(Math.random() * 3) + 1),
+                restrictions: Math.random() > 0.5 ? ['Time limited'] : [],
+                verification: Math.random() > 0.2,
+                queue: Math.random() > 0.7,
+              },
+              specifications: {
+                resource: `${categories[Math.floor(Math.random() * categories.length)]} access`,
+                quantity: `${Math.floor(Math.random() * 100) + 10} units`,
+                duration: `${Math.floor(Math.random() * 90) + 1} days`,
+                value: Math.random() * 500 + 50,
+                features: ['API access', 'Documentation', 'Support', 'Scalability'],
+                limitations: ['Usage limits', 'Regional restrictions'],
+              },
+              requirements: {
+                registration: true,
+                email: true,
+                phone: Math.random() > 0.5,
+                creditCard: Math.random() > 0.6,
+                student: Math.random() > 0.7,
+                developer: Math.random() > 0.5,
+                business: Math.random() > 0.8,
+                research: Math.random() > 0.7,
+                kyc: Math.random() > 0.9,
+                documentation: ['Email verification'],
+              },
+              discovery: {
+                method: rule.type,
+                source:
+                  rule.configuration.sources[
+                    Math.floor(Math.random() * rule.configuration.sources.length)
+                  ],
+                confidence: Math.random() * 30 + 70,
+                discoveredAt: new Date().toISOString(),
+                lastChecked: new Date().toISOString(),
+              },
+              status: 'discovered',
+              priority: Math.floor(Math.random() * 10) + 1,
+              tags: ['auto_discovered', 'new', 'free', 'scanned'],
+              metadata: {
+                difficulty: ['easy', 'medium', 'hard'][Math.floor(Math.random() * 3)] as any,
+                timeToClaim: Math.floor(Math.random() * 30) + 5,
+                successRate: Math.random() * 40 + 60,
+                competition: ['low', 'medium', 'high'][Math.floor(Math.random() * 3)] as any,
+                renewal: Math.random() > 0.5,
+                scalability: Math.random() > 0.4,
+              },
+            };
+
+            setSources(prev => [...prev, newSource]);
+
+            // Auto-verify if enabled
+            if (
+              config.autoVerification &&
+              newSource.discovery.confidence >= config.filters.minConfidence
+            ) {
+              setTimeout(
+                () => {
+                  // Will be handled by verifySource function defined below
+                },
+                Math.random() * 10000 + 5000
+              );
             }
-          };
 
-          setSources(prev => [...prev, newSource]);
-
-          // Auto-verify if enabled
-          if (config.autoVerification && newSource.discovery.confidence >= config.filters.minConfidence) {
-            setTimeout(() => {
-              verifySource(newSource.id);
-            }, Math.random() * 10000 + 5000);
+            // Update rule performance
+            setRules(prev =>
+              prev.map(r =>
+                r.id === rule.id
+                  ? {
+                      ...r,
+                      performance: {
+                        ...r.performance,
+                        lastRun: new Date().toISOString(),
+                        discoveries: r.performance.discoveries + 1,
+                      },
+                    }
+                  : r
+              )
+            );
           }
-
-          // Update rule performance
-          setRules(prev => prev.map(r => 
-            r.id === rule.id 
-              ? {
-                  ...r,
-                  performance: {
-                    ...r.performance,
-                    lastRun: new Date().toISOString(),
-                    discoveries: r.performance.discoveries + 1
-                  }
-                }
-              : r
-          ));
-        }
-      });
-    }, config.scanFrequency * 60 * 60 * 1000); // Convert hours to milliseconds
+        });
+      },
+      config.scanFrequency * 60 * 60 * 1000
+    ); // Convert hours to milliseconds
 
     return () => clearInterval(interval);
-  }, [config.scanningEnabled, config.scanFrequency, config.autoVerification, config.filters.minConfidence, rules, isScanning]);
+  }, [
+    config.scanningEnabled,
+    config.scanFrequency,
+    config.autoVerification,
+    config.filters.minConfidence,
+    rules,
+    isScanning,
+  ]);
 
   // Auto verification simulation
   const verifySource = (sourceId: string) => {
-    setSources(prev => prev.map(source => 
-      source.id === sourceId 
-        ? {
-            ...source,
-            status: 'verified',
-            discovery: {
-              ...source.discovery,
-              verifiedAt: new Date().toISOString()
+    setSources(prev =>
+      prev.map(source =>
+        source.id === sourceId
+          ? {
+              ...source,
+              status: 'verified',
+              discovery: {
+                ...source.discovery,
+                verifiedAt: new Date().toISOString(),
+              },
             }
-          }
-        : source
-    ));
+          : source
+      )
+    );
 
     // Auto-claim if enabled and meets criteria
     const source = sources.find(s => s.id === sourceId);
     if (source && config.autoClaiming && source.specifications.value >= config.filters.minValue) {
-      setTimeout(() => {
-        claimSource(sourceId);
-      }, Math.random() * 5000 + 2000);
+      setTimeout(
+        () => {
+          claimSource(sourceId);
+        },
+        Math.random() * 5000 + 2000
+      );
     }
   };
 
   const claimSource = (sourceId: string) => {
-    setSources(prev => prev.map(source => 
-      source.id === sourceId 
-        ? {
-            ...source,
-            status: 'claimed'
-          }
-        : source
-    ));
+    setSources(prev =>
+      prev.map(source =>
+        source.id === sourceId
+          ? {
+              ...source,
+              status: 'claimed',
+            }
+          : source
+      )
+    );
   };
 
   // Update stats
@@ -694,16 +799,22 @@ const GlobalResourceScanner: React.FC = () => {
     const verifiedSources = sources.filter(s => s.status === 'verified').length;
     const claimedSources = sources.filter(s => s.status === 'claimed').length;
     const totalValue = sources.reduce((sum, s) => sum + s.specifications.value, 0);
-    const averageConfidence = sources.length > 0 
-      ? sources.reduce((sum, s) => sum + s.discovery.confidence, 0) / sources.length 
-      : 0;
-    
-    const categoryCounts = sources.reduce((acc, source) => {
-      acc[source.category] = (acc[source.category] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
-    const bestCategory = Object.entries(categoryCounts).reduce((best, [category, count]) => 
-      count > (best?.count || 0) ? { category, count } : best, null as { category: string; count: number } | null);
+    const averageConfidence =
+      sources.length > 0
+        ? sources.reduce((sum, s) => sum + s.discovery.confidence, 0) / sources.length
+        : 0;
+
+    const categoryCounts = sources.reduce(
+      (acc, source) => {
+        acc[source.category] = (acc[source.category] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
+    const bestCategory = Object.entries(categoryCounts).reduce(
+      (best, [category, count]) => (count > (best?.count || 0) ? { category, count } : best),
+      null as { category: string; count: number } | null
+    );
     const regions = new Set(sources.map(s => s.region)).size;
     const activeRules = rules.filter(r => r.isActive).length;
 
@@ -715,7 +826,7 @@ const GlobalResourceScanner: React.FC = () => {
       averageConfidence,
       bestCategory: bestCategory?.category || '',
       regions,
-      activeRules
+      activeRules,
     });
   }, [sources, rules]);
 
@@ -725,47 +836,71 @@ const GlobalResourceScanner: React.FC = () => {
 
   const getCategoryColor = (category: ResourceSource['category']) => {
     switch (category) {
-      case 'cloud': return 'bg-blue-600';
-      case 'ai_ml': return 'bg-purple-600';
-      case 'mainframe': return 'bg-orange-600';
-      case 'gpu': return 'bg-green-600';
-      case 'storage': return 'bg-cyan-600';
-      case 'network': return 'bg-indigo-600';
-      case 'education': return 'bg-yellow-600';
-      case 'developer': return 'bg-pink-600';
-      case 'research': return 'bg-red-600';
-      case 'startup': return 'bg-gray-600';
-      default: return 'bg-gray-600';
+      case 'cloud':
+        return 'bg-blue-600';
+      case 'ai_ml':
+        return 'bg-purple-600';
+      case 'mainframe':
+        return 'bg-orange-600';
+      case 'gpu':
+        return 'bg-green-600';
+      case 'storage':
+        return 'bg-cyan-600';
+      case 'network':
+        return 'bg-indigo-600';
+      case 'education':
+        return 'bg-yellow-600';
+      case 'developer':
+        return 'bg-pink-600';
+      case 'research':
+        return 'bg-red-600';
+      case 'startup':
+        return 'bg-gray-600';
+      default:
+        return 'bg-gray-600';
     }
   };
 
   const getStatusColor = (status: ResourceSource['status']) => {
     switch (status) {
-      case 'discovered': return 'bg-blue-600';
-      case 'verified': return 'bg-green-600';
-      case 'available': return 'bg-cyan-600';
-      case 'claimed': return 'bg-purple-600';
-      case 'expired': return 'bg-red-600';
-      case 'invalid': return 'bg-gray-600';
-      default: return 'bg-gray-600';
+      case 'discovered':
+        return 'bg-blue-600';
+      case 'verified':
+        return 'bg-green-600';
+      case 'available':
+        return 'bg-cyan-600';
+      case 'claimed':
+        return 'bg-purple-600';
+      case 'expired':
+        return 'bg-red-600';
+      case 'invalid':
+        return 'bg-gray-600';
+      default:
+        return 'bg-gray-600';
     }
   };
 
   const getDifficultyColor = (difficulty: ResourceSource['metadata']['difficulty']) => {
     switch (difficulty) {
-      case 'easy': return 'bg-green-600';
-      case 'medium': return 'bg-yellow-600';
-      case 'hard': return 'bg-orange-600';
-      case 'expert': return 'bg-red-600';
-      default: return 'bg-gray-600';
+      case 'easy':
+        return 'bg-green-600';
+      case 'medium':
+        return 'bg-yellow-600';
+      case 'hard':
+        return 'bg-orange-600';
+      case 'expert':
+        return 'bg-red-600';
+      default:
+        return 'bg-gray-600';
     }
   };
 
   const getFilteredSources = () => {
     return sources.filter(source => {
-      const matchesSearch = source.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           source.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           source.provider.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesSearch =
+        source.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        source.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        source.provider.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesCategory = filterCategory === 'all' || source.category === filterCategory;
       const matchesStatus = filterStatus === 'all' || source.status === filterStatus;
       const matchesRegion = filterRegion === 'all' || source.region === filterRegion;
@@ -783,7 +918,8 @@ const GlobalResourceScanner: React.FC = () => {
             Global Resource Scanner
           </h1>
           <p className="text-gray-400">
-            Global scanner for free resources from IBM mainframes, Google Colab, Intel, NVIDIA and all available sources
+            Global scanner for free resources from IBM mainframes, Google Colab, Intel, NVIDIA and
+            all available sources
           </p>
         </div>
 
@@ -848,9 +984,7 @@ const GlobalResourceScanner: React.FC = () => {
               <button
                 onClick={toggleScanning}
                 className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-colors ${
-                  isScanning
-                    ? 'bg-red-600 hover:bg-red-700'
-                    : 'bg-green-600 hover:bg-green-700'
+                  isScanning ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700'
                 }`}
               >
                 {isScanning ? (
@@ -878,9 +1012,8 @@ const GlobalResourceScanner: React.FC = () => {
           {/* Quick Stats */}
           <div className="flex items-center gap-4 text-sm">
             <span className="text-gray-400">
-              Best Category: {stats.bestCategory || 'None'} | 
-              Regions: {stats.regions} | 
-              Scanning: {config.scanningEnabled ? 'On' : 'Off'}
+              Best Category: {stats.bestCategory || 'None'} | Regions: {stats.regions} | Scanning:{' '}
+              {config.scanningEnabled ? 'On' : 'Off'}
             </span>
           </div>
         </div>
@@ -894,14 +1027,14 @@ const GlobalResourceScanner: React.FC = () => {
               <input
                 type="text"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={e => setSearchTerm(e.target.value)}
                 placeholder="Search resources..."
                 className="w-full pl-10 pr-3 py-2 bg-gray-700 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
               />
             </div>
             <select
               value={filterCategory}
-              onChange={(e) => setFilterCategory(e.target.value)}
+              onChange={e => setFilterCategory(e.target.value)}
               className="px-3 py-2 bg-gray-700 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
             >
               <option value="all">All Categories</option>
@@ -913,7 +1046,7 @@ const GlobalResourceScanner: React.FC = () => {
             </select>
             <select
               value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
+              onChange={e => setFilterStatus(e.target.value)}
               className="px-3 py-2 bg-gray-700 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
             >
               <option value="all">All Status</option>
@@ -924,7 +1057,7 @@ const GlobalResourceScanner: React.FC = () => {
             </select>
             <select
               value={filterRegion}
-              onChange={(e) => setFilterRegion(e.target.value)}
+              onChange={e => setFilterRegion(e.target.value)}
               className="px-3 py-2 bg-gray-700 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
             >
               <option value="all">All Regions</option>
@@ -936,7 +1069,7 @@ const GlobalResourceScanner: React.FC = () => {
           </div>
 
           <div className="space-y-3">
-            {getFilteredSources().map((source) => (
+            {getFilteredSources().map(source => (
               <div
                 key={source.id}
                 className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
@@ -946,54 +1079,68 @@ const GlobalResourceScanner: React.FC = () => {
               >
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <div className={`w-3 h-3 rounded-full ${
-                      source.status === 'verified' ? 'bg-green-500' : 
-                      source.status === 'claimed' ? 'bg-purple-500' : 
-                      source.status === 'expired' ? 'bg-red-500' : 'bg-blue-500'
-                    }`}></div>
+                    <div
+                      className={`w-3 h-3 rounded-full ${
+                        source.status === 'verified'
+                          ? 'bg-green-500'
+                          : source.status === 'claimed'
+                            ? 'bg-purple-500'
+                            : source.status === 'expired'
+                              ? 'bg-red-500'
+                              : 'bg-blue-500'
+                      }`}
+                    ></div>
                     <div>
                       <h4 className="font-semibold">{source.name}</h4>
-                      <div className="text-sm text-gray-400">{source.provider} - {source.region}</div>
+                      <div className="text-sm text-gray-400">
+                        {source.provider} - {source.region}
+                      </div>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className={`px-2 py-1 rounded text-xs ${getCategoryColor(source.category)}`}>
+                    <span
+                      className={`px-2 py-1 rounded text-xs ${getCategoryColor(source.category)}`}
+                    >
                       {source.category}
                     </span>
                     <span className={`px-2 py-1 rounded text-xs ${getStatusColor(source.status)}`}>
                       {source.status}
                     </span>
-                    <span className={`px-2 py-1 rounded text-xs ${getDifficultyColor(source.metadata.difficulty)}`}>
+                    <span
+                      className={`px-2 py-1 rounded text-xs ${getDifficultyColor(source.metadata.difficulty)}`}
+                    >
                       {source.metadata.difficulty}
                     </span>
                   </div>
                 </div>
 
-                <div className="text-sm text-gray-400 mb-3">
-                  {source.description}
-                </div>
+                <div className="text-sm text-gray-400 mb-3">{source.description}</div>
 
                 <div className="grid grid-cols-2 gap-4 text-sm mb-3">
                   <div>
-                    <span className="text-gray-400">Resource:</span> {source.specifications.resource}
+                    <span className="text-gray-400">Resource:</span>{' '}
+                    {source.specifications.resource}
                   </div>
                   <div>
-                    <span className="text-gray-400">Duration:</span> {source.specifications.duration}
+                    <span className="text-gray-400">Duration:</span>{' '}
+                    {source.specifications.duration}
                   </div>
                   <div>
-                    <span className="text-gray-400">Value:</span> ${source.specifications.value.toFixed(2)}
+                    <span className="text-gray-400">Value:</span> $
+                    {source.specifications.value.toFixed(2)}
                   </div>
                   <div>
-                    <span className="text-gray-400">Confidence:</span> {source.discovery.confidence.toFixed(1)}%
+                    <span className="text-gray-400">Confidence:</span>{' '}
+                    {source.discovery.confidence.toFixed(1)}%
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-gray-400">
-                      Success Rate: {source.metadata.successRate.toFixed(0)}% | 
-                      Competition: {source.metadata.competition} | 
-                      Time to Claim: {source.metadata.timeToClaim}min
+                      Success Rate: {source.metadata.successRate.toFixed(0)}% | Competition:{' '}
+                      {source.metadata.competition} | Time to Claim: {source.metadata.timeToClaim}
+                      min
                     </span>
                   </div>
                   <div className="text-xs text-gray-400">
@@ -1019,7 +1166,7 @@ const GlobalResourceScanner: React.FC = () => {
                   <div className="flex items-center gap-2">
                     {source.status === 'discovered' && (
                       <button
-                        onClick={(e) => {
+                        onClick={e => {
                           e.stopPropagation();
                           verifySource(source.id);
                         }}
@@ -1030,7 +1177,7 @@ const GlobalResourceScanner: React.FC = () => {
                     )}
                     {source.status === 'verified' && (
                       <button
-                        onClick={(e) => {
+                        onClick={e => {
                           e.stopPropagation();
                           claimSource(source.id);
                         }}
@@ -1045,9 +1192,7 @@ const GlobalResourceScanner: React.FC = () => {
             ))}
           </div>
           {getFilteredSources().length === 0 && (
-            <div className="text-center py-8 text-gray-400">
-              No resources found
-            </div>
+            <div className="text-center py-8 text-gray-400">No resources found</div>
           )}
         </div>
 
@@ -1055,55 +1200,59 @@ const GlobalResourceScanner: React.FC = () => {
         <div className="bg-gray-800 rounded-lg p-6 mb-8">
           <h3 className="text-lg font-semibold mb-4">Active Scan Rules</h3>
           <div className="space-y-3">
-            {rules.filter(r => r.isActive).map((rule) => (
-              <div key={rule.id} className="p-4 bg-gray-700 rounded-lg">
-                <div className="flex items-center justify-between mb-3">
-                  <div>
-                    <h4 className="font-semibold">{rule.name}</h4>
-                    <div className="text-sm text-gray-400">{rule.type} - {rule.description}</div>
+            {rules
+              .filter(r => r.isActive)
+              .map(rule => (
+                <div key={rule.id} className="p-4 bg-gray-700 rounded-lg">
+                  <div className="flex items-center justify-between mb-3">
+                    <div>
+                      <h4 className="font-semibold">{rule.name}</h4>
+                      <div className="text-sm text-gray-400">
+                        {rule.type} - {rule.description}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="px-2 py-1 bg-green-600 rounded text-xs">Active</span>
+                      <span className="text-sm text-gray-400">Priority: {rule.priority}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="px-2 py-1 bg-green-600 rounded text-xs">
-                      Active
-                    </span>
-                    <span className="text-sm text-gray-400">
-                      Priority: {rule.priority}
-                    </span>
-                  </div>
-                </div>
 
-                <div className="grid grid-cols-2 gap-4 text-sm mb-3">
-                  <div>
-                    <span className="text-gray-400">Success Rate:</span> {rule.performance.successRate.toFixed(1)}%
+                  <div className="grid grid-cols-2 gap-4 text-sm mb-3">
+                    <div>
+                      <span className="text-gray-400">Success Rate:</span>{' '}
+                      {rule.performance.successRate.toFixed(1)}%
+                    </div>
+                    <div>
+                      <span className="text-gray-400">Discoveries:</span>{' '}
+                      {rule.performance.discoveries}
+                    </div>
+                    <div>
+                      <span className="text-gray-400">Last Run:</span>{' '}
+                      {new Date(rule.performance.lastRun).toLocaleString()}
+                    </div>
+                    <div>
+                      <span className="text-gray-400">Frequency:</span>{' '}
+                      {rule.configuration.frequency} hours
+                    </div>
                   </div>
-                  <div>
-                    <span className="text-gray-400">Discoveries:</span> {rule.performance.discoveries}
-                  </div>
-                  <div>
-                    <span className="text-gray-400">Last Run:</span> {new Date(rule.performance.lastRun).toLocaleString()}
-                  </div>
-                  <div>
-                    <span className="text-gray-400">Frequency:</span> {rule.configuration.frequency} hours
-                  </div>
-                </div>
 
-                <div className="flex items-center gap-2 text-sm">
-                  <span className="text-gray-400">Keywords:</span>
-                  <div className="flex items-center gap-1">
-                    {rule.configuration.keywords.slice(0, 3).map((keyword, index) => (
-                      <span key={index} className="px-2 py-1 bg-gray-600 rounded text-xs">
-                        {keyword}
-                      </span>
-                    ))}
-                    {rule.configuration.keywords.length > 3 && (
-                      <span className="text-xs text-gray-500">
-                        +{rule.configuration.keywords.length - 3} more
-                      </span>
-                    )}
+                  <div className="flex items-center gap-2 text-sm">
+                    <span className="text-gray-400">Keywords:</span>
+                    <div className="flex items-center gap-1">
+                      {rule.configuration.keywords.slice(0, 3).map((keyword, index) => (
+                        <span key={index} className="px-2 py-1 bg-gray-600 rounded text-xs">
+                          {keyword}
+                        </span>
+                      ))}
+                      {rule.configuration.keywords.length > 3 && (
+                        <span className="text-xs text-gray-500">
+                          +{rule.configuration.keywords.length - 3} more
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
 
@@ -1151,7 +1300,9 @@ const GlobalResourceScanner: React.FC = () => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Value:</span>
-                    <span className="font-medium">${selectedSource.specifications.value.toFixed(2)}</span>
+                    <span className="font-medium">
+                      ${selectedSource.specifications.value.toFixed(2)}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -1161,19 +1312,27 @@ const GlobalResourceScanner: React.FC = () => {
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-400">Registration:</span>
-                    <span className="font-medium">{selectedSource.requirements.registration ? 'Yes' : 'No'}</span>
+                    <span className="font-medium">
+                      {selectedSource.requirements.registration ? 'Yes' : 'No'}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Credit Card:</span>
-                    <span className="font-medium">{selectedSource.requirements.creditCard ? 'Yes' : 'No'}</span>
+                    <span className="font-medium">
+                      {selectedSource.requirements.creditCard ? 'Yes' : 'No'}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Student:</span>
-                    <span className="font-medium">{selectedSource.requirements.student ? 'Yes' : 'No'}</span>
+                    <span className="font-medium">
+                      {selectedSource.requirements.student ? 'Yes' : 'No'}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Developer:</span>
-                    <span className="font-medium">{selectedSource.requirements.developer ? 'Yes' : 'No'}</span>
+                    <span className="font-medium">
+                      {selectedSource.requirements.developer ? 'Yes' : 'No'}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -1191,11 +1350,15 @@ const GlobalResourceScanner: React.FC = () => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Confidence:</span>
-                    <span className="font-medium">{selectedSource.discovery.confidence.toFixed(1)}%</span>
+                    <span className="font-medium">
+                      {selectedSource.discovery.confidence.toFixed(1)}%
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Discovered:</span>
-                    <span className="font-medium">{new Date(selectedSource.discovery.discoveredAt).toLocaleDateString()}</span>
+                    <span className="font-medium">
+                      {new Date(selectedSource.discovery.discoveredAt).toLocaleDateString()}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -1208,7 +1371,7 @@ const GlobalResourceScanner: React.FC = () => {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-gray-800 rounded-lg p-6 max-w-2xl w-full">
               <h2 className="text-2xl font-bold mb-6">Scanner Settings</h2>
-              
+
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -1216,7 +1379,9 @@ const GlobalResourceScanner: React.FC = () => {
                     <input
                       type="number"
                       value={config.scanFrequency}
-                      onChange={(e) => setConfig(prev => ({ ...prev, scanFrequency: parseInt(e.target.value) }))}
+                      onChange={e =>
+                        setConfig(prev => ({ ...prev, scanFrequency: parseInt(e.target.value) }))
+                      }
                       className="w-full px-3 py-2 bg-gray-700 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
                       min="1"
                       max="24"
@@ -1227,7 +1392,9 @@ const GlobalResourceScanner: React.FC = () => {
                     <input
                       type="number"
                       value={config.scanDepth}
-                      onChange={(e) => setConfig(prev => ({ ...prev, scanDepth: parseInt(e.target.value) }))}
+                      onChange={e =>
+                        setConfig(prev => ({ ...prev, scanDepth: parseInt(e.target.value) }))
+                      }
                       className="w-full px-3 py-2 bg-gray-700 rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
                       min="1"
                       max="10"
@@ -1242,7 +1409,9 @@ const GlobalResourceScanner: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.scanningEnabled}
-                        onChange={(e) => setConfig(prev => ({ ...prev, scanningEnabled: e.target.checked }))}
+                        onChange={e =>
+                          setConfig(prev => ({ ...prev, scanningEnabled: e.target.checked }))
+                        }
                         className="w-3 h-3 text-purple-600 rounded"
                       />
                       <span className="text-sm">Scanning Enabled</span>
@@ -1251,7 +1420,9 @@ const GlobalResourceScanner: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.autoVerification}
-                        onChange={(e) => setConfig(prev => ({ ...prev, autoVerification: e.target.checked }))}
+                        onChange={e =>
+                          setConfig(prev => ({ ...prev, autoVerification: e.target.checked }))
+                        }
                         className="w-3 h-3 text-purple-600 rounded"
                       />
                       <span className="text-sm">Auto Verification</span>
@@ -1260,7 +1431,9 @@ const GlobalResourceScanner: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.autoClaiming}
-                        onChange={(e) => setConfig(prev => ({ ...prev, autoClaiming: e.target.checked }))}
+                        onChange={e =>
+                          setConfig(prev => ({ ...prev, autoClaiming: e.target.checked }))
+                        }
                         className="w-3 h-3 text-purple-600 rounded"
                       />
                       <span className="text-sm">Auto Claiming</span>
@@ -1269,10 +1442,12 @@ const GlobalResourceScanner: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.filters.excludeCreditCard}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
-                          filters: { ...prev.filters, excludeCreditCard: e.target.checked }
-                        }))}
+                        onChange={e =>
+                          setConfig(prev => ({
+                            ...prev,
+                            filters: { ...prev.filters, excludeCreditCard: e.target.checked },
+                          }))
+                        }
                         className="w-3 h-3 text-purple-600 rounded"
                       />
                       <span className="text-sm">Exclude Credit Card</span>
@@ -1287,10 +1462,15 @@ const GlobalResourceScanner: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.intelligence.machineLearning}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
-                          intelligence: { ...prev.intelligence, machineLearning: e.target.checked }
-                        }))}
+                        onChange={e =>
+                          setConfig(prev => ({
+                            ...prev,
+                            intelligence: {
+                              ...prev.intelligence,
+                              machineLearning: e.target.checked,
+                            },
+                          }))
+                        }
                         className="w-3 h-3 text-purple-600 rounded"
                       />
                       <span className="text-sm">Machine Learning</span>
@@ -1299,10 +1479,15 @@ const GlobalResourceScanner: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.intelligence.patternRecognition}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
-                          intelligence: { ...prev.intelligence, patternRecognition: e.target.checked }
-                        }))}
+                        onChange={e =>
+                          setConfig(prev => ({
+                            ...prev,
+                            intelligence: {
+                              ...prev.intelligence,
+                              patternRecognition: e.target.checked,
+                            },
+                          }))
+                        }
                         className="w-3 h-3 text-purple-600 rounded"
                       />
                       <span className="text-sm">Pattern Recognition</span>
@@ -1311,10 +1496,15 @@ const GlobalResourceScanner: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.intelligence.competitorAnalysis}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
-                          intelligence: { ...prev.intelligence, competitorAnalysis: e.target.checked }
-                        }))}
+                        onChange={e =>
+                          setConfig(prev => ({
+                            ...prev,
+                            intelligence: {
+                              ...prev.intelligence,
+                              competitorAnalysis: e.target.checked,
+                            },
+                          }))
+                        }
                         className="w-3 h-3 text-purple-600 rounded"
                       />
                       <span className="text-sm">Competitor Analysis</span>
@@ -1323,10 +1513,15 @@ const GlobalResourceScanner: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.intelligence.socialMonitoring}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
-                          intelligence: { ...prev.intelligence, socialMonitoring: e.target.checked }
-                        }))}
+                        onChange={e =>
+                          setConfig(prev => ({
+                            ...prev,
+                            intelligence: {
+                              ...prev.intelligence,
+                              socialMonitoring: e.target.checked,
+                            },
+                          }))
+                        }
                         className="w-3 h-3 text-purple-600 rounded"
                       />
                       <span className="text-sm">Social Monitoring</span>
@@ -1341,10 +1536,12 @@ const GlobalResourceScanner: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.security.proxyRotation}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
-                          security: { ...prev.security, proxyRotation: e.target.checked }
-                        }))}
+                        onChange={e =>
+                          setConfig(prev => ({
+                            ...prev,
+                            security: { ...prev.security, proxyRotation: e.target.checked },
+                          }))
+                        }
                         className="w-3 h-3 text-purple-600 rounded"
                       />
                       <span className="text-sm">Proxy Rotation</span>
@@ -1353,10 +1550,12 @@ const GlobalResourceScanner: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.security.stealthMode}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
-                          security: { ...prev.security, stealthMode: e.target.checked }
-                        }))}
+                        onChange={e =>
+                          setConfig(prev => ({
+                            ...prev,
+                            security: { ...prev.security, stealthMode: e.target.checked },
+                          }))
+                        }
                         className="w-3 h-3 text-purple-600 rounded"
                       />
                       <span className="text-sm">Stealth Mode</span>
@@ -1365,10 +1564,12 @@ const GlobalResourceScanner: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.security.rateLimiting}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
-                          security: { ...prev.security, rateLimiting: e.target.checked }
-                        }))}
+                        onChange={e =>
+                          setConfig(prev => ({
+                            ...prev,
+                            security: { ...prev.security, rateLimiting: e.target.checked },
+                          }))
+                        }
                         className="w-3 h-3 text-purple-600 rounded"
                       />
                       <span className="text-sm">Rate Limiting</span>
@@ -1377,10 +1578,12 @@ const GlobalResourceScanner: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={config.security.encryption}
-                        onChange={(e) => setConfig(prev => ({ 
-                          ...prev, 
-                          security: { ...prev.security, encryption: e.target.checked }
-                        }))}
+                        onChange={e =>
+                          setConfig(prev => ({
+                            ...prev,
+                            security: { ...prev.security, encryption: e.target.checked },
+                          }))
+                        }
                         className="w-3 h-3 text-purple-600 rounded"
                       />
                       <span className="text-sm">Encryption</span>
